@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Menu Panel Jasteb Faanzy</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background-image: url('https://files.catbox.moe/5bpqir.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .menu-container {
+            text-align: center;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-height: 80%;
+            overflow-y: auto;
+            z-index: 10;
+            position: relative;
+        }
+
+        .menu-container button {
+            margin: 10px 0;
+            padding: 10px 20px;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            max-width: 300px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Pulse Animation */
+        .pulse:hover {
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        /* Bounce Animation */
+        .bounce:hover {
+            animation: bounce 0.5s;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* Shake Animation */
+        .shake:hover {
+            animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        /* Glow Animation */
+        .glow:hover {
+            box-shadow: 0 0 15px currentColor;
+        }
+
+        /* Flip Animation */
+        .flip:hover {
+            animation: flip 0.6s;
+        }
+
+        @keyframes flip {
+            0% { transform: perspective(400px) rotateY(0); }
+            50% { transform: perspective(400px) rotateY(180deg); }
+            100% { transform: perspective(400px) rotateY(360deg); }
+        }
+
+        /* Float Animation */
+        .float:hover {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* Rainbow Animation */
+        .rainbow:hover {
+            animation: rainbow 2s linear infinite;
+        }
+
+        @keyframes rainbow {
+            0% { background-color: #ff0000; }
+            14% { background-color: #ff7f00; }
+            28% { background-color: #ffff00; }
+            42% { background-color: #00ff00; }
+            57% { background-color: #0000ff; }
+            71% { background-color: #4b0082; }
+            85% { background-color: #9400d3; }
+            100% { background-color: #ff0000; }
+        }
+
+        /* Ripple Effect */
+        .ripple {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ripple:after {
+            content: "";
+            display: block;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            background-image: radial-gradient(circle, #fff 10%, transparent 10.01%);
+            background-repeat: no-repeat;
+            background-position: 50%;
+            transform: scale(10, 10);
+            opacity: 0;
+            transition: transform .5s, opacity 1s;
+        }
+
+        .ripple:active:after {
+            transform: scale(0, 0);
+            opacity: 0.3;
+            transition: 0s;
+        }
+
+        /* Border Animation */
+        .border-animate {
+            position: relative;
+            z-index: 0;
+        }
+
+        .border-animate:before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            z-index: -1;
+            background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+            background-size: 400%;
+            border-radius: 7px;
+            opacity: 0;
+            transition: 0.5s;
+        }
+
+        .border-animate:hover:before {
+            opacity: 1;
+            animation: animate 20s linear infinite;
+        }
+
+        @keyframes animate {
+            0% { background-position: 0 0; }
+            50% { background-position: 400% 0; }
+            100% { background-position: 0 0; }
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: fadeOut 3s forwards;
+        }
+
+        .notification.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .notification.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .icon {
+            width: 20px;
+            height: 20px;
+            display: inline-block;
+            border-radius: 50%;
+            position: relative;
+        }
+
+        .icon.success {
+            background-color: #28a745;
+        }
+
+        .icon.success::after {
+            content: '';
+            position: absolute;
+            width: 6px;
+            height: 12px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+            top: 3px;
+            left: 7px;
+            animation: checkmark 0.5s ease-in-out;
+        }
+
+        .icon.error {
+            background-color: #dc3545;
+        }
+
+        .icon.error::before,
+        .icon.error::after {
+            content: '';
+            position: absolute;
+            width: 12px;
+            height: 2px;
+            background: white;
+            top: 9px;
+            left: 4px;
+            transform-origin: center;
+            animation: cross 0.5s ease-in-out;
+        }
+
+        .icon.error::before {
+            transform: rotate(45deg);
+        }
+
+        .icon.error::after {
+            transform: rotate(-45deg);
+        }
+
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            80% { opacity: 1; }
+            100% { opacity: 0; transform: translateY(-20px); }
+        }
+
+        @keyframes checkmark {
+            0% { transform: scale(0) rotate(45deg); }
+            50% { transform: scale(1.2) rotate(45deg); }
+            100% { transform: scale(1) rotate(45deg); }
+        }
+
+        @keyframes cross {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        .fire {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle, rgba(255,165,0,1) 0%, rgba(255,69,0,0.8) 70%, rgba(0,0,0,0) 100%);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: flicker 1s infinite ease-in-out, rise 3s infinite ease-in-out;
+        }
+
+        @keyframes flicker {
+            0%, 100% {
+                opacity: 0.8;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.2);
+            }
+        }
+
+        @keyframes rise {
+            0% {
+                transform: translateY(0);
+            }
+            100% {
+                transform: translateY(-200px);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="menu-container">
+        <h2 id="menu-title">Pilih Panel Jasteb Anda</h2>
+        <div id="menu-buttons"></div>
+    </div>
+
+    <script>
+        // Konfigurasi menu untuk 20 menu
+        const menuConfig = [
+            { text: "PRIBADIFAAN", url: "https://ramadhanmoon.nicohosting.my.id/Pribfaanzy/ultimate", password: "OCTA", promptMessage: "Masukkan password untuk Faanzy", successMessage: "Password benar! Anda akan diarahkan ke Panel jasteb.", errorMessage: "Password salah! Silakan coba lagi." },
+            { text: "PT JASTEB 1", url: "https://ramadhanmoon.nicohosting.my.id/ptfaanzy/ultimate", password: "111", promptMessage: "Masukkan password untuk Pt Jasteb 1", successMessage: "Password benar! Anda akan diarahkan ke Panel Jasteb.", errorMessage: "Password salah! Silakan coba lagi." },
+            { text: "ZaanHost", url: "https://ramadhanmoon.nicohosting.my.id/teamfaanzy/ultimate", password: "zan", promptMessage: "Masukkan password untuk Pt Jasteb 1", successMessage: "Password benar! Anda akan diarahkan ke panel", errorMessage: "Password salah! Silakan coba lagi." },
+            { text: "PRIBADI FAAN", url: "https://ramadhanmoon.nicohosting.my.id/sewafaan2/ultimate", password: "faantek", promptMessage: "Masukkan password untuk Panel Faan", successMessage: "Password benar! Anda akan diarahkan ke Panel Jasteb.", errorMessage: "Password salah! Silakan coba lagi." },
+            { text: "kosong", url: "Yahaha", password: "yanto1", promptMessage: "Masukkan password untuk Panel 2", successMessage: "Password benar! Anda akan diarahkan ke Panel 2.", errorMessage: "Password salah! Silakan coba lagi." },
+            { text: "kosong", url: "yahaha", password: "yanto1", promptMessage: "Masukkan password untuk Panel 2", successMessage: "Password benar! Anda akan diarahkan ke Panel 2.", errorMessage: "Password salah! Silakan coba lagi." },
+            { text: "kosong", url: "yahahha", password: "yanto1", promptMessage: "Masukkan password untuk Panel 2", successMessage: "Password benar! Anda akan diarahkan ke Panel 2.", errorMessage: "Password salah! Silakan coba lagi." },
+            { text: "kosong", url: "yahaha", password: "yanto1", promptMessage: "Masukkan password untuk Panel 2", successMessage: "Password benar! Anda akan diarahkan ke Panel 2.", errorMessage: "Password salah! Silakan coba lagi." },
+            { text: "kosong", url: "yahaha", password: "yanto1", promptMessage: "Masukkan password untuk Panel 2", successMessage: "Password benar! Anda akan diarahkan ke Panel 2.", errorMessage: "Password salah! Silakan coba lagi." },
+            // Tambahkan menu lainnya... 
+        ];
+
+        const colors = [
+            "#e74c3c", "#2980b9", "#27ae60", "#f39c12", "#8e44ad", "#2c3e50", "#d35400", "#1abc9c", "#34495e", "#c0392b"
+        ];
+
+        const menuButtonsContainer = document.getElementById('menu-buttons');
+
+        menuConfig.forEach((menu, index) => {
+            const button = document.createElement('button');
+            button.textContent = menu.text;
+            button.style.backgroundColor = colors[index % colors.length];
+            button.onclick = () => checkPassword(menu);
+            menuButtonsContainer.appendChild(button);
+        });
+
+        function checkPassword(menu) {
+            const userPassword = prompt(menu.promptMessage);
+
+            if (userPassword === menu.password) {
+                showNotification(menu.successMessage, 'success');
+                setTimeout(() => {
+                    window.location.href = menu.url;
+                }, 1500);
+            } else {
+                showNotification(menu.errorMessage, 'error');
+            }
+        }
+
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.innerHTML = `
+                <span class="icon ${type}"></span>
+                <span>${message}</span>
+            `;
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        function createFire() {
+            const fire = document.createElement('div');
+            fire.className = 'fire';
+            fire.style.left = `${Math.random() * window.innerWidth}px`;
+            fire.style.bottom = '0px';
+            fire.style.animationDuration = `${Math.random() * 2 + 2}s`;
+            fire.style.width = `${Math.random() * 20 + 10}px`;
+            fire.style.height = fire.style.width;
+            document.body.appendChild(fire);
+
+            setTimeout(() => {
+                fire.remove();
+            }, 4000);
+        }
+
+        setInterval(createFire, 200);
+    </script>
+</body>
+</html>
