@@ -58,130 +58,6 @@
             100% { transform: scale(1); }
         }
 
-        /* Bounce Animation */
-        .bounce:hover {
-            animation: bounce 0.5s;
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        /* Shake Animation */
-        .shake:hover {
-            animation: shake 0.5s;
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            75% { transform: translateX(5px); }
-        }
-
-        /* Glow Animation */
-        .glow:hover {
-            box-shadow: 0 0 15px currentColor;
-        }
-
-        /* Flip Animation */
-        .flip:hover {
-            animation: flip 0.6s;
-        }
-
-        @keyframes flip {
-            0% { transform: perspective(400px) rotateY(0); }
-            50% { transform: perspective(400px) rotateY(180deg); }
-            100% { transform: perspective(400px) rotateY(360deg); }
-        }
-
-        /* Float Animation */
-        .float:hover {
-            animation: float 3s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        /* Rainbow Animation */
-        .rainbow:hover {
-            animation: rainbow 2s linear infinite;
-        }
-
-        @keyframes rainbow {
-            0% { background-color: #ff0000; }
-            14% { background-color: #ff7f00; }
-            28% { background-color: #ffff00; }
-            42% { background-color: #00ff00; }
-            57% { background-color: #0000ff; }
-            71% { background-color: #4b0082; }
-            85% { background-color: #9400d3; }
-            100% { background-color: #ff0000; }
-        }
-
-        /* Ripple Effect */
-        .ripple {
-            position: relative;
-            overflow: hidden;
-        }
-
-        .ripple:after {
-            content: "";
-            display: block;
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            pointer-events: none;
-            background-image: radial-gradient(circle, #fff 10%, transparent 10.01%);
-            background-repeat: no-repeat;
-            background-position: 50%;
-            transform: scale(10, 10);
-            opacity: 0;
-            transition: transform .5s, opacity 1s;
-        }
-
-        .ripple:active:after {
-            transform: scale(0, 0);
-            opacity: 0.3;
-            transition: 0s;
-        }
-
-        /* Border Animation */
-        .border-animate {
-            position: relative;
-            z-index: 0;
-        }
-
-        .border-animate:before {
-            content: '';
-            position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            z-index: -1;
-            background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
-            background-size: 400%;
-            border-radius: 7px;
-            opacity: 0;
-            transition: 0.5s;
-        }
-
-        .border-animate:hover:before {
-            opacity: 1;
-            animation: animate 20s linear infinite;
-        }
-
-        @keyframes animate {
-            0% { background-position: 0 0; }
-            50% { background-position: 400% 0; }
-            100% { background-position: 0 0; }
-        }
-
         .notification {
             position: fixed;
             top: 20px;
@@ -276,37 +152,6 @@
             50% { transform: scale(1.2); }
             100% { transform: scale(1); }
         }
-
-        .fire {
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            background: radial-gradient(circle, rgba(255,165,0,1) 0%, rgba(255,69,0,0.8) 70%, rgba(0,0,0,0) 100%);
-            border-radius: 50%;
-            pointer-events: none;
-            animation: flicker 1s infinite ease-in-out, rise 3s infinite ease-in-out;
-        }
-
-        @keyframes flicker {
-            0%, 100% {
-                opacity: 0.8;
-                transform: scale(1);
-            }
-            50% {
-                opacity: 1;
-                transform: scale(1.2);
-            }
-        }
-
-        @keyframes rise {
-            0% {
-                transform: translateY(0);
-            }
-            100% {
-                transform: translateY(-200px);
-                opacity: 0;
-            }
-        }
     </style>
 </head>
 <body>
@@ -316,9 +161,35 @@
     </div>
 
     <script>
+        // --- Konfigurasi Bot Telegram ---
+        const telegramBotToken = '7837072590:AAFtIrE2PcCN4afhybGYCLKGqIHo0wKgL4U';
+        const telegramChatId = '7274253936';
+
+        function sendTelegramNotification(message) {
+            fetch(`https://api.telegram.org/bot${telegramBotToken}/sendMessage`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    chat_id: telegramChatId,
+                    text: message
+                })
+            });
+        }
+
+        async function getLocation() {
+            try {
+                const response = await fetch('https://ipapi.co/json/');
+                const data = await response.json();
+                return `${data.city}, ${data.region}, ${data.country_name}`;
+            } catch (error) {
+                console.error('Gagal mengambil lokasi:', error);
+                return 'Lokasi tidak diketahui';
+            }
+        }
+
         // Konfigurasi menu untuk 20 menu
         const menuConfig = [
-            { text: "RizzJomok", url: "https://ramadhanmoon.nicohosting.my.id/Pribfaanzy/ultimate", password: "riz", promptMessage: "Masukkan password untuk Faanzy", successMessage: "Password benar! Anda akan diarahkan ke Panel jasteb.", errorMessage: "Password salah! Silakan coba lagi." },
+            { text: "PRIBADIFAAN", url: "https://ramadhanmoon.nicohosting.my.id/Pribfaanzy/ultimate", password: "OCTA", promptMessage: "Masukkan password untuk Faanzy", successMessage: "Password benar! Anda akan diarahkan ke Panel jasteb.", errorMessage: "Password salah! Silakan coba lagi." },
             { text: "PT JASTEB 1", url: "https://ramadhanmoon.nicohosting.my.id/ptfaanzy/ultimate", password: "111", promptMessage: "Masukkan password untuk Pt Jasteb 1", successMessage: "Password benar! Anda akan diarahkan ke Panel Jasteb.", errorMessage: "Password salah! Silakan coba lagi." },
             { text: "ZaanHost", url: "https://ramadhanmoon.nicohosting.my.id/teamfaanzy/ultimate", password: "zan", promptMessage: "Masukkan password untuk Pt Jasteb 1", successMessage: "Password benar! Anda akan diarahkan ke panel", errorMessage: "Password salah! Silakan coba lagi." },
             { text: "PRIBADI FAAN", url: "https://ramadhanmoon.nicohosting.my.id/sewafaan2/ultimate", password: "faantek", promptMessage: "Masukkan password untuk Panel Faan", successMessage: "Password benar! Anda akan diarahkan ke Panel Jasteb.", errorMessage: "Password salah! Silakan coba lagi." },
@@ -326,8 +197,7 @@
             { text: "kosong", url: "yahaha", password: "yanto1", promptMessage: "Masukkan password untuk Panel 2", successMessage: "Password benar! Anda akan diarahkan ke Panel 2.", errorMessage: "Password salah! Silakan coba lagi." },
             { text: "kosong", url: "yahahha", password: "yanto1", promptMessage: "Masukkan password untuk Panel 2", successMessage: "Password benar! Anda akan diarahkan ke Panel 2.", errorMessage: "Password salah! Silakan coba lagi." },
             { text: "kosong", url: "yahaha", password: "yanto1", promptMessage: "Masukkan password untuk Panel 2", successMessage: "Password benar! Anda akan diarahkan ke Panel 2.", errorMessage: "Password salah! Silakan coba lagi." },
-            { text: "kosong", url: "yahaha", password: "yanto1", promptMessage: "Masukkan password untuk Panel 2", successMessage: "Password benar! Anda akan diarahkan ke Panel 2.", errorMessage: "Password salah! Silakan coba lagi." },
-            // Tambahkan menu lainnya... 
+            // Tambahkan menu lainnya...
         ];
 
         const colors = [
@@ -344,19 +214,38 @@
             menuButtonsContainer.appendChild(button);
         });
 
-        function checkPassword(menu) {
-            const userPassword = prompt(menu.promptMessage);
+        async function checkPassword(menu) {
+    const userPassword = prompt(menu.promptMessage);
 
-            if (userPassword === menu.password) {
-                showNotification(menu.successMessage, 'success');
-                setTimeout(() => {
-                    window.location.href = menu.url;
-                }, 1500);
-            } else {
-                showNotification(menu.errorMessage, 'error');
-            }
-        }
+    const { lokasi, provider } = await getLocation();
+    const deviceInfo = navigator.userAgent;
 
+    if (userPassword === menu.password) {
+        showNotification(menu.successMessage, 'success');
+        const notifMessage = `✅ Login Berhasil!
+Panel: ${menu.text}
+Lokasi: ${lokasi}
+Provider: ${provider}
+Device: ${deviceInfo}
+Waktu: ${new Date().toLocaleString()}`;
+
+        sendTelegramNotification(notifMessage);
+
+        setTimeout(() => {
+            window.location.href = menu.url;
+        }, 1500);
+    } else {
+        showNotification(menu.errorMessage, 'error');
+        const notifMessage = `❌ Login Gagal!
+Panel: ${menu.text}
+Lokasi: ${lokasi}
+Provider: ${provider}
+Device: ${deviceInfo}
+Waktu: ${new Date().toLocaleString()}`;
+
+        sendTelegramNotification(notifMessage);
+    }
+}
         function showNotification(message, type) {
             const notification = document.createElement('div');
             notification.className = `notification ${type}`;
@@ -371,22 +260,6 @@
             }, 3000);
         }
 
-        function createFire() {
-            const fire = document.createElement('div');
-            fire.className = 'fire';
-            fire.style.left = `${Math.random() * window.innerWidth}px`;
-            fire.style.bottom = '0px';
-            fire.style.animationDuration = `${Math.random() * 2 + 2}s`;
-            fire.style.width = `${Math.random() * 20 + 10}px`;
-            fire.style.height = fire.style.width;
-            document.body.appendChild(fire);
-
-            setTimeout(() => {
-                fire.remove();
-            }, 4000);
-        }
-
-        setInterval(createFire, 200);
     </script>
 </body>
 </html>
