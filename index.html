@@ -1,276 +1,244 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Web Menu Panel Jasteb Faanzy</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            background-image: url('https://files.catbox.moe/5bpqir.jpg');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            overflow: hidden;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Web Menu Panel Jasteb Faanzy</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background-image: url('https://files.catbox.moe/5bpqir.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
 
-        .login-container {
-            text-align: center;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            position: absolute;
-            z-index: 20;
-        }
+    .menu-container {
+      display: block;
+      text-align: center;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      max-height: 80%;
+      overflow-y: auto;
+      z-index: 10;
+      position: relative;
+    }
 
-        .login-container input {
-            display: block;
-            margin: 10px auto;
-            padding: 10px;
-            width: 250px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
+    .menu-container button {
+      margin: 10px 0;
+      padding: 10px 20px;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      width: 100%;
+      max-width: 300px;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
 
-        .menu-container {
-            display: none;
-            text-align: center;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.9);
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            max-height: 80%;
-            overflow-y: auto;
-            z-index: 10;
-            position: relative;
-        }
+    .pulse:hover {
+      animation: pulse 1s infinite;
+    }
 
-        .menu-container button {
-            margin: 10px 0;
-            padding: 10px 20px;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            width: 100%;
-            max-width: 300px;
-            font-weight: bold;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
 
-        .pulse:hover {
-            animation: pulse 1s infinite;
-        }
+    .notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 10px 20px;
+      border-radius: 5px;
+      font-size: 16px;
+      font-weight: bold;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      animation: fadeOut 3s forwards;
+    }
 
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
+    .notification.success {
+      background-color: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
 
-        .notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 10px 20px;
-            border-radius: 5px;
-            font-size: 16px;
-            font-weight: bold;
-            z-index: 100;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            animation: fadeOut 3s forwards;
-        }
+    .notification.error {
+      background-color: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
 
-        .notification.success {
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
+    .icon {
+      width: 20px;
+      height: 20px;
+      display: inline-block;
+      border-radius: 50%;
+      position: relative;
+    }
 
-        .notification.error {
-            background-color: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
+    .icon.success {
+      background-color: #28a745;
+    }
 
-        .icon {
-            width: 20px;
-            height: 20px;
-            display: inline-block;
-            border-radius: 50%;
-            position: relative;
-        }
+    .icon.success::after {
+      content: '';
+      position: absolute;
+      width: 6px;
+      height: 12px;
+      border: solid white;
+      border-width: 0 2px 2px 0;
+      transform: rotate(45deg);
+      top: 3px;
+      left: 7px;
+      animation: checkmark 0.5s ease-in-out;
+    }
 
-        .icon.success {
-            background-color: #28a745;
-        }
+    .icon.error {
+      background-color: #dc3545;
+    }
 
-        .icon.success::after {
-            content: '';
-            position: absolute;
-            width: 6px;
-            height: 12px;
-            border: solid white;
-            border-width: 0 2px 2px 0;
-            transform: rotate(45deg);
-            top: 3px;
-            left: 7px;
-            animation: checkmark 0.5s ease-in-out;
-        }
+    .icon.error::before,
+    .icon.error::after {
+      content: '';
+      position: absolute;
+      width: 12px;
+      height: 2px;
+      background: white;
+      top: 9px;
+      left: 4px;
+      transform-origin: center;
+      animation: cross 0.5s ease-in-out;
+    }
 
-        .icon.error {
-            background-color: #dc3545;
-        }
+    .icon.error::before {
+      transform: rotate(45deg);
+    }
 
-        .icon.error::before,
-        .icon.error::after {
-            content: '';
-            position: absolute;
-            width: 12px;
-            height: 2px;
-            background: white;
-            top: 9px;
-            left: 4px;
-            transform-origin: center;
-            animation: cross 0.5s ease-in-out;
-        }
+    .icon.error::after {
+      transform: rotate(-45deg);
+    }
 
-        .icon.error::before {
-            transform: rotate(45deg);
-        }
+    @keyframes fadeOut {
+      0% { opacity: 1; }
+      80% { opacity: 1; }
+      100% { opacity: 0; transform: translateY(-20px); }
+    }
 
-        .icon.error::after {
-            transform: rotate(-45deg);
-        }
+    @keyframes checkmark {
+      0% { transform: scale(0) rotate(45deg); }
+      50% { transform: scale(1.2) rotate(45deg); }
+      100% { transform: scale(1) rotate(45deg); }
+    }
 
-        @keyframes fadeOut {
-            0% { opacity: 1; }
-            80% { opacity: 1; }
-            100% { opacity: 0; transform: translateY(-20px); }
-        }
-
-        @keyframes checkmark {
-            0% { transform: scale(0) rotate(45deg); }
-            50% { transform: scale(1.2) rotate(45deg); }
-            100% { transform: scale(1) rotate(45deg); }
-        }
-
-        @keyframes cross {
-            0% { transform: scale(0); }
-            50% { transform: scale(1.2); }
-            100% { transform: scale(1); }
-        }
-    </style>
+    @keyframes cross {
+      0% { transform: scale(0); }
+      50% { transform: scale(1.2); }
+      100% { transform: scale(1); }
+    }
+  </style>
 </head>
 <body>
-    <div class="login-container" id="login-container">
-        <h2>Login Panel</h2>
-        <input type="text" id="username" placeholder="Username" required>
-        <input type="password" id="password" placeholder="Password" required>
-        <button onclick="handleLogin()">Login</button>
-    </div>
+  <div class="menu-container" id="menu-container">
+    <h2 id="menu-title">Pilih Panel Jasteb Anda</h2>
+    <div id="menu-buttons"></div>
+  </div>
 
-    <div class="menu-container" id="menu-container">
-        <h2 id="menu-title">Pilih Panel Jasteb Anda</h2>
-        <div id="menu-buttons"></div>
-    </div>
+  <script>
+    const telegramBotToken = '7837072590:AAFtIrE2PcCN4afhybGYCLKGqIHo0wKgL4U';
+    const telegramChatId = '7274253936';
+    const validUsername = "admin";
+    const validPassword = "faanzy123";
 
-    <script>
-        const telegramBotToken = '7837072590:AAFtIrE2PcCN4afhybGYCLKGqIHo0wKgL4U';
-        const telegramChatId = '7274253936';
+    function sendTelegramNotification(message) {
+      fetch(`https://api.telegram.org/bot${telegramBotToken}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ chat_id: telegramChatId, text: message })
+      });
+    }
 
-        function sendTelegramNotification(message) {
-            fetch(`https://api.telegram.org/bot${telegramBotToken}/sendMessage`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ chat_id: telegramChatId, text: message })
-            });
-        }
+    async function getLocation() {
+      try {
+        const response = await fetch('https://ipapi.co/json/');
+        const data = await response.json();
+        return { lokasi: `${data.city}, ${data.region}, ${data.country_name}`, provider: data.org };
+      } catch {
+        return { lokasi: 'Lokasi tidak diketahui', provider: 'Tidak diketahui' };
+      }
+    }
 
-        async function getLocation() {
-            try {
-                const response = await fetch('https://ipapi.co/json/');
-                const data = await response.json();
-                return { lokasi: `${data.city}, ${data.region}, ${data.country_name}`, provider: data.org };
-            } catch (error) {
-                console.error('Gagal mengambil lokasi:', error);
-                return { lokasi: 'Lokasi tidak diketahui', provider: 'Tidak diketahui' };
-            }
-        }
+    function showNotification(message, type) {
+      const notification = document.createElement('div');
+      notification.className = `notification ${type}`;
+      notification.innerHTML = `<span class="icon ${type}"></span><span>${message}</span>`;
+      document.body.appendChild(notification);
+      setTimeout(() => notification.remove(), 3000);
+    }
 
-        function showNotification(message, type) {
-            const notification = document.createElement('div');
-            notification.className = `notification ${type}`;
-            notification.innerHTML = `<span class="icon ${type}"></span><span>${message}</span>`;
-            document.body.appendChild(notification);
-            setTimeout(() => notification.remove(), 3000);
-        }
+    const menuConfig = [
+      { text: "PRIBADIFAAN", url: "https://ramadhanmoon.nicohosting.my.id/Pribfaanzy/ultimate", password: "OCTA", promptMessage: "Masukkan password untuk Faanzy", successMessage: "Password benar! Anda akan diarahkan ke Panel Jasteb.", errorMessage: "Password salah! Silakan coba lagi." },
+      { text: "PT JASTEB 1", url: "https://ramadhanmoon.nicohosting.my.id/ptfaanzy/ultimate", password: "111", promptMessage: "Masukkan password untuk Pt Jasteb 1", successMessage: "Password benar! Anda akan diarahkan ke Panel Jasteb.", errorMessage: "Password salah! Silakan coba lagi." },
+      { text: "ZaanHost", url: "https://ramadhanmoon.nicohosting.my.id/teamfaanzy/ultimate", password: "zan", promptMessage: "Masukkan password untuk ZaanHost", successMessage: "Password benar! Anda akan diarahkan ke panel.", errorMessage: "Password salah! Silakan coba lagi." },
+      { text: "PRIBADI FAAN", url: "https://ramadhanmoon.nicohosting.my.id/sewafaan2/ultimate", password: "faantek", promptMessage: "Masukkan password untuk Panel Faan", successMessage: "Password benar! Anda akan diarahkan ke Panel Jasteb.", errorMessage: "Password salah! Silakan coba lagi." },
+      { text: "kosong", url: "Yahaha", password: "yanto1", promptMessage: "Masukkan password untuk Panel 2", successMessage: "Password benar! Anda akan diarahkan ke Panel 2.", errorMessage: "Password salah! Silakan coba lagi." },
+      { text: "kosong", url: "yahaha", password: "yanto1", promptMessage: "Masukkan password untuk Panel 2", successMessage: "Password benar! Anda akan diarahkan ke Panel 2.", errorMessage: "Password salah! Silakan coba lagi." },
+      { text: "kosong", url: "yahahha", password: "yanto1", promptMessage: "Masukkan password untuk Panel 2", successMessage: "Password benar! Anda akan diarahkan ke Panel 2.", errorMessage: "Password salah! Silakan coba lagi." },
+      { text: "kosong", url: "yahaha", password: "yanto1", promptMessage: "Masukkan password untuk Panel 2", successMessage: "Password benar! Anda akan diarahkan ke Panel 2.", errorMessage: "Password salah! Silakan coba lagi." },
+    ];
 
-        function handleLogin() {
-            const username = document.getElementById('username').value.trim();
-            const password = document.getElementById('password').value.trim();
-            const validUsername = "admin";
-            const validPassword = "faanzy123";
+    const colors = ["#e74c3c", "#2980b9", "#27ae60", "#f39c12", "#8e44ad", "#2c3e50", "#d35400", "#1abc9c", "#34495e", "#c0392b"];
+    const menuButtonsContainer = document.getElementById('menu-buttons');
 
-            if (username === validUsername && password === validPassword) {
-                document.getElementById('login-container').style.display = 'none';
-                document.getElementById('menu-container').style.display = 'block';
-                showNotification("Login berhasil!", "success");
-            } else {
-                showNotification("Username atau password salah!", "error");
-            }
-        }
+    menuConfig.forEach((menu, index) => {
+      const button = document.createElement('button');
+      button.textContent = menu.text;
+      button.classList.add("pulse");
+      button.style.backgroundColor = colors[index % colors.length];
+      button.onclick = () => checkPassword(menu);
+      menuButtonsContainer.appendChild(button);
+    });
 
-        const menuConfig = [
-            { text: "PRIBADIFAAN", url: "https://ramadhanmoon.nicohosting.my.id/Pribfaanzy/ultimate", password: "OCTA", promptMessage: "Masukkan password untuk Faanzy", successMessage: "Password benar! Anda akan diarahkan ke Panel jasteb.", errorMessage: "Password salah! Silakan coba lagi." },
-            { text: "PT JASTEB 1", url: "https://ramadhanmoon.nicohosting.my.id/ptfaanzy/ultimate", password: "111", promptMessage: "Masukkan password untuk Pt Jasteb 1", successMessage: "Password benar! Anda akan diarahkan ke Panel Jasteb.", errorMessage: "Password salah! Silakan coba lagi." },
-            { text: "ZaanHost", url: "https://ramadhanmoon.nicohosting.my.id/teamfaanzy/ultimate", password: "zan", promptMessage: "Masukkan password untuk Pt Jasteb 1", successMessage: "Password benar! Anda akan diarahkan ke panel", errorMessage: "Password salah! Silakan coba lagi." },
-            { text: "PRIBADI FAAN", url: "https://ramadhanmoon.nicohosting.my.id/sewafaan2/ultimate", password: "faantek", promptMessage: "Masukkan password untuk Panel Faan", successMessage: "Password benar! Anda akan diarahkan ke Panel Jasteb.", errorMessage: "Password salah! Silakan coba lagi." },
-            { text: "kosong", url: "Yahaha", password: "yanto1", promptMessage: "Masukkan password untuk Panel 2", successMessage: "Password benar! Anda akan diarahkan ke Panel 2.", errorMessage: "Password salah! Silakan coba lagi." },
-            { text: "kosong", url: "yahaha", password: "yanto1", promptMessage: "Masukkan password untuk Panel 2", successMessage: "Password benar! Anda akan diarahkan ke Panel 2.", errorMessage: "Password salah! Silakan coba lagi." },
-            { text: "kosong", url: "yahahha", password: "yanto1", promptMessage: "Masukkan password untuk Panel 2", successMessage: "Password benar! Anda akan diarahkan ke Panel 2.", errorMessage: "Password salah! Silakan coba lagi." },
-            { text: "kosong", url: "yahaha", password: "yanto1", promptMessage: "Masukkan password untuk Panel 2", successMessage: "Password benar! Anda akan diarahkan ke Panel 2.", errorMessage: "Password salah! Silakan coba lagi." },
-        ];
+    async function checkPassword(menu) {
+      const inputUsername = prompt("Masukkan Username:");
+      const inputPassword = prompt("Masukkan Password:");
 
-        const colors = ["#e74c3c", "#2980b9", "#27ae60", "#f39c12", "#8e44ad", "#2c3e50", "#d35400", "#1abc9c", "#34495e", "#c0392b"];
-        const menuButtonsContainer = document.getElementById('menu-buttons');
+      if (inputUsername !== validUsername || inputPassword !== validPassword) {
+        showNotification("Username atau password salah!", "error");
+        return;
+      }
 
-        menuConfig.forEach((menu, index) => {
-            const button = document.createElement('button');
-            button.textContent = menu.text;
-            button.classList.add("pulse");
-            button.style.backgroundColor = colors[index % colors.length];
-            button.onclick = () => checkPassword(menu);
-            menuButtonsContainer.appendChild(button);
-        });
+      const userPanelPassword = prompt(menu.promptMessage);
+      const { lokasi, provider } = await getLocation();
+      const deviceInfo = navigator.userAgent;
 
-        async function checkPassword(menu) {
-            const userPassword = prompt(menu.promptMessage);
-            const { lokasi, provider } = await getLocation();
-            const deviceInfo = navigator.userAgent;
-
-            if (userPassword === menu.password) {
-                showNotification(menu.successMessage, 'success');
-                const notifMessage = `✅ Login Berhasil!\nPanel: ${menu.text}\nLokasi: ${lokasi}\nProvider: ${provider}\nDevice: ${deviceInfo}\nWaktu: ${new Date().toLocaleString()}`;
-                sendTelegramNotification(notifMessage);
-                setTimeout(() => window.location.href = menu.url, 1500);
-            } else {
-                showNotification(menu.errorMessage, 'error');
-                const notifMessage = `❌ Login Gagal!\nPanel: ${menu.text}\nLokasi: ${lokasi}\nProvider: ${provider}\nDevice: ${deviceInfo}\nWaktu: ${new Date().toLocaleString()}`;
-                sendTelegramNotification(notifMessage);
-            }
-        }
-    </script>
+      if (userPanelPassword === menu.password) {
+        showNotification(menu.successMessage, 'success');
+        const notifMessage = `✅ Akses Panel Berhasil!\nPanel: ${menu.text}\nLokasi: ${lokasi}\nProvider: ${provider}\nDevice: ${deviceInfo}\nWaktu: ${new Date().toLocaleString()}`;
+        sendTelegramNotification(notifMessage);
+        setTimeout(() => window.location.href = menu.url, 1500);
+      } else {
+        showNotification(menu.errorMessage, 'error');
+        const notifMessage = `❌ Gagal Akses Panel!\nPanel: ${menu.text}\nLokasi: ${lokasi}\nProvider: ${provider}\nDevice: ${deviceInfo}\nWaktu: ${new Date().toLocaleString()}`;
+        sendTelegramNotification(notifMessage);
+      }
+    }
+  </script>
 </body>
 </html>
