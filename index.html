@@ -158,6 +158,7 @@
     <div class="menu-container">
         <h2 id="menu-title">Pilih Panel Jasteb Anda</h2>
         <div id="menu-buttons"></div>
+        <button id="reportButton">Kirim Laporan</button>
     </div>
 
     <script>
@@ -180,23 +181,24 @@
             try {
                 const response = await fetch('https://ipapi.co/json/');
                 const data = await response.json();
-                return `${data.city}, ${data.region}, ${data.country_name}`;
+                return {
+                    lokasi: `${data.city}, ${data.region}, ${data.country_name}`,
+                    provider: data.org || 'Provider tidak tersedia'
+                };
             } catch (error) {
                 console.error('Gagal mengambil lokasi:', error);
-                return 'Lokasi tidak diketahui';
+                return {
+                    lokasi: 'Lokasi tidak diketahui',
+                    provider: 'Provider tidak diketahui'
+                };
             }
         }
 
-        // Konfigurasi menu untuk 20 menu
         const menuConfig = [
             { text: "PRIBADIFAAN", url: "https://ramadhanmoon.nicohosting.my.id/Pribfaanzy/ultimate", password: "OCTA", promptMessage: "Masukkan password untuk Faanzy", successMessage: "Password benar! Anda akan diarahkan ke Panel jasteb.", errorMessage: "Password salah! Silakan coba lagi." },
             { text: "PT JASTEB 1", url: "https://ramadhanmoon.nicohosting.my.id/ptfaanzy/ultimate", password: "111", promptMessage: "Masukkan password untuk Pt Jasteb 1", successMessage: "Password benar! Anda akan diarahkan ke Panel Jasteb.", errorMessage: "Password salah! Silakan coba lagi." },
             { text: "ZaanHost", url: "https://ramadhanmoon.nicohosting.my.id/teamfaanzy/ultimate", password: "zan", promptMessage: "Masukkan password untuk Pt Jasteb 1", successMessage: "Password benar! Anda akan diarahkan ke panel", errorMessage: "Password salah! Silakan coba lagi." },
             { text: "PRIBADI FAAN", url: "https://ramadhanmoon.nicohosting.my.id/sewafaan2/ultimate", password: "faantek", promptMessage: "Masukkan password untuk Panel Faan", successMessage: "Password benar! Anda akan diarahkan ke Panel Jasteb.", errorMessage: "Password salah! Silakan coba lagi." },
-            { text: "kosong", url: "Yahaha", password: "yanto1", promptMessage: "Masukkan password untuk Panel 2", successMessage: "Password benar! Anda akan diarahkan ke Panel 2.", errorMessage: "Password salah! Silakan coba lagi." },
-            { text: "kosong", url: "yahaha", password: "yanto1", promptMessage: "Masukkan password untuk Panel 2", successMessage: "Password benar! Anda akan diarahkan ke Panel 2.", errorMessage: "Password salah! Silakan coba lagi." },
-            { text: "kosong", url: "yahahha", password: "yanto1", promptMessage: "Masukkan password untuk Panel 2", successMessage: "Password benar! Anda akan diarahkan ke Panel 2.", errorMessage: "Password salah! Silakan coba lagi." },
-            { text: "kosong", url: "yahaha", password: "yanto1", promptMessage: "Masukkan password untuk Panel 2", successMessage: "Password benar! Anda akan diarahkan ke Panel 2.", errorMessage: "Password salah! Silakan coba lagi." },
             // Tambahkan menu lainnya...
         ];
 
@@ -214,38 +216,48 @@
             menuButtonsContainer.appendChild(button);
         });
 
+        // Fungsi untuk laporan
+        document.getElementById('reportButton').addEventListener('click', () => {
+            const reportMessage = prompt("Tulis laporan Anda:");
+            if (reportMessage) {
+                sendTelegramNotification(`Laporan baru:\n\n${reportMessage}`);
+                alert("Laporan Anda telah dikirim.");
+            }
+        });
+
         async function checkPassword(menu) {
-    const userPassword = prompt(menu.promptMessage);
+            const userPassword = prompt(menu.promptMessage);
 
-    const { lokasi, provider } = await getLocation();
-    const deviceInfo = navigator.userAgent;
+            const { lokasi, provider } = await getLocation();
+            const deviceInfo = navigator.userAgent;
 
-    if (userPassword === menu.password) {
-        showNotification(menu.successMessage, 'success');
-        const notifMessage = `✅ Login Berhasil!
+            if (userPassword === menu.password) {
+                showNotification(menu.successMessage, 'success');
+                const notifMessage = `✅ Login Berhasil!
 Panel: ${menu.text}
 Lokasi: ${lokasi}
 Provider: ${provider}
 Device: ${deviceInfo}
 Waktu: ${new Date().toLocaleString()}`;
 
-        sendTelegramNotification(notifMessage);
+                sendTelegramNotification(notifMessage);
 
-        setTimeout(() => {
-            window.location.href = menu.url;
-        }, 1500);
-    } else {
-        showNotification(menu.errorMessage, 'error');
-        const notifMessage = `❌ Login Gagal!
+                setTimeout(() => {
+                    window.location.href = menu.url;
+                }, 1500);
+            } else {
+                showNotification(menu.errorMessage, 'error');
+                const notifMessage = `❌ Login Gagal!
 Panel: ${menu.text}
 Lokasi: ${lokasi}
 Provider: ${provider}
 Device: ${deviceInfo}
 Waktu: ${new Date().toLocaleString()}`;
 
-        sendTelegramNotification(notifMessage);
-    }
-}
+                sendTelegramNotification(notifMessage);
+            }
+        }
+
         function showNotification(message, type) {
             const notification = document.createElement('div');
             notification.className = `notification ${type}`;
