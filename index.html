@@ -207,15 +207,41 @@
       100% { transform: rotate(360deg); }
     }
 
-    /* Fade in animation untuk loading screen */
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
+    /* Admin Panel Styling */
+    .admin-panel {
+      display: none;
+      margin-top: 20px;
+      text-align: left;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
 
-    #loading-screen.show {
-      animation: fadeIn 0.5s ease forwards;
+    .admin-panel input,
+    .admin-panel button {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      font-size: 16px;
     }
+
+    .admin-panel input {
+      border: 1px solid #ddd;
+    }
+
+    .admin-panel button {
+      background-color: #27ae60;
+      color: white;
+      cursor: pointer;
+      border: none;
+    }
+
+    .admin-panel button:hover {
+      background-color: #2ecc71;
+    }
+
   </style>
 </head>
 
@@ -223,6 +249,14 @@
   <div class="menu-container">
     <h2 id="menu-title">Pilih Panel Jasteb Anda</h2>
     <div id="menu-buttons"></div>
+    <div class="admin-panel" id="admin-panel">
+      <h3>Tambah atau Ubah Menu Paket</h3>
+      <label for="new-menu-text">Nama Menu</label>
+      <input type="text" id="new-menu-text" placeholder="Nama menu baru">
+      <label for="new-menu-url">URL Menu</label>
+      <input type="url" id="new-menu-url" placeholder="URL menu baru">
+      <button onclick="addNewMenu()">Tambah Menu</button>
+    </div>
   </div>
 
   <button id="floating-report-button">Lapor</button>
@@ -235,38 +269,7 @@
   <script>
     const telegramBotToken = '7837072590:AAFtIrE2PcCN4afhybGYCLKGqIHo0wKgL4U';
     const telegramChatId = '7274253936';
-
-    function sendTelegramNotification(message) {
-      fetch(`https://api.telegram.org/bot${telegramBotToken}/sendMessage`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          chat_id: telegramChatId,
-          text: message
-        })
-      });
-    }
-
-    async function getLocation() {
-      try {
-        const response = await fetch('https://ipapi.co/json/');
-        const data = await response.json();
-        return {
-          lokasi: `${data.city}, ${data.region}, ${data.country_name}`,
-          provider: data.org || 'Provider tidak tersedia',
-          latitude: data.latitude,
-          longitude: data.longitude
-        };
-      } catch (error) {
-        console.error('Gagal mengambil lokasi:', error);
-        return {
-          lokasi: 'Lokasi tidak diketahui',
-          provider: 'Provider tidak diketahui',
-          latitude: null,
-          longitude: null
-        };
-      }
-    }
+    const adminPassword = "admin123"; // Password untuk mengakses panel admin
 
     const menuConfig = [
       { text: "PRIBADIFAAN", url: "https://ramadhanmoon.nicohosting.my.id/Pribfaanzy/ultimate", password: "OCTA", promptMessage: "Masukkan password untuk Faanzy", successMessage: "Password benar! Anda akan diarahkan ke Panel Jasteb.", errorMessage: "Password salah! Silakan coba lagi." },
@@ -277,6 +280,7 @@
 
     const colors = ["#e74c3c", "#2980b9", "#27ae60", "#f39c12", "#8e44ad", "#2c3e50", "#d35400", "#1abc9c", "#34495e", "#c0392b"];
     const menuButtonsContainer = document.getElementById('menu-buttons');
+    const adminPanel = document.getElementById('admin-panel');
 
     menuConfig.forEach((menu, index) => {
       const button = document.createElement('button');
@@ -286,13 +290,34 @@
       menuButtonsContainer.appendChild(button);
     });
 
-    document.getElementById('floating-report-button').addEventListener('click', () => {
-      const reportMessage = prompt("Tulis laporan Anda:");
-      if (reportMessage) {
-        sendTelegramNotification(`Laporan baru:\n\n${reportMessage}`);
-        alert("Laporan Anda telah dikirim.");
+    function showAdminPanel() {
+      const password = prompt("Masukkan password admin:");
+      if (password === adminPassword) {
+        adminPanel.style.display = 'block';
+      } else {
+        alert("Password admin salah!");
       }
-    });
+    }
+
+    function addNewMenu() {
+      const newMenuText = document.getElementById('new-menu-text').value;
+      const newMenuUrl = document.getElementById('new-menu-url').value;
+      if (newMenuText && newMenuUrl) {
+        menuConfig.push({
+          text: newMenuText,
+          url: newMenuUrl,
+          password: 'default', // bisa ditambahkan autentikasi untuk menu baru
+          promptMessage: `Masukkan password untuk ${newMenuText}`,
+          successMessage: "Password benar! Anda akan diarahkan ke Panel Jasteb.",
+          errorMessage: "Password salah! Silakan coba lagi."
+        });
+
+        alert("Menu baru berhasil ditambahkan!");
+        window.location.reload(); // reload untuk menampilkan menu baru
+      } else {
+        alert("Mohon isi nama menu dan URL.");
+      }
+    }
 
     function showNotification(message, type) {
       const notification = document.createElement('div');
@@ -302,34 +327,35 @@
       setTimeout(() => notification.remove(), 3000);
     }
 
-    function showLoadingScreen() {
-      const loadingScreen = document.getElementById('loading-screen');
-      loadingScreen.style.display = 'flex';
-      loadingScreen.classList.add('show');
-    }
-
     async function checkPassword(menu) {
       const userPassword = prompt(menu.promptMessage);
-      const { lokasi, provider, latitude, longitude } = await getLocation();
-      const deviceInfo = navigator.userAgent;
-      const mapsLink = (latitude && longitude) ? `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}` : 'Lokasi tidak tersedia';
-
       if (userPassword === menu.password) {
         showNotification(menu.successMessage, 'success');
-        const notifMessage = `✅ Login Berhasil!\nPanel: ${menu.text}\nLokasi: ${lokasi}\nProvider: ${provider}\nDevice: ${deviceInfo}\nWaktu: ${new Date().toLocaleString()}\nMaps: ${mapsLink}`;
-        sendTelegramNotification(notifMessage);
-
         setTimeout(() => {
-          showLoadingScreen();
-          setTimeout(() => {
-            window.location.href = menu.url;
-          }, 2000);
+          window.location.href = menu.url;
         }, 1000);
       } else {
         showNotification(menu.errorMessage, 'error');
-        const notifMessage = `❌ Login Gagal!\nPanel: ${menu.text}\nLokasi: ${lokasi}\nProvider: ${provider}\nDevice: ${deviceInfo}\nWaktu: ${new Date().toLocaleString()}\nMaps: ${mapsLink}`;
-        sendTelegramNotification(notifMessage);
       }
+    }
+
+    document.getElementById('floating-report-button').addEventListener('click', () => {
+      const reportMessage = prompt("Tulis laporan Anda:");
+      if (reportMessage) {
+        sendTelegramNotification(`Laporan baru:\n\n${reportMessage}`);
+        alert("Laporan Anda telah dikirim.");
+      }
+    });
+
+    function sendTelegramNotification(message) {
+      fetch(`https://api.telegram.org/bot${telegramBotToken}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          chat_id: telegramChatId,
+          text: message
+        })
+      });
     }
   </script>
 </body>
