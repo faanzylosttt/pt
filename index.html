@@ -47,6 +47,28 @@
             overflow: hidden;
         }
 
+        /* Tombol laporan di pojok kanan atas */
+        #floating-report-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #e74c3c;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease;
+        }
+
+        #floating-report-button:hover {
+            background-color: #c0392b;
+        }
+
         /* Pulse Animation */
         .pulse:hover {
             animation: pulse 1s infinite;
@@ -60,7 +82,7 @@
 
         .notification {
             position: fixed;
-            top: 20px;
+            top: 70px;
             right: 20px;
             padding: 10px 20px;
             border-radius: 5px;
@@ -152,68 +174,15 @@
             50% { transform: scale(1.2); }
             100% { transform: scale(1); }
         }
-
-        /* Ellipsis Menu */
-        .ellipsis-menu {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            font-size: 30px;
-            cursor: pointer;
-            color: white;
-            z-index: 15;
-        }
-
-        .menu-options {
-            display: none;
-            position: absolute;
-            top: 35px;
-            right: 0;
-            background-color: rgba(255, 255, 255, 0.9);
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            width: 150px;
-            padding: 10px;
-        }
-
-        .menu-option {
-            width: 100%;
-            padding: 10px;
-            border: none;
-            background: none;
-            text-align: left;
-            font-size: 16px;
-            cursor: pointer;
-            color: #333;
-            transition: background-color 0.3s ease;
-        }
-
-        .menu-option:hover {
-            background-color: #f1f1f1;
-        }
-
-        .ellipsis-menu.open .menu-options {
-            display: block;
-        }
-
     </style>
 </head>
 <body>
     <div class="menu-container">
         <h2 id="menu-title">Pilih Panel Jasteb Anda</h2>
         <div id="menu-buttons"></div>
-        <button id="reportButton">Kirim Laporan</button>
     </div>
 
-    <!-- Ellipsis Menu -->
-    <div class="ellipsis-menu" id="ellipsisMenu">
-        &#8230;
-        <div class="menu-options" id="menuOptions">
-            <button class="menu-option" onclick="sendReportToTelegram()">Kirim Laporan ke Bot</button>
-            <button class="menu-option" onclick="alert('Menu option 2')">Option 2</button>
-            <button class="menu-option" onclick="alert('Menu option 3')">Option 3</button>
-        </div>
-    </div>
+    <button id="floating-report-button">Lapor</button>
 
     <script>
         // --- Konfigurasi Bot Telegram ---
@@ -251,9 +220,9 @@
         const menuConfig = [
             { text: "PRIBADIFAAN", url: "https://ramadhanmoon.nicohosting.my.id/Pribfaanzy/ultimate", password: "OCTA", promptMessage: "Masukkan password untuk Faanzy", successMessage: "Password benar! Anda akan diarahkan ke Panel jasteb.", errorMessage: "Password salah! Silakan coba lagi." },
             { text: "PT JASTEB 1", url: "https://ramadhanmoon.nicohosting.my.id/ptfaanzy/ultimate", password: "111", promptMessage: "Masukkan password untuk Pt Jasteb 1", successMessage: "Password benar! Anda akan diarahkan ke Panel Jasteb.", errorMessage: "Password salah! Silakan coba lagi." },
-            { text: "ZaanHost", url: "https://ramadhanmoon.nicohosting.my.id/teamfaanzy/ultimate", password: "zan", promptMessage: "Masukkan password untuk Pt Jasteb 1", successMessage: "Password benar! Anda akan diarahkan ke panel", errorMessage: "Password salah! Silakan coba lagi." },
+            { text: "ZaanHost", url: "https://ramadhanmoon.nicohosting.my.id/teamfaanzy/ultimate", password: "zan", promptMessage: "Masukkan password untuk ZaanHost", successMessage: "Password benar! Anda akan diarahkan ke panel.", errorMessage: "Password salah! Silakan coba lagi." },
             { text: "PRIBADI FAAN", url: "https://ramadhanmoon.nicohosting.my.id/sewafaan2/ultimate", password: "faantek", promptMessage: "Masukkan password untuk Panel Faan", successMessage: "Password benar! Anda akan diarahkan ke Panel Jasteb.", errorMessage: "Password salah! Silakan coba lagi." },
-            // Tambahkan menu lainnya...
+            // Tambahkan menu lainnya jika perlu...
         ];
 
         const colors = [
@@ -270,9 +239,61 @@
             menuButtonsContainer.appendChild(button);
         });
 
-        // Fungsi untuk laporan
-        document.getElementById('reportButton').addEventListener('click', () => {
+        // Fungsi laporan tombol melayang
+        document.getElementById('floating-report-button').addEventListener('click', () => {
             const reportMessage = prompt("Tulis laporan Anda:");
+            if (reportMessage) {
+                sendTelegramNotification(`Laporan baru:\n\n${reportMessage}`);
+                alert("Laporan Anda telah dikirim.");
+            }
+        });
+
+        async function checkPassword(menu) {
+            const userPassword = prompt(menu.promptMessage);
+
+            const { lokasi, provider } = await getLocation();
+            const deviceInfo = navigator.userAgent;
+
+            if (userPassword === menu.password) {
+                showNotification(menu.successMessage, 'success');
+                const notifMessage = `✅ Login Berhasil!
+Panel: ${menu.text}
+Lokasi: ${lokasi}
+Provider: ${provider}
+Device: ${deviceInfo}
+Waktu: ${new Date().toLocaleString()}`;
+
+                sendTelegramNotification(notifMessage);
+
+                setTimeout(() => {
+                    window.location.href = menu.url;
+                }, 1500);
+            } else {
+                showNotification(menu.errorMessage, 'error');
+                const notifMessage = `❌ Login Gagal!
+Panel: ${menu.text}
+Lokasi: ${lokasi}
+Provider: ${provider}
+Device: ${deviceInfo}
+Waktu: ${new Date().toLocaleString()}`;
+
+                sendTelegramNotification(notifMessage);
+            }
+        }
+
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.innerHTML = `
+                <span class="icon ${type}"></span>
+                <span>${message}</span>
+            `;
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
 
     </script>
 </body>
