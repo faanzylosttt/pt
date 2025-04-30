@@ -22,6 +22,15 @@
       overflow: hidden;
     }
 
+    .logo {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      width: 50px;
+      height: 50px;
+      z-index: 1000;
+    }
+
     .menu-container {
       background: #ffffffee;
       padding: 50px 30px;
@@ -159,6 +168,8 @@
   </style>
 </head>
 <body>
+  <img class="logo" src="https://files.catbox.moe/gs2cvp.jpg" alt="Logo">
+  
   <div class="menu-container" id="menu-container">
     <h2>Pilih Panel Jasteb Anda</h2>
     <div id="menu-buttons"></div>
@@ -171,11 +182,6 @@
       <input type="password" id="passwordInput" placeholder="Password">
       <button onclick="handleLogin()">Masuk</button>
     </div>
-  </div>
-
-  <div id="captureArea">
-    <img src="https://files.catbox.moe/gs2cvp.jpg" alt="Logo"/>
-    <div id="reportText"></div>
   </div>
 
   <script>
@@ -277,5 +283,4 @@
       menuButtons.appendChild(btn);
     });
   </script>
-</body>
-</html>
+</body
