@@ -14,72 +14,84 @@
     body {
       margin: 0;
       padding: 0;
-      background: linear-gradient(to right, #2b5876, #4e4376);
+      background: linear-gradient(to right, #00b4d8, #0077b6);
       height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      font-size: 16px;
+      overflow: hidden;
     }
 
     .menu-container {
-      background: rgba(255, 255, 255, 0.9);
-      padding: 50px 40px;
-      border-radius: 25px;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      background: #ffffffee;
+      padding: 50px 30px;
+      border-radius: 20px;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.1);
       width: 90%;
-      max-width: 600px;
+      max-width: 520px;
       text-align: center;
-      animation: fadeIn 0.6s ease-out;
+      animation: fadeIn 0.6s ease;
     }
 
     .menu-container h2 {
-      margin-bottom: 30px;
+      margin-bottom: 25px;
       font-size: 28px;
       color: #34495e;
       font-weight: 600;
-      opacity: 0;
-      animation: fadeInText 0.6s ease-out forwards 0.2s;
+      text-transform: uppercase;
     }
 
     #menu-buttons {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 18px;
     }
 
     .menu-container button {
-      padding: 16px;
+      padding: 18px;
       font-size: 18px;
       font-weight: 600;
       border: none;
       border-radius: 12px;
       color: white;
-      background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-      transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.4s ease;
+      background: linear-gradient(135deg, #ff5f6d 0%, #ffc371 100%);
+      transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
       cursor: pointer;
-      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
     }
 
     .menu-container button:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-      background: linear-gradient(135deg, #2575fc 0%, #6a11cb 100%);
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      background: linear-gradient(135deg, #ffc371 0%, #ff5f6d 100%);
+    }
+
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      justify-content: center;
+      align-items: center;
     }
 
     .modal {
       background: #fff;
-      padding: 35px;
-      border-radius: 18px;
+      padding: 40px;
+      border-radius: 16px;
       width: 90%;
       max-width: 380px;
       text-align: center;
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
-      animation: fadeInModal 0.5s ease-in-out;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      animation: fadeIn 0.3s ease-in-out;
+      position: relative;
     }
 
     .modal h3 {
-      margin-bottom: 25px;
+      margin-bottom: 20px;
       color: #2c3e50;
       font-size: 24px;
       font-weight: 600;
@@ -87,35 +99,36 @@
 
     .modal input {
       width: 100%;
-      padding: 14px;
-      margin-bottom: 18px;
-      border-radius: 12px;
+      padding: 15px;
+      margin-bottom: 20px;
+      border-radius: 10px;
       border: 1px solid #ccc;
       font-size: 16px;
-      transition: border-color 0.3s ease;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
     }
 
     .modal input:focus {
-      border-color: #6a11cb;
       outline: none;
+      border-color: #ff5f6d;
+      box-shadow: 0 0 10px rgba(255, 95, 109, 0.3);
     }
 
     .modal button {
       width: 100%;
       padding: 14px;
-      background: #27ae60;
+      background: #ff5f6d;
       color: white;
       font-weight: bold;
       font-size: 16px;
       border: none;
       border-radius: 12px;
       cursor: pointer;
-      transition: background 0.3s ease, transform 0.2s ease;
+      transition: background 0.3s ease;
     }
 
     .modal button:hover {
-      background: #219150;
-      transform: translateY(-4px);
+      background: #e14b5b;
     }
 
     @keyframes fadeIn {
@@ -123,48 +136,24 @@
       to { opacity: 1; transform: scale(1); }
     }
 
-    @keyframes fadeInText {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
-    @keyframes fadeInModal {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
     .notification {
       position: fixed;
       top: 20px;
       right: 20px;
-      padding: 14px 20px;
-      border-radius: 10px;
+      padding: 12px 18px;
+      border-radius: 8px;
       font-weight: bold;
       z-index: 100;
       opacity: 0.95;
-      animation: fadeInNotif 0.5s ease-out;
+      font-size: 16px;
     }
 
     .notification.success { background: #d4edda; color: #155724; }
     .notification.error { background: #f8d7da; color: #721c24; }
 
-    @keyframes fadeInNotif {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @media (max-width: 768px) {
+    @media (max-width: 400px) {
       .menu-container h2 {
         font-size: 22px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .menu-container h2 {
-        font-size: 20px;
-      }
-      .menu-container button {
-        font-size: 14px;
       }
     }
   </style>
@@ -262,6 +251,4 @@
       reportDiv.innerHTML = `
         <strong>${username === selectedMenu.user && password === selectedMenu.pass ? '✅ Login Berhasil' : '❌ Login Gagal'}</strong><br>
         Panel: ${selectedMenu.text}<br>
-        Lokasi: ${info.city}, ${info.region}, ${info.country_name}<br>
-        Provider: ${info.org}<br>
-        Device: ${device}<br
+        Lokasi: ${info.city}, ${info.region}, ${info.country
