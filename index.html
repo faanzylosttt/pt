@@ -175,9 +175,9 @@
 
   <div id="captureArea">
     <img src="https://your-logo-link-here.com/logo.png" alt="Logo"/>
-
     <div id="reportText"></div>
   </div>
+
   <script>
     const telegramBotToken = '7847987165:AAExaFfM8F2eWgJc_0TG8k3xx3uiQKAOZxE';
     const telegramChatId = '7274253936';
@@ -251,4 +251,31 @@
       reportDiv.innerHTML = `
         <strong>${username === selectedMenu.user && password === selectedMenu.pass ? '✅ Login Berhasil' : '❌ Login Gagal'}</strong><br>
         Panel: ${selectedMenu.text}<br>
-        Lokasi: ${info.city}, ${info.region}, ${info.country
+        Lokasi: ${info.city}, ${info.region}, ${info.country_name}<br>
+        Provider: ${info.org}<br>
+        Device: ${device}<br>
+        Waktu: ${waktu}
+      `;
+
+      html2canvas(document.getElementById('captureArea')).then(canvas => {
+        sendImageToTelegram(canvas);
+      });
+
+      if (username === selectedMenu.user && password === selectedMenu.pass) {
+        showNotification("Login Berhasil!", "success");
+        closeLoginModal();
+        setTimeout(() => window.location.href = selectedMenu.url, 1500);
+      } else {
+        showNotification("Username atau Password salah!", "error");
+      }
+    }
+
+    menuConfig.forEach(menu => {
+      const btn = document.createElement('button');
+      btn.textContent = menu.text;
+      btn.onclick = () => showLoginModal(menu);
+      menuButtons.appendChild(btn);
+    });
+  </script>
+</body>
+</html>
