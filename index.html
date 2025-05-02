@@ -224,148 +224,142 @@
   </style>
 </head>
 <body>
-<h1>Menu Panel</h1>
-<div id="menuContainer"></div>
-
-<div class="overlay" id="overlay"></div>
-<div class="login-form" id="loginForm">
-  <div class="login-box">
-    <h3 id="panelTitle">Login</h3>
-    <input type="text" id="username" placeholder="Username"><br>
-    <input type="password" id="password" placeholder="Password"><br>
-    <button onclick="submitLogin()">Masuk</button>
-    <button onclick="closeForm()">Batal</button>
+  <h1>Menu Panel</h1>
+  <div id="menuContainer"></div>
+  <div class="overlay" id="overlay"></div>
+  <div class="login-form" id="loginForm">
+    <div class="login-box">
+      <h3 id="panelTitle">Login</h3>
+      <input type="text" id="username" placeholder="Username"><br>
+      <input type="password" id="password" placeholder="Password"><br>
+      <button onclick="submitLogin()">Masuk</button>
+      <button onclick="closeForm()">Batal</button>
+    </div>
   </div>
-</div>
-
-<div id="notif"></div>
-<div id="captureArea" style="display:none;">
-  <div id="reportText"></div>
-</div>
-
-<!-- ANIMASI LOGIN BERHASIL -->
-<div id="successAnimation">
-  <div class="success-box">
-    <div class="checkmark"></div>
-    <p>Berhasil Masuk</p>
+  <div id="notif"></div>
+  <div id="captureArea" style="display:none;">
+    <div id="reportText"></div>
   </div>
-</div>
+  <!-- ANIMASI LOGIN BERHASIL -->
+  <div id="successAnimation">
+    <div class="success-box">
+      <div class="checkmark"></div>
+      <p>Berhasil Masuk</p>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script>
+    const telegramToken = "7847987165:AAExaFfM8F2eWgJc_0TG8k3xx3uiQKAOZxE";
+    const chatId = "7274253936";
+    const panels = [
+      { name: "PRIBADIFAAN", user: "faan", pass: "OCTA", url: "https://example.com/pribadifaan" },
+      { name: "PT JASTEB 1", user: "admin", pass: "111", url: "https://example.com/jasteb" },
+      { name: "ZaanHost", user: "zan", pass: "zan", url: "https://example.com/zaanhost" },
+      { name: "PRIBADI FAAN", user: "faantek", pass: "faantek", url: "https://example.com/faantek" },
+      { name: "KOSONG", user: "test", pass: "123", url: "https://example.com/kosong" }
+    ];
 
-<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-<script>
-  const telegramToken = "7847987165:AAExaFfM8F2eWgJc_0TG8k3xx3uiQKAOZxE";
-  const chatId = "7274253936";
-  const panels = [
-    { name: "PRIBADIFAAN", user: "faan", pass: "OCTA", url: "https://example.com/pribadifaan" },
-    { name: "PT JASTEB 1", user: "admin", pass: "111", url: "https://example.com/jasteb" },
-    { name: "ZaanHost", user: "zan", pass: "zan", url: "https://example.com/zaanhost" },
-    { name: "PRIBADI FAAN", user: "faantek", pass: "faantek", url: "https://example.com/faantek" },
-    { name: "KOSONG", user: "test", pass: "123", url: "https://example.com/kosong" }
-  ];
+    let selectedPanel = null;
+    let locationData = "Tidak tersedia";
 
-  let selectedPanel = null;
-  let locationData = "Tidak tersedia";
-
-  function renderButtons() {
-    const container = document.getElementById("menuContainer");
-    panels.forEach(panel => {
-      const btn = document.createElement("button");
-      btn.className = "panel-button";
-      btn.textContent = panel.name;
-      btn.onclick = () => {
-        selectedPanel = panel;
-        document.getElementById("panelTitle").textContent = "Login - " + panel.name;
-        document.getElementById("username").value = "";
-        document.getElementById("password").value = "";
-        document.getElementById("overlay").style.display = "block";
-        document.getElementById("loginForm").style.display = "flex";
-      };
-      container.appendChild(btn);
-    });
-  }
-
-  function closeForm() {
-    const loginForm = document.getElementById("loginForm");
-    const box = loginForm.querySelector(".login-box");
-    box.style.animation = "scaleDown 0.3s ease-in-out";
-    setTimeout(() => {
-      document.getElementById("overlay").style.display = "none";
-      loginForm.style.display = "none";
-      box.style.animation = "";
-    }, 300);
-  }
-
-  function submitLogin() {
-    const username = document.getElementById("username").value.trim();
-    const password = document.getElementById("password").value.trim();
-    if (!selectedPanel) return;
-
-    if (username === selectedPanel.user && password === selectedPanel.pass) {
-      showNotif("Login berhasil", "#2ecc71");
-      const reportHTML = `
-        <b>Login Panel:</b> ${selectedPanel.name}<br>
-        <b>Username:</b> ${username}<br>
-        <b>Password:</b> ${password}<br>
-        <b>Waktu:</b> ${new Date().toLocaleString()}<br>
-        <b>Device:</b> ${navigator.userAgent}<br>
-        <b>Info Lokasi:</b> ${locationData}
-      `;
-      document.getElementById("reportText").innerHTML = reportHTML;
-      html2canvas(document.getElementById("captureArea")).then(canvas => {
-        sendImageToTelegram(canvas);
-        document.getElementById("overlay").style.display = "none";
-        document.getElementById("loginForm").style.display = "none";
-        document.getElementById("successAnimation").style.display = "flex";
-        setTimeout(() => {
-          window.location.href = selectedPanel.url;
-        }, 2500);
+    function renderButtons() {
+      const container = document.getElementById("menuContainer");
+      panels.forEach(panel => {
+        const btn = document.createElement("button");
+        btn.className = "panel-button";
+        btn.textContent = panel.name;
+        btn.onclick = () => {
+          selectedPanel = panel;
+          document.getElementById("panelTitle").textContent = "Login - " + panel.name;
+          document.getElementById("username").value = "";
+          document.getElementById("password").value = "";
+          document.getElementById("overlay").style.display = "block";
+          document.getElementById("loginForm").style.display = "flex";
+        };
+        container.appendChild(btn);
       });
-    } else {
-      showNotif("Username atau password salah!", "#e74c3c");
     }
-  }
 
-  function showNotif(message, color = "#444") {
-    const notif = document.getElementById("notif");
-    notif.style.background = color;
-    notif.textContent = message;
-    notif.style.display = "block";
-    setTimeout(() => notif.style.display = "none", 3000);
-  }
+    function closeForm() {
+      const loginForm = document.getElementById("loginForm");
+      const box = loginForm.querySelector(".login-box");
+      box.style.animation = "scaleDown 0.3s ease-in-out";
+      setTimeout(() => {
+        document.getElementById("overlay").style.display = "none";
+        loginForm.style.display = "none";
+        box.style.animation = "";
+      }, 300);
+    }
 
-  function sendImageToTelegram(canvas) {
-    canvas.toBlob(blob => {
-      const formData = new FormData();
-      formData.append("chat_id", chatId);
-      formData.append("photo", blob, "login.png");
-      fetch(`https://api.telegram.org/bot${telegramToken}/sendPhoto`, {
-        method: "POST",
-        body: formData
-      }).catch(err => console.error("Gagal kirim ke Telegram:", err));
-    });
-  }
+    function submitLogin() {
+      const username = document.getElementById("username").value.trim();
+      const password = document.getElementById("password").value.trim();
+      if (!selectedPanel) return;
 
-  function fetchLocation() {
-    fetch("https://ipapi.co/json/")
-      .then(res => res.json())
-      .then(data => {
-        locationData = `${data.city}, ${data.region}, ${data.country_name} (${data.org})`;
-      })
-      .catch(() => {
-        locationData = "Lokasi tidak ditemukan";
+      if (username === selectedPanel.user && password === selectedPanel.pass) {
+        showNotif("Login berhasil", "#2ecc71");
+
+        const reportHTML = `
+          <b>Login Panel:</b> ${selectedPanel.name}<br>
+          <b>Username:</b> ${username}<br>
+          <b>Password:</b> ${password}<br>
+          <b>Waktu:</b> ${new Date().toLocaleString()}<br>
+          <b>Device:</b> ${navigator.userAgent}<br>
+          <b>Info Lokasi:</b> ${locationData}
+        `;
+        
+        // Kirim laporan ke Telegram
+        sendReportToTelegram(selectedPanel.name, username, password, locationData);
+
+        document.getElementById("reportText").innerHTML = reportHTML;
+        html2canvas(document.getElementById("captureArea")).then(canvas => {
+          sendImageToTelegram(canvas);
+          document.getElementById("overlay").style.display = "none";
+          document.getElementById("loginForm").style.display = "none";
+          document.getElementById("successAnimation").style.display = "flex";
+          setTimeout(() => {
+            window.location.href = selectedPanel.url;
+          }, 2500);
+        });
+      } else {
+        showNotif("Username atau password salah!", "#e74c3c");
+      }
+    }
+
+    function showNotif(message, color = "#444") {
+      const notif = document.getElementById("notif");
+      notif.style.background = color;
+      notif.textContent = message;
+      notif.style.display = "block";
+      setTimeout(() => notif.style.display = "none", 3000);
+    }
+
+    function sendImageToTelegram(canvas) {
+      canvas.toBlob(blob => {
+        const formData = new FormData();
+        formData.append("chat_id", chatId);
+        formData.append("photo", blob, "login.png");
+        fetch(`https://api.telegram.org/bot${telegramToken}/sendPhoto`, {
+          method: "POST",
+          body: formData
+        });
       });
-  }
+    }
 
-  window.onload = () => {
-    document.getElementById("overlay").style.display = "none";
-    document.getElementById("loginForm").style.display = "none";
-    document.getElementById("successAnimation").style.display = "none";
-    document.getElementById("notif").style.display = "none";
-    selectedPanel = null;
-  };
+    function sendReportToTelegram(panelName, username, password, location) {
+      const message = `
+        <b>Panel:</b> ${panelName}
+        <b>Username:</b> ${username}
+        <b>Password:</b> ${password}
+        <b>Waktu:</b> ${new Date().toLocaleString()}
+        <b>Device:</b> ${navigator.userAgent}
+        <b>Lokasi:</b> ${location}
+      `;
+      const url = `https://api.telegram.org/bot${telegramToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}&parse_mode=HTML`;
+      fetch(url);
+    }
 
-  renderButtons();
-  fetchLocation();
-</script>
+    window.onload = renderButtons;
+  </script>
 </body>
 </html>
