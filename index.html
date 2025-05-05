@@ -12,46 +12,25 @@
     body {
       margin: 0;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #111;
-      color: #f0f0f0;
+      background-color: #0e0e0e;
+      color: #fff;
     }
 
     header {
       text-align: center;
-      padding: 20px;
-      font-size: 26px;
+      padding: 24px;
+      font-size: 28px;
       font-weight: bold;
-      background: #1c1c1c;
+      background: linear-gradient(90deg, #00c6ff, #0072ff);
       color: #fff;
-      border-bottom: 1px solid #333;
-    }
-
-    .search-bar {
-      display: flex;
-      justify-content: center;
-      padding: 10px;
-      background: #181818;
-      border-bottom: 1px solid #333;
-    }
-
-    .search-bar input {
-      width: 90%;
-      max-width: 400px;
-      padding: 10px 15px;
-      border-radius: 8px;
-      border: 1px solid #333;
-      background: #222;
-      color: #fff;
-      font-size: 14px;
-      outline: none;
     }
 
     .menu-scroll {
       display: flex;
       overflow-x: auto;
-      padding: 10px;
-      gap: 8px;
-      background-color: #181818;
+      padding: 12px 16px;
+      gap: 10px;
+      background-color: #1a1a1a;
       border-bottom: 1px solid #333;
       scrollbar-width: none;
     }
@@ -62,14 +41,14 @@
 
     .menu-btn {
       flex-shrink: 0;
-      padding: 8px 16px;
-      border: 1px solid #333;
-      border-radius: 999px;
-      background: #222;
-      color: #fff;
+      padding: 8px 20px;
+      border: none;
+      border-radius: 30px;
+      background: #292929;
+      color: #ccc;
       font-size: 14px;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: all 0.25s ease;
     }
 
     .menu-btn:hover,
@@ -87,35 +66,35 @@
     }
 
     .product-card {
-      background: #1f1f1f;
+      background: #1c1c1c;
+      border-radius: 14px;
+      padding: 18px;
       border: 1px solid #2a2a2a;
-      border-radius: 12px;
-      padding: 16px;
+      transition: all 0.2s ease;
       cursor: pointer;
-      transition: transform 0.2s ease, box-shadow 0.3s ease;
     }
 
     .product-card:hover {
+      box-shadow: 0 4px 16px rgba(0, 198, 255, 0.3);
       transform: translateY(-4px);
-      box-shadow: 0 0 15px rgba(0, 198, 255, 0.2);
       border-color: #00c6ff;
     }
 
     .product-title {
       font-size: 16px;
       font-weight: 600;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
     }
 
     .product-price {
       color: #00c6ff;
       font-size: 15px;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
     }
 
     .product-desc {
       font-size: 13px;
-      color: #ccc;
+      color: #bbb;
     }
 
     .modal {
@@ -123,19 +102,19 @@
       position: fixed;
       z-index: 1000;
       inset: 0;
-      background-color: rgba(0, 0, 0, 0.7);
+      background-color: rgba(0, 0, 0, 0.8);
       justify-content: center;
       align-items: center;
     }
 
     .modal-content {
       background: #222;
-      color: #fff;
-      padding: 20px;
-      border-radius: 10px;
-      width: 90%;
+      padding: 24px;
+      border-radius: 12px;
       max-width: 400px;
+      width: 90%;
       text-align: center;
+      box-shadow: 0 0 15px rgba(0, 198, 255, 0.2);
     }
 
     .modal-content h2 {
@@ -143,45 +122,41 @@
     }
 
     .modal-content p {
-      margin-bottom: 12px;
+      margin-bottom: 14px;
     }
 
     .modal-content .buy-btn {
       background: #00c6ff;
       color: #000;
-      padding: 10px 20px;
+      padding: 10px 22px;
       border-radius: 20px;
-      border: none;
       font-weight: bold;
+      border: none;
       cursor: pointer;
     }
 
     .modal-content .close-btn {
       background: none;
-      color: #ccc;
+      color: #999;
       border: none;
-      font-size: 13px;
-      margin-top: 10px;
+      font-size: 14px;
+      margin-top: 12px;
       cursor: pointer;
     }
 
     footer {
       text-align: center;
-      padding: 15px;
+      padding: 16px;
       font-size: 13px;
       color: #777;
-      background-color: #1c1c1c;
-      margin-top: 40px;
+      background: #1c1c1c;
       border-top: 1px solid #333;
+      margin-top: 40px;
     }
   </style>
 </head>
 <body>
   <header>Daftar Produk Jasteb</header>
-
-  <div class="search-bar">
-    <input type="text" id="searchInput" placeholder="Cari produk..." />
-  </div>
 
   <div class="menu-scroll" id="menuNav"></div>
   <div class="products" id="productContainer"></div>
@@ -193,8 +168,7 @@
       <p id="modalDesc"></p>
       <a id="modalLink" href="#" target="_blank">
         <button class="buy-btn">Beli Sekarang</button>
-      </a>
-      <br />
+      </a><br />
       <button class="close-btn" onclick="closeModal()">Tutup</button>
     </div>
   </div>
@@ -245,7 +219,6 @@
 
     const menuNav = document.getElementById("menuNav");
     const productContainer = document.getElementById("productContainer");
-    const searchInput = document.getElementById("searchInput");
 
     let currentCategory = "";
 
@@ -267,26 +240,23 @@
       currentCategory = kategori;
       document.querySelectorAll(".menu-btn").forEach(btn => btn.classList.remove("active"));
       clickedBtn.classList.add("active");
-      filterProduk();
+      displayProduk();
     }
 
-    function filterProduk() {
-      const searchTerm = searchInput.value.toLowerCase();
+    function displayProduk() {
       const produkList = produkKategori[currentCategory] || [];
       productContainer.innerHTML = "";
 
       produkList.forEach(p => {
-        if (p.title.toLowerCase().includes(searchTerm)) {
-          const card = document.createElement("div");
-          card.className = "product-card";
-          card.onclick = () => showModal(p);
-          card.innerHTML = `
-            <div class="product-title">${p.title}</div>
-            <div class="product-price">${p.price}</div>
-            <div class="product-desc">${p.desc}</div>
-          `;
-          productContainer.appendChild(card);
-        }
+        const card = document.createElement("div");
+        card.className = "product-card";
+        card.onclick = () => showModal(p);
+        card.innerHTML = `
+          <div class="product-title">${p.title}</div>
+          <div class="product-price">${p.price}</div>
+          <div class="product-desc">${p.desc}</div>
+        `;
+        productContainer.appendChild(card);
       });
     }
 
@@ -303,8 +273,7 @@
     }
 
     generateMenu();
-    filterProduk();
-    searchInput.addEventListener("input", filterProduk);
+    displayProduk();
   </script>
 </body>
 </html>
