@@ -3,60 +3,56 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Produk Jasteb - Modern UI</title>
+  <title>Produk Jasteb</title>
   <style>
     * {
       box-sizing: border-box;
     }
 
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-    }
-
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-      color: #fff;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
-
-    .content {
-      flex: 1;
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #111;
+      color: #f0f0f0;
     }
 
     header {
       text-align: center;
-      padding: 30px 20px;
-      font-size: 30px;
+      padding: 20px;
+      font-size: 26px;
       font-weight: bold;
-      backdrop-filter: blur(10px);
+      background: #1c1c1c;
+      color: #fff;
+      border-bottom: 1px solid #333;
     }
 
     .search-bar {
       display: flex;
       justify-content: center;
-      margin: 10px 20px;
+      padding: 10px;
+      background: #181818;
+      border-bottom: 1px solid #333;
     }
 
     .search-bar input {
-      width: 100%;
+      width: 90%;
       max-width: 400px;
       padding: 10px 15px;
-      border-radius: 30px;
-      border: none;
-      font-size: 16px;
+      border-radius: 8px;
+      border: 1px solid #333;
+      background: #222;
+      color: #fff;
+      font-size: 14px;
       outline: none;
     }
 
     .menu-scroll {
       display: flex;
       overflow-x: auto;
-      padding: 10px 20px;
-      gap: 12px;
+      padding: 10px;
+      gap: 8px;
+      background-color: #181818;
+      border-bottom: 1px solid #333;
       scrollbar-width: none;
     }
 
@@ -66,101 +62,80 @@
 
     .menu-btn {
       flex-shrink: 0;
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      color: #fff;
-      padding: 10px 20px;
+      padding: 8px 16px;
+      border: 1px solid #333;
       border-radius: 999px;
+      background: #222;
+      color: #fff;
       font-size: 14px;
       cursor: pointer;
-      transition: 0.3s;
-      backdrop-filter: blur(8px);
+      transition: all 0.2s ease;
     }
 
     .menu-btn:hover,
     .menu-btn.active {
-      background: #00d4ff;
+      background: #00c6ff;
       color: #000;
       font-weight: bold;
-      box-shadow: 0 0 10px #00d4ff;
     }
 
     .products {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
       gap: 20px;
-      padding: 30px;
-      animation: fadeIn 0.5s ease-in-out;
+      padding: 20px;
     }
 
     .product-card {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 16px;
-      padding: 20px;
-      backdrop-filter: blur(10px);
-      box-shadow: 0 0 10px rgba(0, 212, 255, 0.1);
-      transition: transform 0.2s ease, box-shadow 0.3s;
+      background: #1f1f1f;
+      border: 1px solid #2a2a2a;
+      border-radius: 12px;
+      padding: 16px;
       cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.3s ease;
     }
 
     .product-card:hover {
-      transform: scale(1.03);
-      box-shadow: 0 0 20px #00d4ff;
+      transform: translateY(-4px);
+      box-shadow: 0 0 15px rgba(0, 198, 255, 0.2);
+      border-color: #00c6ff;
     }
 
     .product-title {
-      font-size: 18px;
-      font-weight: bold;
-      margin-bottom: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 6px;
     }
 
     .product-price {
-      font-size: 20px;
-      color: #00d4ff;
-      margin-bottom: 8px;
+      color: #00c6ff;
+      font-size: 15px;
+      margin-bottom: 6px;
     }
 
     .product-desc {
-      font-size: 14px;
+      font-size: 13px;
       color: #ccc;
-      margin-bottom: 16px;
-    }
-
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(10px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
     }
 
     .modal {
       display: none;
       position: fixed;
-      z-index: 999;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.6);
-      backdrop-filter: blur(4px);
+      z-index: 1000;
+      inset: 0;
+      background-color: rgba(0, 0, 0, 0.7);
       justify-content: center;
       align-items: center;
     }
 
     .modal-content {
-      background: #1e2a38;
+      background: #222;
       color: #fff;
       padding: 20px;
-      border-radius: 15px;
+      border-radius: 10px;
       width: 90%;
       max-width: 400px;
       text-align: center;
-      animation: fadeIn 0.3s ease-in-out;
     }
 
     .modal-content h2 {
@@ -168,65 +143,63 @@
     }
 
     .modal-content p {
-      margin-bottom: 15px;
+      margin-bottom: 12px;
     }
 
     .modal-content .buy-btn {
-      background: #00d4ff;
+      background: #00c6ff;
       color: #000;
       padding: 10px 20px;
-      border-radius: 25px;
+      border-radius: 20px;
       border: none;
       font-weight: bold;
       cursor: pointer;
     }
 
     .modal-content .close-btn {
-      margin-top: 15px;
-      background: transparent;
+      background: none;
       color: #ccc;
       border: none;
-      font-size: 14px;
+      font-size: 13px;
+      margin-top: 10px;
       cursor: pointer;
     }
 
     footer {
       text-align: center;
-      padding: 20px;
-      font-size: 14px;
-      color: #aaa;
-      border-top: 1px solid rgba(255,255,255,0.1);
+      padding: 15px;
+      font-size: 13px;
+      color: #777;
+      background-color: #1c1c1c;
+      margin-top: 40px;
+      border-top: 1px solid #333;
     }
   </style>
 </head>
 <body>
-  <div class="content">
-    <header>Daftar Produk Jasteb</header>
+  <header>Daftar Produk Jasteb</header>
 
-    <div class="search-bar">
-      <input type="text" id="searchInput" placeholder="Cari produk..." />
-    </div>
+  <div class="search-bar">
+    <input type="text" id="searchInput" placeholder="Cari produk..." />
+  </div>
 
-    <div class="menu-scroll" id="menuNav"></div>
-    <div class="products" id="productContainer"></div>
+  <div class="menu-scroll" id="menuNav"></div>
+  <div class="products" id="productContainer"></div>
 
-    <div class="modal" id="productModal">
-      <div class="modal-content">
-        <h2 id="modalTitle"></h2>
-        <p id="modalPrice"></p>
-        <p id="modalDesc"></p>
-        <a id="modalLink" href="#" target="_blank">
-          <button class="buy-btn">Beli Sekarang</button>
-        </a>
-        <br />
-        <button class="close-btn" onclick="closeModal()">Tutup</button>
-      </div>
+  <div class="modal" id="productModal">
+    <div class="modal-content">
+      <h2 id="modalTitle"></h2>
+      <p id="modalPrice"></p>
+      <p id="modalDesc"></p>
+      <a id="modalLink" href="#" target="_blank">
+        <button class="buy-btn">Beli Sekarang</button>
+      </a>
+      <br />
+      <button class="close-btn" onclick="closeModal()">Tutup</button>
     </div>
   </div>
 
-  <footer>
-    &copy; 2025 Faanzy. All rights reserved.
-  </footer>
+  <footer>&copy; 2025 Faanzy. All rights reserved.</footer>
 
   <script>
     const produkKategori = {
@@ -331,6 +304,7 @@
 
     generateMenu();
     filterProduk();
+    searchInput.addEventListener("input", filterProduk);
   </script>
 </body>
 </html>
