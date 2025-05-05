@@ -8,12 +8,14 @@
     * {
       box-sizing: border-box;
     }
+
     body {
       margin: 0;
       font-family: 'Segoe UI', sans-serif;
       background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
       color: #fff;
     }
+
     header {
       text-align: center;
       padding: 30px 20px;
@@ -27,6 +29,7 @@
       justify-content: center;
       margin: 10px 20px;
     }
+
     .search-bar input {
       width: 100%;
       max-width: 400px;
@@ -44,9 +47,11 @@
       gap: 12px;
       scrollbar-width: none;
     }
+
     .menu-scroll::-webkit-scrollbar {
       display: none;
     }
+
     .menu-btn {
       flex-shrink: 0;
       background: rgba(255, 255, 255, 0.1);
@@ -59,6 +64,7 @@
       transition: 0.3s;
       backdrop-filter: blur(8px);
     }
+
     .menu-btn:hover,
     .menu-btn.active {
       background: #00d4ff;
@@ -85,20 +91,24 @@
       transition: transform 0.2s ease, box-shadow 0.3s;
       cursor: pointer;
     }
+
     .product-card:hover {
       transform: scale(1.03);
       box-shadow: 0 0 20px #00d4ff;
     }
+
     .product-title {
       font-size: 18px;
       font-weight: bold;
       margin-bottom: 8px;
     }
+
     .product-price {
       font-size: 20px;
       color: #00d4ff;
       margin-bottom: 8px;
     }
+
     .product-desc {
       font-size: 14px;
       color: #ccc;
@@ -116,7 +126,6 @@
       }
     }
 
-    /* Modal */
     .modal {
       display: none;
       position: fixed;
@@ -125,11 +134,12 @@
       top: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0,0,0,0.6);
+      background: rgba(0, 0, 0, 0.6);
       backdrop-filter: blur(4px);
       justify-content: center;
       align-items: center;
     }
+
     .modal-content {
       background: #1e2a38;
       color: #fff;
@@ -140,12 +150,15 @@
       text-align: center;
       animation: fadeIn 0.3s ease-in-out;
     }
+
     .modal-content h2 {
       margin-bottom: 10px;
     }
+
     .modal-content p {
       margin-bottom: 15px;
     }
+
     .modal-content .buy-btn {
       background: #00d4ff;
       color: #000;
@@ -155,6 +168,7 @@
       font-weight: bold;
       cursor: pointer;
     }
+
     .modal-content .close-btn {
       margin-top: 15px;
       background: transparent;
@@ -162,6 +176,15 @@
       border: none;
       font-size: 14px;
       cursor: pointer;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 14px;
+      color: #aaa;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      margin-top: 40px;
     }
   </style>
 </head>
@@ -175,7 +198,6 @@
   <div class="menu-scroll" id="menuNav"></div>
   <div class="products" id="productContainer"></div>
 
-  <!-- Modal -->
   <div class="modal" id="productModal">
     <div class="modal-content">
       <h2 id="modalTitle"></h2>
@@ -184,10 +206,14 @@
       <a id="modalLink" href="#" target="_blank">
         <button class="buy-btn">Beli Sekarang</button>
       </a>
-      <br>
+      <br />
       <button class="close-btn" onclick="closeModal()">Tutup</button>
     </div>
   </div>
+
+  <footer>
+    &copy; 2025 Faanzy. All rights reserved.
+  </footer>
 
   <script>
     const produkKategori = {
@@ -282,7 +308,7 @@
       document.getElementById("modalTitle").innerText = product.title;
       document.getElementById("modalPrice").innerText = product.price;
       document.getElementById("modalDesc").innerText = product.desc;
-      document.getElementById("modalLink").href = "#";  // Ganti dengan link yang sesuai untuk pembelian
+      document.getElementById("modalLink").href = "#";
       document.getElementById("productModal").style.display = "flex";
     }
 
@@ -290,7 +316,6 @@
       document.getElementById("productModal").style.display = "none";
     }
 
-    // Menampilkan produk dan kategori pertama
     generateMenu();
     filterProduk();
   </script>
