@@ -1,4 +1,299 @@
-<!DOCTYPE html>
+<!DOCTYPE html><!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Produk Jasteb</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      background-attachment: fixed;
+      color: #f1f1f1;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      padding: 15px;
+      text-align: center;
+      font-size: 24px;
+      font-weight: bold;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+    }
+
+    .menu-scroll {
+      display: flex;
+      overflow-x: auto;
+      padding: 10px;
+      gap: 10px;
+      scrollbar-width: none;
+    }
+
+    .menu-scroll::-webkit-scrollbar {
+      display: none;
+    }
+
+    .menu-btn {
+      flex-shrink: 0;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 8px 14px;
+      border-radius: 20px;
+      font-size: 14px;
+      color: #fff;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .menu-btn:hover,
+    .menu-btn.active {
+      background: #00e0ff;
+      color: #000;
+      font-weight: bold;
+    }
+
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .product-card {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: inset 1px 1px 3px rgba(255,255,255,0.05),
+                  4px 4px 20px rgba(0,0,0,0.4);
+      backdrop-filter: blur(10px);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+    }
+
+    .product-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 4px 20px #00d4ff88;
+    }
+
+    .product-emoji {
+      font-size: 28px;
+      margin-bottom: 8px;
+    }
+
+    .product-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .product-price {
+      font-size: 18px;
+      color: #00f2ff;
+      margin-bottom: 6px;
+    }
+
+    .product-desc {
+      font-size: 13px;
+      color: #ccc;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 100;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(6px);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background: #1a2c38;
+      color: #fff;
+      padding: 24px;
+      border-radius: 18px;
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+
+    .modal-content h2 {
+      margin-bottom: 10px;
+    }
+
+    .modal-content p {
+      margin-bottom: 10px;
+    }
+
+    .modal-content .buy-btn {
+      background: #00e0ff;
+      color: #000;
+      padding: 10px 20px;
+      border-radius: 25px;
+      font-weight: bold;
+      cursor: pointer;
+      border: none;
+    }
+
+    .modal-content .close-btn {
+      background: none;
+      border: none;
+      color: #ccc;
+      margin-top: 12px;
+      cursor: pointer;
+    }
+
+    footer {
+      text-align: center;
+      padding: 14px;
+      font-size: 13px;
+      color: #aaa;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(6px);
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(10px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+  </style>
+</head>
+<body>
+  <header>Produk Jasteb</header>
+  <div class="menu-scroll" id="menuNav"></div>
+  <div class="products" id="productContainer"></div>
+
+  <div class="modal" id="productModal">
+    <div class="modal-content">
+      <h2 id="modalTitle"></h2>
+      <p id="modalPrice"></p>
+      <p id="modalDesc"></p>
+      <a id="modalLink" href="#" target="_blank">
+        <button class="buy-btn">Beli Sekarang</button>
+      </a>
+      <br/>
+      <button class="close-btn" onclick="closeModal()">Tutup</button>
+    </div>
+  </div>
+
+  <footer>&copy; 2025 Faanzy. All rights reserved.</footer>
+
+  <script>
+    const produkKategori = {
+      "Jasteb": [
+        { emoji: "✨", title: "Jasteb Biasa", price: "Rp10.000", desc: "Jasa tebak reguler cepat dan terpercaya." },
+        { emoji: "⚡", title: "Jasteb VIP", price: "Rp25.000", desc: "Akses prioritas dengan analisa khusus." }
+      ],
+      "Uncheck": [
+        { emoji: "🛠️", title: "Uncheck Tools", price: "Rp15.000", desc: "Alat bantu filter data tidak aktif." }
+      ],
+      "Script Bot": [
+        { emoji: "🤖", title: "Script Bot Auto", price: "Rp50.000", desc: "Script otomatis untuk event tebak." }
+      ],
+      "Sewa Bot": [
+        { emoji: "📅", title: "Bot Harian", price: "Rp20.000/hari", desc: "Bot siap pakai untuk event harian." }
+      ],
+      "Jadi Bot": [
+        { emoji: "🔁", title: "Convert Jadi Bot", price: "Rp50.000", desc: "Ubah akun biasa jadi bot." }
+      ],
+      "Panel Pterodactyl": [
+        { emoji: "🖥️", title: "Sewa Panel Ptero", price: "Rp30.000/bln", desc: "Hosting game/server pribadi." }
+      ],
+      "Sewa Panel Jasteb": [
+        { emoji: "⚙️", title: "Panel Jasteb", price: "Rp50.000/bln", desc: "Panel siap pakai tinggal jalan." }
+      ],
+      "Team Ress": [
+        { emoji: "👥", title: "Join Team Ress", price: "Rp100.000", desc: "Akses ke tim & pengembangan." }
+      ],
+      "Admin Team Ress": [
+        { emoji: "🛡️", title: "Upgrade Admin", price: "Rp250.000", desc: "Kontrol penuh & akses lengkap." }
+      ],
+      "PT Jasteb": [
+        { emoji: "🏢", title: "Lisensi PT", price: "Rp500.000", desc: "Branding resmi dan legalitas." }
+      ],
+      "Nomor Kosong": [
+        { emoji: "📱", title: "Nomor Kosong", price: "Rp5.000", desc: "Nomor anonim untuk keperluan lain." }
+      ],
+      "Jasa Buat Web Payment": [
+        { emoji: "💳", title: "Web QRIS", price: "Rp150.000", desc: "Website QRIS siap pakai." },
+        { emoji: "💼", title: "Web PPOB", price: "Rp200.000", desc: "Website PPOB produk digital." }
+      ]
+    };
+
+    const menuNav = document.getElementById("menuNav");
+    const productContainer = document.getElementById("productContainer");
+
+    let currentCategory = "";
+
+    function generateMenu() {
+      Object.keys(produkKategori).forEach((kategori, index) => {
+        const btn = document.createElement("button");
+        btn.innerText = kategori;
+        btn.className = "menu-btn";
+        btn.onclick = () => showProduk(kategori, btn);
+        if (index === 0) {
+          btn.classList.add("active");
+          currentCategory = kategori;
+        }
+        menuNav.appendChild(btn);
+      });
+      showProduk(currentCategory, menuNav.children[0]);
+    }
+
+    function showProduk(kategori, clickedBtn) {
+      currentCategory = kategori;
+      document.querySelectorAll(".menu-btn").forEach(btn => btn.classList.remove("active"));
+      clickedBtn.classList.add("active");
+      displayProduk();
+    }
+
+    function displayProduk() {
+      const produkList = produkKategori[currentCategory] || [];
+      productContainer.innerHTML = "";
+      produkList.forEach(p => {
+        const card = document.createElement("div");
+        card.className = "product-card";
+        card.onclick = () => showModal(p);
+        card.innerHTML = `
+          <div class="product-emoji">${p.emoji}</div>
+          <div class="product-title">${p.title}</div>
+          <div class="product-price">${p.price}</div>
+          <div class="product-desc">${p.desc}</div>
+        `;
+        productContainer.appendChild(card);
+      });
+    }
+
+    function showModal(product) {
+      document.getElementById("modalTitle").innerText = product.title;
+      document.getElementById("modalPrice").innerText = product.price;
+      document.getElementById("modalDesc").innerText = product.desc;
+      document.getElementById("modalLink").href = "#";
+      document.getElementById("productModal").style.display = "flex";
+    }
+
+    function closeModal() {
+      document.getElementById("productModal").style.display = "none";
+    }
+
+    generateMenu();
+  </script>
+</body>
+</html>
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
