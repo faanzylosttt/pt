@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Produk Jasteb</title>
   <style>
     * {
@@ -12,29 +12,28 @@
     body {
       margin: 0;
       font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(145deg, #0f2027, #203a43, #2c5364);
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
       background-attachment: fixed;
-      color: #f5f5f5;
+      color: #f1f1f1;
     }
 
     header {
       position: sticky;
       top: 0;
-      background: rgba(0, 0, 0, 0.5);
-      backdrop-filter: blur(8px);
+      z-index: 10;
       padding: 15px;
       text-align: center;
       font-size: 24px;
       font-weight: bold;
-      color: #00e0ff;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.4);
-      z-index: 10;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.4);
     }
 
     .menu-scroll {
       display: flex;
       overflow-x: auto;
-      padding: 12px;
+      padding: 10px;
       gap: 10px;
       scrollbar-width: none;
     }
@@ -45,14 +44,14 @@
 
     .menu-btn {
       flex-shrink: 0;
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      padding: 8px 16px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 8px 14px;
       border-radius: 20px;
       font-size: 14px;
       color: #fff;
       cursor: pointer;
-      transition: 0.3s ease;
+      transition: 0.3s;
     }
 
     .menu-btn:hover,
@@ -65,39 +64,41 @@
     .products {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 16px;
+      gap: 20px;
       padding: 20px;
     }
 
     .product-card {
       background: rgba(255, 255, 255, 0.05);
-      border-radius: 18px;
+      border-radius: 16px;
       padding: 16px;
+      box-shadow: inset 1px 1px 3px rgba(255,255,255,0.05),
+                  4px 4px 20px rgba(0,0,0,0.4);
       backdrop-filter: blur(10px);
-      box-shadow: 0 8px 24px rgba(0, 255, 255, 0.08);
-      transition: all 0.3s ease;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
       cursor: pointer;
     }
 
     .product-card:hover {
       transform: translateY(-4px);
-      box-shadow: 0 4px 20px #00f0ff88;
+      box-shadow: 0 4px 20px #00d4ff88;
     }
 
     .product-emoji {
-      font-size: 32px;
+      font-size: 28px;
       margin-bottom: 8px;
     }
 
     .product-title {
       font-size: 16px;
       font-weight: 600;
+      margin-bottom: 4px;
     }
 
     .product-price {
       font-size: 18px;
       color: #00f2ff;
-      margin: 4px 0;
+      margin-bottom: 6px;
     }
 
     .product-desc {
@@ -134,6 +135,10 @@
       margin-bottom: 10px;
     }
 
+    .modal-content p {
+      margin-bottom: 10px;
+    }
+
     .modal-content .buy-btn {
       background: #00e0ff;
       color: #000;
@@ -142,13 +147,12 @@
       font-weight: bold;
       cursor: pointer;
       border: none;
-      margin-top: 10px;
     }
 
     .modal-content .close-btn {
       background: none;
       border: none;
-      color: #aaa;
+      color: #ccc;
       margin-top: 12px;
       cursor: pointer;
     }
