@@ -3,40 +3,38 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Produk Jasteb</title>
+  <title>Produk Jasteb - UI Modern</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
     * {
       box-sizing: border-box;
     }
 
-    html, body {
+    body {
       margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #0f0f0f;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
       color: #fff;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
     }
 
     header {
       text-align: center;
-      padding: 20px;
-      font-size: 28px;
-      font-weight: bold;
-      background: linear-gradient(90deg, #00c6ff, #0072ff);
-      color: white;
+      padding: 40px 20px;
+      font-size: 32px;
+      font-weight: 600;
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
     }
 
     .menu-scroll {
       display: flex;
       overflow-x: auto;
-      padding: 12px 16px;
-      gap: 10px;
-      background-color: #1a1a1a;
-      border-bottom: 1px solid #333;
+      padding: 15px 20px;
+      gap: 14px;
       scrollbar-width: none;
+      background: rgba(255,255,255,0.03);
+      backdrop-filter: blur(6px);
     }
 
     .menu-scroll::-webkit-scrollbar {
@@ -45,122 +43,139 @@
 
     .menu-btn {
       flex-shrink: 0;
-      padding: 8px 20px;
-      border: none;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: #fff;
+      padding: 10px 24px;
       border-radius: 30px;
-      background: #2a2a2a;
-      color: #ccc;
       font-size: 14px;
       cursor: pointer;
-      transition: all 0.25s ease;
+      transition: 0.3s;
+      font-weight: 500;
     }
 
     .menu-btn:hover,
     .menu-btn.active {
-      background: #00c6ff;
-      color: #000;
-      font-weight: bold;
-    }
-
-    .content {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
+      background: #ffffff;
+      color: #111;
+      font-weight: 600;
+      box-shadow: 0 0 12px #fff;
     }
 
     .products {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 20px;
-      padding: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+      padding: 40px 30px;
     }
 
     .product-card {
-      background: #1f1f1f;
-      border-radius: 14px;
-      padding: 18px;
-      border: 1px solid #2d2d2d;
-      transition: all 0.2s ease;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 24px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      transition: transform 0.3s ease, box-shadow 0.3s;
       cursor: pointer;
     }
 
     .product-card:hover {
-      box-shadow: 0 4px 16px rgba(0, 198, 255, 0.3);
-      transform: translateY(-4px);
-      border-color: #00c6ff;
+      transform: translateY(-5px) scale(1.03);
+      box-shadow: 0 12px 30px rgba(255, 255, 255, 0.2);
     }
 
     .product-title {
-      font-size: 16px;
+      font-size: 18px;
       font-weight: 600;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
     }
 
     .product-price {
-      color: #00c6ff;
-      font-size: 15px;
-      margin-bottom: 8px;
+      font-size: 20px;
+      color: #ffe600;
+      margin-bottom: 10px;
     }
 
     .product-desc {
-      font-size: 13px;
-      color: #bbb;
+      font-size: 14px;
+      color: #e0e0e0;
     }
 
     .modal {
       display: none;
       position: fixed;
-      z-index: 1000;
-      inset: 0;
-      background-color: rgba(0, 0, 0, 0.8);
+      z-index: 999;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(6px);
       justify-content: center;
       align-items: center;
     }
 
     .modal-content {
-      background: #222;
-      padding: 24px;
-      border-radius: 12px;
-      max-width: 400px;
+      background: #212121;
+      color: #fff;
+      padding: 25px;
+      border-radius: 18px;
       width: 90%;
+      max-width: 420px;
       text-align: center;
-      box-shadow: 0 0 15px rgba(0, 198, 255, 0.2);
+      animation: fadeIn 0.3s ease-in-out;
     }
 
     .modal-content h2 {
-      margin-bottom: 10px;
+      margin-bottom: 12px;
     }
 
     .modal-content p {
-      margin-bottom: 14px;
+      margin-bottom: 16px;
     }
 
     .modal-content .buy-btn {
-      background: #00c6ff;
+      background: #ffe600;
       color: #000;
-      padding: 10px 22px;
-      border-radius: 20px;
-      font-weight: bold;
+      padding: 10px 20px;
+      border-radius: 30px;
       border: none;
+      font-weight: bold;
       cursor: pointer;
     }
 
     .modal-content .close-btn {
-      background: none;
-      color: #999;
+      margin-top: 16px;
+      background: transparent;
+      color: #ccc;
       border: none;
       font-size: 14px;
-      margin-top: 12px;
       cursor: pointer;
     }
 
     footer {
       text-align: center;
-      padding: 12px;
-      font-size: 13px;
+      padding: 16px;
+      font-size: 14px;
       color: #aaa;
-      background: #141414;
-      border-top: 1px solid #333;
+      position: fixed;
+      width: 100%;
+      bottom: 0;
+      background: rgba(0,0,0,0.4);
+      backdrop-filter: blur(8px);
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
   </style>
 </head>
@@ -168,10 +183,7 @@
   <header>Daftar Produk Jasteb</header>
 
   <div class="menu-scroll" id="menuNav"></div>
-
-  <div class="content">
-    <div class="products" id="productContainer"></div>
-  </div>
+  <div class="products" id="productContainer"></div>
 
   <div class="modal" id="productModal">
     <div class="modal-content">
@@ -180,12 +192,15 @@
       <p id="modalDesc"></p>
       <a id="modalLink" href="#" target="_blank">
         <button class="buy-btn">Beli Sekarang</button>
-      </a><br />
+      </a>
+      <br />
       <button class="close-btn" onclick="closeModal()">Tutup</button>
     </div>
   </div>
 
-  <footer>&copy; 2025 Faanzy. All rights reserved.</footer>
+  <footer>
+    &copy; 2025 Faanzy. All rights reserved.
+  </footer>
 
   <script>
     const produkKategori = {
@@ -246,16 +261,17 @@
         }
         menuNav.appendChild(btn);
       });
+      filterProduk();
     }
 
     function showProduk(kategori, clickedBtn) {
       currentCategory = kategori;
       document.querySelectorAll(".menu-btn").forEach(btn => btn.classList.remove("active"));
       clickedBtn.classList.add("active");
-      displayProduk();
+      filterProduk();
     }
 
-    function displayProduk() {
+    function filterProduk() {
       const produkList = produkKategori[currentCategory] || [];
       productContainer.innerHTML = "";
 
@@ -285,7 +301,6 @@
     }
 
     generateMenu();
-    displayProduk();
   </script>
 </body>
 </html>
