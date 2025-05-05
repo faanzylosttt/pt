@@ -282,10 +282,17 @@
       document.getElementById("modalTitle").innerText = product.title;
       document.getElementById("modalPrice").innerText = product.price;
       document.getElementById("modalDesc").innerText = product.desc;
-      const pesan = encodeURIComponent(`Halo, saya tertarik beli *${product.title}* seharga ${product.price}`);
-      document.getElementById("modalLink").href = `https://wa.me/6281234567890?text=${pesan}`;
+      document.getElementById("modalLink").href = "#";  // Ganti dengan link yang sesuai untuk pembelian
       document.getElementById("productModal").style.display = "flex";
     }
 
     function closeModal() {
-      document.getElementById("productModal").style.display = "
+      document.getElementById("productModal").style.display = "none";
+    }
+
+    // Menampilkan produk dan kategori pertama
+    generateMenu();
+    filterProduk();
+  </script>
+</body>
+</html>
