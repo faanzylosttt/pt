@@ -17,7 +17,7 @@
       display: flex;
       flex-direction: column;
       font-family: 'Inter', sans-serif;
-      background: linear-gradient(135deg, #3a0ca3, #4361ee, #4cc9f0);
+      background: linear-gradient(135deg, #003366, #0066cc, #33ccff);
       color: #f0f0f0;
     }
 
@@ -26,8 +26,38 @@
       padding: 25px 20px;
       font-size: 32px;
       font-weight: 600;
-      backdrop-filter: blur(10px);
       color: #ffffff;
+      position: relative;
+      animation: glitch 1.5s infinite;
+    }
+
+    header:before,
+    header:after {
+      content: "Produk Jasteb";
+      position: absolute;
+      top: 0;
+      left: 0;
+      background: #0066cc;
+      color: transparent;
+      z-index: -1;
+      animation: glitch 1.5s infinite;
+    }
+
+    header:after {
+      left: 2px;
+      text-shadow: -1px 0 #0066cc, 1px 0 #ff0033;
+    }
+
+    @keyframes glitch {
+      0% {
+        transform: translate(0);
+      }
+      50% {
+        transform: translate(-10px, 10px);
+      }
+      100% {
+        transform: translate(10px, -10px);
+      }
     }
 
     .menu-scroll {
@@ -45,7 +75,7 @@
     .menu-btn {
       flex-shrink: 0;
       background: transparent;
-      border: 1px solid #4cc9f0;
+      border: 1px solid #33ccff;
       color: #fff;
       padding: 10px 18px;
       border-radius: 30px;
@@ -56,17 +86,17 @@
 
     .menu-btn:hover,
     .menu-btn.active {
-      background: #4cc9f0;
+      background: #33ccff;
       color: #000;
       font-weight: bold;
-      box-shadow: 0 0 10px #4cc9f0;
+      box-shadow: 0 0 10px #33ccff;
     }
 
     .products {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 20px;
-      padding: 30px;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Menyesuaikan ukuran produk */
+      gap: 16px;
+      padding: 20px;
       animation: fadeIn 0.5s ease-in-out;
       flex: 1;
     }
@@ -74,8 +104,9 @@
     .product-card {
       background: rgba(255, 255, 255, 0.07);
       border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 18px;
-      padding: 20px;
+      border-radius: 12px; /* Lebih kecil */
+      padding: 14px; /* Ukuran padding kecil */
+      font-size: 14px; /* Ukuran font lebih kecil */
       transition: 0.3s ease;
       box-shadow: 0 4px 20px rgba(0,0,0,0.2);
       cursor: pointer;
@@ -83,23 +114,23 @@
 
     .product-card:hover {
       transform: scale(1.02);
-      box-shadow: 0 6px 24px #4cc9f0;
+      box-shadow: 0 6px 24px #33ccff;
     }
 
     .product-title {
-      font-size: 18px;
+      font-size: 16px;
       font-weight: 600;
       margin-bottom: 8px;
     }
 
     .product-price {
-      font-size: 20px;
-      color: #4cc9f0;
+      font-size: 16px;
+      color: #33ccff;
       margin-bottom: 8px;
     }
 
     .product-desc {
-      font-size: 14px;
+      font-size: 13px;
       color: #ddd;
       margin-bottom: 16px;
     }
@@ -149,7 +180,7 @@
     }
 
     .modal-content .buy-btn {
-      background: #4cc9f0;
+      background: #33ccff;
       color: #000;
       padding: 10px 20px;
       border-radius: 25px;
