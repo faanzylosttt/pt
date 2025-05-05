@@ -18,16 +18,24 @@
     header {
       text-align: center;
       padding: 30px 20px;
-      font-size: 30px;
+      font-size: 32px;
       font-weight: bold;
-      backdrop-filter: blur(10px);
+      background: linear-gradient(90deg, #00d4ff, #2c5364);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
     }
 
     .menu-scroll {
+      position: sticky;
+      top: 0;
+      z-index: 999;
       display: flex;
       overflow-x: auto;
-      padding: 10px 20px;
+      padding: 12px 20px;
       gap: 12px;
+      background: rgba(15, 32, 39, 0.8);
+      backdrop-filter: blur(12px);
       scrollbar-width: none;
     }
     .menu-scroll::-webkit-scrollbar {
@@ -58,22 +66,35 @@
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
       gap: 20px;
       padding: 30px;
-      animation: fadeIn 0.5s ease-in-out;
+      transition: opacity 0.3s ease-in-out;
     }
 
     .product-card {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 16px;
-      padding: 20px;
-      backdrop-filter: blur(10px);
-      box-shadow: 0 0 10px rgba(0, 212, 255, 0.1);
-      transition: transform 0.2s ease, box-shadow 0.3s;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 20px;
+      padding: 24px;
+      backdrop-filter: blur(15px);
+      transition: 0.4s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .product-card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at center, rgba(0,212,255,0.1), transparent 70%);
+      transform: rotate(30deg);
+      pointer-events: none;
     }
     .product-card:hover {
-      transform: scale(1.03);
-      box-shadow: 0 0 20px #00d4ff;
+      transform: translateY(-5px);
+      box-shadow: 0 0 20px rgba(0, 212, 255, 0.2);
     }
+
     .product-title {
       font-size: 18px;
       font-weight: bold;
@@ -89,31 +110,23 @@
       color: #ccc;
       margin-bottom: 16px;
     }
+
     .buy-btn {
       width: 100%;
-      padding: 10px;
-      background: #00d4ff;
+      padding: 12px;
+      background: linear-gradient(135deg, #00d4ff, #00b4cc);
       border: none;
-      border-radius: 25px;
-      font-weight: bold;
+      border-radius: 30px;
+      font-weight: 600;
+      font-size: 14px;
       color: #000;
       cursor: pointer;
-      transition: 0.3s;
+      transition: 0.3s ease-in-out;
     }
     .buy-btn:hover {
-      background: #00b4cc;
-      box-shadow: 0 0 10px #00d4ff;
-    }
-
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(10px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      background: linear-gradient(135deg, #00b4cc, #0096c7);
+      transform: scale(1.05);
+      box-shadow: 0 0 10px rgba(0, 212, 255, 0.4);
     }
   </style>
 </head>
@@ -179,23 +192,27 @@
     }
 
     function showProduk(kategori, clickedBtn) {
-      productContainer.innerHTML = "";
-      produkKategori[kategori].forEach(p => {
-        const pesan = encodeURIComponent(`Halo, saya tertarik beli *${p.title}* seharga ${p.price}`);
-        productContainer.innerHTML += `
-          <div class="product-card">
-            <div class="product-title">${p.title}</div>
-            <div class="product-price">${p.price}</div>
-            <div class="product-desc">${p.desc}</div>
-            <a href="https://wa.me/6281234567890?text=${pesan}" target="_blank">
-              <button class="buy-btn">Beli Sekarang</button>
-            </a>
-          </div>
-        `;
-      });
+      productContainer.style.opacity = 0;
+      setTimeout(() => {
+        productContainer.innerHTML = "";
+        produkKategori[kategori].forEach(p => {
+          const pesan = encodeURIComponent(`Halo, saya tertarik beli *${p.title}* seharga ${p.price}`);
+          productContainer.innerHTML += `
+            <div class="product-card">
+              <div class="product-title">${p.title}</div>
+              <div class="product-price">${p.price}</div>
+              <div class="product-desc">${p.desc}</div>
+              <a href="https://wa.me/6281234567890?text=${pesan}" target="_blank">
+                <button class="buy-btn">Beli Sekarang</button>
+              </a>
+            </div>
+          `;
+        });
 
-      document.querySelectorAll(".menu-btn").forEach(btn => btn.classList.remove("active"));
-      clickedBtn.classList.add("active");
+        document.querySelectorAll(".menu-btn").forEach(btn => btn.classList.remove("active"));
+        clickedBtn.classList.add("active");
+        productContainer.style.opacity = 1;
+      }, 200);
     }
 
     window.onload = () => {
