@@ -9,11 +9,23 @@
       box-sizing: border-box;
     }
 
-    body {
+    html, body {
       margin: 0;
+      padding: 0;
+      height: 100%;
+    }
+
+    body {
       font-family: 'Segoe UI', sans-serif;
       background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
       color: #fff;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .content {
+      flex: 1;
     }
 
     header {
@@ -184,30 +196,31 @@
       font-size: 14px;
       color: #aaa;
       border-top: 1px solid rgba(255,255,255,0.1);
-      margin-top: 40px;
     }
   </style>
 </head>
 <body>
-  <header>Daftar Produk Jasteb</header>
+  <div class="content">
+    <header>Daftar Produk Jasteb</header>
 
-  <div class="search-bar">
-    <input type="text" id="searchInput" placeholder="Cari produk..." />
-  </div>
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="Cari produk..." />
+    </div>
 
-  <div class="menu-scroll" id="menuNav"></div>
-  <div class="products" id="productContainer"></div>
+    <div class="menu-scroll" id="menuNav"></div>
+    <div class="products" id="productContainer"></div>
 
-  <div class="modal" id="productModal">
-    <div class="modal-content">
-      <h2 id="modalTitle"></h2>
-      <p id="modalPrice"></p>
-      <p id="modalDesc"></p>
-      <a id="modalLink" href="#" target="_blank">
-        <button class="buy-btn">Beli Sekarang</button>
-      </a>
-      <br />
-      <button class="close-btn" onclick="closeModal()">Tutup</button>
+    <div class="modal" id="productModal">
+      <div class="modal-content">
+        <h2 id="modalTitle"></h2>
+        <p id="modalPrice"></p>
+        <p id="modalDesc"></p>
+        <a id="modalLink" href="#" target="_blank">
+          <button class="buy-btn">Beli Sekarang</button>
+        </a>
+        <br />
+        <button class="close-btn" onclick="closeModal()">Tutup</button>
+      </div>
     </div>
   </div>
 
