@@ -12,26 +12,26 @@
     body {
       margin: 0;
       font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #667eea, #764ba2);
+      background: linear-gradient(135deg, #1a2a3a, #16222A, #1e3c72);
+      background-attachment: fixed;
       color: #fff;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
     }
 
     header {
       text-align: center;
-      padding: 30px 20px;
-      font-size: 30px;
+      padding: 20px;
+      font-size: 28px;
       font-weight: bold;
-      backdrop-filter: blur(10px);
+      backdrop-filter: blur(8px);
+      background: rgba(0,0,0,0.4);
+      border-bottom: 1px solid rgba(255,255,255,0.1);
     }
 
     .menu-scroll {
       display: flex;
       overflow-x: auto;
-      padding: 10px 20px;
-      gap: 12px;
+      padding: 10px 15px;
+      gap: 10px;
       scrollbar-width: none;
     }
 
@@ -44,7 +44,7 @@
       background: rgba(255, 255, 255, 0.1);
       border: 1px solid rgba(255, 255, 255, 0.2);
       color: #fff;
-      padding: 10px 20px;
+      padding: 8px 16px;
       border-radius: 999px;
       font-size: 14px;
       cursor: pointer;
@@ -54,53 +54,51 @@
 
     .menu-btn:hover,
     .menu-btn.active {
-      background: #fff;
-      color: #333;
+      background: #00d4ff;
+      color: #000;
       font-weight: bold;
-      box-shadow: 0 0 10px #fff;
+      box-shadow: 0 0 10px #00d4ff;
     }
 
     .products {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 20px;
-      padding: 30px;
-      animation: fadeIn 0.5s ease-in-out;
-      flex-grow: 1;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      padding: 20px;
+      animation: fadeIn 0.4s ease-in-out;
     }
 
     .product-card {
       background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 16px;
-      padding: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 16px;
       backdrop-filter: blur(10px);
-      box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+      box-shadow: 0 0 10px rgba(0, 212, 255, 0.08);
       transition: transform 0.2s ease, box-shadow 0.3s;
       cursor: pointer;
     }
 
     .product-card:hover {
-      transform: scale(1.03);
-      box-shadow: 0 0 20px #fff;
+      transform: translateY(-4px);
+      box-shadow: 0 0 15px #00d4ff;
     }
 
     .product-title {
-      font-size: 18px;
-      font-weight: bold;
-      margin-bottom: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 6px;
     }
 
     .product-price {
-      font-size: 20px;
-      color: #00ffff;
-      margin-bottom: 8px;
+      font-size: 18px;
+      color: #00d4ff;
+      margin-bottom: 6px;
     }
 
     .product-desc {
-      font-size: 14px;
-      color: #eee;
-      margin-bottom: 16px;
+      font-size: 13px;
+      color: #ccc;
     }
 
     @keyframes fadeIn {
@@ -167,18 +165,21 @@
     }
 
     footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
       text-align: center;
-      padding: 20px;
-      font-size: 14px;
+      padding: 12px 10px;
+      font-size: 13px;
       color: #aaa;
-      border-top: 1px solid rgba(255,255,255,0.1);
-      margin-top: auto;
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(6px);
     }
   </style>
 </head>
 <body>
   <header>Daftar Produk Jasteb</header>
-
   <div class="menu-scroll" id="menuNav"></div>
   <div class="products" id="productContainer"></div>
 
@@ -195,9 +196,7 @@
     </div>
   </div>
 
-  <footer>
-    &copy; 2025 Faanzy. All rights reserved.
-  </footer>
+  <footer>&copy; 2025 Faanzy. All rights reserved.</footer>
 
   <script>
     const produkKategori = {
@@ -258,20 +257,19 @@
         }
         menuNav.appendChild(btn);
       });
-      filterProduk();
+      showProduk(currentCategory, menuNav.children[0]);
     }
 
     function showProduk(kategori, clickedBtn) {
       currentCategory = kategori;
       document.querySelectorAll(".menu-btn").forEach(btn => btn.classList.remove("active"));
       clickedBtn.classList.add("active");
-      filterProduk();
+      displayProduk();
     }
 
-    function filterProduk() {
+    function displayProduk() {
       const produkList = produkKategori[currentCategory] || [];
       productContainer.innerHTML = "";
-
       produkList.forEach(p => {
         const card = document.createElement("div");
         card.className = "product-card";
