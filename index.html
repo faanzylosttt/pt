@@ -119,17 +119,17 @@
 }
 
   .product-card {
-  opacity: 0;
-  transform: translateY(10px);
-  animation: fadeInUp 0.4s forwards;
-}
-
-@keyframes fadeInUp {
-  to {
-    opacity: 1;
-    transform: translateY(0);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 20px;
+    padding: 22px;
+    transition: 0.3s ease;
+    backdrop-filter: blur(14px);
+    cursor: pointer;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
   }
-}
 
   .product-card::before {
     content: "";
