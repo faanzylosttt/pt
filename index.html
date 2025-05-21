@@ -39,55 +39,42 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  padding: 18px 16px;
+  padding: 16px;
   gap: 14px;
-  background: #0f0f0f;
-  border-bottom: 2px solid #00e0ff22;
+  background: linear-gradient(135deg, #ffffff, #f3f8ff);
+  border-bottom: 1px solid #e0e0e0;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
   position: relative;
-  z-index: 10; /* lebih tinggi dari container produk */
+  z-index: 10;
+  border-radius: 0 0 16px 16px;
 }
 
 .menu-btn {
-  position: relative;
-  padding: 12px 28px;
-  font-size: 15px;
-  font-weight: 500;
-  border: none;
-  border-radius: 30px;
-  background: rgba(255, 255, 255, 0.05);
-  color: #bbb;
+  background: #ffffff;
+  border: 1px solid #d0d0d0;
+  padding: 10px 18px;
+  border-radius: 20px;
+  font-size: 14px;
+  color: #333;
   cursor: pointer;
-  overflow: hidden;
-  transition: all 0.3s ease;
-  backdrop-filter: blur(4px);
-  box-shadow: inset 0 0 0 1px rgba(0, 224, 255, 0.15);
-}
-
-.menu-btn::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: 30px;
-  background: linear-gradient(135deg, #00e0ff55, #00fff755);
-  opacity: 0;
-  transition: 0.4s ease;
-  z-index: 0;
-}
-
-.menu-btn:hover::before {
-  opacity: 0.2;
+  white-space: nowrap;
+  transition: all 0.25s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
 }
 
 .menu-btn:hover {
-  color: #00e0ff;
-  box-shadow: 0 0 10px #00e0ff44, inset 0 0 6px #00e0ff33;
+  background: #e6f7ff;
+  border-color: #00c6e6;
+  color: #007c99;
+  transform: translateY(-2px);
 }
 
 .menu-btn.active {
-  background: rgba(0, 224, 255, 0.15);
+  background: #00e0ff;
   color: #fff;
-  font-weight: 600;
-  box-shadow: 0 0 12px #00e0ff99, inset 0 0 10px #00e0ff55;
+  font-weight: bold;
+  border-color: #00e0ff;
+  box-shadow: 0 2px 8px rgba(0, 224, 255, 0.3);
 }
 
 .menu-btn span {
