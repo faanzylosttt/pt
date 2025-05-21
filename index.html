@@ -34,7 +34,8 @@ header {
 
 .menu-scroll {
   display: flex;
-  overflow-x: auto;
+  flex-wrap: wrap; /* Ini membuat tombol turun ke baris berikutnya jika tidak muat */
+  justify-content: center;
   padding: 14px 16px;
   gap: 12px;
   background: #1b1b1b;
@@ -51,6 +52,7 @@ header {
   cursor: pointer;
   white-space: nowrap;
   transition: 0.3s ease;
+  flex-shrink: 0; /* Mencegah tombol mengecil saat wrap */
 }
 
 .menu-btn:hover,
