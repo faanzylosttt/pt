@@ -44,7 +44,7 @@
   background: #0f0f0f;
   border-bottom: 2px solid #00e0ff22;
   position: relative;
-  z-index: 2;
+  z-index: 10; /* lebih tinggi dari container produk */
 }
 
 .menu-btn {
@@ -110,24 +110,26 @@
   }
 
   .products {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 24px;
-    padding: 28px;
-  }
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 20px;
+  padding: 40px 24px 24px; /* tambahkan padding top agar tidak nempel ke kategori */
+  z-index: 1;
+  position: relative;
+}
 
   .product-card {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 20px;
-    padding: 22px;
-    transition: 0.3s ease;
-    backdrop-filter: blur(14px);
-    cursor: pointer;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeInUp 0.4s forwards;
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
+}
 
   .product-card::before {
     content: "";
