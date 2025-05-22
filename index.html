@@ -39,57 +39,38 @@
 
 .menu-scroll {
   display: flex;
-  flex-wrap: wrap; /* Bisa turun baris */
-  justify-content: center; /* Rata tengah */
-  gap: 14px;
-  padding: 16px 24px;
-  background: rgba(40, 60, 90, 0.6);
-  backdrop-filter: blur(12px);
-  border-radius: 0 0 30px 30px;
-  box-shadow: 0 6px 18px rgba(0, 120, 210, 0.25);
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 14px 16px;
+  gap: 12px;
+  background: #102a43; /* Biru gelap elegan */
+  border-bottom: 1px solid #1c3b57;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   position: sticky;
   top: 0;
-  z-index: 100;
-  user-select: none;
+  z-index: 50;
 }
 
 .menu-btn {
-  flex-shrink: 0; /* Jangan kecilkan */
-  flex-grow: 0;
-  flex-basis: auto;
-  min-width: 120px;
-  max-width: 160px;
-  padding: 12px 20px;
-  border-radius: 28px;
-  font-weight: 600;
-  font-size: 16px;
-  color: #a8d0ff;
-  background: rgba(255, 255, 255, 0.12);
-  border: 1.5px solid transparent;
+  background: #1e3a5f; /* Biru navy */
+  border: 1px solid #396285;
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-size: 15px;
+  color: #cce7ff;
+  font-weight: 500;
   cursor: pointer;
-  text-align: center;
   white-space: nowrap;
-  transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.4s ease;
-  box-shadow: 0 0 5px rgba(100, 160, 255, 0.12);
-  position: relative;
+  transition: all 0.3s ease;
 }
 
-.menu-btn:hover {
-  background: rgba(100, 170, 255, 0.25);
-  color: #e1f0ff;
-  box-shadow: 0 0 15px 4px rgba(100, 170, 255, 0.5);
-  border-color: #649aff;
-  font-weight: 700;
-  z-index: 2;
-}
-
+.menu-btn:hover,
 .menu-btn.active {
-  background: #4a90e2;
-  color: #e8f1ff;
-  font-weight: 800;
-  border-color: #2978ff;
-  box-shadow: 0 0 18px 6px #2978ff;
-  z-index: 3;
+  background: #64b5f6; /* Biru terang */
+  color: #002f5e;
+  font-weight: bold;
+  border-color: #64b5f6;
+  box-shadow: 0 3px 12px rgba(100, 181, 246, 0.4);
 }
 
   .container {
