@@ -39,10 +39,10 @@
 
 .menu-scroll {
   display: flex;
-  flex-wrap: nowrap;
-  overflow-x: auto;
-  padding: 16px 24px;
+  flex-wrap: nowrap; /* tidak boleh wrap */
+  justify-content: center;
   gap: 16px;
+  padding: 16px 24px;
   background: rgba(10, 25, 40, 0.55);
   backdrop-filter: blur(18px);
   border-radius: 0 0 24px 24px;
@@ -50,33 +50,22 @@
   position: sticky;
   top: 0;
   z-index: 100;
-  scrollbar-width: thin;
-  scrollbar-color: #64b5f6 transparent;
-}
-
-.menu-scroll::-webkit-scrollbar {
-  height: 6px;
-}
-
-.menu-scroll::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.menu-scroll::-webkit-scrollbar-thumb {
-  background-color: #64b5f6;
-  border-radius: 20px;
+  overflow-x: hidden; /* hilangkan scroll */
 }
 
 .menu-btn {
-  flex: 0 0 auto;
+  flex: 1 1 auto; /* fleksibel bisa mengecil dan membesar */
+  max-width: 150px; /* maksimal lebar supaya tidak terlalu besar */
+  min-width: 90px; /* minimal lebar supaya tombol tetap enak dilihat */
   background: rgba(30, 60, 90, 0.6);
   border: 2px solid transparent;
-  padding: 12px 28px;
+  padding: 12px 16px;
   border-radius: 30px;
   font-size: 16px;
   color: #a6cdfc;
   font-weight: 600;
   cursor: pointer;
+  text-align: center;
   text-transform: uppercase;
   letter-spacing: 1.2px;
   transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
@@ -84,6 +73,7 @@
   user-select: none;
   position: relative;
   overflow: hidden;
+  white-space: nowrap;
 }
 
 .menu-btn::before {
