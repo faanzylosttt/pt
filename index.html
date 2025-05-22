@@ -39,79 +39,58 @@
 
 .menu-scroll {
   display: flex;
-  flex-wrap: nowrap; /* tidak boleh wrap */
+  flex-wrap: nowrap; /* Jangan wrap, supaya tetap satu baris */
   justify-content: center;
-  gap: 16px;
+  gap: 14px;
   padding: 16px 24px;
-  background: rgba(10, 25, 40, 0.55);
-  backdrop-filter: blur(18px);
-  border-radius: 0 0 24px 24px;
-  box-shadow: 0 8px 20px rgba(20, 60, 100, 0.3);
+  background: rgba(40, 60, 90, 0.6);
+  backdrop-filter: blur(12px);
+  border-radius: 0 0 30px 30px;
+  box-shadow: 0 6px 18px rgba(0, 120, 210, 0.25);
   position: sticky;
   top: 0;
   z-index: 100;
-  overflow-x: hidden; /* hilangkan scroll */
+  overflow-x: hidden; /* Hilangkan scroll */
+  user-select: none;
 }
 
 .menu-btn {
-  flex: 1 1 auto; /* fleksibel bisa mengecil dan membesar */
-  max-width: 150px; /* maksimal lebar supaya tidak terlalu besar */
-  min-width: 90px; /* minimal lebar supaya tombol tetap enak dilihat */
-  background: rgba(30, 60, 90, 0.6);
-  border: 2px solid transparent;
-  padding: 12px 16px;
-  border-radius: 30px;
-  font-size: 16px;
-  color: #a6cdfc;
+  flex-shrink: 1;  /* Boleh mengecil */
+  flex-grow: 0;    /* Jangan membesar */
+  flex-basis: auto;
+  min-width: 90px;
+  max-width: 160px;
+  padding: 12px 18px;
+  border-radius: 28px;
   font-weight: 600;
+  font-size: 16px;
+  color: #a8d0ff;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1.5px solid transparent;
   cursor: pointer;
   text-align: center;
-  text-transform: uppercase;
-  letter-spacing: 1.2px;
-  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 0 8px rgba(100, 181, 246, 0.3);
-  user-select: none;
-  position: relative;
-  overflow: hidden;
   white-space: nowrap;
-}
-
-.menu-btn::before {
-  content: "";
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle at center, rgba(100, 181, 246, 0.4), transparent 70%);
-  opacity: 0;
-  transition: opacity 0.4s ease;
-  pointer-events: none;
-  border-radius: 30px;
-  z-index: 0;
-}
-
-.menu-btn:hover::before {
-  opacity: 1;
+  transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.4s ease;
+  box-shadow: 0 0 5px rgba(100, 160, 255, 0.12);
+  position: relative;
 }
 
 .menu-btn:hover {
-  color: #cbe9ff;
-  background: rgba(100, 181, 246, 0.3);
-  box-shadow: 0 0 18px 6px rgba(100, 181, 246, 0.6);
-  border-color: #64b5f6;
+  background: rgba(100, 170, 255, 0.25);
+  color: #e1f0ff;
+  box-shadow: 0 0 15px 4px rgba(100, 170, 255, 0.5);
+  border-color: #649aff;
   font-weight: 700;
-  z-index: 1;
+  z-index: 2;
 }
 
 .menu-btn.active {
-  background: #64b5f6;
-  color: #001c3d;
+  background: #4a90e2;
+  color: #e8f1ff;
   font-weight: 800;
-  box-shadow: 0 0 22px 10px #64b5f6;
-  border-color: #64b5f6;
-  position: relative;
-  z-index: 2;
+  border-color: #2978ff;
+  box-shadow: 0 0 18px 6px #2978ff;
+  z-index: 3;
 }
 
   .container {
