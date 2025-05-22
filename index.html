@@ -39,8 +39,8 @@
 
 .menu-scroll {
   display: flex;
-  flex-wrap: nowrap; /* Jangan wrap, supaya tetap satu baris */
-  justify-content: center;
+  flex-wrap: wrap; /* Bisa turun baris */
+  justify-content: center; /* Rata tengah */
   gap: 14px;
   padding: 16px 24px;
   background: rgba(40, 60, 90, 0.6);
@@ -50,17 +50,16 @@
   position: sticky;
   top: 0;
   z-index: 100;
-  overflow-x: hidden; /* Hilangkan scroll */
   user-select: none;
 }
 
 .menu-btn {
-  flex-shrink: 1;  /* Boleh mengecil */
-  flex-grow: 0;    /* Jangan membesar */
+  flex-shrink: 0; /* Jangan kecilkan */
+  flex-grow: 0;
   flex-basis: auto;
-  min-width: 90px;
+  min-width: 120px;
   max-width: 160px;
-  padding: 12px 18px;
+  padding: 12px 20px;
   border-radius: 28px;
   font-weight: 600;
   font-size: 16px;
