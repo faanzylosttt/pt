@@ -246,15 +246,17 @@
   </div>
 
   <div class="modal" id="productModal">
-    <div class="modal-content">
-      <h2 id="modalTitle"></h2>
-      <p id="modalPrice"></p>
-      <p id="modalDesc"></p>
-      <a id="modalLink" href="#" target="_blank">
-        <button class="buy-btn">Beli Sekarang</button>
-      </a>
-      <br />
-      <button class="close-btn" onclick="closeModal()">Tutup</button>
+    <h2 id="modalTitle"></h2>
+<p id="modalPrice"></p>
+<p id="modalDesc"></p>
+<a id="waLink" href="#" target="_blank">
+  <button class="buy-btn">Beli via WhatsApp</button>
+</a>
+<a id="teleLink" href="#" target="_blank">
+  <button class="buy-btn" style="margin-top: 10px;">Beli via Telegram</button>
+</a>
+<br />
+<button class="close-btn" onclick="closeModal()">Tutup</button>
     </div>
   </div>
 
@@ -347,12 +349,20 @@
     }
 
     function showModal(product) {
-      document.getElementById("modalTitle").innerText = product.title;
-      document.getElementById("modalPrice").innerText = product.price;
-      document.getElementById("modalDesc").innerText = product.desc;
-      document.getElementById("modalLink").href = "#"; // Ganti dengan link pembelian asli jika ada
-      document.getElementById("productModal").style.display = "flex";
-    }
+  document.getElementById("modalTitle").innerText = product.title;
+  document.getElementById("modalPrice").innerText = product.price;
+  document.getElementById("modalDesc").innerText = product.desc;
+
+  // Ganti nomor WA dan username Telegram sesuai kebutuhan
+  const waNumber = "6281234567890";
+  const teleUsername = "username_bot";
+
+  const message = encodeURIComponent(`Halo kak, saya ingin beli:\n\n${product.title}\nHarga: ${product.price}\n\nApa masih tersedia?`);
+  document.getElementById("waLink").href = `https://wa.me/${waNumber}?text=${message}`;
+  document.getElementById("teleLink").href = `https://t.me/${teleUsername}`;
+
+  document.getElementById("productModal").style.display = "flex";
+}
 
     function closeModal() {
       document.getElementById("productModal").style.display = "none";
