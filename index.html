@@ -2,10 +2,9 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <title>Super Media Host Hub - 18 Providers</title>
+  <title>Fixed Media Upload Hub</title>
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg: #f8fafc;
@@ -13,9 +12,6 @@
       --text: #1e293b;
       --border: #e2e8f0;
       --primary: #3b82f6;
-      --success: #10b981;
-      --warning: #f59e0b;
-      --error: #ef4444;
     }
     body.dark {
       --bg: #0f172a;
@@ -25,11 +21,10 @@
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: 'Inter', system-ui, sans-serif;
+      font-family: system-ui, sans-serif;
       background: var(--bg);
       color: var(--text);
-      line-height: 1.6;
-      transition: all 0.3s ease;
+      transition: 0.3s;
     }
     .header {
       background: var(--card);
@@ -39,58 +34,48 @@
       justify-content: space-between;
       align-items: center;
     }
-    .main-container {
-      max-width: 1200px;
+    .container {
+      max-width: 800px;
       margin: 2rem auto;
       padding: 0 1rem;
     }
-    .upload-zone {
+    .upload-box {
       background: var(--card);
       border: 2px dashed var(--border);
       border-radius: 12px;
       padding: 3rem;
       text-align: center;
-      transition: all 0.3s ease;
-      position: relative;
+      cursor: pointer;
+      transition: 0.3s;
     }
-    .upload-zone:hover, .upload-zone.dragover {
+    .upload-box:hover {
       border-color: var(--primary);
+    }
+    .upload-box.dragover {
       background: rgba(59, 130, 246, 0.05);
     }
-    .provider-grid {
+    .host-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 1rem;
-      margin-top: 2rem;
+      margin: 2rem 0;
     }
-    .provider-card {
+    .host-card {
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: 8px;
       padding: 1.5rem;
-      transition: all 0.3s ease;
       cursor: pointer;
+      transition: 0.3s;
+      text-align: center;
     }
-    .provider-card:hover {
-      border-color: var(--primary);
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    }
-    .provider-card.selected {
+    .host-card:hover, .host-card.selected {
       border-color: var(--primary);
       background: rgba(59, 130, 246, 0.1);
     }
-    .provider-icon {
+    .host-icon {
       font-size: 2rem;
       margin-bottom: 0.5rem;
-    }
-    .custom-link-input {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 0.75rem;
-      margin-top: 0.5rem;
-      width: 100%;
     }
     .btn {
       background: var(--primary);
@@ -99,323 +84,281 @@
       padding: 0.75rem 1.5rem;
       border-radius: 6px;
       cursor: pointer;
-      font-weight: 500;
-      transition: all 0.3s ease;
+      margin-top: 1rem;
     }
-    .btn:hover {
-      background: #2563eb;
-    }
-    .btn:disabled {
-      background: #94a3b8;
-      cursor: not-allowed;
-    }
-    .progress-bar {
-      width: 100%;
-      height: 4px;
-      background: var(--border);
-      border-radius: 2px;
-      overflow: hidden;
-      margin: 1rem 0;
-    }
-    .progress-fill {
-      height: 100%;
-      background: var(--primary);
-      transition: width 0.3s ease;
-    }
-    .result-card {
+    .result {
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: 8px;
       padding: 1.5rem;
       margin-top: 1rem;
     }
-    .copy-btn {
-      background: var(--success);
-      color: white;
-      border: none;
-      padding: 0.5rem 1rem;
-      border-radius: 4px;
-      cursor: pointer;
-      margin-left: 0.5rem;
-    }
+    .hidden { display: none; }
     .preview-img {
       max-width: 200px;
       max-height: 200px;
       border-radius: 8px;
       margin-top: 1rem;
     }
-    .drag-drop-text {
-      font-size: 1.125rem;
-      color: var(--text-secondary);
-      margin: 1rem 0;
-    }
-    .drop-icon {
-      font-size: 3rem;
-      color: var(--primary);
-      margin-bottom: 1rem;
-    }
   </style>
 </head>
 <body>
   <header class="header">
-    <h1><i class="fas fa-cloud-upload-alt"></i> Super Media Host Hub</h1>
-    <button id="themeToggle" class="btn"><i class="fas fa-moon"></i></button>
+    <h1><i class="fas fa-cloud-upload-alt"></i> Fixed Media Upload Hub</h1>
+    <button id="themeBtn" class="btn"><i class="fas fa-moon"></i></button>
   </header>
 
-  <div class="main-container">
-    <div class="upload-zone" id="uploadZone">
-      <i class="fas fa-cloud-upload-alt drop-icon"></i>
-      <div class="drag-drop-text">
-        Drag & drop file atau <strong>klik untuk memilih</strong>
-      </div>
-      <input type="file" id="fileInput" style="display:none" accept="*/*">
+  <div class="container">
+    <div class="upload-box" id="uploadBox">
+      <i class="fas fa-cloud-upload-alt" style="font-size: 3rem; color: var(--primary);"></i>
+      <p>Drag & drop atau klik untuk upload file</p>
+      <input type="file" id="fileInput" style="display: none;">
     </div>
 
-    <div class="provider-grid" id="providerGrid">
-      <!-- Hosts akan diisi oleh JavaScript -->
+    <div class="host-grid" id="hostGrid">
+      <!-- Host akan diisi otomatis -->
     </div>
 
-    <div class="result-card hidden" id="resultSection">
+    <div id="resultBox" class="result hidden">
       <h3><i class="fas fa-check-circle"></i> Upload Berhasil!</h3>
-      <div id="resultContent"></div>
+      <p>URL: <a id="resultUrl" href="" target="_blank"></a> 
+      <button class="btn" onclick="copyToClipboard()"><i class="fas fa-copy"></i> Copy</button></p>
+      <div id="resultPreview"></div>
     </div>
   </div>
 
 <script>
 const hosts = [
-  { id: 'catbox', name: 'Catbox', icon: 'fas fa-box', custom: false, unlimited: true },
-  { id: 'litterbox', name: 'Litterbox', icon: 'fas fa-trash-alt', custom: false, unlimited: false },
-  { id: 'pixeldrain', name: 'PixelDrain', icon: 'fas fa-tint', custom: true, unlimited: true },
-  { id: 'transfer', name: 'Transfer.sh', icon: 'fas fa-exchange-alt', custom: true, unlimited: false },
-  { id: '0x0', name: '0x0.st', icon: 'fas fa-infinity', custom: false, unlimited: true },
-  { id: 'fileio', name: 'File.io', icon: 'fas fa-file-export', custom: false, unlimited: false },
-  { id: 'tmpfiles', name: 'TmpFiles', icon: 'fas fa-clock', custom: false, unlimited: false },
-  { id: 'oshi', name: 'Oshi.at', icon: 'fas fa-share-alt', custom: true, unlimited: true },
-  { id: 'gofile', name: 'GoFile', icon: 'fas fa-globe', custom: false, unlimited: true },
-  { id: 'bayfiles', name: 'BayFiles', icon: 'fas fa-water', custom: true, unlimited: true },
-  { id: 'anonfiles', name: 'AnonFiles', icon: 'fas fa-user-secret', custom: true, unlimited: true },
-  { id: 'filechan', name: 'FileChan', icon: 'fas fa-comments', custom: true, unlimited: true },
-  { id: 'vshare', name: 'VShare.io', icon: 'fas fa-video', custom: true, unlimited: true },
-  { id: 'zippyshare', name: 'ZippyShare', icon: 'fas fa-bolt', custom: true, unlimited: false },
-  { id: 'mediafire', name: 'MediaFire', icon: 'fas fa-fire', custom: true, unlimited: true },
-  { id: 'dropbox', name: 'Dropbox Direct', icon: 'fab fa-dropbox', custom: true, unlimited: false },
-  { id: 'onedrive', name: 'OneDrive Direct', icon: 'fab fa-microsoft', custom: true, unlimited: false },
-  { id: 'google', name: 'Google Drive Direct', icon: 'fab fa-google-drive', custom: true, unlimited: false }
+  { name: 'Catbox', id: 'catbox', icon: 'fas fa-box', custom: false, url: 'https://catbox.moe/user/api.php' },
+  { name: 'Pixeldrain', id: 'pixeldrain', icon: 'fas fa-tint', custom: true, url: 'https://pixeldrain.com/api/file' },
+  { name: 'Transfer.sh', id: 'transfer', icon: 'fas fa-exchange-alt', custom: true, url: 'https://transfer.sh/' },
+  { name: '0x0.st', id: '0x0', icon: 'fas fa-infinity', custom: false, url: 'https://0x0.st' },
+  { name: 'File.io', id: 'fileio', icon: 'fas fa-file-export', custom: false, url: 'https://file.io/' },
+  { name: 'GoFile', id: 'gofile', icon: 'fas fa-globe', custom: false, url: 'gofile' },
+  { name: 'Oshi.at', id: 'oshi', icon: 'fas fa-share-alt', custom: true, url: 'https://oshi.at' },
+  { name: 'TmpFiles', id: 'tmpfiles', icon: 'fas fa-clock', custom: false, url: 'https://tmpfiles.org/api/v1/upload' }
 ];
 
 let selectedHost = 'catbox';
 let uploadedFile = null;
 
 // Theme toggle
-document.getElementById('themeToggle').addEventListener('click', () => {
+document.getElementById('themeBtn').addEventListener('click', () => {
   document.body.classList.toggle('dark');
 });
 
-// Provider grid
-function renderProviders() {
-  const grid = document.getElementById('providerGrid');
+// Render hosts
+function renderHosts() {
+  const grid = document.getElementById('hostGrid');
   grid.innerHTML = hosts.map(host => `
-    <div class="provider-card ${host.id === selectedHost ? 'selected' : ''}" data-id="${host.id}">
-      <div class="provider-icon"><i class="${host.icon}"></i></div>
+    <div class="host-card ${host.id === selectedHost ? 'selected' : ''}" data-host="${host.id}">
+      <div class="host-icon"><i class="${host.icon}"></i></div>
       <h4>${host.name}</h4>
-      <small>${host.unlimited ? 'Unlimited' : 'Temporary'}</small>
-      ${host.custom ? '<small><i class="fas fa-edit"></i> Custom name</small>' : ''}
+      <small>${host.custom ? 'Custom name' : 'Auto name'}</small>
     </div>
   `).join('');
 
-  document.querySelectorAll('.provider-card').forEach(card => {
+  document.querySelectorAll('.host-card').forEach(card => {
     card.addEventListener('click', () => {
-      selectedHost = card.dataset.id;
-      document.querySelectorAll('.provider-card').forEach(c => c.classList.remove('selected'));
+      selectedHost = card.dataset.host;
+      document.querySelectorAll('.host-card').forEach(c => c.classList.remove('selected'));
       card.classList.add('selected');
     });
   });
 }
 
-// Drag & drop
-const uploadZone = document.getElementById('uploadZone');
+// File handling
+const uploadBox = document.getElementById('uploadBox');
 const fileInput = document.getElementById('fileInput');
 
+uploadBox.addEventListener('click', () => fileInput.click());
+fileInput.addEventListener('change', (e) => handleFile(e.target.files[0]));
+
+// Drag & drop
 ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-  uploadZone.addEventListener(eventName, preventDefaults, false);
+  uploadBox.addEventListener(eventName, (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+  });
 });
 
-['dragenter', 'dragover'].forEach(eventName => {
-  uploadZone.addEventListener(eventName, highlight, false);
-});
+uploadBox.addEventListener('dragover', () => uploadBox.classList.add('dragover'));
+uploadBox.addEventListener('dragleave', () => uploadBox.classList.remove('dragover'));
+uploadBox.addEventListener('drop', (e) => handleFile(e.dataTransfer.files[0]));
 
-['dragleave', 'drop'].forEach(eventName => {
-  uploadZone.addEventListener(eventName, unhighlight, false);
-});
+async function handleFile(file) {
+  if (!file) return;
+  uploadedFile = file;
 
-function preventDefaults(e) {
-  e.preventDefault();
-  e.stopPropagation();
-}
-
-function highlight() {
-  uploadZone.classList.add('dragover');
-}
-
-function unhighlight() {
-  uploadZone.classList.remove('dragover');
-}
-
-uploadZone.addEventListener('drop', handleDrop);
-fileInput.addEventListener('change', handleFiles);
-
-function handleDrop(e) {
-  const files = e.dataTransfer.files;
-  if (files.length) handleFiles({ target: { files } });
-}
-
-function handleFiles(e) {
-  uploadedFile = e.target.files[0];
-  if (uploadedFile) {
-    uploadFile(uploadedFile);
-  }
-}
-
-uploadZone.addEventListener('click', () => fileInput.click());
-
-async function uploadFile(file) {
-  const btn = document.createElement('button');
-  btn.className = 'btn';
-  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Uploading...';
-  btn.disabled = true;
-  
   try {
-    let resultUrl;
+    let url;
     switch(selectedHost) {
       case 'catbox':
-        resultUrl = await uploadToCatbox(file);
-        break;
-      case 'litterbox':
-        resultUrl = await uploadToLitterbox(file);
+        url = await uploadCatbox(file);
         break;
       case 'pixeldrain':
-        resultUrl = await uploadToPixeldrain(file);
+        const customName = prompt('Nama file (opsional):') || file.name;
+        url = await uploadPixeldrain(file, customName);
         break;
       case 'transfer':
-        resultUrl = await uploadToTransfer(file);
+        const transferName = prompt('Nama file (opsional):') || file.name;
+        url = await uploadTransfer(file, transferName);
         break;
       case '0x0':
-        resultUrl = await uploadTo0x0(file);
+        url = await upload0x0(file);
         break;
       case 'fileio':
-        resultUrl = await uploadToFileio(file);
-        break;
-      case 'tmpfiles':
-        resultUrl = await uploadToTmpfiles(file);
-        break;
-      case 'oshi':
-        resultUrl = await uploadToOshi(file);
+        url = await uploadFileio(file);
         break;
       case 'gofile':
-        resultUrl = await uploadToGofile(file);
+        url = await uploadGofile(file);
         break;
-      default:
-        throw new Error('Host not implemented yet');
+      case 'oshi':
+        const oshiName = prompt('Nama file (opsional):') || file.name;
+        url = await uploadOshi(file, oshiName);
+        break;
+      case 'tmpfiles':
+        url = await uploadTmpfiles(file);
+        break;
     }
-    
-    showResult(resultUrl);
+    showResult(url);
   } catch (error) {
-    alert('Upload failed: ' + error.message);
+    alert('Error: ' + error.message);
   }
 }
 
-// Upload functions (fixed)
-async function uploadToCatbox(file) {
+// Upload functions (FIXED)
+async function uploadCatbox(file) {
   const form = new FormData();
   form.append('reqtype', 'fileupload');
   form.append('userhash', '');
   form.append('fileToUpload', file);
-  const res = await fetch('https://catbox.moe/user/api.php', { method: 'POST', body: form });
-  if (!res.ok) throw new Error('Catbox upload failed');
-  return await res.text();
+  
+  const response = await fetch('https://catbox.moe/user/api.php', {
+    method: 'POST',
+    body: form
+  });
+  
+  if (!response.ok) throw new Error('Catbox upload failed');
+  return await response.text();
 }
 
-async function uploadToLitterbox(file) {
+async function uploadPixeldrain(file, filename) {
   const form = new FormData();
-  form.append('reqtype', 'fileupload');
-  form.append('time', '24h');
-  form.append('userhash', '');
-  form.append('fileToUpload', file);
-  const res = await fetch('https://litterbox.catbox.moe/resources/internals/api.php', { method: 'POST', body: form });
-  if (!res.ok) throw new Error('Litterbox upload failed');
-  return await res.text();
-}
-
-async function uploadToPixeldrain(file) {
-  const form = new FormData();
-  const filename = prompt('Masukkan nama file (opsional):') || file.name;
   form.append('file', file, filename);
-  const res = await fetch('https://pixeldrain.com/api/file', { method: 'POST', body: form });
-  const { id } = await res.json();
-  return `https://pixeldrain.com/u/${id}`;
+  
+  const response = await fetch('https://pixeldrain.com/api/file', {
+    method: 'POST',
+    body: form
+  });
+  
+  const data = await response.json();
+  if (!data.id) throw new Error('Pixeldrain upload failed');
+  return `https://pixeldrain.com/u/${data.id}`;
 }
 
-async function uploadToTransfer(file) {
-  const filename = prompt('Masukkan nama file (opsional):') || file.name;
-  const res = await fetch(`https://transfer.sh/${encodeURIComponent(filename)}`, { method: 'PUT', body: file });
-  return await res.text();
+async function uploadTransfer(file, filename) {
+  const response = await fetch(`https://transfer.sh/${encodeURIComponent(filename)}`, {
+    method: 'PUT',
+    body: file
+  });
+  
+  if (!response.ok) throw new Error('Transfer.sh upload failed');
+  return await response.text();
 }
 
-async function uploadTo0x0(file) {
+async function upload0x0(file) {
   const form = new FormData();
   form.append('file', file);
-  const res = await fetch('https://0x0.st', { method: 'POST', body: form });
-  return await res.text();
+  
+  const response = await fetch('https://0x0.st', {
+    method: 'POST',
+    body: form
+  });
+  
+  if (!response.ok) throw new Error('0x0.st upload failed');
+  return await response.text();
 }
 
-async function uploadToFileio(file) {
-  const res = await fetch('https://file.io/?expires=1w', { method: 'POST', body: file });
-  const data = await res.json();
+async function uploadFileio(file) {
+  const response = await fetch('https://file.io/?expires=1w', {
+    method: 'POST',
+    body: file
+  });
+  
+  const data = await response.json();
+  if (!data.link) throw new Error('File.io upload failed');
   return data.link;
 }
 
-async function uploadToTmpfiles(file) {
-  const form = new FormData();
-  form.append('file', file);
-  const res = await fetch('https://tmpfiles.org/api/v1/upload', { method: 'POST', body: form });
-  const { data } = await res.json();
-  return data.url;
-}
-
-async function uploadToOshi(file) {
-  const filename = prompt('Masukkan nama file (opsional):') || file.name;
-  const form = new FormData();
-  form.append('file', file, filename);
-  const res = await fetch('https://oshi.at', { method: 'POST', body: form });
-  const text = await res.text();
-  return text.split('\n')[0].split(' ')[1];
-}
-
-async function uploadToGofile(file) {
+async function uploadGofile(file) {
   const serverRes = await fetch('https://api.gofile.io/getServer');
   const { data: { server } } = await serverRes.json();
+  
   const form = new FormData();
   form.append('file', file);
-  const res = await fetch(`https://${server}.gofile.io/uploadFile`, { method: 'POST', body: form });
-  const { data } = await res.json();
-  return data.downloadPage;
+  
+  const response = await fetch(`https://${server}.gofile.io/uploadFile`, {
+    method: 'POST',
+    body: form
+  });
+  
+  const data = await response.json();
+  if (!data.data?.downloadPage) throw new Error('GoFile upload failed');
+  return data.data.downloadPage;
+}
+
+async function uploadOshi(file, filename) {
+  const form = new FormData();
+  form.append('file', file, filename);
+  
+  const response = await fetch('https://oshi.at', {
+    method: 'POST',
+    body: form
+  });
+  
+  const text = await response.text();
+  const match = text.match(/https?:\/\/[^\s]+/);
+  if (!match) throw new Error('Oshi.at upload failed');
+  return match[0];
+}
+
+async function uploadTmpfiles(file) {
+  const form = new FormData();
+  form.append('file', file);
+  
+  const response = await fetch('https://tmpfiles.org/api/v1/upload', {
+    method: 'POST',
+    body: form
+  });
+  
+  const data = await response.json();
+  if (!data.data?.url) throw new Error('TmpFiles upload failed');
+  return data.data.url;
 }
 
 function showResult(url) {
-  const resultSection = document.getElementById('resultSection');
-  const resultContent = document.getElementById('resultContent');
+  document.getElementById('resultUrl').href = url;
+  document.getElementById('resultUrl').textContent = url;
   
-  resultContent.innerHTML = `
-    <p><strong>Link:</strong> <a href="${url}" target="_blank">${url}</a>
-    <button class="copy-btn" onclick="navigator.clipboard.writeText('${url}')">
-      <i class="fas fa-copy"></i> Copy
-    </button></p>
-    ${uploadedFile.type.startsWith('image/') ? `<img class="preview-img" src="${url}" alt="Preview">` : ''}
-  `;
-  resultSection.classList.remove('hidden');
+  const preview = document.getElementById('resultPreview');
+  preview.innerHTML = '';
+  
+  if (uploadedFile.type.startsWith('image/')) {
+    preview.innerHTML = `<img class="preview-img" src="${url}" alt="Preview">`;
+  }
+  
+  document.getElementById('resultBox').classList.remove('hidden');
 }
 
-renderProviders();
+function copyToClipboard() {
+  const url = document.getElementById('resultUrl').textContent;
+  navigator.clipboard.writeText(url).then(() => {
+    alert('URL copied to clipboard!');
+  });
+}
+
+renderHosts();
 </script>
 </body>
 </html>
