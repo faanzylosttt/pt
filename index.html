@@ -2,209 +2,420 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <title>All-in-One Upload Hub</title>
+  <title>Super Media Host Hub - 18 Providers</title>
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <!-- Font Awesome 6 CDN -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-  <!-- Google Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    :root{
-      --bg:#ffffff;
-      --card:#ffffff;
-      --text:#111827;
-      --border:#e5e7eb;
-      --accent:#3b82f6;
+    :root {
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #1e293b;
+      --border: #e2e8f0;
+      --primary: #3b82f6;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --error: #ef4444;
     }
-    body.dark{
-      --bg:#111827;
-      --card:#1f2937;
-      --text:#f9fafb;
-      --border:#374151;
+    body.dark {
+      --bg: #0f172a;
+      --card: #1e293b;
+      --text: #f1f5f9;
+      --border: #334155;
     }
-    body{
-      margin:0;
-      font-family:Inter,system-ui,Arial;
-      background:var(--bg);
-      color:var(--text);
-      transition:.2s;
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      transition: all 0.3s ease;
     }
-    .topbar{
-      display:flex;justify-content:space-between;
-      padding:.75rem 1rem;align-items:center;
+    .header {
+      background: var(--card);
+      padding: 1rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
-    .wrapper{
-      max-width:640px;margin:1rem auto 3rem;
-      background:var(--card);border:1px solid var(--border);
-      border-radius:12px;padding:2rem 2.5rem 2.5rem;
-      box-shadow:0 4px 14px rgba(0,0,0,.1);
+    .main-container {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 0 1rem;
     }
-    h1{margin:0 0 .5rem;font-size:1.75rem;font-weight:600;text-align:center}
-    label{display:block;margin:.75rem 0 .25rem;font-weight:600}
-    input,select{width:100%;padding:.6rem;border:1px solid var(--border);border-radius:6px;background:var(--card);color:var(--text)}
-    .customName{display:none;margin-top:.5rem}
-    button{
-      width:100%;padding:.75rem;background:var(--accent);color:#fff;border:none;
-      border-radius:6px;margin-top:1.25rem;font-size:1rem;cursor:pointer;
-      display:flex;align-items:center;justify-content:center;gap:.4rem;
+    .upload-zone {
+      background: var(--card);
+      border: 2px dashed var(--border);
+      border-radius: 12px;
+      padding: 3rem;
+      text-align: center;
+      transition: all 0.3s ease;
+      position: relative;
     }
-    button:disabled{opacity:.55;cursor:not-allowed}
-    .result{margin-top:1rem}
-    .result a{color:var(--accent);font-weight:600}
-    .result img{max-width:100%;border-radius:6px;margin-top:.5rem}
-    .hidden{display:none}
+    .upload-zone:hover, .upload-zone.dragover {
+      border-color: var(--primary);
+      background: rgba(59, 130, 246, 0.05);
+    }
+    .provider-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+    .provider-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.5rem;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    .provider-card:hover {
+      border-color: var(--primary);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .provider-card.selected {
+      border-color: var(--primary);
+      background: rgba(59, 130, 246, 0.1);
+    }
+    .provider-icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+    .custom-link-input {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.75rem;
+      margin-top: 0.5rem;
+      width: 100%;
+    }
+    .btn {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+    .btn:hover {
+      background: #2563eb;
+    }
+    .btn:disabled {
+      background: #94a3b8;
+      cursor: not-allowed;
+    }
+    .progress-bar {
+      width: 100%;
+      height: 4px;
+      background: var(--border);
+      border-radius: 2px;
+      overflow: hidden;
+      margin: 1rem 0;
+    }
+    .progress-fill {
+      height: 100%;
+      background: var(--primary);
+      transition: width 0.3s ease;
+    }
+    .result-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-top: 1rem;
+    }
+    .copy-btn {
+      background: var(--success);
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-left: 0.5rem;
+    }
+    .preview-img {
+      max-width: 200px;
+      max-height: 200px;
+      border-radius: 8px;
+      margin-top: 1rem;
+    }
+    .drag-drop-text {
+      font-size: 1.125rem;
+      color: var(--text-secondary);
+      margin: 1rem 0;
+    }
+    .drop-icon {
+      font-size: 3rem;
+      color: var(--primary);
+      margin-bottom: 1rem;
+    }
   </style>
 </head>
 <body>
-  <div class="topbar">
-    <span style="font-size:1.1rem;font-weight:600;">Media-to-Link Hub</span>
-    <button id="themeToggle" title="Dark/Light"><i class="fas fa-moon"></i></button>
-  </div>
+  <header class="header">
+    <h1><i class="fas fa-cloud-upload-alt"></i> Super Media Host Hub</h1>
+    <button id="themeToggle" class="btn"><i class="fas fa-moon"></i></button>
+  </header>
 
-  <div class="wrapper">
-    <h1><i class="fas fa-cloud-upload-alt"></i> Upload & Dapatkan Link</h1>
-
-    <label><i class="fas fa-file-upload"></i> Pilih file:</label>
-    <input type="file" id="file" accept="image/*,video/*,audio/*,application/*">
-
-    <label><i class="fas fa-server"></i> Upload ke:</label>
-    <select id="provider">
-      <option value="catbox">Catbox (unlimited)</option>
-      <option value="litterbox">Litterbox (temp)</option>
-      <option value="pixeldrain">Pixeldrain (unlimited)</option>
-      <option value="transfer">Transfer.sh (14 d)</option>
-      <option value="0x0">0x0.st (unlimited)</option>
-      <option value="fileio">File.io (auto-delete)</option>
-      <option value="tmpfiles">TmpFiles.org (30 d)</option>
-      <option value="oshi">Oshi.at (unlimited)</option>
-    </select>
-
-    <div id="customWrap" class="customName">
-      <label><i class="fas fa-edit"></i> Custom nama file:</label>
-      <input type="text" id="customName" placeholder="myfile.zip">
+  <div class="main-container">
+    <div class="upload-zone" id="uploadZone">
+      <i class="fas fa-cloud-upload-alt drop-icon"></i>
+      <div class="drag-drop-text">
+        Drag & drop file atau <strong>klik untuk memilih</strong>
+      </div>
+      <input type="file" id="fileInput" style="display:none" accept="*/*">
     </div>
 
-    <button id="uploadBtn">
-      <i class="fas fa-upload"></i> <span id="btnText">Upload & Dapatkan Link</span>
-    </button>
+    <div class="provider-grid" id="providerGrid">
+      <!-- Hosts akan diisi oleh JavaScript -->
+    </div>
 
-    <div id="output" class="result hidden">
-      <p><i class="fas fa-link"></i> Link langsung: <a id="directLink" href="" target="_blank"></a></p>
-      <div id="preview"></div>
+    <div class="result-card hidden" id="resultSection">
+      <h3><i class="fas fa-check-circle"></i> Upload Berhasil!</h3>
+      <div id="resultContent"></div>
     </div>
   </div>
 
 <script>
-/* ---------- Theme Toggle ---------- */
-const themeToggle = document.getElementById('themeToggle');
-themeToggle.addEventListener('click', () => {
+const hosts = [
+  { id: 'catbox', name: 'Catbox', icon: 'fas fa-box', custom: false, unlimited: true },
+  { id: 'litterbox', name: 'Litterbox', icon: 'fas fa-trash-alt', custom: false, unlimited: false },
+  { id: 'pixeldrain', name: 'PixelDrain', icon: 'fas fa-tint', custom: true, unlimited: true },
+  { id: 'transfer', name: 'Transfer.sh', icon: 'fas fa-exchange-alt', custom: true, unlimited: false },
+  { id: '0x0', name: '0x0.st', icon: 'fas fa-infinity', custom: false, unlimited: true },
+  { id: 'fileio', name: 'File.io', icon: 'fas fa-file-export', custom: false, unlimited: false },
+  { id: 'tmpfiles', name: 'TmpFiles', icon: 'fas fa-clock', custom: false, unlimited: false },
+  { id: 'oshi', name: 'Oshi.at', icon: 'fas fa-share-alt', custom: true, unlimited: true },
+  { id: 'gofile', name: 'GoFile', icon: 'fas fa-globe', custom: false, unlimited: true },
+  { id: 'bayfiles', name: 'BayFiles', icon: 'fas fa-water', custom: true, unlimited: true },
+  { id: 'anonfiles', name: 'AnonFiles', icon: 'fas fa-user-secret', custom: true, unlimited: true },
+  { id: 'filechan', name: 'FileChan', icon: 'fas fa-comments', custom: true, unlimited: true },
+  { id: 'vshare', name: 'VShare.io', icon: 'fas fa-video', custom: true, unlimited: true },
+  { id: 'zippyshare', name: 'ZippyShare', icon: 'fas fa-bolt', custom: true, unlimited: false },
+  { id: 'mediafire', name: 'MediaFire', icon: 'fas fa-fire', custom: true, unlimited: true },
+  { id: 'dropbox', name: 'Dropbox Direct', icon: 'fab fa-dropbox', custom: true, unlimited: false },
+  { id: 'onedrive', name: 'OneDrive Direct', icon: 'fab fa-microsoft', custom: true, unlimited: false },
+  { id: 'google', name: 'Google Drive Direct', icon: 'fab fa-google-drive', custom: true, unlimited: false }
+];
+
+let selectedHost = 'catbox';
+let uploadedFile = null;
+
+// Theme toggle
+document.getElementById('themeToggle').addEventListener('click', () => {
   document.body.classList.toggle('dark');
-  themeToggle.innerHTML = document.body.classList.contains('dark') ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
 });
 
-/* ---------- Provider change ---------- */
-const providerSel = document.getElementById('provider');
-const customWrap  = document.getElementById('customWrap');
-providerSel.addEventListener('change', () => {
-  const p = providerSel.value;
-  customWrap.style.display = ['transfer','pixeldrain','oshi'].includes(p) ? 'block' : 'none';
+// Provider grid
+function renderProviders() {
+  const grid = document.getElementById('providerGrid');
+  grid.innerHTML = hosts.map(host => `
+    <div class="provider-card ${host.id === selectedHost ? 'selected' : ''}" data-id="${host.id}">
+      <div class="provider-icon"><i class="${host.icon}"></i></div>
+      <h4>${host.name}</h4>
+      <small>${host.unlimited ? 'Unlimited' : 'Temporary'}</small>
+      ${host.custom ? '<small><i class="fas fa-edit"></i> Custom name</small>' : ''}
+    </div>
+  `).join('');
+
+  document.querySelectorAll('.provider-card').forEach(card => {
+    card.addEventListener('click', () => {
+      selectedHost = card.dataset.id;
+      document.querySelectorAll('.provider-card').forEach(c => c.classList.remove('selected'));
+      card.classList.add('selected');
+    });
+  });
+}
+
+// Drag & drop
+const uploadZone = document.getElementById('uploadZone');
+const fileInput = document.getElementById('fileInput');
+
+['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+  uploadZone.addEventListener(eventName, preventDefaults, false);
 });
 
-/* ---------- Upload Logic ---------- */
-const fileInput = document.getElementById('file');
-const uploadBtn = document.getElementById('uploadBtn');
-const btnText   = document.getElementById('btnText');
-const output    = document.getElementById('output');
-const directLink= document.getElementById('directLink');
-const preview   = document.getElementById('preview');
-const customName= document.getElementById('customName');
+['dragenter', 'dragover'].forEach(eventName => {
+  uploadZone.addEventListener(eventName, highlight, false);
+});
 
-uploadBtn.addEventListener('click', async () => {
-  const file = fileInput.files[0];
-  if (!file) return alert('Pilih file dulu!');
+['dragleave', 'drop'].forEach(eventName => {
+  uploadZone.addEventListener(eventName, unhighlight, false);
+});
 
-  btnText.textContent = 'Uploading...';
-  uploadBtn.disabled = true;
-  output.classList.add('hidden');
+function preventDefaults(e) {
+  e.preventDefault();
+  e.stopPropagation();
+}
 
+function highlight() {
+  uploadZone.classList.add('dragover');
+}
+
+function unhighlight() {
+  uploadZone.classList.remove('dragover');
+}
+
+uploadZone.addEventListener('drop', handleDrop);
+fileInput.addEventListener('change', handleFiles);
+
+function handleDrop(e) {
+  const files = e.dataTransfer.files;
+  if (files.length) handleFiles({ target: { files } });
+}
+
+function handleFiles(e) {
+  uploadedFile = e.target.files[0];
+  if (uploadedFile) {
+    uploadFile(uploadedFile);
+  }
+}
+
+uploadZone.addEventListener('click', () => fileInput.click());
+
+async function uploadFile(file) {
+  const btn = document.createElement('button');
+  btn.className = 'btn';
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Uploading...';
+  btn.disabled = true;
+  
   try {
-    const provider = providerSel.value;
-    const url = await uploaders[provider](file);
-    showResult(url);
-  } catch (e) {
-    alert('Gagal upload: ' + e.message);
-  } finally {
-    btnText.textContent = 'Upload & Dapatkan Link';
-    uploadBtn.disabled = false;
+    let resultUrl;
+    switch(selectedHost) {
+      case 'catbox':
+        resultUrl = await uploadToCatbox(file);
+        break;
+      case 'litterbox':
+        resultUrl = await uploadToLitterbox(file);
+        break;
+      case 'pixeldrain':
+        resultUrl = await uploadToPixeldrain(file);
+        break;
+      case 'transfer':
+        resultUrl = await uploadToTransfer(file);
+        break;
+      case '0x0':
+        resultUrl = await uploadTo0x0(file);
+        break;
+      case 'fileio':
+        resultUrl = await uploadToFileio(file);
+        break;
+      case 'tmpfiles':
+        resultUrl = await uploadToTmpfiles(file);
+        break;
+      case 'oshi':
+        resultUrl = await uploadToOshi(file);
+        break;
+      case 'gofile':
+        resultUrl = await uploadToGofile(file);
+        break;
+      default:
+        throw new Error('Host not implemented yet');
+    }
+    
+    showResult(resultUrl);
+  } catch (error) {
+    alert('Upload failed: ' + error.message);
   }
-});
+}
 
-const uploaders = {
-  /* Catbox fix: tambahkan userhash & reqtype */
-  catbox: async (f) => {
-    const fd = new FormData();
-    fd.append('reqtype','fileupload');
-    fd.append('userhash',''); // kosong = anonim
-    fd.append('fileToUpload', f);
-    const res = await fetch('https://catbox.moe/user/api.php', {method:'POST',body:fd});
-    if (!res.ok) throw new Error(res.statusText);
-    return res.text();
-  },
-  /* Litterbox fix: tambahkan time & userhash */
-  litterbox: async (f) => {
-    const fd = new FormData();
-    fd.append('reqtype','fileupload');
-    fd.append('time','24h');
-    fd.append('userhash','');
-    fd.append('fileToUpload', f);
-    const res = await fetch('https://litterbox.catbox.moe/resources/internals/api.php',{method:'POST',body:fd});
-    if (!res.ok) throw new Error(res.statusText);
-    return res.text();
-  },
-  pixeldrain: async (f) => {
-    const name = customName.value || f.name;
-    const fd = new FormData(); fd.append('file', f, name);
-    const res = await fetch('https://pixeldrain.com/api/file', {method:'POST',body:fd});
-    const {id} = await res.json();
-    return `https://pixeldrain.com/u/${id}`;
-  },
-  transfer: async (f) => {
-    const name = customName.value || f.name;
-    const res = await fetch(`https://transfer.sh/${encodeURIComponent(name)}`, {method:'PUT',body:f});
-    return res.text();
-  },
-  '0x0': async (f) => {
-    const fd = new FormData(); fd.append('file', f);
-    const res = await fetch('https://0x0.st', {method:'POST',body:fd});
-    return res.text();
-  },
-  fileio: async (f) => {
-    const res = await fetch('https://file.io/?expires=1w', {method:'POST',body:f});
-    return (await res.json()).link;
-  },
-  tmpfiles: async (f) => {
-    const fd = new FormData(); fd.append('file', f);
-    const {data} = await (await fetch('https://tmpfiles.org/api/v1/upload', {method:'POST',body:fd})).json();
-    return data.url;
-  },
-  oshi: async (f) => {
-    const name = customName.value || f.name;
-    const fd = new FormData(); fd.append('file', f, name);
-    const text = await (await fetch('https://oshi.at', {method:'POST',body:fd})).text();
-    return text.split('\n')[0].split(' ')[1];
-  }
-};
+// Upload functions (fixed)
+async function uploadToCatbox(file) {
+  const form = new FormData();
+  form.append('reqtype', 'fileupload');
+  form.append('userhash', '');
+  form.append('fileToUpload', file);
+  const res = await fetch('https://catbox.moe/user/api.php', { method: 'POST', body: form });
+  if (!res.ok) throw new Error('Catbox upload failed');
+  return await res.text();
+}
+
+async function uploadToLitterbox(file) {
+  const form = new FormData();
+  form.append('reqtype', 'fileupload');
+  form.append('time', '24h');
+  form.append('userhash', '');
+  form.append('fileToUpload', file);
+  const res = await fetch('https://litterbox.catbox.moe/resources/internals/api.php', { method: 'POST', body: form });
+  if (!res.ok) throw new Error('Litterbox upload failed');
+  return await res.text();
+}
+
+async function uploadToPixeldrain(file) {
+  const form = new FormData();
+  const filename = prompt('Masukkan nama file (opsional):') || file.name;
+  form.append('file', file, filename);
+  const res = await fetch('https://pixeldrain.com/api/file', { method: 'POST', body: form });
+  const { id } = await res.json();
+  return `https://pixeldrain.com/u/${id}`;
+}
+
+async function uploadToTransfer(file) {
+  const filename = prompt('Masukkan nama file (opsional):') || file.name;
+  const res = await fetch(`https://transfer.sh/${encodeURIComponent(filename)}`, { method: 'PUT', body: file });
+  return await res.text();
+}
+
+async function uploadTo0x0(file) {
+  const form = new FormData();
+  form.append('file', file);
+  const res = await fetch('https://0x0.st', { method: 'POST', body: form });
+  return await res.text();
+}
+
+async function uploadToFileio(file) {
+  const res = await fetch('https://file.io/?expires=1w', { method: 'POST', body: file });
+  const data = await res.json();
+  return data.link;
+}
+
+async function uploadToTmpfiles(file) {
+  const form = new FormData();
+  form.append('file', file);
+  const res = await fetch('https://tmpfiles.org/api/v1/upload', { method: 'POST', body: form });
+  const { data } = await res.json();
+  return data.url;
+}
+
+async function uploadToOshi(file) {
+  const filename = prompt('Masukkan nama file (opsional):') || file.name;
+  const form = new FormData();
+  form.append('file', file, filename);
+  const res = await fetch('https://oshi.at', { method: 'POST', body: form });
+  const text = await res.text();
+  return text.split('\n')[0].split(' ')[1];
+}
+
+async function uploadToGofile(file) {
+  const serverRes = await fetch('https://api.gofile.io/getServer');
+  const { data: { server } } = await serverRes.json();
+  const form = new FormData();
+  form.append('file', file);
+  const res = await fetch(`https://${server}.gofile.io/uploadFile`, { method: 'POST', body: form });
+  const { data } = await res.json();
+  return data.downloadPage;
+}
 
 function showResult(url) {
-  directLink.href = directLink.textContent = url;
-  preview.innerHTML = '';
-  if (/^image\//.test(fileInput.files[0].type)) {
-    const img = document.createElement('img');
-    img.src = url;
-    preview.appendChild(img);
-  }
-  output.classList.remove('hidden');
+  const resultSection = document.getElementById('resultSection');
+  const resultContent = document.getElementById('resultContent');
+  
+  resultContent.innerHTML = `
+    <p><strong>Link:</strong> <a href="${url}" target="_blank">${url}</a>
+    <button class="copy-btn" onclick="navigator.clipboard.writeText('${url}')">
+      <i class="fas fa-copy"></i> Copy
+    </button></p>
+    ${uploadedFile.type.startsWith('image/') ? `<img class="preview-img" src="${url}" alt="Preview">` : ''}
+  `;
+  resultSection.classList.remove('hidden');
 }
+
+renderProviders();
 </script>
 </body>
 </html>
