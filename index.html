@@ -1,473 +1,138 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Produk Jasteb</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <title>Media-to-Link Hub</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <style>
-    * { box-sizing: border-box; }
-
-    html, body {
-      margin: 0;
-      padding: 0;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-      color: #f0f0f0;
-      scroll-behavior: smooth;
-    }
-
-    header {
-      padding: 24px;
-      background: linear-gradient(135deg, #1b3a4b, #1e4976);
-      text-align: center;
-      font-size: 32px;
-      font-weight: bold;
-      color: #64b5f6;
-      letter-spacing: 1.5px;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.4);
-      border-bottom: 2px solid #64b5f6;
-      backdrop-filter: blur(10px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-      position: sticky;
-      top: 0;
-      z-index: 999;
-    }
-
-    .menu-scroll {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      padding: 14px 16px;
-      gap: 12px;
-      background: #102a43;
-      border-bottom: 1px solid #1c3b57;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-      position: sticky;
-      top: 0;
-      z-index: 50;
-    }
-
-    .menu-btn {
-      background: #1e3a5f;
-      border: 1px solid #396285;
-      padding: 10px 20px;
-      border-radius: 20px;
-      font-size: 15px;
-      color: #cce7ff;
-      font-weight: 500;
-      cursor: pointer;
-      white-space: nowrap;
-      transition: all 0.3s ease;
-    }
-
-    .menu-btn:hover,
-    .menu-btn.active {
-      background: #64b5f6;
-      color: #002f5e;
-      font-weight: bold;
-      border-color: #64b5f6;
-      box-shadow: 0 3px 12px rgba(100, 181, 246, 0.4);
-    }
-
-    .container {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .products {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-      gap: 20px;
-      padding: 40px 24px 24px;
-      z-index: 1;
-      position: relative;
-    }
-
-    .product-card {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 20px;
-      padding: 22px;
-      transition: 0.3s ease;
-      backdrop-filter: blur(14px);
-      cursor: pointer;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .product-card::before {
-      content: "";
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: radial-gradient(circle at center, rgba(0,224,255,0.08), transparent);
-      transition: 0.5s;
-      transform: rotate(45deg);
-      z-index: 0;
-    }
-
-    .product-card:hover::before {
-      top: 0;
-      left: 0;
-    }
-
-    .product-card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 10px 20px rgba(0, 224, 255, 0.2);
-    }
-
-    .product-card > * {
-      position: relative;
-      z-index: 1;
-    }
-
-    .product-emoji {
-      font-size: 36px;
-      margin-bottom: 12px;
-    }
-
-    .product-title {
-      font-size: 18px;
-      font-weight: 600;
-      margin-bottom: 6px;
-    }
-
-    .product-price {
-      color: #00e0ff;
-      font-size: 17px;
-      margin: 6px 0;
-    }
-
-    .product-desc {
-      font-size: 14px;
-      color: #ccc;
-      line-height: 1.5;
-    }
-
-    .modal {
-      display: none;
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(15, 25, 40, 0.75);
-      backdrop-filter: blur(18px);
-      justify-content: center;
-      align-items: center;
-      z-index: 300;
-      padding: 20px;
-    }
-
-    .modal-content {
-      background: rgba(255, 255, 255, 0.08);
-      border-radius: 20px;
-      padding: 30px 28px;
-      width: 90%;
-      max-width: 460px;
-      color: #e0e9ff;
-      box-shadow: 0 12px 30px rgba(0, 140, 255, 0.35);
-      backdrop-filter: saturate(180%) blur(16px);
-      text-align: center;
-      position: relative;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-
-    .modal-content h2 {
-      margin-bottom: 12px;
-      font-size: 24px;
-      font-weight: 700;
-      color: #00aaff;
-      text-shadow: 0 0 10px #00aaff88;
-    }
-
-    .modal-content p {
-      margin: 8px 0;
-      font-size: 16px;
-      line-height: 1.5;
-      color: #c0d8ff;
-    }
-
-    .modal-content .buy-btn {
-      margin-top: 20px;
-      background: linear-gradient(135deg, #00aaff, #004f9f);
-      color: #fff;
-      padding: 14px 30px;
-      border: none;
-      border-radius: 40px;
-      font-weight: 700;
-      font-size: 16px;
-      cursor: pointer;
-      box-shadow: 0 6px 14px #00aaffbb;
-      transition: background 0.35s ease, box-shadow 0.35s ease;
-    }
-
-    .modal-content .buy-btn:hover {
-      background: linear-gradient(135deg, #007acc, #003766);
-      box-shadow: 0 8px 22px #008cffcc;
-    }
-
-    .modal-content .close-btn {
-      background: transparent;
-      border: none;
-      color: #8bb1ff;
-      font-size: 14px;
-      margin-top: 14px;
-      cursor: pointer;
-      text-decoration: underline;
-      transition: color 0.25s ease;
-    }
-
-    .modal-content .close-btn:hover {
-      color: #00aaff;
-    }
-
-    footer {
-      background: #101010;
-      text-align: center;
-      padding: 16px;
-      font-size: 13px;
-      color: #777;
-      margin-top: auto;
-    }
+    body{font-family:Arial,Helvetica,sans-serif;background:#f5f5f5;margin:0;padding:2rem}
+    .box{max-width:480px;margin:auto;background:#fff;padding:2rem;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,.1)}
+    h1{text-align:center;margin-bottom:1.5rem}
+    label{display:block;margin:.75rem 0 .25rem;font-weight:bold}
+    input,select{width:100%;padding:.5rem;border:1px solid #bbb;border-radius:4px}
+    button{width:100%;padding:.75rem;background:#2563eb;color:#fff;border:none;border-radius:4px;margin-top:1rem;cursor:pointer}
+    button:disabled{background:#93c5fd}
+    .result{margin-top:1rem}
+    .result a{color:#2563eb;font-weight:bold}
+    .result img{max-width:100%;margin-top:.5rem;border-radius:4px}
   </style>
 </head>
 <body>
-  <header>Produk Jasteb</header>
-  <div class="menu-scroll" id="menuNav"></div>
-  <div class="container">
-    <div class="products" id="productContainer"></div>
-  </div>
+  <div class="box">
+    <h1>Upload & Dapatkan Link Langsung</h1>
 
-  <div class="modal" id="productModal">
-    <div class="modal-content">
-      <h2 id="modalTitle"></h2>
-      <p id="modalPrice"></p>
-      <p id="modalDesc"></p>
-      <a id="modalLink" href="https://wa.me/6282281704226" target="_blank">
-        <button class="buy-btn">Beli Sekarang</button>
-      </a>
-      <br />
-      <button class="close-btn" onclick="closeModal()">Tutup</button>
+    <label for="file">Pilih file:</label>
+    <input type="file" id="file" accept="image/*,video/*,audio/*">
+
+    <label for="provider">Layanan upload:</label>
+    <select id="provider">
+      <option value="catbox">Catbox (unlimited, no login)</option>
+      <option value="litterbox">Litterbox (Catbox temp 1h-3d)</option>
+      <option value="fileio">File.io (auto delete 1x download)</option>
+      <option value="gofile">GoFile (unlimited)</option>
+      <option value="transfer">Transfer.sh (14 hari)</option>
+    </select>
+
+    <button id="uploadBtn">Upload & Dapatkan Link</button>
+
+    <div id="output" class="result" style="display:none">
+      <p>Link langsung: <a id="directLink" href="" target="_blank"></a></p>
+      <div id="preview"></div>
     </div>
   </div>
 
-  <footer>&copy; 2025 Faanzy. All rights reserved.</footer>
-
   <script>
-    const produkKategori = {
-      "Jasteb": [
-        { emoji: "✨", title: "Jasteb Biasa", price: "Rp5.000", desc: "Jasa tebar, mendapatkan 80+ Ress kesempatan dapet Akun nya 40%." },
-        { emoji: "✨", title: "Jasteb Biasa", price: "Rp10.000", desc: "Jasa tebar, mendapatkan 150+ Ress kesempatan dapet Akun nya 40%." },
-        { emoji: "✨", title: "Jasteb Biasa", price: "Rp15.000", desc: "Jasa tebar, mendapatkan 200+ Ress kesempatan dapet Akun nya 40%." },
-        { emoji: "✨", title: "Jasteb Biasa", price: "Rp20.000", desc: "Jasa tebar, mendapatkan 300+ Ress kesempatan dapet Akun nya 40%." },
-        { emoji: "✨", title: "Jasteb Biasa", price: "Rp25.000", desc: "Jasa tebar, mendapatkan 400+ Ress kesempatan dapet Akun nya 40%." },
-        { emoji: "✨", title: "Jasteb Biasa", price: "Rp30.000", desc: "Jasa tebar Mendapatkan 500+ Ress Kesempatan dapet Akun nya 40%." },
-        { emoji: "✨", title: "Jasteb Biasa", price: "Rp35.000", desc: "Jasa tebar, mendapatkan 600+ Ress kesempatan dapet Akun nya 40%." },
-        { emoji: "✨", title: "Jasteb Biasa", price: "Rp40.000", desc: "Jasa tebar, mendapatkan 700+ Ress kesempatan dapet Akun nya 40%." },
-        { emoji: "✨", title: "Jasteb Biasa", price: "Rp45.000", desc: "Jasa tebar, mendapatkan 800+ Ress kesempatan dapet Akun nya 40%." },
-        { emoji: "✨", title: "Jasteb Biasa", price: "Rp50.000", desc: "Jasa tebar, mendapatkan 999+ Ress kesempatan dapet Akun nya 40%." },
-        { emoji: "⚡", title: "Jasteb VIP", price: "Rp15.000", desc: "Jasa tebar, mendapatkan 50 Ress kesempatan dapet Akun nya 80%." },
-        { emoji: "⚡", title: "Jasteb VIP", price: "Rp20.000", desc: "Jasa tebar, mendapatkan 100 Ress kesempatan dapet Akun nya 80%." },
-        { emoji: "⚡", title: "Jasteb VIP", price: "Rp25.000", desc: "Jasa tebar, mendapatkan 150 Ress kesempatan dapet Akun nya 80%." },
-        { emoji: "⚡", title: "Jasteb VIP", price: "Rp30.000", desc: "Jasa tebar, mendapatkan 200 Ress kesempatan dapet Akun nya 80%." },
-        { emoji: "⚡", title: "Jasteb VIP", price: "Rp35.000", desc: "Jasa tebar, mendapatkan 250 Ress kesempatan dapet Akun nya 80%." },
-        { emoji: "⚡", title: "Jasteb VIP", price: "Rp40.000", desc: "Jasa tebar, mendapatkan 300 Ress kesempatan dapet Akun nya 80%." },
-        { emoji: "⚡", title: "Jasteb VIP", price: "Rp45.000", desc: "Jasa tebar, mendapatkan 350 Ress kesempatan dapet Akun nya 80%." },
-        { emoji: "⚡", title: "Jasteb VIP", price: "Rp50.000", desc: "Jasa tebar, mendapatkan 400 Ress kesempatan dapet Akun nya 80%." },
-        { emoji: "⏳", title: "Jasteb Per Jam", price: "Rp5.000", desc: "Jasa tebar, Ditebar Sampai 4 Jam, Dapet Ress Nya Bisa 999+,  dapet Akun nya Belum Diketahui Karena Ini Jasteb Per Jam." },
-        { emoji: "⏳", title: "Jasteb Per Jam", price: "Rp10.000", desc: "Jasa tebar, Ditebar Sampai 8 Jam, Dapet Ress Nya Bisa 999+,  dapet Akun nya Belum Diketahui Karena Ini Jasteb Per Jam." },
-        { emoji: "⏳", title: "Jasteb Per Jam", price: "Rp15.000", desc: "Jasa tebar, Ditebar Sampai 12 Jam, Dapet Ress Nya Bisa 999+,  dapet Akun nya Belum Diketahui Karena Ini Jasteb Per Jam." },
-        { emoji: "⏳", title: "Jasteb Per Jam", price: "Rp20.000", desc: "Jasa tebar, Ditebar Sampai 16 Jam, Dapet Ress Nya Bisa 999+,  dapet Akun nya Belum Diketahui Karena Ini Jasteb Per Jam." },
-        { emoji: "⏳", title: "Jasteb Per Jam", price: "Rp25.000", desc: "Jasa tebar, Ditebar Sampai 20 Jam, Dapet Ress Nya Bisa 999+,  dapet Akun nya Belum Diketahui Karena Ini Jasteb Per Jam." },
-        { emoji: "⏳", title: "Jasteb Per Jam", price: "Rp30.000", desc: "Jasa tebar, Ditebar Sampai 20 Jam, Dapet Ress Nya Bisa 999+,  dapet Akun nya Belum Diketahui Karena Ini Jasteb Per Jam ." }
-      ],
-      "Uncheck": [
-      { emoji: "📥", title: "Uncheck Biasa", price: "Rp5.000", desc: "Data Akun Yang Belum Di Cek Cek, mendapatkan 50 Data Akun, kesempatan dapet Akun nya 30%." },
-      { emoji: "📥", title: "Uncheck Biasa", price: "Rp10.000", desc: "Data Akun Yang Belum Di Cek Cek, mendapatkan 100 Data Akun, kesempatan dapet Akun nya 30%." },
-      { emoji: "📥", title: "Uncheck Biasa", price: "Rp15.000", desc: "Data Akun Yang Belum Di Cek Cek, mendapatkan 150 Data Akun, kesempatan dapet Akun nya 30%." },
-      { emoji: "📥", title: "Uncheck Biasa", price: "Rp20.000", desc: "Data Akun Yang Belum Di Cek Cek, mendapatkan 200 Data Akun, kesempatan dapet Akun nya 30%." },
-      { emoji: "📥", title: "Uncheck Biasa", price: "Rp25.000", desc: "Data Akun Yang Belum Di Cek Cek, mendapatkan 250 Data Akun, kesempatan dapet Akun nya 30%." },
-      { emoji: "📥", title: "Uncheck Biasa", price: "Rp30.000", desc: "Data Akun Yang Belum Di Cek Cek, mendapatkan 300 Data Akun, kesempatan dapet Akun nya 30%." },
-      { emoji: "📥", title: "Uncheck Biasa", price: "Rp35.000", desc: "Data Akun Yang Belum Di Cek Cek, mendapatkan 350 Data Akun, kesempatan dapet Akun nya 30%." },
-      { emoji: "📥", title: "Uncheck Biasa", price: "Rp40.000", desc: "Data Akun Yang Belum Di Cek Cek, mendapatkan 400 Data Akun, kesempatan dapet Akun nya 30%." },
-      { emoji: "📥", title: "Uncheck Biasa", price: "Rp45.000", desc: "Data Akun Yang Belum Di Cek Cek, mendapatkan 450 Data Akun, kesempatan dapet Akun nya 30%." },
-      { emoji: "📥", title: "Uncheck Biasa", price: "Rp50.000", desc: "Data Akun Yang Belum Di Cek Cek, mendapatkan 500 Data Akun, kesempatan dapet Akun nya 30%." },
-      { emoji: "🎁", title: "Uncheck VIP", price: "Rp15.000", desc: "Data Akun Yang Belum Di Cek Cek, mendapatkan 50 Data Akun, kesempatan dapet Akun nya 70%." },
-      { emoji: "🎁", title: "Uncheck VIP", price: "Rp20.000", desc: "Data Akun Yang Belum Di Cek Cek, mendapatkan 100 Data Akun, kesempatan dapet Akun nya 70%." },
-      { emoji: "🎁", title: "Uncheck VIP", price: "Rp25.000", desc: "Data Akun Yang Belum Di Cek Cek, mendapatkan 150 Data Akun, kesempatan dapet Akun nya 70%." },
-      { emoji: "🎁", title: "Uncheck VIP", price: "Rp30.000", desc: "Data Akun Yang Belum Di Cek Cek, mendapatkan 200 Data Akun, kesempatan dapet Akun nya 70%." },
-      { emoji: "🎁", title: "Uncheck VIP", price: "Rp35.000", desc: "Data Akun Yang Belum Di Cek Cek, mendapatkan 250 Data Akun, kesempatan dapet Akun nya 70%." },
-      { emoji: "🎁", title: "Uncheck VIP", price: "Rp40.000", desc: "Data Akun Yang Belum Di Cek Cek, mendapatkan 300 Data Akun, kesempatan dapet Akun nya 70%." },
-      { emoji: "🎁", title: "Uncheck VIP", price: "Rp45.000", desc: "Data Akun Yang Belum Di Cek Cek, mendapatkan 350 Data Akun, kesempatan dapet Akun nya 70%." },
-        { emoji: "🎁", title: "Uncheck Tools", price: "Rp50.000", desc: "Data Akun Yang Belum Di Cek Cek, mendapatkan 300 Data Akun, kesempatan dapet Akun nya 70%." }
-      ],
-      "Script Bot": [
-      { emoji: "🤖", title: "Script Bot Pushkontak", price: "Rp5.000", desc: "Script Ini Khusus Untuk Pushkontak Cocok Untuk Jb." },
-      { emoji: "🤖", title: "Script Bot Tele", price: "Rp7.000", desc: "Script Ini Khusus Untuk Cpanel Cocok Untuk Jual Panel Atau Open Resseler Panel." },
-      { emoji: "🤖", title: "Script Bot Tele", price: "Rp15.000", desc: "Script Ini Khusus Untuk Untuk Cpanel, Atau Open Resseler Panel 3 Server." },
-      { emoji: "🤖", title: "Script Bot Simple", price: "Rp9.000", desc: "Script Ini Khusus Untuk Pushkontak, Jpm, Cocok Untuk Jb." },
-      { emoji: "🤖", title: "Script Bot Simple V2", price: "Rp15.000", desc: "Script Ini Khusus Untuk Pushkontak, Jpm, Cocok Untuk Yang Mau Buka Jasa Jpm ." },
-      { emoji: "🤖", title: "Script Bot Store", price: "Rp20.000", desc: "Script Ini Khusus Untuk Store Cocok Untuk Jb." },
-      { emoji: "🤖", title: "Script Bot MD", price: "Rp30.000", desc: "Script Ini Khusus Untuk Jaga Grup Dengan Fitur Yang Hampir Lengkap." },
-        { emoji: "🤖", title: "Script Bot MD V2", price: "Rp40.000", desc: "Cocok Untuk Jaga Grup Dengan Fitur 1850+." }
-      ],
-      "Sewa Bot": [
-      { emoji: "📅", title: "Bot Jaga Grup", price: "Rp5.000", desc: "2 Minggu Penyewaan, Bot Ini Sudah Siap Pakai Fitur Jaga Grupnya Antara Lain Antilink, Antipromosi, Anti Bot, Dll." },
-      { emoji: "📅", title: "Bot Jaga Grup", price: "Rp10.000", desc: "1 Bulan Penyewaan, Bot Ini Sudah Siap Pakai Fitur Jaga Grupnya Antara Lain Antilink, Antipromosi, Anti Bot, Dll." },
-      { emoji: "📅", title: "Bot Jaga Grup", price: "Rp15.000", desc: "3 Bulan Penyewaan, Bot Ini Sudah Siap Pakai Fitur Jaga Grupnya Antara Lain Antilink, Antipromosi, Anti Bot, Dll." },
-      { emoji: "📅", title: "Bot Jaga Grup", price: "Rp20.000", desc: "5 Bulan Penyewaan, Bot Ini Sudah Siap Pakai Fitur Jaga Grupnya Antara Lain Antilink, Antipromosi, Anti Bot, Dll." },
-      { emoji: "📅", title: "Bot Jaga Grup", price: "Rp25.000", desc: "7 Bulan Penyewaan, Bot Ini Sudah Siap Pakai Fitur Jaga Grupnya Antara Lain Antilink, Antipromosi, Anti Bot, Dll." },
-      { emoji: "📅", title: "Bot Jaga Grup", price: "Rp30.000", desc: "9 Bulan Penyewaan, Bot Ini Sudah Siap Pakai Fitur Jaga Grupnya Antara Lain Antilink, Antipromosi, Anti Bot, Dll." },
-      { emoji: "📅", title: "Bot Jaga Grup", price: "Rp35.000", desc: "12 Bulan Penyewaan, Bot Ini Sudah Siap Pakai Fitur Jaga Grupnya Antara Lain Antilink, Antipromosi, Anti Bot, Dll." },
-        { emoji: "📅", title: "Bot Jaga Grup", price: "Rp40.000", desc: "Permanen, Penyewaan, Bot Ini Sudah Siap Pakai Fitur Jaga Grupnya Antara Lain Antilink, Antipromosi, Anti Bot, Dll." }
-      ],
-      "Jadi Bot": [
-        { emoji: "📮", title: "Jadi Bot", price: "Rp10.000", desc: "Ubah Wamu biasa jadi bot Selama 1 Minggu, Keuntungan Jadi Bot Bisa Buka jasa Jaga Grup, Ada fitur Bug nya juga loh." },
-        { emoji: "📮", title: "Jadi Bot", price: "Rp15.000", desc: "Ubah Wamu biasa jadi bot Selama 2 Minggu, Keuntungan Jadi Bot Bisa Buka jasa Jaga Grup, Ada fitur Bug nya juga loh." },
-        { emoji: "📮", title: "Jadi Bot", price: "Rp20.000", desc: "Ubah Wamu biasa jadi bot Selama 3 Minggu, Keuntungan Jadi Bot Bisa Buka jasa Jaga Grup, Ada fitur Bug nya juga loh." },
-        { emoji: "📮", title: "Jadi Bot", price: "Rp25.000", desc: "Ubah Wamu biasa jadi bot Selama 4 Minggu , Keuntungan Jadi Bot Bisa Buka jasa Jaga Grup, Ada fitur Bug nya juga loh." },
-        { emoji: "📮", title: "Jadi Bot", price: "Rp30.000", desc: "Ubah Wamu biasa jadi bot Selama 5 Minggu, Keuntungan Jadi Bot Bisa Buka jasa Jaga Grup, Ada fitur Bug nya juga loh." }
-      ],
-      "Panel Pterodactyl": [
-      { emoji: "🖥️", title: "Panel Pterodactyl 1GB", price: "Rp1.000/bln", desc: "Panel Run Bot Wa,Tele, Dan Bisa Buat Server Minecraft/server pribadi." },
-     { emoji: "🖥️", title: "Panel Pterodactyl 2GB", price: "Rp2.000/bln", desc: "Panel Run Bot Wa,Tele, Dan Bisa Buat Server Minecraft/server pribadi." },
-     { emoji: "🖥️", title: "Panel Pterodactyl 3GB", price: "Rp3.000/bln", desc: "Panel Run Bot Wa,Tele, Dan Bisa Buat Server Minecraft/server pribadi." },
-     { emoji: "🖥️", title: "Panel Pterodactyl 4GB", price: "Rp4.000/bln", desc: "Panel Run Bot Wa,Tele, Dan Bisa Buat Server Minecraft/server pribadi." },
-     { emoji: "🖥️", title: "Panel Pterodactyl 5GB", price: "Rp5.000/bln", desc: "Panel Run Bot Wa,Tele, Dan Bisa Buat Server Minecraft/server pribadi." },
-     { emoji: "🖥️", title: "Panel Pterodactyl 6GB", price: "Rp6.000/bln", desc: "Panel Run Bot Wa,Tele, Dan Bisa Buat Server Minecraft/server pribadi." },
-     { emoji: "🖥️", title: "Panel Pterodactyl 7GB", price: "Rp7.000/bln", desc: "Panel Run Bot Wa,Tele, Dan Bisa Buat Server Minecraft/server pribadi." },
-     { emoji: "🖥️", title: "Panel Pterodactyl 8GB", price: "Rp8.000/bln", desc: "Panel Run Bot Wa,Tele, Dan Bisa Buat Server Minecraft/server pribadi." },
-     { emoji: "🖥️", title: "Panel Pterodactyl 9GB", price: "Rp9.000/bln", desc: "Panel Run Bot Wa,Tele, Dan Bisa Buat Server Minecraft/server pribadi." },
-     { emoji: "🖥️", title: "Panel Pterodactyl 10GB", price: "Rp10.000/bln", desc: "Panel Run Bot Wa,Tele, Dan Bisa Buat Server Minecraft/server pribadi." },
-     { emoji: "🖥️", title: "Panel Pterodactyl Unli", price: "Rp11.000/bln", desc: "Panel Run Bot Wa,Tele, Dan Bisa Buat Server Minecraft/server pribadi." },
-     { emoji: "🖥️", title: "Resseler Panel Pterodactyl", price: "Rp15.000/bln", desc: "Panel Run Bot Wa,Tele, Dan Bisa Buat Server Minecraft/server pribadi Dan Bagi Resseler Bisa Jualan Panel Juga." },
-     { emoji: "🖥️", title: "Admin Panel Pterodactyl", price: "Rp20.000/bln", desc: "Admin Panel Pterodactyl Bisa Jual Panel atau pun Resseler Panel." }
-      ],
-      "Sewa Panel Jasteb": [
-        { emoji: "⚙️", title: "Panel Jasteb", price: "Rp10.000/minggu", desc: "Panel siap pakai ( Max 1 Gmail ) Free Req Domain, Free Req Nama Ress, ." },
-        { emoji: "⚙️", title: "Panel Jasteb", price: "Rp15.000/minggu", desc: "Panel siap pakai ( Max 2 Gmail ) Free Req Domain, Free Req Nama Ress." },
-        { emoji: "⚙️", title: "Panel Jasteb", price: "Rp20.000/minggu", desc: "Panel siap pakai ( Max 3 Gmail ) Free Req Domain, Free Req Nama Ress, ." },
-        { emoji: "⚙️", title: "Panel Jasteb", price: "Rp25.000/minggu", desc: "Panel siap pakai ( Max 5 Gmail ) Free Req Domain, Free Req Nama Ress, ." },
-        { emoji: "⚙️", title: "Panel Jasteb", price: "Rp30.000/minggu", desc: "Panel siap pakai ( Max 7 Gmail ) Free Req Domain, Free Req Nama Ress, ." },
-        { emoji: "⚙️", title: "Panel Jasteb", price: "Rp35.000/minggu", desc: "Panel siap pakai ( Max 10 Gmail ) Free Req Domain, Free Req Nama Ress, ." },
-        { emoji: "⚙️", title: "Panel Jasteb", price: "Rp40.000/minggu", desc: "Panel siap pakai ( Max 12 Gmail ) Free Req Domain, Free Req Nama Ress, ." },
-        { emoji: "⚙️", title: "Panel Jasteb", price: "Rp45.000/minggu", desc: "Panel siap pakai ( Max 15 Gmail ) Free Req Domain, Free Req Nama Ress, ." },
-        { emoji: "⚙️", title: "Panel Jasteb", price: "Rp50.000/minggu", desc: "Panel siap pakai ( Max 20 Gmail ) Free Req Domain, Free Req Nama Ress, ." }
-      ],
-      "Team Ress": [
-        { emoji: "👥", title: "Team Ress", price: "Rp15.000", desc: "Free Pengajaran & Free Panel Jasteb Selama 1 Minggu." },
-        { emoji: "👥", title: "Team Ress", price: "Rp20.000", desc: "Free Pengajaran & Free Panel Jasteb Selama 2 Minggu." },
-        { emoji: "👥", title: "Team Ress", price: "Rp25.000", desc: "Free Pengajaran & Free Panel Jasteb Selama 3 Minggu." },
-        { emoji: "👥", title: "Team Ress", price: "Rp30.000", desc: "Free Pengajaran & Free Panel Jasteb Selama 4 Minggu." }
-      ],
-      "Admin Team Ress": [
-        { emoji: "🛡️", title: "Admin Team Ress", price: "Rp35.000", desc: "Free Panel, Free Admin Grup, Selama 1 Bulan." }, 
-        { emoji: "🛡️", title: "Admin Team Ress", price: "Rp40.000", desc: "Free Panel, Free Admin Grup, Selama 2 Bulan." },
-        { emoji: "🛡️", title: "Admin Team Ress", price: "Rp45.000", desc: "Free Panel, Free Admin Grup, Selama 3 Bulan." },
-        { emoji: "🛡️", title: "Admin Team Ress", price: "Rp50.000", desc: "Free Panel, Free Admin Grup, Selama 4 Bulan." }
-      ],
-      "PT Jasteb": [
-        { emoji: "🏢", title: "PT JASTEB", price: "Rp10.000/minggu", desc: "Dapet Panel Public Max 1 Gmail, Untuk keuntungan lainya bisa hubungi admin saja ." },
-        { emoji: "🏢", title: "PT JASTEB", price: "Rp15.000/minggu", desc: "Dapet Panel Public Max 2 Gmail, Untuk keuntungan lainya bisa hubungi admin saja ." },
-        { emoji: "🏢", title: "PT JASTEB", price: "Rp20.000/minggu", desc: "Dapet Panel Public Max 3 Gmail, Untuk keuntungan lainya bisa hubungi admin saja ." },
-        { emoji: "🏢", title: "PT JASTEB", price: "Rp25.000/minggu", desc: "Dapet Panel Public Max 4 Gmail, Untuk keuntungan lainya bisa hubungi admin saja ." },
-        { emoji: "🏢", title: "PT JASTEB", price: "Rp30.000/minggu", desc: "Dapet Panel Public Max 5 Gmail, Untuk keuntungan lainya bisa hubungi admin saja ." }
-      ],
-      "Nomor Kosong Whatsapp": [
-        { emoji: "🇮🇩", title: "Nokos Indonesia", price: "Rp6.000", desc: "Nomor anonim untuk keperluan lain." },
-        { emoji: "🇵🇭", title: "Nokos Filipina", price: "Rp8.000", desc: "Nomor anonim untuk keperluan lain." },
-        { emoji: "🇲🇾", title: "Nokos Malaysia", price: "Rp11.000", desc: "Nomor anonim untuk keperluan lain." },
-        { emoji: "🇹🇭", title: "Nokos Thailand", price: "Rp10.000", desc: "Nomor anonim untuk keperluan lain." },
-        { emoji: "🇯🇵", title: "Nokos Japan", price: "Rp155.000", desc: "Nomor anonim untuk keperluan lain." },
-        { emoji: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", title: "Nokos Inggris", price: "Rp11.000", desc: "Nomor anonim untuk keperluan lain." },
-        { emoji: "🇹🇷", title: "Nokos Turkey", price: "Rp20.000", desc: "Nomor anonim untuk keperluan lain." },
-        { emoji: "🇰🇿", title: "Nokos Kazakhstan", price: "Rp38.000", desc: "Nomor anonim untuk keperluan lain." },
-        { emoji: "🇧🇹", title: "Nokos Bhutan", price: "Rp10.000", desc: "Nomor anonim untuk keperluan lain." },
-        { emoji: "🇧🇷", title: "Nokos Brazil", price: "Rp16.000", desc: "Nomor anonim untuk keperluan lain." },
-        { emoji: "🇩🇪", title: "Nokos Jerman", price: "Rp115.000", desc: "Nomor anonim untuk keperluan lain." },
-        { emoji: "🇨🇴", title: "Nokos Colombia", price: "Rp10.000", desc: "Nomor anonim untuk keperluan lain." },
-        { emoji: "🇳🇱", title: "Nokos Belanda", price: "Rp20.000", desc: "Nomor anonim untuk keperluan lain." },
-        { emoji: "🇮🇳", title: "Nokos India", price: "Rp28.000", desc: "Nomor anonim untuk keperluan lain." },
-        { emoji: "🇦🇺", title: "Nokos Australia", price: "Rp60.000", desc: "Nomor anonim untuk keperluan lain." },
-        { emoji: "🇺🇸", title: "Nokos Amerika", price: "Rp30.000", desc: "Nomor anonim untuk keperluan lain." },
-        { emoji: "🇫🇷", title: "Nokos France", price: "Rp56.000", desc: "Nomor anonim untuk keperluan lain." },
-        { emoji: "🇨🇳", title: "Nokos China", price: "Rp20.000", desc: "Nomor anonim untuk keperluan lain." },
-        { emoji: "🇷🇺", title: "Nokos Rusia", price: "Rp20.000", desc: "Nomor anonim untuk keperluan lain." }
-      ],
-      "Jasa Buat Web": [
-        { emoji: "💳", title: "Web Payment V1", price: "Rp10.000", desc: "Website Payment siap pakai." },
-        { emoji: "💳", title: "Web Payment V2", price: "Rp12.000", desc: "Website Payment siap pakai." },
-        { emoji: "💳", title: "Web Payment V3", price: "Rp15.000", desc: "Website Payment siap pakai." },
-        { emoji: "💳", title: "Web Payment V4", price: "Rp20.000", desc: "Website Payment siap pakai." },
-        { emoji: "💼", title: "Web Produk", price: "Rp40.000", desc: "Website produk digital." },
-        { emoji: "🚀", title: "Murid Create Web", price: "Rp50.000", desc: "Murid Web Full Pengajaran & Free Script web." }
-      ]
-    };
+    const fileInput   = document.getElementById('file');
+    const providerSel = document.getElementById('provider');
+    const uploadBtn   = document.getElementById('uploadBtn');
+    const output      = document.getElementById('output');
+    const directLink  = document.getElementById('directLink');
+    const preview     = document.getElementById('preview');
 
-    const menuNav = document.getElementById("menuNav");
-    const productContainer = document.getElementById("productContainer");
+    uploadBtn.addEventListener('click', async () => {
+      const file = fileInput.files[0];
+      if (!file) { alert('Pilih file dulu'); return; }
 
-    let currentCategory = "";
+      uploadBtn.disabled = true;
+      uploadBtn.textContent = 'Uploading...';
 
-    function generateMenu() {
-      Object.keys(produkKategori).forEach((kategori, index) => {
-        const btn = document.createElement("button");
-        btn.innerHTML = `<span>${kategori}</span>`;
-        btn.className = "menu-btn";
-        btn.onclick = () => showProduk(kategori, btn);
-        if (index === 0) {
-          btn.classList.add("active");
-          currentCategory = kategori;
+      const provider = providerSel.value;
+      try {
+        let url;
+        switch (provider) {
+          case 'catbox':
+            url = await uploadCatbox(file);
+            break;
+          case 'litterbox':
+            url = await uploadLitterbox(file);
+            break;
+          case 'fileio':
+            url = await uploadFileio(file);
+            break;
+          case 'gofile':
+            url = await uploadGofile(file);
+            break;
+          case 'transfer':
+            url = await uploadTransfer(file);
+            break;
         }
-        menuNav.appendChild(btn);
-      });
-      showProduk(currentCategory, menuNav.children[0]);
+        showResult(url);
+      } catch (err) {
+        alert('Gagal upload: ' + err.message);
+      } finally {
+        uploadBtn.disabled = false;
+        uploadBtn.textContent = 'Upload & Dapatkan Link';
+      }
+    });
+
+    async function uploadCatbox(file) {
+      const fd = new FormData();
+      fd.append('reqtype', 'fileupload');
+      fd.append('fileToUpload', file);
+      const res = await fetch('https://catbox.moe/user/api.php', { method: 'POST', body: fd });
+      return res.text(); // url langsung
     }
 
-    function showProduk(kategori, clickedBtn) {
-      currentCategory = kategori;
-      document.querySelectorAll(".menu-btn").forEach(btn => btn.classList.remove("active"));
-      clickedBtn.classList.add("active");
-      displayProduk();
+    async function uploadLitterbox(file) {
+      const fd = new FormData();
+      fd.append('reqtype', 'fileupload');
+      fd.append('time', '1h'); // 1h, 12h, 24h, 72h
+      fd.append('fileToUpload', file);
+      const res = await fetch('https://litterbox.catbox.moe/resources/internals/api.php', { method: 'POST', body: fd });
+      return res.text();
     }
 
-    function displayProduk() {
-      const produkList = produkKategori[currentCategory] || [];
-      productContainer.innerHTML = "";
-      produkList.forEach(p => {
-        const card = document.createElement("div");
-        card.className = "product-card";
-        card.onclick = () => showModal(p);
-        card.innerHTML = `
-          <div class="product-emoji">${p.emoji}</div>
-          <div class="product-title">${p.title}</div>
-          <div class="product-price">${p.price}</div>
-          <div class="product-desc">${p.desc}</div>
-        `;
-        productContainer.appendChild(card);
-      });
+    async function uploadFileio(file) {
+      const res = await fetch('https://file.io/?expires=1w', { method: 'POST', body: file });
+      const json = await res.json();
+      return json.link;
     }
 
-    function showModal(product) {
-      document.getElementById("modalTitle").innerText = product.title;
-      document.getElementById("modalPrice").innerText = product.price;
-      document.getElementById("modalDesc").innerText = product.desc;
-      document.getElementById("modalLink").href = "https://wa.me/6282281704226"; // Ganti dengan link pembelian asli jika ada
-      document.getElementById("productModal").style.display = "flex";
+    async function uploadGofile(file) {
+      const serverRes = await fetch('https://api.gofile.io/getServer');
+      const { data: { server } } = await serverRes.json();
+      const fd = new FormData();
+      fd.append('file', file);
+      const up = await fetch(`https://${server}.gofile.io/uploadFile`, { method: 'POST', body: fd });
+      const { data: { downloadPage } } = await up.json();
+      return downloadPage;
     }
 
-    function closeModal() {
-      document.getElementById("productModal").style.display = "none";
+    async function uploadTransfer(file) {
+      const res = await fetch(`https://transfer.sh/${file.name}`, { method: 'PUT', body: file });
+      return res.text();
     }
 
-    generateMenu();
+    function showResult(url) {
+      directLink.href = directLink.textContent = url;
+      preview.innerHTML = '';
+      if (fileInput.files[0].type.startsWith('image/')) {
+        const img = document.createElement('img');
+        img.src = url;
+        preview.appendChild(img);
+      }
+      output.style.display = 'block';
+    }
   </script>
 </body>
 </html>
