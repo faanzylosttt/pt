@@ -487,11 +487,6 @@
             51%, 100% { opacity: 0; }
         }
         
-        /* Glow effect */
-        .glow {
-            text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
-        }
-        
         /* Gradient text */
         .gradient-text {
             background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
@@ -625,30 +620,47 @@
             box-shadow: 0 0 10px var(--success);
         }
         
-        .status-offline {
-            background-color: var(--error);
-        }
-        
-        /* Code block */
-        .code-block {
-            background-color: rgba(0, 0, 0, 0.3);
-            border-radius: 8px;
-            padding: 16px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.875rem;
-            margin: 16px 0;
+        /* Debug panel */
+        .debug-panel {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background-color: rgba(0, 0, 0, 0.8);
             border: 1px solid var(--border-color);
-            overflow-x: auto;
+            border-radius: 8px;
+            padding: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            max-width: 300px;
+            z-index: 1000;
+            display: none;
         }
         
-        .code-block code {
+        .debug-panel.show {
+            display: block;
+        }
+        
+        .debug-panel h4 {
             color: var(--accent);
+            margin-bottom: 8px;
+        }
+        
+        .debug-panel pre {
+            color: var(--text-secondary);
+            white-space: pre-wrap;
+            word-break: break-all;
         }
     </style>
 </head>
 <body>
     <!-- Particle Background -->
     <div class="particles" id="particles"></div>
+    
+    <!-- Debug Panel -->
+    <div class="debug-panel" id="debugPanel">
+        <h4>Debug Info</h4>
+        <pre id="debugContent"></pre>
+    </div>
     
     <!-- Loading Screen -->
     <div class="loader" id="loader">
@@ -988,6 +1000,9 @@
                     
                     <div class="mt-6 text-sm text-gray-400">
                         <p><i class="fas fa-info-circle mr-2"></i> Your message will be sent directly to my Telegram</p>
+                        <button id="debugToggle" class="text-blue-400 hover:text-blue-300 mt-2">
+                            <i class="fas fa-bug mr-1"></i> Show Debug Info
+                        </button>
                     </div>
                 </div>
                 
@@ -1261,7 +1276,20 @@
             });
         });
         
-        // Handle contact form submission with fixed Telegram integration
+        // Debug panel toggle
+        document.getElementById('debugToggle').addEventListener('click', function() {
+            const debugPanel = document.getElementById('debugPanel');
+            debugPanel.classList.toggle('show');
+        });
+        
+        // Function to update debug panel
+        function updateDebugPanel(message) {
+            const debugContent = document.getElementById('debugContent');
+            const timestamp = new Date().toLocaleTimeString();
+            debugContent.textContent = `[${timestamp}] ${message}\n${debugContent.textContent}`;
+        }
+        
+        // Handle contact form submission with multiple fallback methods
         document.getElementById('contactForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
@@ -1286,112 +1314,166 @@
             formMessage.classList.remove('hidden', 'bg-green-900', 'bg-red-900');
             formMessage.classList.add('bg-blue-900', 'text-white');
             
-            // Method 1: Direct API call with FormData
-            async function sendWithFormData() {
+            updateDebugPanel('Starting message send process...');
+            
+            // Method 1: Using image request (bypasses CORS)
+            async function sendWithImageRequest() {
                 return new Promise((resolve, reject) => {
-                    const formData = new FormData();
-                    formData.append('chat_id', chatId);
-                    formData.append('text', messageText);
+                    updateDebugPanel('Trying image request method...');
                     
-                    const xhr = new XMLHttpRequest();
-                    xhr.open('POST', `https://api.telegram.org/bot${telegramToken}/sendMessage`, true);
-                    
-                    xhr.onload = function() {
-                        console.log('FormData response status:', xhr.status);
-                        console.log('FormData response:', xhr.responseText);
-                        
-                        if (xhr.status === 200) {
-                            try {
-                                const result = JSON.parse(xhr.responseText);
-                                if (result.ok) {
-                                    resolve(result);
-                                } else {
-                                    reject(new Error(result.description || 'Telegram API error'));
-                                }
-                            } catch (e) {
-                                reject(new Error('Failed to parse FormData response'));
-                            }
-                        } else {
-                            reject(new Error(`FormData request failed with status ${xhr.status}`));
-                        }
+                    const img = new Image();
+                    img.onload = function() {
+                        updateDebugPanel('Image request method: SUCCESS');
+                        resolve({ ok: true, description: 'Sent via image request' });
                     };
                     
-                    xhr.onerror = function() {
-                        reject(new Error('FormData request failed'));
+                    img.onerror = function() {
+                        updateDebugPanel('Image request method: FAILED');
+                        reject(new Error('Image request failed'));
                     };
                     
-                    xhr.send(formData);
+                    // Send message via image request
+                    const url = `https://api.telegram.org/bot${telegramToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(messageText)}`;
+                    img.src = url;
                 });
             }
             
-            // Method 2: Direct API call with JSON
-            async function sendWithJSON() {
+            // Method 2: Using JSONP
+            async function sendWithJSONP() {
                 return new Promise((resolve, reject) => {
-                    const xhr = new XMLHttpRequest();
-                    xhr.open('POST', `https://api.telegram.org/bot${telegramToken}/sendMessage`, true);
-                    xhr.setRequestHeader('Content-Type', 'application/json');
+                    updateDebugPanel('Trying JSONP method...');
                     
-                    xhr.onload = function() {
-                        console.log('JSON response status:', xhr.status);
-                        console.log('JSON response:', xhr.responseText);
+                    const callbackName = 'telegramCallback_' + Date.now();
+                    const script = document.createElement('script');
+                    
+                    window[callbackName] = function(response) {
+                        updateDebugPanel('JSONP method: ' + (response.ok ? 'SUCCESS' : 'FAILED'));
+                        delete window[callbackName];
+                        document.body.removeChild(script);
                         
-                        if (xhr.status === 200) {
-                            try {
-                                const result = JSON.parse(xhr.responseText);
-                                if (result.ok) {
-                                    resolve(result);
-                                } else {
-                                    reject(new Error(result.description || 'Telegram API error'));
-                                }
-                            } catch (e) {
-                                reject(new Error('Failed to parse JSON response'));
-                            }
+                        if (response.ok) {
+                            resolve(response);
                         } else {
-                            reject(new Error(`JSON request failed with status ${xhr.status}`));
+                            reject(new Error(response.description || 'JSONP failed'));
                         }
                     };
                     
-                    xhr.onerror = function() {
-                        reject(new Error('JSON request failed'));
+                    script.onerror = function() {
+                        updateDebugPanel('JSONP method: FAILED');
+                        delete window[callbackName];
+                        document.body.removeChild(script);
+                        reject(new Error('JSONP script failed to load'));
                     };
                     
-                    xhr.send(JSON.stringify({
-                        chat_id: chatId,
-                        text: messageText
-                    }));
+                    const url = `https://api.telegram.org/bot${telegramToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(messageText)}&callback=${callbackName}`;
+                    script.src = url;
+                    document.body.appendChild(script);
                 });
             }
             
-            // Try both methods
+            // Method 3: Using iframe
+            async function sendWithIframe() {
+                return new Promise((resolve, reject) => {
+                    updateDebugPanel('Trying iframe method...');
+                    
+                    const iframe = document.createElement('iframe');
+                    iframe.style.display = 'none';
+                    iframe.onload = function() {
+                        updateDebugPanel('Iframe method: SUCCESS');
+                        document.body.removeChild(iframe);
+                        resolve({ ok: true, description: 'Sent via iframe' });
+                    };
+                    
+                    iframe.onerror = function() {
+                        updateDebugPanel('Iframe method: FAILED');
+                        document.body.removeChild(iframe);
+                        reject(new Error('Iframe failed'));
+                    };
+                    
+                    const url = `https://api.telegram.org/bot${telegramToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(messageText)}`;
+                    iframe.src = url;
+                    document.body.appendChild(iframe);
+                });
+            }
+            
+            // Method 4: Using form submission
+            async function sendWithForm() {
+                return new Promise((resolve, reject) => {
+                    updateDebugPanel('Trying form submission method...');
+                    
+                    const form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = `https://api.telegram.org/bot${telegramToken}/sendMessage`;
+                    form.target = '_blank';
+                    form.style.display = 'none';
+                    
+                    const chatIdInput = document.createElement('input');
+                    chatIdInput.name = 'chat_id';
+                    chatIdInput.value = chatId;
+                    
+                    const textInput = document.createElement('input');
+                    textInput.name = 'text';
+                    textInput.value = messageText;
+                    
+                    form.appendChild(chatIdInput);
+                    form.appendChild(textInput);
+                    document.body.appendChild(form);
+                    
+                    try {
+                        form.submit();
+                        updateDebugPanel('Form submission method: SUCCESS');
+                        setTimeout(() => {
+                            document.body.removeChild(form);
+                            resolve({ ok: true, description: 'Sent via form submission' });
+                        }, 1000);
+                    } catch (error) {
+                        updateDebugPanel('Form submission method: FAILED');
+                        document.body.removeChild(form);
+                        reject(error);
+                    }
+                });
+            }
+            
+            // Try all methods
             try {
                 let result = null;
+                let lastError = null;
                 
-                // Try FormData first
-                try {
-                    result = await sendWithFormData();
-                } catch (error) {
-                    console.error('FormData method failed:', error);
-                    
-                    // Fallback to JSON
-                    result = await sendWithJSON();
+                // Try all methods in sequence
+                for (const method of [sendWithImageRequest, sendWithJSONP, sendWithIframe, sendWithForm]) {
+                    try {
+                        updateDebugPanel(`Attempting ${method.name}...`);
+                        result = await method();
+                        
+                        if (result && result.ok) {
+                            // Success!
+                            formMessage.innerHTML = '<i class="fas fa-check-circle mr-2"></i> Message sent successfully! I\'ll get back to you soon.';
+                            formMessage.classList.remove('bg-blue-900');
+                            formMessage.classList.add('bg-green-900', 'text-white');
+                            
+                            // Reset form
+                            document.getElementById('contactForm').reset();
+                            
+                            // Show success notification
+                            showNotification('Message sent successfully!', 'success');
+                            
+                            // Re-enable submit button
+                            submitButton.disabled = false;
+                            submitButton.innerHTML = '<i class="fas fa-paper-plane"></i> Send Message';
+                            
+                            return;
+                        }
+                    } catch (error) {
+                        updateDebugPanel(`${method.name} failed: ${error.message}`);
+                        lastError = error;
+                    }
                 }
                 
-                if (result && result.ok) {
-                    // Success!
-                    formMessage.innerHTML = '<i class="fas fa-check-circle mr-2"></i> Message sent successfully! I\'ll get back to you soon.';
-                    formMessage.classList.remove('bg-blue-900');
-                    formMessage.classList.add('bg-green-900', 'text-white');
-                    
-                    // Reset form
-                    document.getElementById('contactForm').reset();
-                    
-                    // Show success notification
-                    showNotification('Message sent successfully!', 'success');
-                } else {
-                    throw new Error('Failed to send message');
-                }
+                // If all methods failed
+                throw lastError || new Error('All methods failed');
             } catch (error) {
                 console.error('All methods failed:', error);
+                updateDebugPanel(`All methods failed: ${error.message}`);
                 
                 // Show error message
                 formMessage.innerHTML = `
@@ -1408,7 +1490,7 @@
                 
                 // Show error notification
                 showNotification('Failed to send message. Please try again.', 'error');
-            } finally {
+                
                 // Re-enable submit button
                 submitButton.disabled = false;
                 submitButton.innerHTML = '<i class="fas fa-paper-plane"></i> Send Message';
@@ -1456,16 +1538,23 @@
             const telegramToken = '8102671545:AAEbT25jA8_n9136iT7YlbUQQueFAXaj9T4';
             
             try {
-                const response = await fetch(`https://api.telegram.org/bot${telegramToken}/getMe`);
-                const result = await response.json();
+                updateDebugPanel('Testing Telegram bot connection...');
                 
-                if (result.ok) {
+                // Test using image request
+                const testImg = new Image();
+                testImg.onload = function() {
+                    updateDebugPanel('Telegram bot connection: SUCCESS');
                     console.log('✅ Telegram bot connection successful');
-                    console.log('Bot info:', result.result);
-                } else {
-                    console.error('❌ Telegram bot connection failed:', result);
-                }
+                };
+                
+                testImg.onerror = function() {
+                    updateDebugPanel('Telegram bot connection: FAILED');
+                    console.error('❌ Telegram bot connection failed');
+                };
+                
+                testImg.src = `https://api.telegram.org/bot${telegramToken}/getMe`;
             } catch (error) {
+                updateDebugPanel(`Telegram bot test error: ${error.message}`);
                 console.error('❌ Error testing Telegram connection:', error);
             }
         });
