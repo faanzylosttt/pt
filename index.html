@@ -31,11 +31,13 @@
             --card-bg: #1a1a1a;
             --accent: #00d4ff;
             --accent-secondary: #8a2be2;
+            --accent-tertiary: #ff006e;
             --text-primary: #ffffff;
             --text-secondary: #a0a0a0;
             --border-color: #2a2a2a;
             --success: #4ade80;
             --error: #f87171;
+            --warning: #fbbf24;
         }
         
         * {
@@ -104,6 +106,23 @@
             cursor: pointer;
             border: none;
             font-size: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .btn:hover::before {
+            left: 100%;
         }
         
         .btn-primary {
@@ -135,6 +154,24 @@
             border: 1px solid var(--border-color);
             transition: all 0.3s ease;
             height: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s;
+        }
+        
+        .card:hover::before {
+            transform: translateX(100%);
         }
         
         .card:hover {
@@ -197,6 +234,24 @@
             height: 100%;
             display: flex;
             flex-direction: column;
+            position: relative;
+        }
+        
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(0, 212, 255, 0.1), transparent 50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+        
+        .project-card:hover::before {
+            opacity: 1;
         }
         
         .project-card:hover {
@@ -284,13 +339,37 @@
             margin-right: 12px;
             transition: all 0.3s ease;
             border: 1px solid var(--border-color);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .social-icon::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: var(--accent);
+            transform: translate(-50%, -50%);
+            transition: width 0.3s, height 0.3s;
+        }
+        
+        .social-icon:hover::before {
+            width: 100%;
+            height: 100%;
         }
         
         .social-icon:hover {
-            background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
             color: var(--primary-black);
             transform: translateY(-3px) scale(1.05);
             box-shadow: 0 5px 15px rgba(0, 212, 255, 0.3);
+        }
+        
+        .social-icon i {
+            position: relative;
+            z-index: 1;
         }
         
         /* Notification */
@@ -493,9 +572,84 @@
             from, to { border-color: transparent }
             50% { border-color: var(--accent) }
         }
+        
+        /* Particle background */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background-color: var(--accent);
+            border-radius: 50%;
+            opacity: 0.5;
+            animation: float-up 10s infinite linear;
+        }
+        
+        @keyframes float-up {
+            0% {
+                transform: translateY(100vh) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.5;
+            }
+            90% {
+                opacity: 0.5;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(100px);
+                opacity: 0;
+            }
+        }
+        
+        /* Status indicator */
+        .status-indicator {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        
+        .status-online {
+            background-color: var(--success);
+            box-shadow: 0 0 10px var(--success);
+        }
+        
+        .status-offline {
+            background-color: var(--error);
+        }
+        
+        /* Code block */
+        .code-block {
+            background-color: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 16px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            margin: 16px 0;
+            border: 1px solid var(--border-color);
+            overflow-x: auto;
+        }
+        
+        .code-block code {
+            color: var(--accent);
+        }
     </style>
 </head>
 <body>
+    <!-- Particle Background -->
+    <div class="particles" id="particles"></div>
+    
     <!-- Loading Screen -->
     <div class="loader" id="loader">
         <div class="loader-content">
@@ -510,8 +664,9 @@
     <!-- Header Navigation -->
     <header class="fixed top-0 w-full bg-black bg-opacity-80 backdrop-blur-lg z-50 py-4 px-6 border-b border-gray-800">
         <div class="container mx-auto flex justify-between items-center">
-            <div class="logo text-2xl font-bold" style="font-family: 'Space Grotesk', sans-serif;">
+            <div class="logo text-2xl font-bold flex items-center" style="font-family: 'Space Grotesk', sans-serif;">
                 <span class="gradient-text">&lt;</span>faanzy<span class="gradient-text">/&gt;</span>
+                <span class="status-indicator status-online ml-2" title="Online"></span>
             </div>
             
             <nav class="nav-menu hidden md:flex space-x-8">
@@ -830,6 +985,10 @@
                     </form>
                     
                     <div id="formMessage" class="mt-4 p-4 rounded-md hidden"></div>
+                    
+                    <div class="mt-6 text-sm text-gray-400">
+                        <p><i class="fas fa-info-circle mr-2"></i> Your message will be sent directly to my Telegram</p>
+                    </div>
                 </div>
                 
                 <!-- Contact Info -->
@@ -888,16 +1047,9 @@
             <div class="flex flex-col md:flex-row justify-between items-center">
                 <p class="mb-4 md:mb-0 text-gray-400">© 2023 Fajar Andriansyah. Built with HTML, JS, and ☕</p>
                 
-                <div class="flex">
-                    <a href="#" class="social-icon">
-                        <i class="fab fa-github"></i>
-                    </a>
-                    <a href="#" class="social-icon">
-                        <i class="fab fa-telegram"></i>
-                    </a>
-                    <a href="#" class="social-icon">
-                        <i class="fab fa-whatsapp"></i>
-                    </a>
+                <div class="flex items-center">
+                    <span class="status-indicator status-online mr-3" title="Server Status"></span>
+                    <span class="text-sm text-gray-400">All systems operational</span>
                 </div>
             </div>
         </div>
@@ -910,6 +1062,48 @@
             duration: 1000,
             once: true,
             offset: 100
+        });
+        
+        // Create particles
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 30;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                // Random position
+                particle.style.left = Math.random() * 100 + '%';
+                
+                // Random size
+                const size = Math.random() * 3 + 1;
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
+                
+                // Random animation duration
+                const duration = Math.random() * 20 + 10;
+                particle.style.animationDuration = duration + 's';
+                
+                // Random delay
+                particle.style.animationDelay = Math.random() * 5 + 's';
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
+        
+        createParticles();
+        
+        // Mouse tracking for project cards
+        document.querySelectorAll('.project-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                card.style.setProperty('--mouse-x', x + 'px');
+                card.style.setProperty('--mouse-y', y + 'px');
+            });
         });
         
         // Hide loader when page is loaded
@@ -1084,37 +1278,106 @@
             // Telegram API with your provided token and chat ID
             const telegramToken = '8102671545:AAEbT25jA8_n9136iT7YlbUQQueFAXaj9T4';
             const chatId = '7274253936';
-            const telegramAPI = `https://api.telegram.org/bot${telegramToken}/sendMessage`;
             
             const messageText = `📩 NEW MESSAGE FROM PORTFOLIO 📩\n\n👤 Name: ${name}\n📧 Email: ${email}\n💬 Message: ${message}\n\n📅 Sent on: ${new Date().toLocaleString()}`;
-            
-            const data = {
-                chat_id: chatId,
-                text: messageText,
-                parse_mode: 'HTML'
-            };
             
             // Show loading message
             formMessage.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Sending message...';
             formMessage.classList.remove('hidden', 'bg-green-900', 'bg-red-900');
             formMessage.classList.add('bg-blue-900', 'text-white');
             
-            try {
-                // Try using fetch with CORS proxy
-                const corsProxy = 'https://cors-anywhere.herokuapp.com/';
-                const response = await fetch(corsProxy + telegramAPI, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-Requested-With': 'XMLHttpRequest'
-                    },
-                    body: JSON.stringify(data)
+            // Method 1: Direct API call with FormData
+            async function sendWithFormData() {
+                return new Promise((resolve, reject) => {
+                    const formData = new FormData();
+                    formData.append('chat_id', chatId);
+                    formData.append('text', messageText);
+                    
+                    const xhr = new XMLHttpRequest();
+                    xhr.open('POST', `https://api.telegram.org/bot${telegramToken}/sendMessage`, true);
+                    
+                    xhr.onload = function() {
+                        console.log('FormData response status:', xhr.status);
+                        console.log('FormData response:', xhr.responseText);
+                        
+                        if (xhr.status === 200) {
+                            try {
+                                const result = JSON.parse(xhr.responseText);
+                                if (result.ok) {
+                                    resolve(result);
+                                } else {
+                                    reject(new Error(result.description || 'Telegram API error'));
+                                }
+                            } catch (e) {
+                                reject(new Error('Failed to parse FormData response'));
+                            }
+                        } else {
+                            reject(new Error(`FormData request failed with status ${xhr.status}`));
+                        }
+                    };
+                    
+                    xhr.onerror = function() {
+                        reject(new Error('FormData request failed'));
+                    };
+                    
+                    xhr.send(formData);
                 });
+            }
+            
+            // Method 2: Direct API call with JSON
+            async function sendWithJSON() {
+                return new Promise((resolve, reject) => {
+                    const xhr = new XMLHttpRequest();
+                    xhr.open('POST', `https://api.telegram.org/bot${telegramToken}/sendMessage`, true);
+                    xhr.setRequestHeader('Content-Type', 'application/json');
+                    
+                    xhr.onload = function() {
+                        console.log('JSON response status:', xhr.status);
+                        console.log('JSON response:', xhr.responseText);
+                        
+                        if (xhr.status === 200) {
+                            try {
+                                const result = JSON.parse(xhr.responseText);
+                                if (result.ok) {
+                                    resolve(result);
+                                } else {
+                                    reject(new Error(result.description || 'Telegram API error'));
+                                }
+                            } catch (e) {
+                                reject(new Error('Failed to parse JSON response'));
+                            }
+                        } else {
+                            reject(new Error(`JSON request failed with status ${xhr.status}`));
+                        }
+                    };
+                    
+                    xhr.onerror = function() {
+                        reject(new Error('JSON request failed'));
+                    };
+                    
+                    xhr.send(JSON.stringify({
+                        chat_id: chatId,
+                        text: messageText
+                    }));
+                });
+            }
+            
+            // Try both methods
+            try {
+                let result = null;
                 
-                const result = await response.json();
+                // Try FormData first
+                try {
+                    result = await sendWithFormData();
+                } catch (error) {
+                    console.error('FormData method failed:', error);
+                    
+                    // Fallback to JSON
+                    result = await sendWithJSON();
+                }
                 
-                if (result.ok) {
-                    // Success message
+                if (result && result.ok) {
+                    // Success!
                     formMessage.innerHTML = '<i class="fas fa-check-circle mr-2"></i> Message sent successfully! I\'ll get back to you soon.';
                     formMessage.classList.remove('bg-blue-900');
                     formMessage.classList.add('bg-green-900', 'text-white');
@@ -1125,62 +1388,26 @@
                     // Show success notification
                     showNotification('Message sent successfully!', 'success');
                 } else {
-                    throw new Error(result.description || 'Failed to send message');
+                    throw new Error('Failed to send message');
                 }
             } catch (error) {
-                console.error('Error:', error);
+                console.error('All methods failed:', error);
                 
-                // Try alternative method using XMLHttpRequest
-                try {
-                    const xhr = new XMLHttpRequest();
-                    xhr.open('POST', `https://api.telegram.org/bot${telegramToken}/sendMessage`, true);
-                    xhr.setRequestHeader('Content-Type', 'application/json');
-                    
-                    xhr.onload = function() {
-                        if (xhr.status === 200) {
-                            const result = JSON.parse(xhr.responseText);
-                            if (result.ok) {
-                                // Success message
-                                formMessage.innerHTML = '<i class="fas fa-check-circle mr-2"></i> Message sent successfully! I\'ll get back to you soon.';
-                                formMessage.classList.remove('bg-blue-900');
-                                formMessage.classList.add('bg-green-900', 'text-white');
-                                
-                                // Reset form
-                                document.getElementById('contactForm').reset();
-                                
-                                // Show success notification
-                                showNotification('Message sent successfully!', 'success');
-                            } else {
-                                throw new Error(result.description || 'Failed to send message');
-                            }
-                        } else {
-                            throw new Error(`Request failed with status ${xhr.status}`);
-                        }
-                    };
-                    
-                    xhr.onerror = function() {
-                        throw new Error('Network error occurred');
-                    };
-                    
-                    xhr.send(JSON.stringify(data));
-                } catch (xhrError) {
-                    console.error('XHR Error:', xhrError);
-                    
-                    // Show error message
-                    formMessage.innerHTML = `
-                        <i class="fas fa-exclamation-triangle mr-2"></i> 
-                        Failed to send message. 
-                        <details class="mt-2">
-                            <summary class="cursor-pointer text-sm">Error details</summary>
-                            <p class="text-sm mt-1">${error.message || xhrError.message || 'Unknown error'}</p>
-                        </details>
-                    `;
-                    formMessage.classList.remove('bg-blue-900');
-                    formMessage.classList.add('bg-red-900', 'text-white');
-                    
-                    // Show error notification
-                    showNotification('Failed to send message. Please try again.', 'error');
-                }
+                // Show error message
+                formMessage.innerHTML = `
+                    <i class="fas fa-exclamation-triangle mr-2"></i> 
+                    Failed to send message. 
+                    <details class="mt-2">
+                        <summary class="cursor-pointer text-sm">Technical details</summary>
+                        <p class="text-sm mt-1">${error.message || 'Unknown error'}</p>
+                        <p class="text-xs mt-2 text-gray-300">Please try again or contact directly via WhatsApp/Telegram</p>
+                    </details>
+                `;
+                formMessage.classList.remove('bg-blue-900');
+                formMessage.classList.add('bg-red-900', 'text-white');
+                
+                // Show error notification
+                showNotification('Failed to send message. Please try again.', 'error');
             } finally {
                 // Re-enable submit button
                 submitButton.disabled = false;
@@ -1224,31 +1451,24 @@
             navMenu.classList.toggle('space-y-4');
         });
         
-        // Test Telegram connection
-        async function testTelegramConnection() {
+        // Test Telegram connection on page load
+        window.addEventListener('load', async function() {
             const telegramToken = '8102671545:AAEbT25jA8_n9136iT7YlbUQQueFAXaj9T4';
-            const chatId = '7274253936';
-            const testAPI = `https://api.telegram.org/bot${telegramToken}/getMe`;
             
             try {
-                const response = await fetch(testAPI);
+                const response = await fetch(`https://api.telegram.org/bot${telegramToken}/getMe`);
                 const result = await response.json();
                 
                 if (result.ok) {
-                    console.log('Telegram bot connection successful:', result.result);
-                    return true;
+                    console.log('✅ Telegram bot connection successful');
+                    console.log('Bot info:', result.result);
                 } else {
-                    console.error('Telegram bot connection failed:', result);
-                    return false;
+                    console.error('❌ Telegram bot connection failed:', result);
                 }
             } catch (error) {
-                console.error('Error testing Telegram connection:', error);
-                return false;
+                console.error('❌ Error testing Telegram connection:', error);
             }
-        }
-        
-        // Test connection on page load
-        testTelegramConnection();
+        });
     </script>
 </body>
 </html>
