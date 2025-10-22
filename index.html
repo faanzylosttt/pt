@@ -1,944 +1,313 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zyan Editzzz - Digital Services</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        :root {
-            --primary: #3b82f6;
-            --secondary: #8b5cf6;
-            --accent: #ec4899;
-            --dark: #0f172a;
-            --light: #ffffff;
-            --gray: #64748b;
-        }
-        
-        body {
-            font-family: 'Inter', sans-serif;
-            background: var(--dark);
-            color: var(--light);
-            line-height: 1.6;
-            min-height: 100vh;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-        
-        /* Header */
-        header {
-            text-align: center;
-            padding: 60px 0 40px;
-        }
-        
-        .logo {
-            font-size: clamp(3rem, 8vw, 5rem);
-            font-weight: 800;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 10px;
-        }
-        
-        .tagline {
-            color: var(--gray);
-            font-size: 1.1rem;
-            font-weight: 300;
-        }
-        
-        /* Products */
-        .products {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin: 50px 0;
-        }
-        
-        .product-card {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 16px;
-            padding: 30px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .product-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--primary);
-            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.2);
-        }
-        
-        .product-icon {
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 20px;
-            font-size: 1.5rem;
-            color: white;
-        }
-        
-        .product-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 15px;
-        }
-        
-        .product-description {
-            color: var(--gray);
-            margin-bottom: 20px;
-            line-height: 1.6;
-        }
-        
-        .product-cta {
-            color: var(--primary);
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        /* Contact Modal */
-        .modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-        }
-        
-        .modal.show {
-            display: flex;
-        }
-        
-        .modal-content {
-            background: var(--dark);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 16px;
-            padding: 40px;
-            max-width: 500px;
-            width: 90%;
-            position: relative;
-        }
-        
-        .modal-close {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: none;
-            border: none;
-            color: var(--gray);
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
-        
-        .modal-title {
-            font-size: 2rem;
-            font-weight: 600;
-            margin-bottom: 10px;
-            text-align: center;
-        }
-        
-        .modal-subtitle {
-            text-align: center;
-            color: var(--gray);
-            margin-bottom: 30px;
-        }
-        
-        .modal-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-        
-        .modal-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-            padding: 15px;
-            border-radius: 10px;
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-        
-        .whatsapp-btn {
-            background: #25d366;
-            color: white;
-        }
-        
-        .whatsapp-btn:hover {
-            background: #128C7E;
-        }
-        
-        .telegram-btn {
-            background: #0088cc;
-            color: white;
-        }
-        
-        .telegram-btn:hover {
-            background: #00588b;
-        }
-        
-        /* Invite Section */
-        .invite-section {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 16px;
-            padding: 40px;
-            margin: 40px 0;
-            display: none;
-        }
-        
-        .invite-section.show {
-            display: block;
-        }
-        
-        .invite-title {
-            font-size: 2rem;
-            font-weight: 600;
-            margin-bottom: 10px;
-            text-align: center;
-        }
-        
-        .invite-subtitle {
-            text-align: center;
-            color: var(--gray);
-            margin-bottom: 30px;
-        }
-        
-        .invite-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-        }
-        
-        .invite-card {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 25px 20px;
-            text-align: center;
-            transition: all 0.3s ease;
-        }
-        
-        .invite-card:hover {
-            transform: translateY(-3px);
-            border-color: var(--accent);
-        }
-        
-        .invite-icon {
-            font-size: 2.5rem;
-            margin-bottom: 15px;
-        }
-        
-        .invite-card h3 {
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin-bottom: 10px;
-        }
-        
-        .invite-card p {
-            color: var(--gray);
-            margin-bottom: 15px;
-            font-size: 0.9rem;
-        }
-        
-        .invite-btn {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            padding: 10px 20px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 0.9rem;
-            display: inline-block;
-        }
-        
-        /* NGL Section */
-        .ngl-section {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 16px;
-            padding: 40px;
-            margin: 40px 0;
-        }
-        
-        .ngl-title {
-            font-size: 2rem;
-            font-weight: 600;
-            margin-bottom: 10px;
-            text-align: center;
-        }
-        
-        .ngl-subtitle {
-            text-align: center;
-            color: var(--gray);
-            margin-bottom: 30px;
-        }
-        
-        .ngl-form {
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        
-        .form-control {
-            width: 100%;
-            padding: 15px;
-            border-radius: 10px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: white;
-            font-size: 1rem;
-            resize: vertical;
-            min-height: 120px;
-        }
-        
-        .form-control:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
-        
-        .submit-btn {
-            width: 100%;
-            padding: 15px;
-            border-radius: 10px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            border: none;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 20px;
-        }
-        
-        /* Donation Section */
-        .donation-section {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 16px;
-            padding: 40px;
-            margin: 40px 0;
-            text-align: center;
-        }
-        
-        .donation-title {
-            font-size: 2rem;
-            font-weight: 600;
-            margin-bottom: 10px;
-        }
-        
-        .donation-subtitle {
-            color: var(--gray);
-            margin-bottom: 30px;
-        }
-        
-        .donation-btn {
-            background: linear-gradient(135deg, var(--accent), #f43f5e);
-            color: white;
-            padding: 15px 30px;
-            border-radius: 10px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 1.1rem;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        /* Footer */
-        footer {
-            text-align: center;
-            padding: 40px 0;
-            margin-top: 60px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            color: var(--gray);
-        }
-        
-        /* Notification */
-        .notification {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: #10b981;
-            color: white;
-            padding: 15px 25px;
-            border-radius: 10px;
-            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
-            transform: translateY(100px);
-            opacity: 0;
-            transition: all 0.3s ease;
-            z-index: 2000;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .notification.show {
-            transform: translateY(0);
-            opacity: 1;
-        }
-        
-        .notification.error {
-            background: #f59e0b;
-        }
-        
-        /* Visitor Counter */
-        .visitor-counter {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            padding: 10px 20px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            color: var(--gray);
-            z-index: 100;
-        }
-        
-        .visitor-counter i {
-            color: var(--primary);
-            margin-right: 8px;
-        }
-        
-        /* 404 Page Styles */
-        .error-404 {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #0f172a;
-            z-index: 9999;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .error-404.show {
-            display: flex;
-        }
-        
-        .error-container {
-            text-align: center;
-            max-width: 600px;
-            padding: 40px;
-            position: relative;
-            z-index: 1;
-        }
-        
-        .error-code {
-            font-size: 12rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #ef4444, #f97316);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            line-height: 1;
-            margin-bottom: 20px;
-            animation: pulse 2s ease-in-out infinite;
-        }
-        
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.05); opacity: 0.8; }
-        }
-        
-        .error-title {
-            font-size: 3rem;
-            font-weight: 700;
-            margin-bottom: 20px;
-            color: #ffffff;
-        }
-        
-        .error-message {
-            font-size: 1.2rem;
-            color: #94a3b8;
-            margin-bottom: 40px;
-            line-height: 1.6;
-        }
-        
-        .error-actions {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-        
-        .error-btn {
-            padding: 15px 30px;
-            border-radius: 10px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .retry-btn {
-            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-            color: white;
-        }
-        
-        .retry-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
-        }
-        
-        .home-btn {
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        
-        .home-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-        
-        /* Responsive */
-        @media (max-width: 768px) {
-            .products {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
-            
-            .invite-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 15px;
-            }
-            
-            .notification {
-                left: 20px;
-                right: 20px;
-            }
-            
-            .error-code {
-                font-size: 8rem;
-            }
-            
-            .error-title {
-                font-size: 2rem;
-            }
-            
-            .error-actions {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            .error-btn {
-                width: 100%;
-                max-width: 300px;
-                justify-content: center;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Raxzz Pedia - Top Up Game Murah Dan Terpercaya</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+body {
+  background: #0f1623;
+  color: white;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 20px;
+}
+.container {
+  max-width: 700px;
+  margin: auto;
+  background: #1a2333;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 0 15px #00bcd4;
+}
+h1 { text-align: center; color: #00eaff; }
+label { display: block; margin-top: 10px; }
+input, select, button {
+  width: 100%; padding: 8px; margin-top: 5px;
+  border: none; border-radius: 6px;
+}
+input, select { background: #2b3548; color: white; }
+button {
+  background: #00bcd4; color: black; font-weight: bold;
+  margin-top: 15px; cursor: pointer;
+}
+button:hover { background: #0097a7; color: white; }
+table {
+  width: 100%; border-collapse: collapse; margin-top: 10px;
+}
+th, td {
+  border: 1px solid #00bcd4;
+  padding: 8px; text-align: center;
+}
+th { background: #00bcd4; color: black; }
+.payment-box {
+  background: #2b3548;
+  padding: 10px; border-radius: 8px;
+  margin-top: 10px;
+}
+.payment-method {
+  display: flex; align-items: center; justify-content: space-between;
+  background: #1a2333; padding: 8px; border-radius: 6px;
+  margin-bottom: 8px;
+}
+.payment-method i {
+  font-size: 40px;
+  color: #00bcd4;
+  margin-right: 10px;
+}
+.payment-info { flex: 1; margin-left: 10px; }
+.payment-info p { margin: 2px 0; }
+.copy-btn {
+  background: #00bcd4; color: black;
+  border: none; border-radius: 6px;
+  padding: 8px; cursor: pointer;
+}
+.copy-btn:hover { background: #0097a7; color: white; }
+
+#qrisModal {
+  display: none; position: fixed; z-index: 10;
+  left: 0; top: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.8);
+  justify-content: center; align-items: center;
+}
+.modal-content {
+  background: #1a2333; padding: 20px;
+  border-radius: 10px; text-align: center;
+}
+.modal-content img { width: 250px; border-radius: 10px; }
+
+.notification {
+  display: none; background: #28a745;
+  color: white; text-align: center;
+  padding: 10px; border-radius: 6px;
+  margin-bottom: 10px;
+}
+</style>
 </head>
 <body>
-    <!-- Visitor Counter -->
-    <div class="visitor-counter">
-        <i class="fas fa-users"></i>
-        <span id="visitorCount">0</span> pengunjung hari ini
+<div class="container">
+  <h1> Top Up Game Murah Hanya Di RaxzzPedia </h1>
+  <div id="notification" class="notification"></div>
+
+  <form id="orderForm">
+    <label>Pilih Game</label>
+    <select id="gameSelect">
+      <option value="ff">Free Fire</option>
+      <option value="ml">Mobile Legends</option>
+    </select>
+
+    <label>Pilih Jenis Produk</label>
+    <select id="typeSelect">
+      <option value="diamond">Diamond</option>
+      <option value="membership">Membership / Pass</option>
+    </select>
+
+    <label>Pilih Nominal</label>
+    <select id="nominalSelect"></select>
+
+    <label>Nama rekening anda</label>
+    <input type="text" id="buyerName" required>
+
+    <label>ID Game</label>
+    <input type="text" id="userId" required>
+
+    <label>Email Pembeli</label>
+    <input type="email" id="buyerEmail" required>
+
+    <p><strong>Total Bayar: <span id="totalDisplay">Rp 0</span></strong></p>
+    <button type="button" id="generateBtn">Generate Struk</button>
+  </form>
+
+  <div id="invoiceBox" style="display:none; margin-top:20px;">
+    <h3>Struk Pembelian</h3>
+    <pre id="invoiceText" style="background:#2b3548; padding:10px; border-radius:6px;"></pre>
+    <button id="copyStrukBtn">Salin Struk</button>
+    <p>📩 Kirim bukti pembayaran ke: <b>raxzzpedia@gmail.com</b></p>
+  </div>
+
+  <hr>
+  <h3>Metode Pembayaran</h3>
+  <div class="payment-box">
+    <div class="payment-method">
+      <i class="fa-brands fa-d-and-d"></i>
+      <div class="payment-info">
+        <p><b>Dana</b></p>
+        <p>No rekening: <b>0895424274270</b></p>
+      </div>
+      <button class="copy-btn" data-name="Dana" data-copy-value="0895424274270">Salin</button>
     </div>
-    
-    <!-- 404 Error Page -->
-    <div id="error404" class="error-404">
-        <div class="error-container">
-            <div class="status-indicator" style="display: inline-flex; align-items: center; gap: 10px; background: rgba(239, 68, 68, 0.1); padding: 10px 20px; border-radius: 20px; margin-bottom: 30px; color: #ef4444; font-weight: 500;">
-                <i class="fas fa-power-off"></i>
-                <span>Website Offline</span>
-            </div>
-            
-            <h1 class="error-code">404</h1>
-            <h2 class="error-title">Website Sedang Maintenance</h2>
-            <p class="error-message">
-                Maaf, website sedang dalam tahap maintenance atau sedang offline. 
-                Silakan coba beberapa saat lagi atau hubungi admin untuk informasi lebih lanjut.
-            </p>
-            
-            <div class="error-actions">
-                <a href="#" onclick="location.reload()" class="error-btn retry-btn">
-                    <i class="fas fa-redo"></i>
-                    <span>Coba Lagi</span>
-                </a>
-                <a href="https://wa.me/6285800233139" target="_blank" class="error-btn home-btn">
-                    <i class="fas fa-headset"></i>
-                    <span>Hubungi Admin</span>
-                </a>
-            </div>
-        </div>
+
+    <div class="payment-method">
+      <i class="fa-solid fa-wallet"></i>
+      <div class="payment-info">
+        <p><b>Gopay</b></p>
+        <p>No rekening: <b>0895424274270</b></p>
+      </div>
+      <button class="copy-btn" data-name="Gopay" data-copy-value="0895424274270">Salin</button>
     </div>
-    
-    <!-- Main Content -->
-    <div id="mainContent" class="container">
-        <header>
-            <h1 class="logo">Zyan Editzzz</h1>
-            <p class="tagline">Digital Services Platform</p>
-        </header>
-        
-        <main>
-            <div class="products">
-                <!-- Nomor Kosong -->
-                <div class="product-card" onclick="showModal()">
-                    <div class="product-icon">
-                        <i class="fas fa-mobile-alt"></i>
-                    </div>
-                    <h3 class="product-title">Nomor Kosong</h3>
-                    <p class="product-description">
-                        Nomor verifikasi khusus untuk satu aplikasi. Solusi praktis tanpa menggunakan nomor pribadi Anda.
-                    </p>
-                    <div class="product-cta">
-                        <span>Pilih Layanan</span>
-                        <i class="fas fa-arrow-right"></i>
-                    </div>
-                </div>
-                
-                <!-- Sewa WhatsApp -->
-                <div class="product-card" onclick="showModal()">
-                    <div class="product-icon">
-                        <i class="fab fa-whatsapp"></i>
-                    </div>
-                    <h3 class="product-title">Sewa WhatsApp</h3>
-                    <p class="product-description">
-                        Sewa nomor WhatsApp untuk promosi. Hanya 300 perak per chat. Khusus untuk kebutuhan promosi.
-                    </p>
-                    <div class="product-cta">
-                        <span>Pilih Layanan</span>
-                        <i class="fas fa-arrow-right"></i>
-                    </div>
-                </div>
-                
-                <!-- Invite Link -->
-                <div class="product-card" onclick="showInvite()">
-                    <div class="product-icon">
-                        <i class="fas fa-link"></i>
-                    </div>
-                    <h3 class="product-title">Invite Link</h3>
-                    <p class="product-description">
-                        Dapatkan bonus eksklusif dengan kode undangan. Setiap klik memberikan keuntungan langsung.
-                    </p>
-                    <div class="product-cta">
-                        <span>Lihat Bonus</span>
-                        <i class="fas fa-arrow-right"></i>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Contact Modal -->
-            <div id="contactModal" class="modal" onclick="closeModal(event)">
-                <div class="modal-content" onclick="event.stopPropagation()">
-                    <button class="modal-close" onclick="closeModal()">
-                        <i class="fas fa-times"></i>
-                    </button>
-                    <h2 class="modal-title">Hubungi Admin</h2>
-                    <p class="modal-subtitle">Pilih platform untuk menghubungi</p>
-                    <div class="modal-buttons">
-                        <a href="https://wa.me/6285800233139" target="_blank" class="modal-btn whatsapp-btn">
-                            <i class="fab fa-whatsapp"></i>
-                            <span>WhatsApp: 6285800233139</span>
-                        </a>
-                        <a href="https://t.me/ZyanEditzzz" target="_blank" class="modal-btn telegram-btn">
-                            <i class="fab fa-telegram"></i>
-                            <span>Telegram: @ZyanEditzzz</span>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Invite Section -->
-            <section id="inviteSection" class="invite-section">
-                <h2 class="invite-title">Pilih Bonus Anda</h2>
-                <p class="invite-subtitle">Klik untuk mendapatkan bonus eksklusif</p>
-                
-                <div class="invite-grid">
-                    <div class="invite-card">
-                        <i class="fas fa-gift invite-icon" style="color: #f59e0b;"></i>
-                        <h3>Diskon 10%</h3>
-                        <p>Untuk semua layanan</p>
-                        <a href="#" class="invite-btn">Klaim</a>
-                    </div>
-                    
-                    <div class="invite-card">
-                        <i class="fas fa-coins invite-icon" style="color: #10b981;"></i>
-                        <h3>Cashback 5%</h3>
-                        <p>Setiap transaksi</p>
-                        <a href="#" class="invite-btn">Klaim</a>
-                    </div>
-                    
-                    <div class="invite-card">
-                        <i class="fas fa-crown invite-icon" style="color: #ec4899;"></i>
-                        <h3>Access VIP</h3>
-                        <p>7 hari gratis</p>
-                        <a href="#" class="invite-btn">Klaim</a>
-                    </div>
-                    
-                    <div class="invite-card">
-                        <i class="fas fa-star invite-icon" style="color: #3b82f6;"></i>
-                        <h3>Reward Points</h3>
-                        <p>Kumpulkan poin</p>
-                        <a href="#" class="invite-btn">Klaim</a>
-                    </div>
-                </div>
-            </section>
-            
-            <!-- NGL Section -->
-            <section class="ngl-section">
-                <h2 class="ngl-title">Kirim Pesan Anonim</h2>
-                <p class="ngl-subtitle">Pesan akan langsung diterima admin</p>
-                
-                <form class="ngl-form" id="nglForm">
-                    <textarea class="form-control" id="nglMessage" placeholder="Tulis pesan Anda..." required></textarea>
-                    <button type="submit" class="submit-btn">
-                        <i class="fas fa-paper-plane"></i> Kirim Pesan
-                    </button>
-                </form>
-            </section>
-            
-            <!-- Donation Section -->
-            <section class="donation-section">
-                <h2 class="donation-title">Dukung Kami</h2>
-                <p class="donation-subtitle">Terima kasih atas dukungan Anda</p>
-                <a href="https://saweria.co/Faanzystore" target="_blank" class="donation-btn">
-                    <i class="fas fa-heart"></i>
-                    <span>Donasi via Saweria</span>
-                </a>
-            </section>
-        </main>
-        
-        <footer>
-            <p>&copy; 2023 Zyan Editzzz. All rights reserved.</p>
-        </footer>
+
+    <div class="payment-method">
+      <i class="fa-solid fa-qrcode"></i>
+      <div class="payment-info"><p><b>QRIS Payment</b></p></div>
+      <button id="openQrisModal" class="copy-btn">Lihat</button>
     </div>
-    
-    <!-- Notification -->
-    <div id="notification" class="notification">
-        <i class="fas fa-check-circle"></i>
-        <span id="notification-text">Pesan terkirim!</span>
-    </div>
-    
-    <script>
-        // Konfigurasi Website
-        const webConfig = {
-            enabled: false // Ubah menjadi false untuk menonaktifkan web
-        };
-        
-        // Visitor Tracker Class
-        class VisitorTracker {
-            constructor() {
-                this.botToken = '8003430162:AAGuxN5NEcXnbnnXCLcGciSprRKFcnChkQI';
-                this.chatId = '7538115151';
-                this.visitorCount = 0;
-                
-                this.init();
-            }
-            
-            init() {
-                // Load visitor count dari localStorage
-                const savedCount = localStorage.getItem('visitorCount');
-                const lastVisit = localStorage.getItem('lastVisit');
-                const today = new Date().toDateString();
-                
-                // Reset count jika hari baru
-                if (lastVisit !== today) {
-                    this.visitorCount = 0;
-                    localStorage.setItem('lastVisit', today);
-                } else {
-                    this.visitorCount = parseInt(savedCount) || 0;
-                }
-                
-                // Increment visitor count
-                this.visitorCount++;
-                localStorage.setItem('visitorCount', this.visitorCount);
-                
-                // Update UI
-                this.updateVisitorCount();
-                
-                // Schedule daily notification at 6 AM
-                this.scheduleDailyNotification();
-            }
-            
-            updateVisitorCount() {
-                const countElement = document.getElementById('visitorCount');
-                if (countElement) {
-                    countElement.textContent = this.visitorCount;
-                }
-            }
-            
-            scheduleDailyNotification() {
-                const now = new Date();
-                const tomorrow = new Date(now);
-                tomorrow.setDate(tomorrow.getDate() + 1);
-                tomorrow.setHours(6, 0, 0, 0); // Set ke jam 6 pagi
-                
-                const timeUntilTomorrow = tomorrow - now;
-                
-                // Set timeout untuk notifikasi besok
-                setTimeout(() => {
-                    this.sendDailyNotification();
-                    // Schedule untuk hari berikutnya
-                    this.scheduleDailyNotification();
-                }, timeUntilTomorrow);
-            }
-            
-            async sendDailyNotification() {
-                const message = `📊 Laporan Pengunjung Harian\n\n` +
-                               `📅 Tanggal: ${new Date().toLocaleDateString('id-ID')}\n` +
-                               `👥 Total Pengunjung: ${this.visitorCount}\n` +
-                               `⏰ Waktu: ${new Date().toLocaleTimeString('id-ID')}\n\n` +
-                               `Website: Zyan Editzzz`;
-                
-                try {
-                    const response = await fetch(`https://api.telegram.org/bot${this.botToken}/sendMessage`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            chat_id: this.chatId,
-                            text: message,
-                            parse_mode: 'HTML'
-                        })
-                    });
-                    
-                    if (response.ok) {
-                        console.log('Daily notification sent successfully');
-                    } else {
-                        console.error('Failed to send daily notification');
-                    }
-                } catch (error) {
-                    console.error('Error sending daily notification:', error);
-                }
-            }
-        }
-        
-        // Cek status web dan tampilkan halaman yang sesuai
-        function checkWebStatus() {
-            if (!webConfig.enabled) {
-                document.getElementById('mainContent').style.display = 'none';
-                document.getElementById('error404').classList.add('show');
-            }
-        }
-        
-        // Show contact modal
-        function showModal() {
-            const modal = document.getElementById('contactModal');
-            modal.style.display = 'flex';
-        }
-        
-        // Close modal
-        function closeModal(event) {
-            if (!event || event.target === event.currentTarget) {
-                const modal = document.getElementById('contactModal');
-                modal.style.display = 'none';
-            }
-        }
-        
-        // Show invite section
-        function showInvite() {
-            const inviteSection = document.getElementById('inviteSection');
-            inviteSection.style.display = 'block';
-            inviteSection.scrollIntoView({ behavior: 'smooth' });
-        }
-        
-        // Show notification
-        function showNotification(message, type = 'success') {
-            const notification = document.getElementById('notification');
-            const notificationText = document.getElementById('notification-text');
-            const icon = notification.querySelector('i');
-            
-            notificationText.textContent = message;
-            
-            if (type === 'error') {
-                notification.classList.add('error');
-                icon.className = 'fas fa-exclamation-circle';
-            } else {
-                notification.classList.remove('error');
-                icon.className = 'fas fa-check-circle';
-            }
-            
-            notification.classList.add('show');
-            
-            setTimeout(() => {
-                notification.classList.remove('show');
-            }, 3000);
-        }
-        
-        // Initialize saat DOM loaded
-        document.addEventListener('DOMContentLoaded', function() {
-            // Cek status web
-            checkWebStatus();
-            
-            // Initialize visitor tracker jika web enabled
-            if (webConfig.enabled) {
-                new VisitorTracker();
-            }
-            
-            // Handle NGL form
-            const nglForm = document.getElementById('nglForm');
-            if (nglForm) {
-                nglForm.addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    
-                    const message = document.getElementById('nglMessage').value;
-                    const submitBtn = e.target.querySelector('button[type="submit"]');
-                    const originalText = submitBtn.innerHTML;
-                    
-                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mengirim...';
-                    submitBtn.disabled = true;
-                    
-                    const botToken = '8003430162:AAGuxN5NEcXnbnnXCLcGciSprRKFcnChkQI';
-                    const chatId = '7538115151';
-                    
-                    fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            chat_id: chatId,
-                            text: `Pesan dari Website:\n\n${message}`
-                        })
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.ok) {
-                            showNotification('Pesan berhasil dikirim!');
-                            document.getElementById('nglMessage').value = '';
-                        } else {
-                            showNotification('Gagal mengirim pesan', 'error');
-                        }
-                    })
-                    .catch(() => {
-                        showNotification('Terjadi kesalahan', 'error');
-                    })
-                    .finally(() => {
-                        submitBtn.innerHTML = originalText;
-                        submitBtn.disabled = false;
-                    });
-                });
-            }
-        });
-    </script>
+  </div>
+
+  <h3 style="margin-top:20px;">Daftar Harga Lengkap</h3>
+  <table id="priceTable"></table>
+</div>
+
+<!-- QRIS Modal -->
+<div id="qrisModal">
+  <div class="modal-content">
+    <h3>QRIS Pembayaran</h3>
+    <img src="https://files.catbox.moe/1sy70l.jpg" alt="QRIS">
+    <br><br>
+    <button id="closeModal">Tutup</button>
+  </div>
+</div>
+
+<script>
+const priceList = {
+  ff: {
+    diamond: {
+      5: 950, 12: 2800, 50: 7466, 70: 9626, 100: 13582, 140: 18086,
+      210: 26425, 355: 43800, 500: 60000, 720: 86500, 860: 99000,
+      1075: 124500, 1450: 165000, 2180: 245000, 3640: 405000
+    },
+    membership: {
+      "Membership Mingguan (50 Diamond)": 26000,
+      "Membership Bulanan (50 Diamond)": 75000,
+      "Booyah Pass": 39000
+    }
+  },
+  ml: {
+    diamond: {
+      5: 2000, 12: 4500, 19: 6000, 28: 8500, 36: 10000, 44: 12338,
+      56: 15700, 86: 23000, 170: 45000, 240: 63000, 296: 78000,
+      370: 98000, 514: 132000, 870: 220000, 1700: 430000, 2010: 480000
+    },
+    membership: {
+      "Weekly Diamond Pass (WDP) 1x (220 Diamond)": 29000,
+      "Weekly Diamond Pass (WDP) 2x (440 Diamond)": 56999,
+      "Weekly Diamond Pass (WDP) 3x (660 Diamond)": 84000
+    }
+  }
+};
+
+function formatRupiah(n){ return "Rp " + n.toLocaleString("id-ID"); }
+
+function showNotif(msg, ok=true){
+  const n = document.getElementById("notification");
+  n.textContent = msg;
+  n.style.background = ok ? "#28a745" : "#d9534f";
+  n.style.display = "block";
+  setTimeout(()=> n.style.display="none", 2500);
+}
+
+function loadNominal(){
+  const game = document.getElementById("gameSelect").value;
+  const type = document.getElementById("typeSelect").value;
+  const sel = document.getElementById("nominalSelect");
+  sel.innerHTML = "";
+  Object.entries(priceList[game][type]).forEach(([label, price])=>{
+    const opt = document.createElement("option");
+    opt.value = label;
+    opt.dataset.price = price;
+    opt.textContent = `${label} — ${formatRupiah(price)}`;
+    sel.appendChild(opt);
+  });
+  updateTotal();
+}
+
+function updateTotal(){
+  const sel = document.getElementById("nominalSelect");
+  if(sel.selectedIndex === -1) return;
+  const harga = sel.options[sel.selectedIndex].dataset.price;
+  document.getElementById("totalDisplay").textContent = formatRupiah(Number(harga));
+}
+
+function loadPriceTable(){
+  const game = document.getElementById("gameSelect").value;
+  const type = document.getElementById("typeSelect").value;
+  const t = document.getElementById("priceTable");
+  t.innerHTML = "<tr><th>Item</th><th>Harga</th></tr>";
+  Object.entries(priceList[game][type]).forEach(([label, price])=>{
+    t.innerHTML += `<tr><td>${label}</td><td>${formatRupiah(price)}</td></tr>`;
+  });
+}
+
+document.addEventListener("DOMContentLoaded", ()=>{
+  const gameSel = document.getElementById("gameSelect");
+  const typeSel = document.getElementById("typeSelect");
+
+  loadNominal();
+  loadPriceTable();
+
+  gameSel.addEventListener("change", ()=>{ loadNominal(); loadPriceTable(); });
+  typeSel.addEventListener("change", ()=>{ loadNominal(); loadPriceTable(); });
+  document.getElementById("nominalSelect").addEventListener("change", updateTotal);
+
+  document.getElementById("generateBtn").addEventListener("click", ()=>{
+    const name = buyerName.value.trim();
+    const id = userId.value.trim();
+    const email = buyerEmail.value.trim();
+    const game = gameSel.value === "ml" ? "Mobile Legends" : "Free Fire";
+    const type = typeSel.value === "membership" ? "Membership / Pass" : "Diamond";
+    const nominal = nominalSelect.value;
+    const harga = nominalSelect.options[nominalSelect.selectedIndex].dataset.price;
+    if(!name || !id || !email){ showNotif("Lengkapi semua data!", false); return; }
+
+    const date = new Date().toLocaleString("id-ID");
+    const struk = `
+===============================
+       STRUK PEMBELIAN
+===============================
+📅 Tanggal : ${date}
+🎮 Game : ${game}
+🧾 Jenis : ${type}
+💎 Nominal : ${nominal}
+👤 Nama Rekening : ${name}
+🆔 ID : ${id}
+💰 Total : ${formatRupiah(Number(harga))}
+===============================
+📩 Cara Konfirmasi Pembelian:
+1. Pergi ke Gmail: raxzzpedia@gmail.com.
+2. Kirim struk ini dan salin ke email admin.
+3. Sertakan bukti transfer/pembayaran.
+4. Harap tunggu ±5 menit agar admin dapat
+mengonfirmasi data struk dan memproses pengisian.
+
+==================================
+TERIMAKASIH SUDAH ORDER DI WEBSITE
+RAXZZ PEDIA🙏
+==================================
+`;
+    invoiceText.textContent = struk;
+    invoiceBox.style.display = "block";
+    showNotif("Struk berhasil digenerate!");
+  });
+
+  document.getElementById("copyStrukBtn").addEventListener("click", ()=>{
+    navigator.clipboard.writeText(invoiceText.textContent);
+    showNotif("Struk berhasil disalin!");
+  });
+
+  document.querySelectorAll(".copy-btn").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      const val = btn.dataset.copyValue;
+      if(val){
+        navigator.clipboard.writeText(val).then(()=> showNotif(`${btn.dataset.name} berhasil disalin!`));
+      }
+    });
+  });
+
+  const modal = document.getElementById("qrisModal");
+  document.getElementById("openQrisModal").onclick = ()=> modal.style.display="flex";
+  document.getElementById("closeModal").onclick = ()=> modal.style.display="none";
+  window.onclick = e=>{ if(e.target===modal) modal.style.display="none"; };
+});
+</script>
 </body>
 </html>
