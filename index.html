@@ -3,311 +3,394 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Raxzz Pedia - Top Up Game Murah Dan Terpercaya</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<title>GOALIQ — AI Prediksi Bola</title>
+<script src="https://js.puter.com/v2/"></script>
 <style>
-body {
-  background: #0f1623;
-  color: white;
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 20px;
-}
-.container {
-  max-width: 700px;
-  margin: auto;
-  background: #1a2333;
-  padding: 20px;
-  border-radius: 15px;
-  box-shadow: 0 0 15px #00bcd4;
-}
-h1 { text-align: center; color: #00eaff; }
-label { display: block; margin-top: 10px; }
-input, select, button {
-  width: 100%; padding: 8px; margin-top: 5px;
-  border: none; border-radius: 6px;
-}
-input, select { background: #2b3548; color: white; }
-button {
-  background: #00bcd4; color: black; font-weight: bold;
-  margin-top: 15px; cursor: pointer;
-}
-button:hover { background: #0097a7; color: white; }
-table {
-  width: 100%; border-collapse: collapse; margin-top: 10px;
-}
-th, td {
-  border: 1px solid #00bcd4;
-  padding: 8px; text-align: center;
-}
-th { background: #00bcd4; color: black; }
-.payment-box {
-  background: #2b3548;
-  padding: 10px; border-radius: 8px;
-  margin-top: 10px;
-}
-.payment-method {
-  display: flex; align-items: center; justify-content: space-between;
-  background: #1a2333; padding: 8px; border-radius: 6px;
-  margin-bottom: 8px;
-}
-.payment-method i {
-  font-size: 40px;
-  color: #00bcd4;
-  margin-right: 10px;
-}
-.payment-info { flex: 1; margin-left: 10px; }
-.payment-info p { margin: 2px 0; }
-.copy-btn {
-  background: #00bcd4; color: black;
-  border: none; border-radius: 6px;
-  padding: 8px; cursor: pointer;
-}
-.copy-btn:hover { background: #0097a7; color: white; }
-
-#qrisModal {
-  display: none; position: fixed; z-index: 10;
-  left: 0; top: 0; width: 100%; height: 100%;
-  background: rgba(0,0,0,0.8);
-  justify-content: center; align-items: center;
-}
-.modal-content {
-  background: #1a2333; padding: 20px;
-  border-radius: 10px; text-align: center;
-}
-.modal-content img { width: 250px; border-radius: 10px; }
-
-.notification {
-  display: none; background: #28a745;
-  color: white; text-align: center;
-  padding: 10px; border-radius: 6px;
-  margin-bottom: 10px;
-}
+  :root{
+    --bg:#070b12; --panel:#0d1420; --panel2:#111b2b; --line:#1c2a40;
+    --green:#22e584; --green2:#0ea961; --gold:#ffd166; --red:#ff5c7a;
+    --text:#e8eef7; --muted:#8ba0bd; --blue:#4da3ff;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;height:100vh;display:flex;overflow:hidden}
+  /* ========== SIDEBAR ========== */
+  #sidebar{width:340px;min-width:340px;background:var(--panel);border-right:1px solid var(--line);display:flex;flex-direction:column;overflow-y:auto}
+  .logo{padding:18px 20px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--line)}
+  .logo-ball{width:40px;height:40px;border-radius:50%;background:conic-gradient(from 20deg,#0d3d26,#22e584,#0d3d26);display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 0 18px rgba(34,229,132,.35)}
+  .logo h1{font-size:20px;letter-spacing:1px}
+  .logo h1 span{color:var(--green)}
+  .logo small{display:block;color:var(--muted);font-size:11px;font-weight:400}
+  .side-section{padding:16px 20px;border-bottom:1px solid var(--line)}
+  .side-section h3{font-size:12px;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-bottom:12px}
+  .method{display:flex;gap:10px;align-items:flex-start;padding:7px 0;font-size:13px;color:#c6d4e6}
+  .method b{color:var(--green);font-weight:600}
+  .method .dot{width:8px;height:8px;border-radius:50%;background:var(--green);margin-top:5px;flex-shrink:0;box-shadow:0 0 8px var(--green)}
+  /* simulator */
+  .sim-field{margin-bottom:10px}
+  .sim-field label{display:block;font-size:11px;color:var(--muted);margin-bottom:4px}
+  .sim-field input{width:100%;background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:9px 12px;color:var(--text);font-size:14px;outline:none}
+  .sim-field input:focus{border-color:var(--green)}
+  .sim-row{display:flex;gap:10px}
+  .sim-row .sim-field{flex:1}
+  .btn{width:100%;padding:11px;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;transition:.15s}
+  .btn-green{background:linear-gradient(135deg,var(--green),var(--green2));color:#04160c}
+  .btn-green:hover{filter:brightness(1.1);transform:translateY(-1px)}
+  .btn-blue{background:var(--panel2);color:var(--blue);border:1px solid #1e3d5f;margin-top:8px}
+  .btn-blue:hover{background:#152238}
+  #simResult{display:none;margin-top:12px;background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:14px;font-size:13px}
+  .prob-bar{height:10px;border-radius:6px;background:#1a2436;overflow:hidden;display:flex;margin:8px 0 14px}
+  .prob-bar div{height:100%}
+  .pb-home{background:var(--green)} .pb-draw{background:var(--gold)} .pb-away{background:var(--blue)}
+  .score-line{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px dashed #1c2a40;color:#c6d4e6}
+  .score-line b{color:var(--gold)}
+  /* ========== MAIN ========== */
+  #main{flex:1;display:flex;flex-direction:column;min-width:0}
+  header{padding:14px 24px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:14px;background:var(--panel)}
+  header .title{font-size:16px;font-weight:600}
+  header .badge{font-size:11px;background:#122b1e;color:var(--green);border:1px solid #1d4a33;padding:3px 10px;border-radius:20px}
+  .hspace{flex:1}
+  select{background:var(--panel2);border:1px solid var(--line);color:var(--text);border-radius:8px;padding:7px 10px;font-size:13px;outline:none;cursor:pointer}
+  .toggle-wrap{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);cursor:pointer;user-select:none}
+  .toggle{width:40px;height:22px;border-radius:20px;background:#1a2436;position:relative;transition:.2s;border:1px solid var(--line)}
+  .toggle::after{content:'';position:absolute;width:16px;height:16px;border-radius:50%;background:#5b7089;top:2px;left:2px;transition:.2s}
+  .toggle.on{background:#12351f;border-color:#1d5c37}
+  .toggle.on::after{left:20px;background:var(--green)}
+  /* chat */
+  #chat{flex:1;overflow-y:auto;padding:26px;display:flex;flex-direction:column;gap:18px}
+  .msg{max-width:78%;padding:14px 18px;border-radius:16px;line-height:1.65;font-size:15px;white-space:pre-wrap;word-wrap:break-word}
+  .msg.user{align-self:flex-end;background:linear-gradient(135deg,#14532d,#166534);border-bottom-right-radius:4px}
+  .msg.ai{align-self:flex-start;background:var(--panel2);border:1px solid var(--line);border-bottom-left-radius:4px}
+  .msg.ai table{border-collapse:collapse;margin:10px 0;font-size:13px}
+  .msg.ai th,.msg.ai td{border:1px solid var(--line);padding:6px 12px;text-align:center}
+  .msg.ai th{background:#16233a;color:var(--green)}
+  .msg .role{font-size:11px;color:var(--muted);display:block;margin-bottom:6px;text-transform:uppercase;letter-spacing:1px}
+  #typing{display:none;align-self:flex-start;padding:14px 18px;background:var(--panel2);border:1px solid var(--line);border-radius:16px;border-bottom-left-radius:4px;gap:5px}
+  #typing span{width:8px;height:8px;border-radius:50%;background:var(--green);animation:blink 1.2s infinite}
+  #typing span:nth-child(2){animation-delay:.2s} #typing span:nth-child(3){animation-delay:.4s}
+  @keyframes blink{0%,80%,100%{opacity:.25}40%{opacity:1}}
+  /* composer */
+  #composer{padding:16px 24px 20px;border-top:1px solid var(--line);background:var(--panel)}
+  #chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+  .chip{font-size:12px;padding:6px 14px;border-radius:20px;background:var(--panel2);border:1px solid var(--line);color:#b9c9dd;cursor:pointer;transition:.15s}
+  .chip:hover{border-color:var(--green);color:var(--green)}
+  #inputRow{display:flex;gap:10px}
+  #input{flex:1;background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:13px 16px;color:var(--text);font-size:15px;outline:none;resize:none;font-family:inherit;height:50px}
+  #input:focus{border-color:var(--green)}
+  #sendBtn{width:50px;height:50px;border-radius:12px;border:none;background:linear-gradient(135deg,var(--green),var(--green2));color:#04160c;font-size:20px;cursor:pointer;transition:.15s;flex-shrink:0}
+  #sendBtn:hover{filter:brightness(1.12)}
+  #stopBtn{display:none;width:50px;height:50px;border-radius:12px;border:1px solid var(--red);background:transparent;color:var(--red);font-size:18px;cursor:pointer;flex-shrink:0}
+  footer{padding:8px 24px;font-size:11px;color:#4a5c74;text-align:center;border-top:1px solid var(--line);background:var(--panel)}
+  footer a{color:#5d7492;text-decoration:none}
+  footer a:hover{color:var(--green)}
+  #toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:#2a1520;border:1px solid #5c2740;color:#ffb3c6;padding:10px 20px;border-radius:10px;font-size:13px;display:none;z-index:50;max-width:80%}
+  @media(max-width:900px){#sidebar{display:none}.msg{max-width:92%}}
 </style>
 </head>
 <body>
-<div class="container">
-  <h1> Top Up Game Murah Hanya Di RaxzzPedia </h1>
-  <div id="notification" class="notification"></div>
 
-  <form id="orderForm">
-    <label>Pilih Game</label>
-    <select id="gameSelect">
-      <option value="ff">Free Fire</option>
-      <option value="ml">Mobile Legends</option>
-    </select>
-
-    <label>Pilih Jenis Produk</label>
-    <select id="typeSelect">
-      <option value="diamond">Diamond</option>
-      <option value="membership">Membership / Pass</option>
-    </select>
-
-    <label>Pilih Nominal</label>
-    <select id="nominalSelect"></select>
-
-    <label>Nama rekening anda</label>
-    <input type="text" id="buyerName" required>
-
-    <label>ID Game</label>
-    <input type="text" id="userId" required>
-
-    <label>Email Pembeli</label>
-    <input type="email" id="buyerEmail" required>
-
-    <p><strong>Total Bayar: <span id="totalDisplay">Rp 0</span></strong></p>
-    <button type="button" id="generateBtn">Generate Struk</button>
-  </form>
-
-  <div id="invoiceBox" style="display:none; margin-top:20px;">
-    <h3>Struk Pembelian</h3>
-    <pre id="invoiceText" style="background:#2b3548; padding:10px; border-radius:6px;"></pre>
-    <button id="copyStrukBtn">Salin Struk</button>
-    <p>📩 Kirim bukti pembayaran ke: <b>raxzzpedia@gmail.com</b></p>
+<!-- ================= SIDEBAR ================= -->
+<div id="sidebar">
+  <div class="logo">
+    <div class="logo-ball">⚽</div>
+    <div><h1>GOAL<span>IQ</span></h1><small>AI Football Prediction Engine</small></div>
   </div>
 
-  <hr>
-  <h3>Metode Pembayaran</h3>
-  <div class="payment-box">
-    <div class="payment-method">
-      <i class="fa-brands fa-d-and-d"></i>
-      <div class="payment-info">
-        <p><b>Dana</b></p>
-        <p>No rekening: <b>0895424274270</b></p>
-      </div>
-      <button class="copy-btn" data-name="Dana" data-copy-value="0895424274270">Salin</button>
-    </div>
-
-    <div class="payment-method">
-      <i class="fa-solid fa-wallet"></i>
-      <div class="payment-info">
-        <p><b>Gopay</b></p>
-        <p>No rekening: <b>0895424274270</b></p>
-      </div>
-      <button class="copy-btn" data-name="Gopay" data-copy-value="0895424274270">Salin</button>
-    </div>
-
-    <div class="payment-method">
-      <i class="fa-solid fa-qrcode"></i>
-      <div class="payment-info"><p><b>QRIS Payment</b></p></div>
-      <button id="openQrisModal" class="copy-btn">Lihat</button>
-    </div>
+  <div class="side-section">
+    <h3>🧠 Metode Analisis</h3>
+    <div class="method"><div class="dot"></div><div><b>Distribusi Poisson</b> — memodelkan jumlah gol dengan expected goals (xG) tiap tim.</div></div>
+    <div class="method"><div class="dot"></div><div><b>Elo Rating</b> — rating kekuatan dinamis berbasis hasil pertandingan historis.</div></div>
+    <div class="method"><div class="dot"></div><div><b>xG (Expected Goals)</b> — kualitas peluang dari data shot-level.</div></div>
+    <div class="method"><div class="dot"></div><div><b>Head-to-Head</b> — rekam jejak pertemuan langsung kedua tim.</div></div>
+    <div class="method"><div class="dot"></div><div><b>Form 5 Laga</b> — tren performa terkini dengan bobot laga terbaru lebih besar.</div></div>
+    <div class="method"><div class="dot"></div><div><b>Home/Away & Motivasi</b> — faktor kandang, kelelahan, cedera, dan beban klasemen.</div></div>
   </div>
 
-  <h3 style="margin-top:20px;">Daftar Harga Lengkap</h3>
-  <table id="priceTable"></table>
-</div>
+  <div class="side-section">
+    <h3>⚡ Simulasi Monte Carlo (10.000x)</h3>
+    <div class="sim-field"><label>Tim Tuan Rumah</label><input id="simHome" value="Real Madrid"></div>
+    <div class="sim-field"><label>Tim Tamu</label><input id="simAway" value="Barcelona"></div>
+    <div class="sim-row">
+      <div class="sim-field"><label>xG Home</label><input id="xgHome" type="number" step="0.1" value="1.8"></div>
+      <div class="sim-field"><label>xG Away</label><input id="xgAway" type="number" step="0.1" value="1.4"></div>
+    </div>
+    <button class="btn btn-green" id="runSim">▶ Jalankan Simulasi</button>
+    <button class="btn btn-blue" id="simToAi" style="display:none">💬 Bahas hasil ini dengan AI</button>
+    <div id="simResult"></div>
+  </div>
 
-<!-- QRIS Modal -->
-<div id="qrisModal">
-  <div class="modal-content">
-    <h3>QRIS Pembayaran</h3>
-    <img src="https://files.catbox.moe/1sy70l.jpg" alt="QRIS">
-    <br><br>
-    <button id="closeModal">Tutup</button>
+  <div class="side-section">
+    <h3>ℹ️ Catatan</h3>
+    <p style="font-size:12px;color:var(--muted);line-height:1.6">Prediksi adalah estimasi probabilitas, <b style="color:var(--gold)">bukan jaminan hasil</b>. Sepak bola selalu punya faktor kejutan. Gunakan sebagai referensi analisis, bukan kepastian.</p>
   </div>
 </div>
+
+<!-- ================= MAIN ================= -->
+<div id="main">
+  <header>
+    <div class="title">💬 Analisis & Prediksi Pertandingan</div>
+    <div class="badge">● Online</div>
+    <div class="hspace"></div>
+    <div class="toggle-wrap" id="wsWrap"><div class="toggle" id="wsToggle"></div> Data Real-time (Web Search)</div>
+    <select id="modelSel">
+      <option value="gpt-4o-mini">gpt-4o-mini (cepat)</option>
+      <option value="gpt-4o">gpt-4o (akurat + web)</option>
+      <option value="claude-sonnet-4-6">claude-sonnet-4-6</option>
+      <option value="gemini-2.5-flash">gemini-2.5-flash</option>
+    </select>
+    <select id="tempSel">
+      <option value="0.2">Presisi</option>
+      <option value="0.7" selected>Seimbang</option>
+      <option value="1.0">Kreatif</option>
+    </select>
+    <button class="btn btn-blue" id="clearBtn" style="width:auto;padding:8px 14px;margin:0">🗑</button>
+  </header>
+
+  <div id="chat"></div>
+
+  <div id="typing"><span></span><span></span><span></span></div>
+
+  <div id="composer">
+    <div id="chips">
+      <div class="chip" data-q="Prediksi Arsenal vs Liverpool beserta probabilitas 1X2 dan skor paling mungkin">🏴󠁧󠁢󠁥󠁮󠁧󠁿 Arsenal vs Liverpool</div>
+      <div class="chip" data-q="Prediksi Real Madrid vs Barcelona: analisis El Clasico dengan metode Elo dan Poisson">🇪🇸 El Clasico</div>
+      <div class="chip" data-q="Prediksi Inter vs Juventus Serie A lengkap dengan tips taruhan over/under dan BTTS">🇮🇹 Inter vs Juventus</div>
+      <div class="chip" data-q="Bagaimana cara kerja prediksi AI ini? Jelaskan metodologinya">🧠 Cara kerja AI</div>
+    </div>
+    <div id="inputRow">
+      <textarea id="input" placeholder="Tanya prediksi pertandingan… misal: 'Prediksi MU vs Chelsea besok'" rows="1"></textarea>
+      <button id="stopBtn" title="Stop">■</button>
+      <button id="sendBtn" title="Kirim">➤</button>
+    </div>
+  </div>
+  <footer>Diberdayakan oleh <a href="https://developer.puter.com" target="_blank">Puter.js</a> — 500+ model AI · GOALIQ © 2026 · Prediksi bersifat probabilistik, bukan jaminan.</footer>
+</div>
+
+<div id="toast"></div>
 
 <script>
-const priceList = {
-  ff: {
-    diamond: {
-      5: 950, 12: 2800, 50: 7466, 70: 9626, 100: 13582, 140: 18086,
-      210: 26425, 355: 43800, 500: 60000, 720: 86500, 860: 99000,
-      1075: 124500, 1450: 165000, 2180: 245000, 3640: 405000
-    },
-    membership: {
-      "Membership Mingguan (50 Diamond)": 26000,
-      "Membership Bulanan (50 Diamond)": 75000,
-      "Booyah Pass": 39000
+/* ================================================================
+   GOALIQ — AI Prediksi Bola dengan Puter.js
+   ================================================================ */
+
+const SYSTEM_PROMPT = `Kamu adalah GOALIQ, AI analis prediksi sepak bola kelas dunia yang berbahasa Indonesia.
+Gaya bicaramu: analitis, percaya diri, sportif, dan menggunakan format yang rapi. Selalu gunakan data & metode ilmiah:
+
+1. DISTRIBUSI POISSON — hitung probabilitas skor dari expected goals (xG) kedua tim.
+2. ELO RATING — perkirakan selisih kekuatan dinamis antar tim.
+3. EXPECTED GOALS (xG) — nilai kualitas peluang dari data shot-level.
+4. HEAD-TO-HEAD — rekam jejak pertemuan langsung 5-10 laga terakhir.
+5. FORM GUIDE 5 LAGA — W/D/L terkini dengan bobot exponensial pada laga terbaru.
+6. FAKTOR KONTEKSTUAL — kandung (home advantage ~ +0.35 gol), cedera/suspensi pemain kunci, kelelahan jadwal, motivasi klasemen, cuaca, dan rotasi.
+
+ATURAN FORMAT SETIAP PREDIKSI PERTANDINGAN:
+- Awali dengan 1 kalimat kesimpulan berani.
+- Tabel probabilitas 1X2 (Menang Tuan Rumah / Seri / Menang Tamu) dalam persen.
+- 3 skor paling mungkin beserta probabilitasnya (dari matriks Poisson).
+- Saran pasar: Over/Under 2.5 gol, BTTS (Both Teams To Score), dan prediksi pencetak gol jika relevan.
+- Penjelasan singkat 3-4 poin mengapa.
+- Tingkat keyakinan (Rendah/Sedang/Tinggi) + alasan.
+- Akhiri dengan 1 kalimat disclaimer bahwa prediksi bersifat probabilistik dan bukan jaminan.
+
+Jika pengguna mengirim hasil simulasi Monte Carlo, gunakan angka itu sebagai dasar dan padukan dengan analisismu.
+Jika ditanya hal di luar sepak bola, jawab singkat lalu arahkan kembali ke sepak bola.`;
+
+const chatEl   = document.getElementById('chat');
+const inputEl  = document.getElementById('input');
+const sendBtn  = document.getElementById('sendBtn');
+const stopBtn  = document.getElementById('stopBtn');
+const typingEl = document.getElementById('typing');
+const toastEl  = document.getElementById('toast');
+
+let messages = [];          // API message history
+let controller = null;      // AbortController
+let webSearch = false;
+
+/* ---------- render ---------- */
+function addMsg(role, text){
+  const div = document.createElement('div');
+  div.className = 'msg ' + role;
+  div.innerHTML = `<span class="role">${role==='user'?'Anda':'GOALIQ AI'}</span><span class="body"></span>`;
+  div.querySelector('.body').textContent = text;
+  chatEl.appendChild(div);
+  chatEl.scrollTop = chatEl.scrollHeight;
+  return div;
+}
+function toast(msg){
+  toastEl.textContent = msg;
+  toastEl.style.display = 'block';
+  setTimeout(()=> toastEl.style.display='none', 5000);
+}
+
+/* ---------- persistence ---------- */
+function saveChat(){
+  try{ localStorage.setItem('goalqi_chat', JSON.stringify(messages.slice(-20))); }catch(e){}
+}
+function loadChat(){
+  try{
+    const saved = JSON.parse(localStorage.getItem('goalqi_chat') || '[]');
+    if(saved.length){
+      messages = saved;
+      saved.forEach(m => addMsg(m.role === 'user' ? 'user' : 'ai', typeof m.content === 'string' ? m.content : ''));
     }
-  },
-  ml: {
-    diamond: {
-      5: 2000, 12: 4500, 19: 6000, 28: 8500, 36: 10000, 44: 12338,
-      56: 15700, 86: 23000, 170: 45000, 240: 63000, 296: 78000,
-      370: 98000, 514: 132000, 870: 220000, 1700: 430000, 2010: 480000
-    },
-    membership: {
-      "Weekly Diamond Pass (WDP) 1x (220 Diamond)": 29000,
-      "Weekly Diamond Pass (WDP) 2x (440 Diamond)": 56999,
-      "Weekly Diamond Pass (WDP) 3x (660 Diamond)": 84000
+  }catch(e){}
+}
+document.getElementById('clearBtn').onclick = () => {
+  messages = [];
+  chatEl.innerHTML = '';
+  localStorage.removeItem('goalqi_chat');
+};
+
+/* ---------- send ---------- */
+async function send(text){
+  text = (text ?? inputEl.value).trim();
+  if(!text) return;
+  inputEl.value = '';
+  addMsg('user', text);
+  messages.push({ role:'user', content: text });
+  saveChat();
+
+  const model = document.getElementById('modelSel').value;
+  const temperature = parseFloat(document.getElementById('tempSel').value);
+
+  typingEl.style.display = 'flex';
+  sendBtn.style.display = 'none';
+  stopBtn.style.display = 'block';
+  chatEl.scrollTop = chatEl.scrollHeight;
+
+  controller = new AbortController();
+  const aiDiv = addMsg('ai', '');
+  const body = aiDiv.querySelector('.body');
+  let full = '';
+
+  try{
+    const options = { model, temperature, stream:true, signal: controller.signal };
+    if(webSearch){
+      options.tools = [{ type: 'web_search' }];   // OpenAI models: akses internet real-time
+      if(!model.startsWith('gpt')) options.model = 'gpt-4o';
     }
+    const resp = await puter.ai.chat(
+      [{ role:'system', content: SYSTEM_PROMPT }, ...messages],
+      options
+    );
+    for await (const part of resp){
+      if(part.type === 'error'){
+        toast('⚠️ ' + part.message);
+        if(!full) body.textContent = '⚠️ Terjadi kesalahan: ' + part.message;
+        break;
+      }
+      if(part.text){
+        full += part.text;
+        body.textContent = full;
+        chatEl.scrollTop = chatEl.scrollHeight;
+      }
+    }
+    if(full){
+      messages.push({ role:'assistant', content: full });
+      saveChat();
+    }
+  }catch(err){
+    if(err.name === 'AbortError'){
+      body.textContent = full + '\n\n⏹ (dihentikan)';
+    }else{
+      toast('⚠️ ' + err.message);
+      if(!full) body.textContent = '⚠️ Error: ' + err.message + '\n\nCoba ganti model di dropdown kanan atas, atau nonaktifkan Web Search.';
+    }
+  }finally{
+    typingEl.style.display = 'none';
+    sendBtn.style.display = 'block';
+    stopBtn.style.display = 'none';
+    controller = null;
+  }
+}
+
+sendBtn.onclick = () => send();
+stopBtn.onclick = () => controller && controller.abort();
+inputEl.addEventListener('keydown', e => {
+  if(e.key === 'Enter' && !e.shiftKey){ e.preventDefault(); send(); }
+});
+document.querySelectorAll('.chip').forEach(c => c.onclick = () => send(c.dataset.q));
+
+/* ---------- web search toggle ---------- */
+document.getElementById('wsWrap').onclick = () => {
+  webSearch = !webSearch;
+  document.getElementById('wsToggle').classList.toggle('on', webSearch);
+  if(webSearch){
+    document.getElementById('modelSel').value = 'gpt-4o';
+    toast('🌐 Web Search aktif — AI mengambil data terbaru dari internet');
   }
 };
 
-function formatRupiah(n){ return "Rp " + n.toLocaleString("id-ID"); }
-
-function showNotif(msg, ok=true){
-  const n = document.getElementById("notification");
-  n.textContent = msg;
-  n.style.background = ok ? "#28a745" : "#d9534f";
-  n.style.display = "block";
-  setTimeout(()=> n.style.display="none", 2500);
+/* ================================================================
+   MONTE CARLO SIMULATOR (Poisson) — berjalan lokal di browser
+   ================================================================ */
+function poissonSample(lambda){
+  // Knuth
+  let L = Math.exp(-lambda), k = 0, p = 1;
+  do { k++; p *= Math.random(); } while (p > L);
+  return k - 1;
 }
+let lastSimText = '';
+document.getElementById('runSim').onclick = () => {
+  const home = document.getElementById('simHome').value || 'Home';
+  const away = document.getElementById('simAway').value || 'Away';
+  const xgH  = Math.max(0.1, parseFloat(document.getElementById('xgHome').value) || 1.4);
+  const xgA  = Math.max(0.1, parseFloat(document.getElementById('xgAway').value) || 1.1);
+  const N = 10000;
+  let hw=0, dr=0, aw=0;
+  const scores = {};
+  for(let i=0;i<N;i++){
+    const gh = poissonSample(xgH), ga = poissonSample(xgA);
+    const key = gh + ' - ' + ga;
+    scores[key] = (scores[key]||0) + 1;
+    if(gh>ga) hw++; else if(gh===ga) dr++; else aw++;
+  }
+  const top = Object.entries(scores).sort((a,b)=>b[1]-a[1]).slice(0,5);
+  const p = v => (v/N*100).toFixed(1);
 
-function loadNominal(){
-  const game = document.getElementById("gameSelect").value;
-  const type = document.getElementById("typeSelect").value;
-  const sel = document.getElementById("nominalSelect");
-  sel.innerHTML = "";
-  Object.entries(priceList[game][type]).forEach(([label, price])=>{
-    const opt = document.createElement("option");
-    opt.value = label;
-    opt.dataset.price = price;
-    opt.textContent = `${label} — ${formatRupiah(price)}`;
-    sel.appendChild(opt);
-  });
-  updateTotal();
+  lastSimText = `HASIL SIMULASI MONTE CARLO (Poisson, N=10.000):\n` +
+    `${home} (xG ${xgH}) vs ${away} (xG ${xgA})\n` +
+    `Probabilitas 1X2: ${home} menang ${p(hw)}% | Seri ${p(dr)}% | ${away} menang ${p(aw)}%\n` +
+    `Skor paling mungkin: ${top.map(([s,c])=>s+' ('+p(c)+'%)').join(', ')}\n` +
+    `Silakan bahas & padukan dengan analisismu.`;
+
+  const box = document.getElementById('simResult');
+  box.style.display = 'block';
+  box.innerHTML = `
+    <div style="color:var(--muted);font-size:12px;margin-bottom:4px">${home} vs ${away} · xG ${xgH} – ${xgA}</div>
+    <div style="display:flex;justify-content:space-between;font-size:12px">
+      <span style="color:var(--green)">${home} <b>${p(hw)}%</b></span>
+      <span style="color:var(--gold)">Seri <b>${p(dr)}%</b></span>
+      <span style="color:var(--blue)">${away} <b>${p(aw)}%</b></span>
+    </div>
+    <div class="prob-bar">
+      <div class="pb-home" style="width:${p(hw)}%"></div>
+      <div class="pb-draw" style="width:${p(dr)}%"></div>
+      <div class="pb-away" style="width:${p(aw)}%"></div>
+    </div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:2px">Skor teratas:</div>
+    ${top.map(([s,c])=>`<div class="score-line"><span>${s}</span><b>${p(c)}%</b></div>`).join('')}
+  `;
+  document.getElementById('simToAi').style.display = 'block';
+};
+document.getElementById('simToAi').onclick = () => {
+  if(lastSimText) send(lastSimText);
+};
+
+/* ---------- greeting ---------- */
+loadChat();
+if(!messages.length){
+  addMsg('ai',
+`⚽ Selamat datang di GOALIQ — AI Prediksi Bola!
+
+Saya menganalisis pertandingan dengan metode ilmiah: Distribusi Poisson, Elo Rating, Expected Goals (xG), Head-to-Head, dan Form 5 Laga.
+
+Coba:
+• Klik chip pertandingan di bawah, atau
+• Ketik: "Prediksi [Tim A] vs [Tim B]", atau
+• Jalankan Simulasi Monte Carlo di panel kiri lalu bahas hasilnya dengan saya.
+
+Aktifkan 🌐 Web Search agar saya mengambil data terbaru dari internet.`);
 }
-
-function updateTotal(){
-  const sel = document.getElementById("nominalSelect");
-  if(sel.selectedIndex === -1) return;
-  const harga = sel.options[sel.selectedIndex].dataset.price;
-  document.getElementById("totalDisplay").textContent = formatRupiah(Number(harga));
-}
-
-function loadPriceTable(){
-  const game = document.getElementById("gameSelect").value;
-  const type = document.getElementById("typeSelect").value;
-  const t = document.getElementById("priceTable");
-  t.innerHTML = "<tr><th>Item</th><th>Harga</th></tr>";
-  Object.entries(priceList[game][type]).forEach(([label, price])=>{
-    t.innerHTML += `<tr><td>${label}</td><td>${formatRupiah(price)}</td></tr>`;
-  });
-}
-
-document.addEventListener("DOMContentLoaded", ()=>{
-  const gameSel = document.getElementById("gameSelect");
-  const typeSel = document.getElementById("typeSelect");
-
-  loadNominal();
-  loadPriceTable();
-
-  gameSel.addEventListener("change", ()=>{ loadNominal(); loadPriceTable(); });
-  typeSel.addEventListener("change", ()=>{ loadNominal(); loadPriceTable(); });
-  document.getElementById("nominalSelect").addEventListener("change", updateTotal);
-
-  document.getElementById("generateBtn").addEventListener("click", ()=>{
-    const name = buyerName.value.trim();
-    const id = userId.value.trim();
-    const email = buyerEmail.value.trim();
-    const game = gameSel.value === "ml" ? "Mobile Legends" : "Free Fire";
-    const type = typeSel.value === "membership" ? "Membership / Pass" : "Diamond";
-    const nominal = nominalSelect.value;
-    const harga = nominalSelect.options[nominalSelect.selectedIndex].dataset.price;
-    if(!name || !id || !email){ showNotif("Lengkapi semua data!", false); return; }
-
-    const date = new Date().toLocaleString("id-ID");
-    const struk = `
-===============================
-       STRUK PEMBELIAN
-===============================
-📅 Tanggal : ${date}
-🎮 Game : ${game}
-🧾 Jenis : ${type}
-💎 Nominal : ${nominal}
-👤 Nama Rekening : ${name}
-🆔 ID : ${id}
-💰 Total : ${formatRupiah(Number(harga))}
-===============================
-📩 Cara Konfirmasi Pembelian:
-1. Pergi ke Gmail: raxzzpedia@gmail.com.
-2. Kirim struk ini dan salin ke email admin.
-3. Sertakan bukti transfer/pembayaran.
-4. Harap tunggu ±5 menit agar admin dapat
-mengonfirmasi data struk dan memproses pengisian.
-
-==================================
-TERIMAKASIH SUDAH ORDER DI WEBSITE
-RAXZZ PEDIA🙏
-==================================
-`;
-    invoiceText.textContent = struk;
-    invoiceBox.style.display = "block";
-    showNotif("Struk berhasil digenerate!");
-  });
-
-  document.getElementById("copyStrukBtn").addEventListener("click", ()=>{
-    navigator.clipboard.writeText(invoiceText.textContent);
-    showNotif("Struk berhasil disalin!");
-  });
-
-  document.querySelectorAll(".copy-btn").forEach(btn=>{
-    btn.addEventListener("click", ()=>{
-      const val = btn.dataset.copyValue;
-      if(val){
-        navigator.clipboard.writeText(val).then(()=> showNotif(`${btn.dataset.name} berhasil disalin!`));
-      }
-    });
-  });
-
-  const modal = document.getElementById("qrisModal");
-  document.getElementById("openQrisModal").onclick = ()=> modal.style.display="flex";
-  document.getElementById("closeModal").onclick = ()=> modal.style.display="none";
-  window.onclick = e=>{ if(e.target===modal) modal.style.display="none"; };
-});
 </script>
 </body>
 </html>
