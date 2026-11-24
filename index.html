@@ -1,1579 +1,1671 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VirtusIM OTP - Jual Beli Nomor Kosong 24 Jam</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            color: #333;
-        }
-        .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
-        .header {
-            background: rgba(255,255,255,0.95);
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        }
-        .header h1 { color: #667eea; font-size: 28px; margin-bottom: 5px; }
-        .header p { color: #666; font-size: 14px; }
-        .status-badge {
-            display: inline-block;
-            padding: 5px 15px;
-            background: #4CAF50;
-            color: white;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: bold;
-            animation: pulse 2s infinite;
-        }
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
-        .balance-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border-radius: 15px;
-            padding: 25px;
-            margin-bottom: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        }
-        .balance-amount { font-size: 36px; font-weight: bold; }
-        .balance-label { font-size: 14px; opacity: 0.9; }
-        .refresh-btn {
-            background: rgba(255,255,255,0.2);
-            border: 2px solid white;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: all 0.3s;
-        }
-        .refresh-btn:hover { background: rgba(255,255,255,0.3); }
-        .tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
-        .tab {
-            padding: 12px 24px;
-            background: rgba(255,255,255,0.8);
-            border: none;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 600;
-            color: #666;
-            transition: all 0.3s;
-        }
-        .tab:hover { background: white; transform: translateY(-2px); }
-        .tab.active { background: #667eea; color: white; box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4); }
-        .content { background: rgba(255,255,255,0.95); border-radius: 15px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
-        .section { display: none; }
-        .section.active { display: block; }
-        .card { background: #f8f9fa; border-radius: 12px; padding: 20px; margin-bottom: 15px; border: 1px solid #e0e0e0; }
-        .card-title { font-size: 18px; font-weight: bold; color: #333; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
-        .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; margin-bottom: 5px; font-weight: 600; color: #555; font-size: 14px; }
-        .form-group input, .form-group select, .form-group textarea {
-            width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 14px; transition: border-color 0.3s;
-        }
-        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: #667eea; }
-        .btn { padding: 12px 30px; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.3s; }
-        .btn-primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4); }
-        .btn-success { background: #4CAF50; color: white; }
-        .btn-danger { background: #f44336; color: white; }
-        .btn-warning { background: #ff9800; color: white; }
-        .btn-secondary { background: #6c757d; color: white; }
-        .btn-sm { padding: 8px 16px; font-size: 12px; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 15px; }
-        .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
-        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #e0e0e0; }
-        th { background: #f8f9fa; font-weight: 600; color: #555; }
-        tr:hover { background: #f8f9fa; }
-        .badge { display: inline-block; padding: 4px 12px; border-radius: 12px; font-size: 12px; font-weight: 600; }
-        .badge-success { background: #e8f5e9; color: #4CAF50; }
-        .badge-warning { background: #fff3e0; color: #ff9800; }
-        .badge-danger { background: #ffebee; color: #f44336; }
-        .badge-info { background: #e3f2fd; color: #2196F3; }
-        .badge-secondary { background: #f5f5f5; color: #666; }
-        .otp-display {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white; padding: 20px; border-radius: 12px; text-align: center;
-            font-size: 32px; font-weight: bold; letter-spacing: 5px; margin: 15px 0;
-        }
-        .number-display {
-            background: #f8f9fa; border: 2px dashed #667eea; padding: 15px; border-radius: 12px;
-            text-align: center; font-size: 24px; font-weight: bold; color: #667eea; margin: 15px 0;
-        }
-        .alert { padding: 15px; border-radius: 8px; margin-bottom: 15px; display: none; }
-        .alert-success { background: #e8f5e9; color: #4CAF50; border-left: 4px solid #4CAF50; }
-        .alert-error { background: #ffebee; color: #f44336; border-left: 4px solid #f44336; }
-        .alert-info { background: #e3f2fd; color: #2196F3; border-left: 4px solid #2196F3; }
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center; }
-        .modal-content { background: white; border-radius: 15px; padding: 30px; max-width: 600px; width: 90%; max-height: 80vh; overflow-y: auto; }
-        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .modal-close { background: none; border: none; font-size: 24px; cursor: pointer; color: #666; }
-        .service-card {
-            background: white; border-radius: 12px; padding: 15px; text-align: center;
-            cursor: pointer; transition: all 0.3s; border: 2px solid #e0e0e0;
-        }
-        .service-card:hover { border-color: #667eea; transform: translateY(-5px); box-shadow: 0 10px 25px rgba(102, 126, 234, 0.2); }
-        .service-card.selected { border-color: #667eea; background: linear-gradient(135deg, #667eea10 0%, #764ba210 100%); }
-        .service-icon {
-            width: 50px; height: 50px; border-radius: 12px;
-            background: linear-gradient(135deg, #667eea20 0%, #764ba220 100%);
-            display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; font-size: 24px;
-        }
-        .country-card { background: white; border-radius: 10px; padding: 15px; border: 2px solid #e0e0e0; cursor: pointer; transition: all 0.3s; }
-        .country-card:hover { border-color: #667eea; }
-        .country-card.selected { border-color: #667eea; background: linear-gradient(135deg, #667eea10 0%, #764ba210 100%); }
-        .toast { position: fixed; bottom: 20px; right: 20px; padding: 15px 25px; background: #333; color: white; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); display: none; z-index: 2000; }
-        @media (max-width: 768px) { .grid-2 { grid-template-columns: 1fr; } .balance-card { flex-direction: column; gap: 15px; text-align: center; } }
-        .auto-buy-panel { background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%); border: 2px solid #667eea; border-radius: 15px; padding: 20px; margin-bottom: 20px; }
-        .auto-buy-status { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
-        .status-dot { width: 12px; height: 12px; border-radius: 50%; background: #4CAF50; animation: pulse 2s infinite; }
-        .status-dot.off { background: #f44336; }
-        .copy-btn { background: #e3f2fd; border: none; color: #2196F3; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 12px; margin-left: 5px; }
-        .copy-btn:hover { background: #bbdefb; }
-        .qr-code { text-align: center; margin: 15px 0; }
-        .qr-code img { max-width: 250px; border-radius: 10px; }
-        .search-box { position: relative; margin-bottom: 20px; }
-        .search-box input { width: 100%; padding: 15px 20px 15px 50px; border: 2px solid #e0e0e0; border-radius: 30px; font-size: 16px; }
-        .search-box::before { content: "🔍"; position: absolute; left: 20px; top: 50%; transform: translateY(-50%); font-size: 18px; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VirtusIM OTP — Platform Nomor Virtual 24 Jam</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg: #0f172a;
+  --bg-soft: #1e293b;
+  --surface: #ffffff;
+  --surface-alt: #f8fafc;
+  --border: #e2e8f0;
+  --text: #0f172a;
+  --muted: #64748b;
+  --primary: #4f46e5;
+  --primary-soft: #eef2ff;
+  --primary-grad: linear-gradient(135deg,#4f46e5 0%,#7c3aed 100%);
+  --success: #10b981;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  --info: #3b82f6;
+  --radius: 14px;
+  --shadow-sm: 0 1px 2px rgba(15,23,42,.05);
+  --shadow: 0 4px 12px rgba(15,23,42,.08);
+  --shadow-lg: 0 12px 32px rgba(15,23,42,.12);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:var(--text);background:#f1f5f9;min-height:100vh;-webkit-font-smoothing:antialiased}
+button{font-family:inherit}
+.container{max-width:1440px;margin:0 auto;padding:20px}
+.app-header{
+  background:var(--surface);border-radius:var(--radius);padding:16px 22px;
+  margin-bottom:16px;box-shadow:var(--shadow-sm);border:1px solid var(--border);
+  display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;
+}
+.brand{display:flex;align-items:center;gap:12px}
+.brand-logo{
+  width:44px;height:44px;border-radius:12px;background:var(--primary-grad);
+  display:flex;align-items:center;justify-content:center;color:#fff;font-size:22px;font-weight:800;
+}
+.brand h1{font-size:18px;font-weight:800;letter-spacing:-.01em}
+.brand p{font-size:12px;color:var(--muted);margin-top:2px}
+.brand-status{display:flex;align-items:center;gap:10px}
+.pill{
+  display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:99px;
+  font-size:12px;font-weight:600;background:#ecfdf5;color:#059669;border:1px solid #a7f3d0;
+}
+.pill-dot{width:8px;height:8px;border-radius:50%;background:#10b981;box-shadow:0 0 0 3px rgba(16,185,129,.2);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.55}}
+
+.balance-card{
+  background:var(--primary-grad);color:#fff;border-radius:var(--radius);padding:24px 28px;
+  margin-bottom:16px;box-shadow:var(--shadow);display:flex;justify-content:space-between;
+  align-items:center;gap:20px;flex-wrap:wrap;position:relative;overflow:hidden;
+}
+.balance-card::after{
+  content:"";position:absolute;right:-60px;top:-60px;width:220px;height:220px;
+  border-radius:50%;background:rgba(255,255,255,.08);pointer-events:none;
+}
+.balance-label{font-size:13px;opacity:.85;font-weight:500;letter-spacing:.02em}
+.balance-amount{font-size:34px;font-weight:800;margin-top:4px;letter-spacing:-.02em}
+.balance-sub{font-size:12px;opacity:.8;margin-top:6px}
+.balance-actions{display:flex;gap:10px;flex-wrap:wrap;position:relative;z-index:1}
+.btn-ghost{
+  background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);color:#fff;
+  padding:10px 16px;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;
+  transition:all .2s;display:inline-flex;align-items:center;gap:6px;
+}
+.btn-ghost:hover{background:rgba(255,255,255,.28)}
+
+.alert{padding:12px 16px;border-radius:10px;margin-bottom:12px;font-size:14px;font-weight:500;display:none;border-left:4px solid}
+.alert-success{background:#ecfdf5;color:#065f46;border-color:var(--success)}
+.alert-error{background:#fef2f2;color:#991b1b;border-color:var(--danger)}
+.alert-info{background:#eff6ff;color:#1e40af;border-color:var(--info)}
+
+.tabs{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;background:var(--surface);padding:8px;border-radius:var(--radius);box-shadow:var(--shadow-sm);border:1px solid var(--border)}
+.tab{
+  padding:10px 16px;background:transparent;border:none;border-radius:9px;cursor:pointer;
+  font-size:13px;font-weight:600;color:var(--muted);transition:all .2s;white-space:nowrap;
+}
+.tab:hover{background:var(--surface-alt);color:var(--text)}
+.tab.active{background:var(--primary);color:#fff;box-shadow:0 4px 10px rgba(79,70,229,.3)}
+
+.content{background:var(--surface);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow-sm);border:1px solid var(--border)}
+.section{display:none}
+.section.active{display:block}
+
+.card{background:var(--surface-alt);border-radius:12px;padding:20px;margin-bottom:14px;border:1px solid var(--border)}
+.card-title{font-size:15px;font-weight:700;color:var(--text);margin-bottom:16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.card-title .spacer{margin-left:auto}
+.card.white{background:var(--surface)}
+
+.form-group{margin-bottom:16px}
+.form-group label{display:block;margin-bottom:6px;font-weight:600;color:var(--text);font-size:13px}
+.form-group input,.form-group select,.form-group textarea{
+  width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:9px;
+  font-size:14px;transition:all .2s;background:#fff;font-family:inherit;color:var(--text);
+}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(79,70,229,.1)}
+
+.btn{padding:11px 20px;border:none;border-radius:9px;font-size:14px;font-weight:600;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:6px;justify-content:center}
+.btn-primary{background:var(--primary-grad);color:#fff;box-shadow:0 4px 12px rgba(79,70,229,.25)}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(79,70,229,.35)}
+.btn-success{background:var(--success);color:#fff}
+.btn-danger{background:var(--danger);color:#fff}
+.btn-warning{background:var(--warning);color:#fff}
+.btn-secondary{background:#64748b;color:#fff}
+.btn-sm{padding:7px 12px;font-size:12px}
+.btn-block{width:100%}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
+.grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+
+table{width:100%;border-collapse:collapse;margin-top:12px;font-size:14px}
+th,td{padding:12px;text-align:left;border-bottom:1px solid var(--border)}
+th{background:var(--surface-alt);font-weight:600;color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.05em}
+tr:hover{background:var(--surface-alt)}
+
+.badge{display:inline-block;padding:4px 10px;border-radius:99px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.03em}
+.badge-success{background:#ecfdf5;color:#065f46}
+.badge-warning{background:#fffbeb;color:#92400e}
+.badge-danger{background:#fef2f2;color:#991b1b}
+.badge-info{background:#eff6ff;color:#1e40af}
+.badge-secondary{background:#f1f5f9;color:#475569}
+
+.otp-display{
+  background:var(--primary-grad);color:#fff;padding:18px;border-radius:12px;text-align:center;
+  font-size:28px;font-weight:800;letter-spacing:6px;margin:12px 0;font-variant-numeric:tabular-nums;
+}
+.number-display{
+  background:#fff;border:2px dashed var(--primary);padding:14px;border-radius:12px;
+  text-align:center;font-size:22px;font-weight:800;color:var(--primary);margin:12px 0;
+  font-variant-numeric:tabular-nums;letter-spacing:.5px;
+}
+
+.service-card{
+  background:#fff;border-radius:12px;padding:14px;text-align:center;cursor:pointer;
+  transition:all .2s;border:1.5px solid var(--border);position:relative;
+}
+.service-card:hover{border-color:var(--primary);transform:translateY(-2px);box-shadow:var(--shadow)}
+.service-card.selected{border-color:var(--primary);background:var(--primary-soft)}
+.service-icon{
+  width:48px;height:48px;border-radius:12px;background:var(--primary-soft);
+  display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:22px;
+}
+.service-name{font-weight:600;font-size:13px}
+
+.country-card{background:#fff;border-radius:10px;padding:14px;border:1.5px solid var(--border);cursor:pointer;transition:all .2s}
+.country-card:hover{border-color:var(--primary)}
+.country-card.selected{border-color:var(--primary);background:var(--primary-soft)}
+
+.toast{
+  position:fixed;bottom:24px;right:24px;padding:14px 22px;background:#0f172a;color:#fff;
+  border-radius:10px;box-shadow:var(--shadow-lg);display:none;z-index:2000;font-size:14px;font-weight:500;
+  max-width:340px;
+}
+
+.modal{display:none;position:fixed;inset:0;background:rgba(15,23,42,.65);z-index:1000;justify-content:center;align-items:center;padding:16px;backdrop-filter:blur(4px)}
+.modal.show{display:flex}
+.modal-content{background:#fff;border-radius:var(--radius);padding:28px;max-width:520px;width:100%;max-height:88vh;overflow-y:auto;box-shadow:var(--shadow-lg)}
+.modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+.modal-header h2{font-size:18px;font-weight:700}
+.modal-close{background:var(--surface-alt);border:none;width:34px;height:34px;border-radius:9px;font-size:20px;cursor:pointer;color:var(--muted);display:flex;align-items:center;justify-content:center;transition:all .2s}
+.modal-close:hover{background:var(--border);color:var(--text)}
+
+.search-box{position:relative}
+.search-box input{width:100%;padding:12px 16px 12px 44px;border:1.5px solid var(--border);border-radius:10px;font-size:14px;font-family:inherit}
+.search-box input:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(79,70,229,.1)}
+.search-box::before{content:"🔍";position:absolute;left:15px;top:50%;transform:translateY(-50%);font-size:15px;opacity:.6}
+
+.auto-buy-panel{
+  background:linear-gradient(135deg,rgba(79,70,229,.06) 0%,rgba(124,58,237,.06) 100%);
+  border:1.5px solid var(--primary);border-radius:12px;padding:18px;margin-bottom:18px;
+}
+.auto-buy-status{display:flex;align-items:center;gap:10px;margin-bottom:8px;font-weight:600;font-size:14px}
+.status-dot{width:10px;height:10px;border-radius:50%;background:var(--success);animation:pulse 2s infinite}
+.status-dot.off{background:var(--danger);animation:none}
+.auto-buy-desc{font-size:13px;color:var(--muted);margin-bottom:12px;line-height:1.5}
+
+.empty-state{text-align:center;padding:32px 16px;color:var(--muted)}
+.empty-state-icon{font-size:36px;margin-bottom:8px;opacity:.5}
+
+.copy-btn{background:var(--primary-soft);border:none;color:var(--primary);padding:5px 10px;border-radius:6px;cursor:pointer;font-size:11px;font-weight:600;margin-left:6px;transition:all .2s}
+.copy-btn:hover{background:#ddd6fe}
+
+/* Deposit */
+.deposit-wrapper{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media (max-width:860px){.deposit-wrapper{grid-template-columns:1fr}}
+.deposit-instruction{background:var(--surface-alt);border-radius:12px;padding:20px;border:1px solid var(--border)}
+.deposit-total{
+  font-size:30px;font-weight:800;color:var(--primary);text-align:center;
+  margin:4px 0 14px;letter-spacing:-.02em;
+}
+.qr-container{
+  background:#fff;border:2px solid var(--border);border-radius:14px;padding:16px;
+  text-align:center;margin:16px 0;
+}
+.qr-container img{max-width:260px;width:100%;height:auto;border-radius:8px;display:block;margin:0 auto}
+.qr-placeholder{
+  width:260px;height:260px;background:var(--surface-alt);border:2px dashed var(--border);
+  border-radius:8px;display:flex;align-items:center;justify-content:center;
+  color:var(--muted);font-size:13px;text-align:center;padding:20px;margin:0 auto;
+}
+.qr-label{font-size:12px;color:var(--muted);margin-top:10px;text-transform:uppercase;letter-spacing:.05em;font-weight:600}
+.qr-badge{display:inline-block;padding:4px 10px;background:#fef3c7;color:#92400e;border-radius:99px;font-size:11px;font-weight:700;margin-top:8px}
+
+.pay-detail{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--border);font-size:14px}
+.pay-detail:last-child{border-bottom:none}
+.pay-detail .label{color:var(--muted);font-weight:500}
+.pay-detail .value{font-weight:700;color:var(--text);display:flex;align-items:center;gap:8px;font-variant-numeric:tabular-nums}
+.pay-code{
+  font-family:'Courier New',monospace;background:var(--surface-alt);padding:6px 10px;
+  border-radius:6px;border:1px solid var(--border);font-size:14px;letter-spacing:.5px;
+}
+
+.countdown{
+  display:inline-flex;align-items:center;gap:6px;padding:8px 14px;background:#fffbeb;color:#92400e;
+  border-radius:8px;font-weight:700;font-size:14px;border:1px solid #fde68a;font-variant-numeric:tabular-nums;
+}
+.countdown.expired{background:#fef2f2;color:#991b1b;border-color:#fecaca}
+
+.deposit-hint{background:#eff6ff;border:1px solid #bfdbfe;color:#1e40af;border-radius:10px;padding:12px 14px;font-size:13px;line-height:1.6;margin-top:14px}
+.deposit-hint strong{display:block;margin-bottom:4px}
+
+.deposit-form-card{background:var(--surface-alt);border:1px solid var(--border);border-radius:12px;padding:20px;height:fit-content}
+.preset-amounts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+.preset-btn{
+  padding:10px 6px;background:#fff;border:1.5px solid var(--border);border-radius:8px;
+  cursor:pointer;font-size:12px;font-weight:600;color:var(--text);transition:all .2s;
+}
+.preset-btn:hover{border-color:var(--primary);color:var(--primary)}
+.preset-btn.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+
+.method-list{display:flex;flex-direction:column;gap:8px;max-height:280px;overflow-y:auto;padding-right:4px}
+.method-item{
+  padding:12px 14px;background:#fff;border:1.5px solid var(--border);border-radius:9px;
+  cursor:pointer;transition:all .2s;display:flex;justify-content:space-between;align-items:center;font-size:13px;
+}
+.method-item:hover{border-color:var(--primary);background:var(--primary-soft)}
+.method-item.active{border-color:var(--primary);background:var(--primary-soft);box-shadow:0 0 0 3px rgba(79,70,229,.1)}
+.method-item .method-name{font-weight:600;color:var(--text)}
+.method-item .method-meta{font-size:11px;color:var(--muted);margin-top:2px}
+.method-item .method-fee{font-size:11px;color:var(--success);font-weight:600}
+
+.loading{text-align:center;padding:24px;color:var(--muted);font-size:14px}
+.spinner{width:22px;height:22px;border:3px solid var(--border);border-top-color:var(--primary);border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 10px}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+@media(max-width:768px){
+  .container{padding:12px}
+  .balance-card{flex-direction:column;align-items:flex-start;text-align:left}
+  .balance-amount{font-size:28px}
+  .grid-2{grid-template-columns:1fr}
+  .content{padding:16px}
+  .tabs{padding:6px;gap:4px}
+  .tab{padding:8px 12px;font-size:12px}
+  .preset-amounts{grid-template-columns:repeat(2,1fr)}
+}
+</style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
-                <div>
-                    <h1>📱 VirtusIM OTP Store</h1>
-                    <p>Jual Beli Nomor Kosong Otomatis 24 Jam - Semua Layanan dalam Satu Platform</p>
-                </div>
-                <div style="text-align: right;">
-                    <span class="status-badge">🟢 ONLINE 24 JAM</span>
-                    <p style="margin-top: 5px; font-size: 12px; color: #999;" id="lastUpdate">Last update: -</p>
-                </div>
-            </div>
-        </div>
+<div class="container">
 
-        <div class="balance-card">
-            <div>
-                <div class="balance-label">💰 Saldo Anda</div>
-                <div class="balance-amount" id="balanceDisplay">Rp 0</div>
-                <div style="font-size: 12px; opacity: 0.8; margin-top: 5px;" id="pendingBalance">Pending: Rp 0</div>
-            </div>
-            <div style="display: flex; gap: 10px;">
-                <button class="refresh-btn" onclick="refreshBalance()">🔄 Refresh</button>
-                <button class="refresh-btn" onclick="showSection('deposit')">💳 Top Up</button>
-            </div>
-        </div>
-
-        <div class="alert alert-success" id="alertSuccess"></div>
-        <div class="alert alert-error" id="alertError"></div>
-        <div class="alert alert-info" id="alertInfo"></div>
-
-        <div class="tabs">
-            <button class="tab active" onclick="showSection('dashboard')">📊 Dashboard</button>
-            <button class="tab" onclick="showSection('buyNumber')">📱 Beli Nomor</button>
-            <button class="tab" onclick="showSection('activeOrders')">⏳ Order Aktif</button>
-            <button class="tab" onclick="showSection('history')">📜 Riwayat</button>
-            <button class="tab" onclick="showSection('gmail')">📧 Gmail</button>
-            <button class="tab" onclick="showSection('emailRental')">📮 Rental Email</button>
-            <button class="tab" onclick="showSection('waReady')">💬 WA Ready</button>
-            <button class="tab" onclick="showSection('smm')">📈 SMM</button>
-            <button class="tab" onclick="showSection('refund')">💸 Refund</button>
-            <button class="tab" onclick="showSection('deposit')">💳 Deposit</button>
-        </div>
-
-        <div class="content">
-
-            <!-- Dashboard Section -->
-            <div class="section active" id="dashboard">
-                <div class="card">
-                    <div class="card-title">📊 Statistik Akun</div>
-                    <div class="grid" id="dashboardStats">
-                        <div class="card" style="text-align: center;">
-                            <div style="font-size: 36px; font-weight: bold; color: #667eea;" id="statTotalOrders">0</div>
-                            <div style="color: #666;">Total Orders</div>
-                        </div>
-                        <div class="card" style="text-align: center;">
-                            <div style="font-size: 36px; font-weight: bold; color: #4CAF50;" id="statActiveOrders">0</div>
-                            <div style="color: #666;">Order Aktif</div>
-                        </div>
-                        <div class="card" style="text-align: center;">
-                            <div style="font-size: 36px; font-weight: bold; color: #ff9800;" id="statTotalSMS">0</div>
-                            <div style="color: #666;">Total SMS</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-title">⚡ Quick Actions</div>
-                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                        <button class="btn btn-primary" onclick="showSection('buyNumber')">📱 Beli Nomor Baru</button>
-                        <button class="btn btn-success" onclick="showSection('activeOrders')">⏳ Lihat Order Aktif</button>
-                        <button class="btn btn-warning" onclick="showSection('deposit')">💳 Top Up Saldo</button>
-                        <button class="btn btn-secondary" onclick="refreshAll()">🔄 Refresh Semua</button>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-title">📈 Layanan Populer</div>
-                    <div class="grid" id="popularServices"></div>
-                </div>
-            </div>
-
-            <!-- Buy Number Section -->
-            <div class="section" id="buyNumber">
-                <div class="card">
-                    <div class="card-title">📱 Beli Nomor Kosong (SMS OTP)</div>
-
-                    <div class="auto-buy-panel">
-                        <div class="auto-buy-status">
-                            <div class="status-dot" id="autoBuyDot"></div>
-                            <span id="autoBuyStatus">Auto-Polling: OFF</span>
-                        </div>
-                        <p style="font-size: 13px; color: #666; margin-bottom: 10px;">
-                            Sistem akan otomatis membeli nomor dan mengambil kode OTP secara otomatis
-                        </p>
-                        <div style="display: flex; gap: 10px;">
-                            <button class="btn btn-success btn-sm" onclick="toggleAutoMode()" id="autoModeBtn">▶️ Mulai Auto Mode</button>
-                            <button class="btn btn-danger btn-sm" onclick="stopAutoMode()" id="stopAutoBtn" style="display:none;">⏹️ Stop Auto Mode</button>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label>1️⃣ Pilih Layanan/Service</label>
-                        <div class="search-box">
-                            <input type="text" id="serviceSearch" placeholder="Cari layanan..." onkeyup="filterServices()">
-                        </div>
-                        <div class="grid" id="servicesGrid" style="max-height: 400px; overflow-y: auto;"></div>
-                    </div>
-
-                    <div class="form-group" id="countrySection" style="display:none;">
-                        <label>2️⃣ Pilih Negara</label>
-                        <div class="grid" id="countriesGrid" style="max-height: 300px; overflow-y: auto;"></div>
-                    </div>
-
-                    <div class="form-group" id="buySection" style="display:none;">
-                        <label>3️⃣ Konfirmasi Pembelian</label>
-                        <div class="card" style="background: white;">
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-                                <span>Layanan:</span>
-                                <strong id="selectedServiceName">-</strong>
-                            </div>
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-                                <span>Negara:</span>
-                                <strong id="selectedCountryName">-</strong>
-                            </div>
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-                                <span>Harga:</span>
-                                <strong style="color: #667eea;" id="selectedPrice">-</strong>
-                            </div>
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
-                                <span>Stok:</span>
-                                <strong id="selectedStock">-</strong>
-                            </div>
-                            <div class="form-group">
-                                <label>Jumlah Nomor (1-30)</label>
-                                <input type="number" id="quantity" value="1" min="1" max="30">
-                            </div>
-                            <button class="btn btn-primary" style="width: 100%;" onclick="buyNumber()">
-                                🛒 Beli Sekarang
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card" id="orderResult" style="display:none;">
-                    <div class="card-title">📋 Detail Order</div>
-                    <div id="orderDetails"></div>
-                </div>
-            </div>
-
-            <!-- Active Orders Section -->
-            <div class="section" id="activeOrders">
-                <div class="card">
-                    <div class="card-title">
-                        ⏳ Order Aktif
-                        <button class="btn btn-secondary btn-sm" onclick="loadActiveOrders()" style="margin-left: auto;">🔄 Refresh</button>
-                    </div>
-                    <div id="activeOrdersList"></div>
-                </div>
-            </div>
-
-            <!-- History Section -->
-            <div class="section" id="history">
-                <div class="card">
-                    <div class="card-title">
-                        📜 Riwayat Order
-                        <button class="btn btn-secondary btn-sm" onclick="loadHistory()" style="margin-left: auto;">🔄 Refresh</button>
-                    </div>
-                    <div class="form-group">
-                        <input type="text" id="historySearch" placeholder="Cari nomor atau layanan..." onkeyup="loadHistory()">
-                    </div>
-                    <div id="historyList"></div>
-                </div>
-            </div>
-
-            <!-- Gmail Section -->
-            <div class="section" id="gmail">
-                <div class="card">
-                    <div class="card-title">📧 Beli Akun Gmail</div>
-                    <div id="gmailStock" style="margin-bottom: 20px;"></div>
-                    <div class="form-group">
-                        <label>Jumlah (1-50)</label>
-                        <input type="number" id="gmailQty" value="1" min="1" max="50">
-                    </div>
-                    <button class="btn btn-primary" onclick="buyGmail()">🛒 Beli Gmail</button>
-                </div>
-                <div class="card">
-                    <div class="card-title">
-                        📧 Order Gmail Saya
-                        <button class="btn btn-secondary btn-sm" onclick="loadGmailOrders()" style="margin-left: auto;">🔄 Refresh</button>
-                    </div>
-                    <div id="gmailOrdersList"></div>
-                </div>
-            </div>
-
-            <!-- Email Rental Section -->
-            <div class="section" id="emailRental">
-                <div class="card">
-                    <div class="card-title">📮 Rental Email</div>
-                    <div class="form-group">
-                        <label>Site Target</label>
-                        <select id="emailSite" onchange="loadEmailDomains()">
-                            <option value="">Pilih Site</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Domain</label>
-                        <select id="emailDomain">
-                            <option value="">Pilih Domain</option>
-                        </select>
-                    </div>
-                    <button class="btn btn-primary" onclick="rentEmail()">📮 Rental Email Sekarang</button>
-                </div>
-                <div class="card">
-                    <div class="card-title">
-                        📮 Rental Aktif
-                        <button class="btn btn-secondary btn-sm" onclick="loadEmailOrders()" style="margin-left: auto;">🔄 Refresh</button>
-                    </div>
-                    <div id="emailOrdersList"></div>
-                </div>
-            </div>
-
-            <!-- WA Ready Section -->
-            <div class="section" id="waReady">
-                <div class="card">
-                    <div class="card-title">💬 WhatsApp Ready Numbers</div>
-                    <div id="waReadyInfo" style="margin-bottom: 20px;"></div>
-                    <div class="form-group">
-                        <label>Pilih Negara</label>
-                        <select id="waCountry"></select>
-                    </div>
-                    <button class="btn btn-primary" onclick="buyWAReady()">💬 Beli WA Ready</button>
-                </div>
-                <div class="card">
-                    <div class="card-title">
-                        💬 Order WA Ready
-                        <button class="btn btn-secondary btn-sm" onclick="loadWAReadyOrders()" style="margin-left: auto;">🔄 Refresh</button>
-                    </div>
-                    <div id="waReadyOrdersList"></div>
-                </div>
-            </div>
-
-            <!-- SMM Section -->
-            <div class="section" id="smm">
-                <div class="card">
-                    <div class="card-title">📈 Social Media Marketing (SMM)</div>
-                    <div class="form-group">
-                        <label>Platform</label>
-                        <select id="smmPlatform" onchange="loadSMMTypes()">
-                            <option value="">Pilih Platform</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Tipe Layanan</label>
-                        <select id="smmType" onchange="loadSMMServices()">
-                            <option value="">Pilih Tipe</option>
-                        </select>
-                    </div>
-                    <div id="smmServicesList" style="margin-top: 15px;"></div>
-                </div>
-                <div class="card">
-                    <div class="card-title">
-                        📈 Order SMM
-                        <button class="btn btn-secondary btn-sm" onclick="loadSMMOrders()" style="margin-left: auto;">🔄 Refresh</button>
-                    </div>
-                    <div id="smmOrdersList"></div>
-                </div>
-            </div>
-
-            <!-- Refund Section -->
-            <div class="section" id="refund">
-                <div class="card">
-                    <div class="card-title">
-                        💸 Refund Eligible
-                        <button class="btn btn-secondary btn-sm" onclick="loadRefunds()" style="margin-left: auto;">🔄 Refresh</button>
-                    </div>
-                    <div id="refundEligibleList"></div>
-                </div>
-                <div class="card">
-                    <div class="card-title">💸 Riwayat Refund</div>
-                    <div id="refundHistoryList"></div>
-                </div>
-            </div>
-
-            <!-- Deposit Section -->
-            <div class="section" id="deposit">
-                <div class="card">
-                    <div class="card-title">💳 Deposit / Top Up Saldo</div>
-                    <div class="form-group">
-                        <label>Jumlah Deposit (Min. Rp 10.000)</label>
-                        <input type="number" id="depositAmount" value="50000" min="10000" step="1000">
-                    </div>
-                    <div class="form-group">
-                        <label>Metode Pembayaran</label>
-                        <select id="paymentMethod"></select>
-                    </div>
-                    <button class="btn btn-primary" onclick="createDeposit()">💳 Buat Deposit</button>
-                    <button class="btn btn-warning" onclick="createCryptoDeposit()" style="margin-left: 10px;">₿ Crypto (USD)</button>
-                </div>
-                <div class="card" id="depositResult" style="display:none;">
-                    <div class="card-title">💳 Instruksi Pembayaran</div>
-                    <div id="depositDetails"></div>
-                </div>
-                <div class="card">
-                    <div class="card-title">
-                        💳 Riwayat Transaksi
-                        <button class="btn btn-secondary btn-sm" onclick="loadTransactions()" style="margin-left: auto;">🔄 Refresh</button>
-                    </div>
-                    <div id="transactionsList"></div>
-                </div>
-            </div>
-
-        </div>
+  <!-- Header -->
+  <header class="app-header">
+    <div class="brand">
+      <div class="brand-logo">V</div>
+      <div>
+        <h1>VirtusIM OTP</h1>
+        <p>Platform Nomor Virtual & Layanan Digital 24 Jam</p>
+      </div>
     </div>
-
-    <div class="modal" id="otpModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>📱 Kode OTP Diterima!</h2>
-                <button class="modal-close" onclick="closeModal('otpModal')">&times;</button>
-            </div>
-            <div id="otpModalContent"></div>
-        </div>
+    <div class="brand-status">
+      <span class="pill"><span class="pill-dot"></span>Online 24 Jam</span>
+      <span style="font-size:12px;color:var(--muted)" id="lastUpdate">—</span>
     </div>
+  </header>
 
-    <div class="toast" id="toast"></div>
+  <!-- Balance -->
+  <div class="balance-card">
+    <div>
+      <div class="balance-label">Saldo Tersedia</div>
+      <div class="balance-amount" id="balanceDisplay">Rp 0</div>
+      <div class="balance-sub" id="pendingBalance">Pending: Rp 0</div>
+    </div>
+    <div class="balance-actions">
+      <button class="btn-ghost" onclick="refreshBalance()">🔄 Refresh</button>
+      <button class="btn-ghost" onclick="switchTab('deposit')">💳 Top Up</button>
+    </div>
+  </div>
 
-    <script>
-        const API_KEY = 'vcoBYGVHKtLfaW1f3DnVsRDZ5aZk1NQd';
-        const BASE_URL = 'https://virtusimotp.com/api/v1';
+  <!-- Alerts -->
+  <div class="alert alert-success" id="alertSuccess"></div>
+  <div class="alert alert-error" id="alertError"></div>
+  <div class="alert alert-info" id="alertInfo"></div>
 
-        let currentBalance = 0;
-        let services = [];
-        let selectedService = null;
-        let selectedCountry = null;
-        let autoMode = false;
-        let pollingIntervals = {};
+  <!-- Tabs -->
+  <div class="tabs" id="tabs">
+    <button class="tab active" data-tab="dashboard" onclick="switchTab('dashboard', event)">📊 Dashboard</button>
+    <button class="tab" data-tab="buyNumber" onclick="switchTab('buyNumber', event)">📱 Beli Nomor</button>
+    <button class="tab" data-tab="activeOrders" onclick="switchTab('activeOrders', event)">⏳ Order Aktif</button>
+    <button class="tab" data-tab="history" onclick="switchTab('history', event)">📜 Riwayat</button>
+    <button class="tab" data-tab="gmail" onclick="switchTab('gmail', event)">📧 Gmail</button>
+    <button class="tab" data-tab="emailRental" onclick="switchTab('emailRental', event)">📮 Rental Email</button>
+    <button class="tab" data-tab="waReady" onclick="switchTab('waReady', event)">💬 WA Ready</button>
+    <button class="tab" data-tab="smm" onclick="switchTab('smm', event)">📈 SMM</button>
+    <button class="tab" data-tab="refund" onclick="switchTab('refund', event)">💸 Refund</button>
+    <button class="tab" data-tab="deposit" onclick="switchTab('deposit', event)">💳 Deposit</button>
+  </div>
 
-        async function apiCall(endpoint, method = 'GET', body = null) {
-            const options = {
-                method: method,
-                headers: { 'X-API-Key': API_KEY }
-            };
+  <div class="content">
 
-            if (body) {
-                options.headers['Content-Type'] = 'application/json';
-                options.body = JSON.stringify(body);
-            }
+    <!-- DASHBOARD -->
+    <section class="section active" id="dashboard">
+      <div class="card">
+        <div class="card-title">📊 Statistik Akun</div>
+        <div class="grid">
+          <div class="card white" style="text-align:center">
+            <div style="font-size:32px;font-weight:800;color:var(--primary)" id="statTotalOrders">0</div>
+            <div style="color:var(--muted);font-size:13px">Total Orders</div>
+          </div>
+          <div class="card white" style="text-align:center">
+            <div style="font-size:32px;font-weight:800;color:var(--success)" id="statActiveOrders">0</div>
+            <div style="color:var(--muted);font-size:13px">Order Aktif</div>
+          </div>
+          <div class="card white" style="text-align:center">
+            <div style="font-size:32px;font-weight:800;color:var(--warning)" id="statTotalSMS">0</div>
+            <div style="color:var(--muted);font-size:13px">Total SMS</div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">⚡ Aksi Cepat</div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn btn-primary" onclick="switchTab('buyNumber')">📱 Beli Nomor Baru</button>
+          <button class="btn btn-success" onclick="switchTab('activeOrders')">⏳ Lihat Order Aktif</button>
+          <button class="btn btn-warning" onclick="switchTab('deposit')">💳 Top Up Saldo</button>
+          <button class="btn btn-secondary" onclick="refreshAll()">🔄 Refresh Semua</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">🔥 Layanan Populer</div>
+        <div class="grid" id="popularServices"><div class="loading"><div class="spinner"></div>Memuat...</div></div>
+      </div>
+    </section>
 
-            if (method === 'POST') {
-                options.headers['Idempotency-Key'] = generateUUID();
-            }
+    <!-- BUY NUMBER -->
+    <section class="section" id="buyNumber">
+      <div class="card">
+        <div class="card-title">📱 Beli Nomor Kosong (SMS OTP)</div>
+        <div class="auto-buy-panel">
+          <div class="auto-buy-status">
+            <div class="status-dot off" id="autoBuyDot"></div>
+            <span id="autoBuyStatus">Auto-Polling: OFF</span>
+          </div>
+          <p class="auto-buy-desc">Sistem akan otomatis memantau OTP dan melakukan finish order saat kode diterima.</p>
+          <div style="display:flex;gap:10px">
+            <button class="btn btn-success btn-sm" onclick="toggleAutoMode()" id="autoModeBtn">▶️ Mulai Auto Mode</button>
+            <button class="btn btn-danger btn-sm" onclick="stopAutoMode()" id="stopAutoBtn" style="display:none">⏹️ Stop</button>
+          </div>
+        </div>
 
-            try {
-                const response = await fetch(BASE_URL + endpoint, options);
-                const data = await response.json();
+        <div class="form-group">
+          <label>1️⃣ Pilih Layanan</label>
+          <div class="search-box" style="margin-bottom:12px">
+            <input type="text" id="serviceSearch" placeholder="Cari layanan..." onkeyup="filterServices()">
+          </div>
+          <div class="grid" id="servicesGrid" style="max-height:360px;overflow-y:auto;padding:4px"></div>
+        </div>
 
-                if (!data.success) {
-                    throw new Error(data.message || 'API Error');
-                }
+        <div class="form-group" id="countrySection" style="display:none">
+          <label>2️⃣ Pilih Negara</label>
+          <div class="grid" id="countriesGrid" style="max-height:320px;overflow-y:auto;padding:4px"></div>
+        </div>
 
-                return data;
-            } catch (error) {
-                showAlert('error', error.message);
-                throw error;
-            }
+        <div class="form-group" id="buySection" style="display:none">
+          <label>3️⃣ Konfirmasi Pembelian</label>
+          <div class="card white">
+            <div class="pay-detail"><span class="label">Layanan</span><span class="value" id="selectedServiceName">-</span></div>
+            <div class="pay-detail"><span class="label">Negara</span><span class="value" id="selectedCountryName">-</span></div>
+            <div class="pay-detail"><span class="label">Harga</span><span class="value" style="color:var(--primary)" id="selectedPrice">-</span></div>
+            <div class="pay-detail"><span class="label">Stok</span><span class="value" id="selectedStock">-</span></div>
+            <div class="form-group" style="margin-top:14px">
+              <label>Jumlah Nomor (1–30)</label>
+              <input type="number" id="quantity" value="1" min="1" max="30">
+            </div>
+            <button class="btn btn-primary btn-block" onclick="buyNumber()">🛒 Beli Sekarang</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" id="orderResult" style="display:none">
+        <div class="card-title">📋 Detail Order</div>
+        <div id="orderDetails"></div>
+      </div>
+    </section>
+
+    <!-- ACTIVE ORDERS -->
+    <section class="section" id="activeOrders">
+      <div class="card">
+        <div class="card-title">
+          ⏳ Order Aktif
+          <button class="btn btn-secondary btn-sm spacer" onclick="loadActiveOrders()">🔄 Refresh</button>
+        </div>
+        <div id="activeOrdersList"><div class="loading"><div class="spinner"></div>Memuat...</div></div>
+      </div>
+    </section>
+
+    <!-- HISTORY -->
+    <section class="section" id="history">
+      <div class="card">
+        <div class="card-title">
+          📜 Riwayat Order
+          <button class="btn btn-secondary btn-sm spacer" onclick="loadHistory()">🔄 Refresh</button>
+        </div>
+        <div class="form-group">
+          <input type="text" id="historySearch" placeholder="Cari nomor atau layanan..." onkeyup="debouncedHistory()">
+        </div>
+        <div id="historyList"></div>
+      </div>
+    </section>
+
+    <!-- GMAIL -->
+    <section class="section" id="gmail">
+      <div class="card">
+        <div class="card-title">📧 Beli Akun Gmail</div>
+        <div id="gmailStock"><div class="loading"><div class="spinner"></div>Memuat stok...</div></div>
+        <div class="form-group" style="margin-top:14px">
+          <label>Jumlah (1–50)</label>
+          <input type="number" id="gmailQty" value="1" min="1" max="50">
+        </div>
+        <button class="btn btn-primary" onclick="buyGmail()">🛒 Beli Gmail</button>
+      </div>
+      <div class="card">
+        <div class="card-title">
+          📧 Order Gmail Saya
+          <button class="btn btn-secondary btn-sm spacer" onclick="loadGmailOrders()">🔄 Refresh</button>
+        </div>
+        <div id="gmailOrdersList"></div>
+      </div>
+    </section>
+
+    <!-- EMAIL RENTAL -->
+    <section class="section" id="emailRental">
+      <div class="card">
+        <div class="card-title">📮 Rental Email</div>
+        <div class="form-group">
+          <label>Site Target</label>
+          <select id="emailSite" onchange="loadEmailDomains()"><option value="">Pilih Site</option></select>
+        </div>
+        <div class="form-group">
+          <label>Domain</label>
+          <select id="emailDomain"><option value="">Pilih Domain</option></select>
+        </div>
+        <button class="btn btn-primary" onclick="rentEmail()">📮 Rental Sekarang</button>
+      </div>
+      <div class="card">
+        <div class="card-title">
+          📮 Rental Aktif
+          <button class="btn btn-secondary btn-sm spacer" onclick="loadEmailOrders()">🔄 Refresh</button>
+        </div>
+        <div id="emailOrdersList"></div>
+      </div>
+    </section>
+
+    <!-- WA READY -->
+    <section class="section" id="waReady">
+      <div class="card">
+        <div class="card-title">💬 WhatsApp Ready Numbers</div>
+        <div id="waReadyInfo"><div class="loading"><div class="spinner"></div>Memuat...</div></div>
+        <div class="form-group" style="margin-top:14px">
+          <label>Pilih Negara</label>
+          <select id="waCountry"></select>
+        </div>
+        <button class="btn btn-primary" onclick="buyWAReady()">💬 Beli WA Ready</button>
+      </div>
+      <div class="card">
+        <div class="card-title">
+          💬 Order WA Ready
+          <button class="btn btn-secondary btn-sm spacer" onclick="loadWAReadyOrders()">🔄 Refresh</button>
+        </div>
+        <div id="waReadyOrdersList"></div>
+      </div>
+    </section>
+
+    <!-- SMM -->
+    <section class="section" id="smm">
+      <div class="card">
+        <div class="card-title">📈 Social Media Marketing</div>
+        <div class="form-group">
+          <label>Platform</label>
+          <select id="smmPlatform" onchange="loadSMMTypes()"><option value="">Pilih Platform</option></select>
+        </div>
+        <div class="form-group">
+          <label>Tipe Layanan</label>
+          <select id="smmType" onchange="loadSMMServices()"><option value="">Pilih Tipe</option></select>
+        </div>
+        <div id="smmServicesList"></div>
+      </div>
+      <div class="card">
+        <div class="card-title">
+          📈 Order SMM
+          <button class="btn btn-secondary btn-sm spacer" onclick="loadSMMOrders()">🔄 Refresh</button>
+        </div>
+        <div id="smmOrdersList"></div>
+      </div>
+    </section>
+
+    <!-- REFUND -->
+    <section class="section" id="refund">
+      <div class="card">
+        <div class="card-title">
+          💸 Refund Eligible
+          <button class="btn btn-secondary btn-sm spacer" onclick="loadRefunds()">🔄 Refresh</button>
+        </div>
+        <div id="refundEligibleList"></div>
+      </div>
+      <div class="card">
+        <div class="card-title">💸 Riwayat Refund</div>
+        <div id="refundHistoryList"></div>
+      </div>
+    </section>
+
+    <!-- DEPOSIT -->
+    <section class="section" id="deposit">
+      <div class="deposit-wrapper">
+        <!-- Form -->
+        <div class="deposit-form-card">
+          <div class="card-title">💳 Deposit Saldo</div>
+          <div class="form-group">
+            <label>Jumlah Deposit</label>
+            <div class="preset-amounts">
+              <button class="preset-btn" onclick="setDeposit(10000,this)">Rp 10.000</button>
+              <button class="preset-btn active" onclick="setDeposit(50000,this)">Rp 50.000</button>
+              <button class="preset-btn" onclick="setDeposit(100000,this)">Rp 100.000</button>
+            </div>
+            <input type="number" id="depositAmount" value="50000" min="10000" step="1000" onchange="updateDepositPreview()" oninput="updateDepositPreview()">
+          </div>
+          <div class="form-group">
+            <label>Metode Pembayaran</label>
+            <div class="method-list" id="methodList">
+              <div class="loading"><div class="spinner"></div>Memuat metode...</div>
+            </div>
+            <select id="paymentMethod" style="display:none"></select>
+          </div>
+          <button class="btn btn-primary btn-block" onclick="createDeposit()" id="btnDeposit">💳 Buat Deposit</button>
+          <button class="btn btn-warning btn-block" style="margin-top:8px" onclick="createCryptoDeposit()">₿ Deposit Crypto (USD)</button>
+
+          <div class="deposit-hint">
+            <strong>ℹ️ Informasi</strong>
+            Minimal deposit Rp 10.000. Saldo akan otomatis ditambahkan setelah pembayaran terkonfirmasi.
+          </div>
+        </div>
+
+        <!-- Result / Instructions -->
+        <div id="depositResult" style="display:none">
+          <div class="deposit-instruction">
+            <div class="card-title" style="margin-bottom:8px">
+              💳 Instruksi Pembayaran
+              <span class="badge badge-warning spacer" id="depositStatusBadge" style="margin-left:auto">PENDING</span>
+            </div>
+
+            <div style="text-align:center;margin-bottom:10px">
+              <div style="font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;font-weight:600">Total Pembayaran</div>
+              <div class="deposit-total" id="depositTotal">Rp 0</div>
+              <button class="copy-btn" onclick="copyToClipboard(document.getElementById('depositTotal').dataset.raw || '')">📋 Copy Nominal</button>
+            </div>
+
+            <div id="qrSection"></div>
+
+            <div id="payDetailSection"></div>
+
+            <div style="text-align:center;margin-top:16px">
+              <div class="countdown" id="depositCountdown">⏱️ --:--</div>
+            </div>
+
+            <div style="text-align:center;margin-top:14px">
+              <button class="btn btn-secondary btn-sm" onclick="checkDepositStatus()">🔄 Cek Status</button>
+              <button class="btn btn-danger btn-sm" style="margin-left:8px" onclick="resetDeposit()">✖ Tutup</button>
+            </div>
+
+            <div class="deposit-hint" style="margin-top:16px">
+              <strong>⚠️ Penting</strong>
+              Transfer sesuai nominal <b>persis</b> (termasuk kode unik) agar sistem dapat mendeteksi pembayaran Anda secara otomatis.
+            </div>
+          </div>
+        </div>
+
+        <!-- Placeholder when no result -->
+        <div id="depositPlaceholder" style="display:flex;align-items:center;justify-content:center;background:var(--surface-alt);border:2px dashed var(--border);border-radius:14px;min-height:300px;color:var(--muted);text-align:center;padding:24px">
+          <div>
+            <div style="font-size:48px;margin-bottom:8px;opacity:.4">💳</div>
+            <div style="font-weight:600;margin-bottom:4px">Belum ada transaksi</div>
+            <div style="font-size:13px">Isi form deposit di samping untuk memulai</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:20px">
+        <div class="card-title">
+          💳 Riwayat Transaksi
+          <button class="btn btn-secondary btn-sm spacer" onclick="loadTransactions()">🔄 Refresh</button>
+        </div>
+        <div id="transactionsList"><div class="loading"><div class="spinner"></div>Memuat...</div></div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<!-- OTP Modal -->
+<div class="modal" id="otpModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>📱 Kode OTP Diterima</h2>
+      <button class="modal-close" onclick="closeModal('otpModal')">×</button>
+    </div>
+    <div id="otpModalContent"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* =========================================================
+   CORE
+========================================================= */
+const API_KEY = 'vcoBYGVHKtLfaW1f3DnVsRDZ5aZk1NQd';
+const BASE_URL = 'https://virtusimotp.com/api/v1';
+
+let currentBalance = 0;
+let services = [];
+let selectedService = null;
+let selectedCountry = null;
+let autoMode = false;
+let pollingIntervals = {};
+let depositTimer = null;
+let depositPollTimer = null;
+let historyDebounce = null;
+
+/* ---------- Helpers ---------- */
+function $(id){return document.getElementById(id)}
+function generateUUID(){
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,c=>{
+    const r=Math.random()*16|0;return(c==='x'?r:(r&0x3|0x8)).toString(16);
+  });
+}
+function formatRupiah(n){return 'Rp '+(Number(n)||0).toLocaleString('id-ID')}
+function escapeHtml(s){return String(s==null?'':s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+
+function showAlert(type,msg){
+  const el=$('alert'+type.charAt(0).toUpperCase()+type.slice(1));
+  if(!el)return;
+  el.textContent=msg;el.style.display='block';
+  clearTimeout(el._t);
+  el._t=setTimeout(()=>el.style.display='none',5000);
+}
+function showToast(msg){
+  const t=$('toast');t.textContent=msg;t.style.display='block';
+  clearTimeout(t._t);t._t=setTimeout(()=>t.style.display='none',3000);
+}
+function copyToClipboard(text){
+  if(!text)return;
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(()=>showToast('📋 Disalin: '+text)).catch(()=>fallbackCopy(text));
+  }else{fallbackCopy(text)}
+}
+function fallbackCopy(text){
+  const ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();
+  try{document.execCommand('copy');showToast('📋 Disalin: '+text)}catch(e){showToast('Gagal menyalin')}
+  document.body.removeChild(ta);
+}
+function closeModal(id){$(id).classList.remove('show')}
+function debouncedHistory(){clearTimeout(historyDebounce);historyDebounce=setTimeout(loadHistory,400)}
+
+/* ---------- API ---------- */
+async function apiCall(endpoint, method='GET', body=null){
+  const opts={method,headers:{'X-API-Key':API_KEY}};
+  if(body){opts.headers['Content-Type']='application/json';opts.body=JSON.stringify(body)}
+  if(method==='POST')opts.headers['Idempotency-Key']=generateUUID();
+
+  const res=await fetch(BASE_URL+endpoint,opts);
+  let data;
+  try{data=await res.json()}catch(e){throw new Error('Respons server tidak valid')}
+
+  if(!res.ok||data.success===false){
+    throw new Error(data.message||('HTTP '+res.status));
+  }
+  return data;
+}
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+function switchTab(tabId,event){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+
+  const sec=$(tabId);if(sec)sec.classList.add('active');
+
+  document.querySelectorAll('.tab').forEach(t=>{
+    if(t.dataset.tab===tabId)t.classList.add('active');
+  });
+  if(event&&event.target&&event.target.classList.contains('tab'))event.target.classList.add('active');
+
+  switch(tabId){
+    case 'dashboard': loadDashboard(); break;
+    case 'buyNumber': loadServices(); break;
+    case 'activeOrders': loadActiveOrders(); break;
+    case 'history': loadHistory(); break;
+    case 'gmail': loadGmailStock(); loadGmailOrders(); break;
+    case 'emailRental': loadEmailSuggestions(); loadEmailOrders(); break;
+    case 'waReady': loadWAReadyInfo(); loadWAReadyOrders(); break;
+    case 'smm': loadSMMPlatforms(); loadSMMOrders(); break;
+    case 'refund': loadRefunds(); break;
+    case 'deposit': loadPaymentMethods(); loadTransactions(); break;
+  }
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* =========================================================
+   BALANCE / PROFILE
+========================================================= */
+async function refreshBalance(){
+  try{
+    const data=await apiCall('/balance');
+    const d=data.data||{};
+    currentBalance=d.balance||0;
+    $('balanceDisplay').textContent=d.balance_formatted||formatRupiah(currentBalance);
+    $('pendingBalance').textContent='Pending: '+formatRupiah(d.pending_balance||0);
+    $('lastUpdate').textContent='Update: '+new Date().toLocaleTimeString('id-ID');
+  }catch(e){/* silent */}
+}
+async function loadProfile(){
+  try{
+    const data=await apiCall('/profile');
+    const s=data.data?.stats||{};
+    $('statTotalOrders').textContent=s.total_orders||0;
+    $('statTotalSMS').textContent=s.total_sms||0;
+  }catch(e){}
+}
+async function loadDashboard(){
+  await refreshBalance(); await loadProfile(); await loadPopularServices();
+}
+
+/* =========================================================
+   SERVICES / BUY NUMBER
+========================================================= */
+function getServiceIcon(name){
+  const icons={'whatsapp':'💬','telegram':'✈️','google':'🔍','gmail':'📧','facebook':'📘','instagram':'📷','twitter':'🐦','tiktok':'🎵','youtube':'📺','discord':'🎮','snapchat':'👻','linkedin':'💼','shopee':'🛍️','tokopedia':'🛒','netflix':'🎬','spotify':'🎧','uber':'🚗','gojek':'🛵','grab':'🚖','line':'💚'};
+  const l=(name||'').toLowerCase();
+  for(const k in icons)if(l.includes(k))return icons[k];
+  return '📱';
+}
+async function loadPopularServices(){
+  try{
+    const data=await apiCall('/services');
+    services=data.data||[];
+    const popular=services.slice(0,8);
+    $('popularServices').innerHTML=popular.length?popular.map(s=>`
+      <div class="service-card" onclick="quickBuyService(${s.id},'${escapeHtml(s.text).replace(/'/g,"\\'")}')">
+        <div class="service-icon">${getServiceIcon(s.text)}</div>
+        <div class="service-name">${escapeHtml(s.text)}</div>
+      </div>`).join(''):'<div class="empty-state"><div class="empty-state-icon">📭</div>Tidak ada layanan</div>';
+  }catch(e){$('popularServices').innerHTML='<div class="empty-state">Gagal memuat layanan</div>'}
+}
+function quickBuyService(id,name){
+  switchTab('buyNumber');
+  setTimeout(()=>selectService(id,name),150);
+}
+async function loadServices(){
+  try{
+    const data=await apiCall('/services');
+    services=data.data||[];
+    renderServices(services);
+  }catch(e){$('servicesGrid').innerHTML='<div class="empty-state">Gagal memuat</div>'}
+}
+function renderServices(list){
+  if(!list.length){$('servicesGrid').innerHTML='<div class="empty-state"><div class="empty-state-icon">🔍</div>Tidak ada hasil</div>';return}
+  $('servicesGrid').innerHTML=list.map(s=>`
+    <div class="service-card" id="service-${s.id}" onclick="selectService(${s.id},'${escapeHtml(s.text).replace(/'/g,"\\'")}')">
+      <div class="service-icon">${getServiceIcon(s.text)}</div>
+      <div class="service-name">${escapeHtml(s.text)}</div>
+    </div>`).join('');
+}
+function filterServices(){
+  const q=$('serviceSearch').value.toLowerCase();
+  renderServices(services.filter(s=>(s.text||'').toLowerCase().includes(q)));
+}
+async function selectService(id,name){
+  selectedService={id,name};selectedCountry=null;
+  document.querySelectorAll('#servicesGrid .service-card').forEach(c=>c.classList.remove('selected'));
+  const el=$('service-'+id); if(el)el.classList.add('selected');
+  $('selectedServiceName').textContent=name;
+  $('countrySection').style.display='block';
+  $('buySection').style.display='none';
+  $('countriesGrid').innerHTML='<div class="loading"><div class="spinner"></div>Memuat negara...</div>';
+  try{
+    const data=await apiCall(`/services/${id}/countries`);
+    const countries=data.data?.countries||[];
+    if(!countries.length){$('countriesGrid').innerHTML='<div class="empty-state">Tidak ada negara tersedia</div>';return}
+    $('countriesGrid').innerHTML=countries.map(c=>`
+      <div class="country-card" id="country-${c.id}" onclick="selectCountry(${c.id},'${escapeHtml(c.name).replace(/'/g,"\\'")}',${c.price||0},${c.stock||0})">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
+          <div>
+            <div style="font-weight:600;font-size:13px">${escapeHtml(c.name)}</div>
+            <div style="font-size:11px;color:var(--muted);margin-top:3px">${escapeHtml(c.prefix||'')} • Stok: ${c.stock||0}</div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-weight:700;color:var(--primary);font-size:13px">${c.price_formatted||formatRupiah(c.price||0)}</div>
+            <div style="font-size:10px;color:var(--success);margin-top:2px">${c.delivery_percent||0}% success</div>
+          </div>
+        </div>
+      </div>`).join('');
+  }catch(e){$('countriesGrid').innerHTML='<div class="empty-state">Gagal memuat negara</div>'}
+}
+function selectCountry(id,name,price,stock){
+  selectedCountry={id,name,price,stock};
+  document.querySelectorAll('#countriesGrid .country-card').forEach(c=>c.classList.remove('selected'));
+  const el=$('country-'+id); if(el)el.classList.add('selected');
+  $('selectedCountryName').textContent=name;
+  $('selectedPrice').textContent=formatRupiah(price);
+  $('selectedStock').textContent=stock;
+  $('buySection').style.display='block';
+}
+async function buyNumber(){
+  if(!selectedService||!selectedCountry){showAlert('error','Pilih layanan dan negara terlebih dahulu');return}
+  const quantity=parseInt($('quantity').value)||1;
+  if(quantity<1||quantity>30){showAlert('error','Jumlah harus 1–30');return}
+
+  try{
+    showAlert('info','⏳ Memproses pembelian...');
+    const data=await apiCall('/orders','POST',{
+      service_id:selectedService.id,country:selectedCountry.id,quantity
+    });
+    showAlert('success','✅ Pembelian berhasil!');
+    displayOrderResult(data);
+    await refreshBalance();
+
+    const list=[];
+    if(data.order&&data.order.order_uuid)list.push(data.order.order_uuid);
+    (data.data?.results||[]).forEach(r=>{if(r.order_uuid)list.push(r.order_uuid)});
+    list.forEach(uuid=>startPolling(uuid));
+  }catch(e){showAlert('error',e.message||'Pembelian gagal')}
+}
+
+function displayOrderResult(data){
+  const box=$('orderResult'), det=$('orderDetails');
+  let html='';
+  if(data.order){
+    const o=data.order;
+    html=`
+      <div class="number-display">
+        ${escapeHtml(o.formatted_number||o.number)}
+        <button class="copy-btn" onclick="copyToClipboard('${escapeHtml(o.number)}')">📋 Copy</button>
+      </div>
+      <div class="grid-2">
+        <div>
+          <div class="pay-detail"><span class="label">Order UUID</span><span class="value" style="font-size:11px;font-family:monospace">${escapeHtml(o.order_uuid)}</span></div>
+          <div class="pay-detail"><span class="label">Status</span><span class="value"><span class="badge badge-warning">${escapeHtml(o.status)}</span></span></div>
+          <div class="pay-detail"><span class="label">Layanan</span><span class="value">${escapeHtml(o.service?.name||'-')}</span></div>
+        </div>
+        <div>
+          <div class="pay-detail"><span class="label">Harga</span><span class="value">${formatRupiah(o.price)}</span></div>
+          <div class="pay-detail"><span class="label">Sisa Waktu</span><span class="value" id="timer-${o.order_uuid}">${o.remaining_time||0}s</span></div>
+          <div class="pay-detail"><span class="label">Expired</span><span class="value" style="font-size:11px">${escapeHtml(o.expired_at||'-')}</span></div>
+        </div>
+      </div>
+      <div id="otp-container-${o.order_uuid}" style="margin-top:14px">
+        <p style="text-align:center;color:var(--muted);font-size:13px">⏳ Menunggu kode OTP...</p>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap">
+        <button class="btn btn-success btn-sm" onclick="finishOrder('${o.order_uuid}')">✅ Finish</button>
+        <button class="btn btn-danger btn-sm" onclick="cancelOrder('${o.order_uuid}')">❌ Cancel & Refund</button>
+        <button class="btn btn-warning btn-sm" onclick="checkSMSNow('${o.order_uuid}')">🔄 Check SMS</button>
+        <button class="btn btn-secondary btn-sm" onclick="requestNewSMS('${o.order_uuid}')">📱 Request SMS Baru</button>
+      </div>`;
+  }
+  det.innerHTML=html;
+  box.style.display='block';
+  box.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+/* ---------- OTP Polling ---------- */
+function startPolling(uuid){
+  if(!uuid)return;
+  if(pollingIntervals[uuid])clearInterval(pollingIntervals[uuid]);
+  pollingIntervals[uuid]=setInterval(async()=>{
+    try{
+      const data=await apiCall(`/orders/${uuid}`);
+      const o=data.data||{};
+      const timerEl=$('timer-'+uuid); if(timerEl)timerEl.textContent=(o.remaining_time||0)+'s';
+
+      if(o.latest_code){
+        clearInterval(pollingIntervals[uuid]);delete pollingIntervals[uuid];
+        const box=$('otp-container-'+uuid);
+        if(box){
+          box.innerHTML=`
+            <div class="otp-display">${escapeHtml(o.latest_code)}</div>
+            <p style="text-align:center;color:var(--success);font-weight:700;font-size:13px">✅ Kode OTP Diterima</p>
+            ${o.messages&&o.messages.length?`<div style="margin-top:10px;padding:10px;background:var(--surface-alt);border-radius:8px;font-size:13px"><b>Pesan:</b> ${escapeHtml(o.messages[0].text||'')}</div>`:''}`;
         }
-
-        function generateUUID() {
-            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-                const r = Math.random() * 16 | 0;
-                return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
-            });
-        }
-
-        function showAlert(type, message) {
-            const alertEl = document.getElementById('alert' + type.charAt(0).toUpperCase() + type.slice(1));
-            alertEl.textContent = message;
-            alertEl.style.display = 'block';
-            setTimeout(() => { alertEl.style.display = 'none'; }, 5000);
-        }
-
-        function showToast(message) {
-            const toast = document.getElementById('toast');
-            toast.textContent = message;
-            toast.style.display = 'block';
-            setTimeout(() => { toast.style.display = 'none'; }, 3000);
-        }
-
-        function showSection(sectionId) {
-            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            document.getElementById(sectionId).classList.add('active');
-            event.target.classList.add('active');
-
-            switch(sectionId) {
-                case 'dashboard': loadDashboard(); break;
-                case 'buyNumber': loadServices(); break;
-                case 'activeOrders': loadActiveOrders(); break;
-                case 'history': loadHistory(); break;
-                case 'gmail': loadGmailStock(); loadGmailOrders(); break;
-                case 'emailRental': loadEmailSuggestions(); loadEmailOrders(); break;
-                case 'waReady': loadWAReadyInfo(); loadWAReadyOrders(); break;
-                case 'smm': loadSMMPlatforms(); loadSMMOrders(); break;
-                case 'refund': loadRefunds(); break;
-                case 'deposit': loadPaymentMethods(); loadTransactions(); break;
-            }
-        }
-
-        function closeModal(modalId) {
-            document.getElementById(modalId).style.display = 'none';
-        }
-
-        function formatRupiah(amount) {
-            return 'Rp ' + amount.toLocaleString('id-ID');
-        }
-
-        function copyToClipboard(text) {
-            navigator.clipboard.writeText(text).then(() => {
-                showToast('📋 Disalin: ' + text);
-            });
-        }
-
-        async function refreshBalance() {
-            try {
-                const data = await apiCall('/balance');
-                currentBalance = data.data.balance;
-                document.getElementById('balanceDisplay').textContent = data.data.balance_formatted;
-                document.getElementById('pendingBalance').textContent = 'Pending: ' + formatRupiah(data.data.pending_balance || 0);
-                document.getElementById('lastUpdate').textContent = 'Last update: ' + new Date().toLocaleTimeString();
-            } catch (e) {}
-        }
-
-        async function loadProfile() {
-            try {
-                const data = await apiCall('/profile');
-                document.getElementById('statTotalOrders').textContent = data.data.stats.total_orders;
-                document.getElementById('statTotalSMS').textContent = data.data.stats.total_sms;
-            } catch (e) {}
-        }
-
-        async function loadDashboard() {
-            await refreshBalance();
-            await loadProfile();
-            await loadPopularServices();
-        }
-
-        async function loadPopularServices() {
-            try {
-                const data = await apiCall('/services');
-                services = data.data;
-                const popular = services.slice(0, 8);
-                const html = popular.map(s => `
-                    <div class="service-card" onclick="quickBuyService(${s.id}, '${s.text}')">
-                        <div class="service-icon">${getServiceIcon(s.text)}</div>
-                        <div style="font-weight: 600; font-size: 14px;">${s.text}</div>
-                    </div>
-                `).join('');
-                document.getElementById('popularServices').innerHTML = html;
-            } catch (e) {}
-        }
-
-        function getServiceIcon(name) {
-            const icons = {
-                'whatsapp': '💬', 'telegram': '✈️', 'google': '🔍', 'gmail': '📧',
-                'facebook': '📘', 'instagram': '📷', 'twitter': '🐦', 'tiktok': '🎵',
-                'youtube': '📺', 'discord': '🎮', 'snapchat': '👻', 'linkedin': '💼'
-            };
-            const lower = name.toLowerCase();
-            for (const key in icons) {
-                if (lower.includes(key)) return icons[key];
-            }
-            return '📱';
-        }
-
-        function quickBuyService(serviceId, serviceName) {
-            showSection('buyNumber');
-            selectService(serviceId, serviceName);
-        }
-
-        async function loadServices() {
-            try {
-                const data = await apiCall('/services');
-                services = data.data;
-                renderServices(services);
-            } catch (e) {}
-        }
-
-        function renderServices(servicesList) {
-            const html = servicesList.map(s => `
-                <div class="service-card" id="service-${s.id}" onclick="selectService(${s.id}, '${s.text.replace(/'/g, "\'")}')">
-                    <div class="service-icon">${getServiceIcon(s.text)}</div>
-                    <div style="font-weight: 600; font-size: 14px;">${s.text}</div>
-                </div>
-            `).join('');
-            document.getElementById('servicesGrid').innerHTML = html;
-        }
-
-        function filterServices() {
-            const search = document.getElementById('serviceSearch').value.toLowerCase();
-            const filtered = services.filter(s => s.text.toLowerCase().includes(search));
-            renderServices(filtered);
-        }
-
-        async function selectService(serviceId, serviceName) {
-            selectedService = { id: serviceId, name: serviceName };
-            document.querySelectorAll('.service-card').forEach(c => c.classList.remove('selected'));
-            document.getElementById('service-' + serviceId)?.classList.add('selected');
-            document.getElementById('selectedServiceName').textContent = serviceName;
-            document.getElementById('countrySection').style.display = 'block';
-            await loadCountries(serviceId);
-        }
-
-        async function loadCountries(serviceId) {
-            try {
-                const data = await apiCall(`/services/${serviceId}/countries`);
-                const countries = data.data.countries || [];
-                const html = countries.map(c => `
-                    <div class="country-card" id="country-${c.id}" onclick="selectCountry(${c.id}, '${c.name.replace(/'/g, "\'")}', ${c.price}, ${c.stock || 0})">
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <div>
-                                <div style="font-weight: 600;">${c.name}</div>
-                                <div style="font-size: 12px; color: #666;">${c.prefix || ''} • Stok: ${c.stock || 0}</div>
-                            </div>
-                            <div style="text-align: right;">
-                                <div style="font-weight: bold; color: #667eea;">${c.price_formatted}</div>
-                                <div style="font-size: 11px; color: #4CAF50;">${c.delivery_percent || 0}% success</div>
-                            </div>
-                        </div>
-                    </div>
-                `).join('');
-                document.getElementById('countriesGrid').innerHTML = html;
-            } catch (e) {
-                document.getElementById('countriesGrid').innerHTML = '<p>Gagal memuat negara</p>';
-            }
-        }
-
-        function selectCountry(countryId, countryName, price, stock) {
-            selectedCountry = { id: countryId, name: countryName, price: price, stock: stock };
-            document.querySelectorAll('.country-card').forEach(c => c.classList.remove('selected'));
-            document.getElementById('country-' + countryId)?.classList.add('selected');
-            document.getElementById('selectedCountryName').textContent = countryName;
-            document.getElementById('selectedPrice').textContent = formatRupiah(price);
-            document.getElementById('selectedStock').textContent = stock;
-            document.getElementById('buySection').style.display = 'block';
-        }
-
-        async function buyNumber() {
-            if (!selectedService || !selectedCountry) {
-                showAlert('error', 'Pilih layanan dan negara terlebih dahulu');
-                return;
-            }
-
-            const quantity = parseInt(document.getElementById('quantity').value) || 1;
-
-            try {
-                showAlert('info', '⏳ Sedang memproses pembelian...');
-                const data = await apiCall('/orders', 'POST', {
-                    service_id: selectedService.id,
-                    country: selectedCountry.id,
-                    quantity: quantity
-                });
-
-                showAlert('success', '✅ Pembelian berhasil!');
-                displayOrderResult(data);
-                await refreshBalance();
-
-                if (data.order) {
-                    startPolling(data.order.order_uuid);
-                }
-
-                if (data.data?.results?.length > 1) {
-                    data.data.results.forEach(r => {
-                        if (r.order_uuid) startPolling(r.order_uuid);
-                    });
-                }
-            } catch (e) {
-                console.error('Buy failed:', e);
-            }
-        }
-
-        function displayOrderResult(data) {
-            const resultDiv = document.getElementById('orderResult');
-            const detailsDiv = document.getElementById('orderDetails');
-
-            let html = '';
-
-            if (data.order) {
-                const order = data.order;
-                html = `
-                    <div class="number-display">
-                        ${order.formatted_number || order.number}
-                        <button class="copy-btn" onclick="copyToClipboard('${order.number}')">📋 Copy</button>
-                    </div>
-                    <div class="grid-2">
-                        <div>
-                            <p><strong>Order UUID:</strong> ${order.order_uuid}</p>
-                            <p><strong>Status:</strong> <span class="badge badge-warning">${order.status}</span></p>
-                            <p><strong>Layanan:</strong> ${order.service?.name}</p>
-                        </div>
-                        <div>
-                            <p><strong>Harga:</strong> ${formatRupiah(order.price)}</p>
-                            <p><strong>Sisa Waktu:</strong> <span id="timer-${order.order_uuid}">${order.remaining_time}s</span></p>
-                            <p><strong>Expired:</strong> ${order.expired_at}</p>
-                        </div>
-                    </div>
-                    <div id="otp-container-${order.order_uuid}" style="margin-top: 15px;">
-                        <p style="text-align: center; color: #666;">⏳ Menunggu kode OTP...</p>
-                    </div>
-                    <div style="display: flex; gap: 10px; margin-top: 15px; flex-wrap: wrap;">
-                        <button class="btn btn-success btn-sm" onclick="finishOrder('${order.order_uuid}')">✅ Finish</button>
-                        <button class="btn btn-danger btn-sm" onclick="cancelOrder('${order.order_uuid}')">❌ Cancel & Refund</button>
-                        <button class="btn btn-warning btn-sm" onclick="checkSMSNow('${order.order_uuid}')">🔄 Check SMS</button>
-                        <button class="btn btn-secondary btn-sm" onclick="requestNewSMS('${order.order_uuid}')">📱 Request SMS Baru</button>
-                    </div>
-                `;
-            }
-
-            if (data.data?.results?.length > 1) {
-                html += '<hr style="margin: 20px 0;"><h4>📦 Bulk Orders:</h4>';
-                data.data.results.forEach((r, i) => {
-                    if (r.order) {
-                        html += `
-                            <div class="card" style="background: white; margin-top: 10px;">
-                                <div class="number-display" style="font-size: 18px;">
-                                    ${r.order.formatted_number || r.order.number}
-                                    <button class="copy-btn" onclick="copyToClipboard('${r.order.number}')">📋</button>
-                                </div>
-                                <div id="otp-container-${r.order_uuid}"></div>
-                            </div>
-                        `;
-                    }
-                });
-            }
-
-            detailsDiv.innerHTML = html;
-            resultDiv.style.display = 'block';
-            resultDiv.scrollIntoView({ behavior: 'smooth' });
-        }
-
-        function startPolling(orderUuid) {
-            if (pollingIntervals[orderUuid]) {
-                clearInterval(pollingIntervals[orderUuid]);
-            }
-
-            pollingIntervals[orderUuid] = setInterval(async () => {
-                try {
-                    const data = await apiCall(`/orders/${orderUuid}`);
-                    const order = data.data;
-
-                    const timerEl = document.getElementById(`timer-${orderUuid}`);
-                    if (timerEl) {
-                        timerEl.textContent = order.remaining_time + 's';
-                    }
-
-                    if (order.latest_code) {
-                        clearInterval(pollingIntervals[orderUuid]);
-
-                        const otpContainer = document.getElementById(`otp-container-${orderUuid}`);
-                        if (otpContainer) {
-                            otpContainer.innerHTML = `
-                                <div class="otp-display">${order.latest_code}</div>
-                                <p style="text-align: center; color: #4CAF50; font-weight: bold;">✅ Kode OTP Diterima!</p>
-                                ${order.messages?.length > 0 ? `
-                                    <div style="margin-top: 10px; padding: 10px; background: #f8f9fa; border-radius: 8px;">
-                                        <strong>Pesan:</strong> ${order.messages[0].text}
-                                    </div>
-                                ` : ''}
-                            `;
-                        }
-
-                        showOTPModal(order);
-
-                        if (autoMode) {
-                            setTimeout(() => finishOrder(orderUuid), 2000);
-                        }
-
-                        showToast('🔔 Kode OTP diterima: ' + order.latest_code);
-                    }
-
-                    if (order.is_expired) {
-                        clearInterval(pollingIntervals[orderUuid]);
-                        showAlert('info', '⏰ Order expired');
-                    }
-                } catch (e) {
-                    console.error('Polling error:', e);
-                }
-            }, 5000);
-        }
-
-        function showOTPModal(order) {
-            const modal = document.getElementById('otpModal');
-            const content = document.getElementById('otpModalContent');
-
-            content.innerHTML = `
-                <div class="number-display">${order.formatted_number || order.number}</div>
-                <div class="otp-display">${order.latest_code}</div>
-                <p style="text-align: center; margin-bottom: 15px;">
-                    <button class="copy-btn" onclick="copyToClipboard('${order.latest_code}')" style="font-size: 16px; padding: 10px 20px;">
-                        📋 Copy Kode OTP
-                    </button>
-                </p>
-                <div style="text-align: center;">
-                    <button class="btn btn-primary" onclick="closeModal('otpModal'); finishOrder('${order.order_uuid}')">✅ Selesai & Finish</button>
-                </div>
-            `;
-
-            modal.style.display = 'flex';
-        }
-
-        function toggleAutoMode() {
-            autoMode = !autoMode;
-
-            if (autoMode) {
-                document.getElementById('autoBuyStatus').textContent = 'Auto-Polling: ON - Sistem akan otomatis membeli dan ambil OTP';
-                document.getElementById('autoBuyDot').classList.remove('off');
-                document.getElementById('autoModeBtn').style.display = 'none';
-                document.getElementById('stopAutoBtn').style.display = 'inline-block';
-                showAlert('success', '✅ Auto Mode AKTIF');
-            } else {
-                stopAutoMode();
-            }
-        }
-
-        function stopAutoMode() {
-            autoMode = false;
-            document.getElementById('autoBuyStatus').textContent = 'Auto-Polling: OFF';
-            document.getElementById('autoBuyDot').classList.add('off');
-            document.getElementById('autoModeBtn').style.display = 'inline-block';
-            document.getElementById('stopAutoBtn').style.display = 'none';
-
-            Object.keys(pollingIntervals).forEach(key => {
-                clearInterval(pollingIntervals[key]);
-            });
-            pollingIntervals = {};
-        }
-
-        async function finishOrder(orderUuid) {
-            try {
-                await apiCall(`/orders/${orderUuid}/finish`, 'POST');
-                showAlert('success', '✅ Order finished');
-                clearInterval(pollingIntervals[orderUuid]);
-                await refreshBalance();
-                await loadActiveOrders();
-            } catch (e) {}
-        }
-
-        async function cancelOrder(orderUuid) {
-            if (!confirm('Yakin ingin cancel order ini? Dana akan dikembalikan.')) return;
-
-            try {
-                await apiCall(`/orders/${orderUuid}/cancel`, 'POST');
-                showAlert('success', '✅ Order cancelled & refunded');
-                clearInterval(pollingIntervals[orderUuid]);
-                await refreshBalance();
-                await loadActiveOrders();
-            } catch (e) {}
-        }
-
-        async function checkSMSNow(orderUuid) {
-            try {
-                const data = await apiCall(`/orders/${orderUuid}/check-sms`, 'POST');
-                if (data.has_sms) {
-                    showAlert('success', '📱 SMS diterima!');
-                    startPolling(orderUuid);
-                } else {
-                    showAlert('info', '⏳ Belum ada SMS');
-                }
-            } catch (e) {}
-        }
-
-        async function requestNewSMS(orderUuid) {
-            try {
-                await apiCall(`/orders/${orderUuid}/request-sms`, 'POST');
-                showAlert('info', '📱 Permintaan SMS baru dikirim. Silakan resend code di aplikasi target.');
-            } catch (e) {}
-        }
-
-        async function loadActiveOrders() {
-            try {
-                const data = await apiCall('/orders/active');
-                const orders = data.data.orders || [];
-
-                document.getElementById('statActiveOrders').textContent = orders.length;
-
-                if (orders.length === 0) {
-                    document.getElementById('activeOrdersList').innerHTML = '<p style="text-align: center; color: #666;">Tidak ada order aktif</p>';
-                    return;
-                }
-
-                const html = orders.map(o => `
-                    <div class="card" style="background: white; margin-bottom: 10px;">
-                        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
-                            <div>
-                                <div style="font-size: 20px; font-weight: bold; color: #667eea;">
-                                    ${o.number}
-                                    <button class="copy-btn" onclick="copyToClipboard('${o.number}')">📋</button>
-                                </div>
-                                <div style="font-size: 13px; color: #666; margin-top: 5px;">
-                                    UUID: ${o.order_uuid} | Sisa waktu: ${o.remaining_time}s
-                                </div>
-                            </div>
-                            <div>
-                                <span class="badge badge-warning">${o.status}</span>
-                            </div>
-                        </div>
-                        <div id="active-otp-${o.order_uuid}" style="margin-top: 10px;">
-                            ${o.sms?.length > 0 ? `
-                                <div class="otp-display" style="font-size: 24px; padding: 10px;">${o.sms[o.sms.length-1].code}</div>
-                            ` : '<p style="color: #666; font-size: 13px;">⏳ Menunggu SMS...</p>'}
-                        </div>
-                        <div style="display: flex; gap: 10px; margin-top: 10px;">
-                            <button class="btn btn-success btn-sm" onclick="finishOrder('${o.order_uuid}')">✅ Finish</button>
-                            <button class="btn btn-danger btn-sm" onclick="cancelOrder('${o.order_uuid}')">❌ Cancel</button>
-                            <button class="btn btn-warning btn-sm" onclick="startPolling('${o.order_uuid}'); showToast('🔄 Polling started')">🔄 Poll OTP</button>
-                        </div>
-                    </div>
-                `).join('');
-
-                document.getElementById('activeOrdersList').innerHTML = html;
-
-                orders.forEach(o => {
-                    if (!pollingIntervals[o.order_uuid]) {
-                        startPolling(o.order_uuid);
-                    }
-                });
-            } catch (e) {
-                document.getElementById('activeOrdersList').innerHTML = '<p>Gagal memuat order aktif</p>';
-            }
-        }
-
-        async function loadHistory() {
-            try {
-                const search = document.getElementById('historySearch').value;
-                const endpoint = search ? `/orders/history?search=${encodeURIComponent(search)}` : '/orders/history';
-                const data = await apiCall(endpoint);
-                const orders = data.data || [];
-
-                if (orders.length === 0) {
-                    document.getElementById('historyList').innerHTML = '<p style="text-align: center; color: #666;">Tidak ada riwayat</p>';
-                    return;
-                }
-
-                const html = `
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Nomor</th>
-                                <th>Status</th>
-                                <th>Harga</th>
-                                <th>SMS</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${orders.map(o => `
-                                <tr>
-                                    <td>${o.number}</td>
-                                    <td><span class="badge badge-${o.status === 'completed' ? 'success' : 'secondary'}">${o.status}</span></td>
-                                    <td>${formatRupiah(o.price || 0)}</td>
-                                    <td>${o.sms?.length > 0 ? o.sms[o.sms.length-1].code : '-'}</td>
-                                    <td>
-                                        ${o.status === 'completed' ? `
-                                            <button class="btn btn-warning btn-sm" onclick="requestRefund('${o.order_uuid}')">💸 Refund</button>
-                                        ` : ''}
-                                    </td>
-                                </tr>
-                            `).join('')}
-                        </tbody>
-                    </table>
-                `;
-
-                document.getElementById('historyList').innerHTML = html;
-            } catch (e) {
-                document.getElementById('historyList').innerHTML = '<p>Gagal memuat riwayat</p>';
-            }
-        }
-
-        async function loadGmailStock() {
-            try {
-                const data = await apiCall('/gmail/stock');
-                document.getElementById('gmailStock').innerHTML = `
-                    <div class="grid-2">
-                        <div class="card" style="text-align: center; background: white;">
-                            <div style="font-size: 32px; font-weight: bold; color: #667eea;">${data.data.stock}</div>
-                            <div style="color: #666;">Stok Tersedia</div>
-                        </div>
-                        <div class="card" style="text-align: center; background: white;">
-                            <div style="font-size: 32px; font-weight: bold; color: #4CAF50;">${formatRupiah(data.data.sell_price)}</div>
-                            <div style="color: #666;">Harga per Akun</div>
-                        </div>
-                    </div>
-                `;
-            } catch (e) {}
-        }
-
-        async function buyGmail() {
-            const qty = parseInt(document.getElementById('gmailQty').value) || 1;
-
-            try {
-                const data = await apiCall('/gmail/orders', 'POST', { qty });
-                showAlert('success', '✅ Berhasil membeli ' + qty + ' akun Gmail!');
-                await loadGmailOrders();
-                await refreshBalance();
-            } catch (e) {}
-        }
-
-        async function loadGmailOrders() {
-            try {
-                const data = await apiCall('/gmail/orders');
-                const orders = data.data?.orders || [];
-
-                if (orders.length === 0) {
-                    document.getElementById('gmailOrdersList').innerHTML = '<p style="text-align: center; color: #666;">Belum ada order Gmail</p>';
-                    return;
-                }
-
-                const html = orders.map(o => `
-                    <div class="card" style="background: white; margin-bottom: 10px;">
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <div>
-                                <div style="font-weight: bold; font-size: 16px;">${o.email}</div>
-                                <div style="font-family: monospace; color: #666; margin-top: 5px;">
-                                    Password: ${o.password}
-                                    <button class="copy-btn" onclick="copyToClipboard('${o.email}:${o.password}')">📋 Copy</button>
-                                </div>
-                            </div>
-                            <div>
-                                <span class="badge badge-${o.status === 'completed' ? 'success' : 'warning'}">${o.status}</span>
-                            </div>
-                        </div>
-                    </div>
-                `).join('');
-
-                document.getElementById('gmailOrdersList').innerHTML = html;
-            } catch (e) {}
-        }
-
-        async function loadEmailSuggestions() {
-            try {
-                const data = await apiCall('/email-rental/suggestions');
-                const sites = data.data.sites || [];
-
-                const select = document.getElementById('emailSite');
-                select.innerHTML = '<option value="">Pilih Site</option>' + 
-                    sites.map(s => `<option value="${s}">${s}</option>`).join('');
-            } catch (e) {}
-        }
-
-        async function loadEmailDomains() {
-            const site = document.getElementById('emailSite').value;
-            if (!site) return;
-
-            try {
-                const data = await apiCall(`/email-rental/domains?site=${encodeURIComponent(site)}`);
-                const domains = data.data.domains || [];
-
-                const select = document.getElementById('emailDomain');
-                select.innerHTML = '<option value="">Pilih Domain</option>' + 
-                    domains.map(d => `<option value="${d.name}">${d.name} - ${formatRupiah(d.price)} (${d.count} stok)</option>`).join('');
-            } catch (e) {}
-        }
-
-        async function rentEmail() {
-            const site = document.getElementById('emailSite').value;
-            const domain = document.getElementById('emailDomain').value;
-
-            if (!site || !domain) {
-                showAlert('error', 'Pilih site dan domain terlebih dahulu');
-                return;
-            }
-
-            try {
-                const data = await apiCall('/email-rental/orders', 'POST', { site, domain });
-                showAlert('success', '✅ Email berhasil dirental!');
-                await loadEmailOrders();
-                await refreshBalance();
-                startEmailPolling(data.data.order_uuid);
-            } catch (e) {}
-        }
-
-        function startEmailPolling(uuid) {
-            const interval = setInterval(async () => {
-                try {
-                    const data = await apiCall(`/email-rental/orders/${uuid}`);
-                    if (data.data.code) {
-                        clearInterval(interval);
-                        showToast('🔔 Kode email diterima: ' + data.data.code);
-                        await loadEmailOrders();
-                    }
-                } catch (e) {}
-            }, 5000);
-        }
-
-        async function loadEmailOrders() {
-            try {
-                const data = await apiCall('/email-rental/orders');
-                const orders = data.data?.orders || [];
-
-                if (orders.length === 0) {
-                    document.getElementById('emailOrdersList').innerHTML = '<p style="text-align: center; color: #666;">Tidak ada rental aktif</p>';
-                    return;
-                }
-
-                const html = orders.map(o => `
-                    <div class="card" style="background: white; margin-bottom: 10px;">
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <div>
-                                <div style="font-weight: bold;">${o.email}</div>
-                                ${o.code ? `
-                                    <div class="otp-display" style="font-size: 20px; padding: 10px; margin: 10px 0;">${o.code}</div>
-                                ` : '<p style="color: #666; font-size: 13px;">⏳ Menunggu kode...</p>'}
-                            </div>
-                            <div>
-                                <span class="badge badge-${o.status === 'completed' ? 'success' : 'warning'}">${o.status}</span>
-                                ${o.cancellable ? `
-                                    <button class="btn btn-danger btn-sm" style="margin-left: 10px;" onclick="cancelEmailRental('${o.order_uuid}')">❌ Cancel</button>
-                                ` : ''}
-                            </div>
-                        </div>
-                    </div>
-                `).join('');
-
-                document.getElementById('emailOrdersList').innerHTML = html;
-            } catch (e) {}
-        }
-
-        async function cancelEmailRental(uuid) {
-            if (!confirm('Yakin ingin cancel rental ini?')) return;
-
-            try {
-                await apiCall(`/email-rental/orders/${uuid}/cancel`, 'POST');
-                showAlert('success', '✅ Rental cancelled');
-                await loadEmailOrders();
-                await refreshBalance();
-            } catch (e) {}
-        }
-
-        async function loadWAReadyInfo() {
-            try {
-                const data = await apiCall('/wa-ready/info');
-                const info = data.data;
-
-                let html = `
-                    <div class="alert alert-info" style="display: block;">
-                        <strong>⚠️ Aturan Penggunaan:</strong><br>
-                        ${info.usage_rules.map(r => '• ' + r).join('<br>')}
-                    </div>
-                    <div class="grid">
-                        ${info.countries.map(c => `
-                            <div class="card" style="text-align: center; background: white;">
-                                <div style="font-size: 24px; font-weight: bold;">${c.name}</div>
-                                <div style="color: #667eea; font-size: 20px; font-weight: bold;">${formatRupiah(c.price)}</div>
-                                <div style="color: #666; font-size: 13px;">Stok: ${c.stock}</div>
-                            </div>
-                        `).join('')}
-                    </div>
-                `;
-
-                document.getElementById('waReadyInfo').innerHTML = html;
-
-                const select = document.getElementById('waCountry');
-                select.innerHTML = info.countries.map(c => 
-                    `<option value="${c.iso}">${c.name} - ${formatRupiah(c.price)}</option>`
-                ).join('');
-            } catch (e) {}
-        }
-
-        async function buyWAReady() {
-            const country = document.getElementById('waCountry').value;
-
-            try {
-                const data = await apiCall('/wa-ready/orders', 'POST', { country });
-                showAlert('success', '✅ WA Ready berhasil dibeli!');
-                await loadWAReadyOrders();
-                await refreshBalance();
-                startWAPolling(data.data.order.order_uuid);
-            } catch (e) {}
-        }
-
-        function startWAPolling(uuid) {
-            const interval = setInterval(async () => {
-                try {
-                    const data = await apiCall(`/wa-ready/orders/${uuid}`);
-                    const order = data.data.order;
-
-                    if (order.latest_code) {
-                        clearInterval(interval);
-                        showOTPModal({
-                            formatted_number: order.phone,
-                            latest_code: order.latest_code,
-                            order_uuid: uuid
-                        });
-                    }
-
-                    if (order.status === 'completed' || order.status === 'failed') {
-                        clearInterval(interval);
-                    }
-
-                    await loadWAReadyOrders();
-                } catch (e) {}
-            }, 4000);
-        }
-
-        async function loadWAReadyOrders() {
-            try {
-                const data = await apiCall('/wa-ready/orders');
-                const orders = data.data?.orders || [];
-
-                if (orders.length === 0) {
-                    document.getElementById('waReadyOrdersList').innerHTML = '<p style="text-align: center; color: #666;">Belum ada order WA Ready</p>';
-                    return;
-                }
-
-                const html = orders.map(o => `
-                    <div class="card" style="background: white; margin-bottom: 10px;">
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <div>
-                                <div style="font-weight: bold; font-size: 18px;">${o.phone}</div>
-                                ${o.latest_code ? `
-                                    <div class="otp-display" style="font-size: 20px; padding: 10px; margin: 10px 0;">${o.latest_code}</div>
-                                ` : ''}
-                            </div>
-                            <div>
-                                <span class="badge badge-${o.status === 'completed' ? 'success' : o.status === 'failed' ? 'danger' : 'warning'}">${o.status}</span>
-                            </div>
-                        </div>
-                    </div>
-                `).join('');
-
-                document.getElementById('waReadyOrdersList').innerHTML = html;
-            } catch (e) {}
-        }
-
-        async function loadSMMPlatforms() {
-            try {
-                const data = await apiCall('/smm/platforms');
-                const platforms = data.data.platforms || [];
-
-                const select = document.getElementById('smmPlatform');
-                select.innerHTML = '<option value="">Pilih Platform</option>' + 
-                    platforms.map(p => `<option value="${p.key}">${p.label} (${p.total} layanan)</option>`).join('');
-            } catch (e) {}
-        }
-
-        async function loadSMMTypes() {
-            const platform = document.getElementById('smmPlatform').value;
-            if (!platform) return;
-
-            try {
-                const data = await apiCall('/smm/platforms');
-                const p = data.data.platforms.find(x => x.key === platform);
-
-                const select = document.getElementById('smmType');
-                select.innerHTML = '<option value="">Pilih Tipe</option>' + 
-                    (p?.types || []).map(t => `<option value="${t.type}">${t.type} (${t.total})</option>`).join('');
-            } catch (e) {}
-        }
-
-        async function loadSMMServices() {
-            const platform = document.getElementById('smmPlatform').value;
-            const type = document.getElementById('smmType').value;
-
-            if (!platform || !type) return;
-
-            try {
-                const data = await apiCall(`/smm/services?platform=${platform}&type=${encodeURIComponent(type)}`);
-                const services = data.data?.services || [];
-
-                const html = services.map(s => `
-                    <div class="card" style="background: white; margin-bottom: 10px;">
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <div>
-                                <div style="font-weight: bold;">${s.name}</div>
-                                <div style="font-size: 13px; color: #666;">
-                                    ${s.category || ''} • Min: ${s.min} • Max: ${s.max}
-                                </div>
-                            </div>
-                            <div style="text-align: right;">
-                                <div style="font-weight: bold; color: #667eea;">${formatRupiah(s.price_per_1000)}/1000</div>
-                            </div>
-                        </div>
-                    </div>
-                `).join('');
-
-                document.getElementById('smmServicesList').innerHTML = html;
-            } catch (e) {}
-        }
-
-        async function loadSMMOrders() {
-            try {
-                const data = await apiCall('/smm/orders');
-                const orders = data.data?.orders || [];
-
-                if (orders.length === 0) {
-                    document.getElementById('smmOrdersList').innerHTML = '<p style="text-align: center; color: #666;">Belum ada order SMM</p>';
-                    return;
-                }
-
-                const html = orders.map(o => `
-                    <div class="card" style="background: white; margin-bottom: 10px;">
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <div>
-                                <div style="font-weight: bold;">${o.service_name || 'SMM Order'}</div>
-                                <div style="font-size: 13px; color: #666;">
-                                    Target: ${o.target || '-'} • Qty: ${o.quantity || '-'}
-                                </div>
-                            </div>
-                            <div>
-                                <span class="badge badge-${o.status === 'completed' ? 'success' : o.status === 'in_progress' ? 'warning' : 'secondary'}">${o.status}</span>
-                            </div>
-                        </div>
-                    </div>
-                `).join('');
-
-                document.getElementById('smmOrdersList').innerHTML = html;
-            } catch (e) {}
-        }
-
-        async function loadRefunds() {
-            try {
-                const data = await apiCall('/refunds/eligible');
-                const vnRefunds = data.data.vn || [];
-                const quota = data.data.quota || {};
-
-                let html = `
-                    <div class="card" style="background: white; margin-bottom: 15px;">
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-                            <span>Daily Limit:</span>
-                            <strong>${quota.daily_left || 0}/${quota.daily_limit || 0}</strong>
-                        </div>
-                        <div style="display: flex; justify-content: space-between;">
-                            <span>Monthly Limit:</span>
-                            <strong>${quota.monthly_left || 0}/${quota.monthly_limit || 0}</strong>
-                        </div>
-                    </div>
-                `;
-
-                if (vnRefunds.length > 0) {
-                    html += '<h4 style="margin-bottom: 10px;">📱 Nomor Eligible untuk Refund:</h4>';
-                    html += vnRefunds.map(r => `
-                        <div class="card" style="background: white; margin-bottom: 10px;">
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                                <div>
-                                    <div style="font-weight: bold;">${r.order_uuid}</div>
-                                    <div style="font-size: 13px; color: #666;">${formatRupiah(r.amount)} • ${r.created_at}</div>
-                                </div>
-                            </div>
-                        </div>
-                    `).join('');
-                } else {
-                    html += '<p style="text-align: center; color: #666;">Tidak ada order yang eligible untuk refund</p>';
-                }
-
-                document.getElementById('refundEligibleList').innerHTML = html;
-
-                const historyData = await apiCall('/refunds');
-                const refunds = historyData.data?.refunds || [];
-
-                if (refunds.length > 0) {
-                    const historyHtml = refunds.map(r => `
-                        <div class="card" style="background: white; margin-bottom: 10px;">
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                                <div>
-                                    <div style="font-weight: bold;">${r.order_uuid}</div>
-                                    <div style="font-size: 13px; color: #666;">${r.type} • ${formatRupiah(r.amount)}</div>
-                                </div>
-                                <div>
-                                    <span class="badge badge-${r.status === 'approved' ? 'success' : r.status === 'rejected' ? 'danger' : 'warning'}">${r.status}</span>
-                                </div>
-                            </div>
-                        </div>
-                    `).join('');
-                    document.getElementById('refundHistoryList').innerHTML = historyHtml;
-                } else {
-                    document.getElementById('refundHistoryList').innerHTML = '<p style="text-align: center; color: #666;">Belum ada riwayat refund</p>';
-                }
-            } catch (e) {}
-        }
-
-        async function loadPaymentMethods() {
-            try {
-                const data = await apiCall('/payment-methods');
-                const methods = data.data || [];
-
-                const select = document.getElementById('paymentMethod');
-                select.innerHTML = methods.map(m => 
-                    `<option value="${m.id}">${m.name} (${m.category_name}) - Exp: ${m.expiration_time} menit</option>`
-                ).join('');
-            } catch (e) {}
-        }
-
-        async function createDeposit() {
-            const amount = parseInt(document.getElementById('depositAmount').value);
-            const method = parseInt(document.getElementById('paymentMethod').value);
-
-            if (amount < 10000) {
-                showAlert('error', 'Minimal deposit Rp 10.000');
-                return;
-            }
-
-            try {
-                const data = await apiCall('/deposits', 'POST', { amount, method });
-
-                document.getElementById('depositResult').style.display = 'block';
-
-                let html = `
-                    <div style="text-align: center; margin-bottom: 20px;">
-                        <div style="font-size: 24px; font-weight: bold; color: #667eea;">${formatRupiah(data.data.total_amount)}</div>
-                        <div style="color: #666;">Total pembayaran (termasuk fee)</div>
-                    </div>
-                    <p><strong>Kode Transaksi:</strong> ${data.data.uniqcode_tx}</p>
-                    <p><strong>Status:</strong> <span class="badge badge-warning">${data.data.status}</span></p>
-                    <p><strong>Expired:</strong> ${data.data.expires_at_iso}</p>
-                `;
-
-                if (data.data.qr_code_base64) {
-                    html += `
-                        <div class="qr-code">
-                            <img src="data:image/png;base64,${data.data.qr_code_base64}" alt="QR Code">
-                            <p style="margin-top: 10px; color: #666;">Scan QR code untuk membayar</p>
-                        </div>
-                    `;
-                }
-
-                if (data.data.payment_url) {
-                    html += `
-                        <div style="text-align: center; margin-top: 15px;">
-                            <a href="${data.data.payment_url}" target="_blank" class="btn btn-primary">🔗 Buka Halaman Pembayaran</a>
-                        </div>
-                    `;
-                }
-
-                document.getElementById('depositDetails').innerHTML = html;
-                startDepositPolling(data.data.uniqcode_tx);
-            } catch (e) {}
-        }
-
-        async function createCryptoDeposit() {
-            const amount = prompt('Jumlah deposit dalam USD (1-10000):', '10');
-            if (!amount) return;
-
-            try {
-                const data = await apiCall('/deposits/crypto', 'POST', { amount: parseFloat(amount) });
-
-                if (data.data.checkout_url) {
-                    window.open(data.data.checkout_url, '_blank');
-                    showAlert('success', '✅ Checkout URL dibuka di tab baru');
-                }
-            } catch (e) {}
-        }
-
-        function startDepositPolling(uniqcode) {
-            const interval = setInterval(async () => {
-                try {
-                    const data = await apiCall(`/transactions/${uniqcode}`);
-                    if (data.data.status === 'success') {
-                        clearInterval(interval);
-                        showAlert('success', '✅ Deposit berhasil! Saldo telah ditambahkan.');
-                        await refreshBalance();
-                        await loadTransactions();
-                    }
-                } catch (e) {}
-            }, 10000);
-        }
-
-        async function loadTransactions() {
-            try {
-                const data = await apiCall('/transactions');
-                const transactions = data.data?.transactions || [];
-
-                if (transactions.length === 0) {
-                    document.getElementById('transactionsList').innerHTML = '<p style="text-align: center; color: #666;">Belum ada transaksi</p>';
-                    return;
-                }
-
-                const html = `
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Kode</th>
-                                <th>Jumlah</th>
-                                <th>Status</th>
-                                <th>Metode</th>
-                                <th>Waktu</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${transactions.map(t => `
-                                <tr>
-                                    <td>${t.uniqcode_tx}</td>
-                                    <td>${formatRupiah(t.total_amount)}</td>
-                                    <td><span class="badge badge-${t.status === 'success' ? 'success' : t.status === 'pending' ? 'warning' : 'danger'}">${t.status}</span></td>
-                                    <td>${t.payment_method?.name || '-'}</td>
-                                    <td>${t.created_at_iso || '-'}</td>
-                                </tr>
-                            `).join('')}
-                        </tbody>
-                    </table>
-                `;
-
-                document.getElementById('transactionsList').innerHTML = html;
-            } catch (e) {}
-        }
-
-        async function refreshAll() {
-            await refreshBalance();
-            await loadProfile();
-            await loadActiveOrders();
-            showToast('🔄 Semua data diperbarui');
-        }
-
-        window.onload = async function() {
-            await refreshBalance();
-            await loadProfile();
-            await loadPopularServices();
-            await loadActiveOrders();
-
-            setInterval(refreshBalance, 30000);
-
-            setInterval(() => {
-                if (document.getElementById('activeOrders').classList.contains('active')) {
-                    loadActiveOrders();
-                }
-            }, 15000);
-        };
-    </script>
+        showOTPModal(o);
+        if(autoMode)setTimeout(()=>finishOrder(uuid),2000);
+        showToast('🔔 OTP diterima: '+o.latest_code);
+      }
+      if(o.is_expired){
+        clearInterval(pollingIntervals[uuid]);delete pollingIntervals[uuid];
+        showAlert('info','⏰ Order expired');
+      }
+    }catch(e){/*silent*/}
+  },5000);
+}
+function showOTPModal(o){
+  $('otpModalContent').innerHTML=`
+    <div class="number-display">${escapeHtml(o.formatted_number||o.number)}</div>
+    <div class="otp-display">${escapeHtml(o.latest_code)}</div>
+    <div style="text-align:center;margin:14px 0">
+      <button class="copy-btn" style="font-size:14px;padding:10px 18px" onclick="copyToClipboard('${escapeHtml(o.latest_code)}')">📋 Copy Kode OTP</button>
+    </div>
+    <div style="text-align:center">
+      <button class="btn btn-primary" onclick="closeModal('otpModal');finishOrder('${o.order_uuid}')">✅ Selesai & Finish</button>
+    </div>`;
+  $('otpModal').classList.add('show');
+}
+
+/* ---------- Auto Mode ---------- */
+function toggleAutoMode(){
+  autoMode=!autoMode;
+  if(autoMode){
+    $('autoBuyStatus').textContent='Auto-Polling: ON';
+    $('autoBuyDot').classList.remove('off');
+    $('autoModeBtn').style.display='none';
+    $('stopAutoBtn').style.display='inline-block';
+    showAlert('success','✅ Auto Mode aktif');
+  }else stopAutoMode();
+}
+function stopAutoMode(){
+  autoMode=false;
+  $('autoBuyStatus').textContent='Auto-Polling: OFF';
+  $('autoBuyDot').classList.add('off');
+  $('autoModeBtn').style.display='inline-block';
+  $('stopAutoBtn').style.display='none';
+}
+
+/* ---------- Order actions ---------- */
+async function finishOrder(uuid){
+  try{
+    await apiCall(`/orders/${uuid}/finish`,'POST');
+    showAlert('success','✅ Order selesai');
+    clearInterval(pollingIntervals[uuid]);delete pollingIntervals[uuid];
+    await refreshBalance(); await loadActiveOrders();
+  }catch(e){showAlert('error',e.message)}
+}
+async function cancelOrder(uuid){
+  if(!confirm('Yakin cancel order ini? Dana akan dikembalikan.'))return;
+  try{
+    await apiCall(`/orders/${uuid}/cancel`,'POST');
+    showAlert('success','✅ Order dibatalkan & refund');
+    clearInterval(pollingIntervals[uuid]);delete pollingIntervals[uuid];
+    await refreshBalance(); await loadActiveOrders();
+  }catch(e){showAlert('error',e.message)}
+}
+async function checkSMSNow(uuid){
+  try{
+    const data=await apiCall(`/orders/${uuid}/check-sms`,'POST');
+    if(data.has_sms){showAlert('success','📱 SMS diterima');startPolling(uuid)}
+    else showAlert('info','⏳ Belum ada SMS');
+  }catch(e){showAlert('error',e.message)}
+}
+async function requestNewSMS(uuid){
+  try{
+    await apiCall(`/orders/${uuid}/request-sms`,'POST');
+    showAlert('info','📱 Request SMS baru terkirim. Silakan resend di aplikasi target.');
+  }catch(e){showAlert('error',e.message)}
+}
+
+/* ---------- Active Orders ---------- */
+async function loadActiveOrders(){
+  try{
+    const data=await apiCall('/orders/active');
+    const orders=data.data?.orders||[];
+    $('statActiveOrders').textContent=orders.length;
+
+    if(!orders.length){
+      $('activeOrdersList').innerHTML='<div class="empty-state"><div class="empty-state-icon">⏳</div>Tidak ada order aktif</div>';
+      return;
+    }
+
+    $('activeOrdersList').innerHTML=orders.map(o=>`
+      <div class="card white" style="margin-bottom:12px">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap">
+          <div>
+            <div style="font-size:18px;font-weight:800;color:var(--primary)">
+              ${escapeHtml(o.number)}
+              <button class="copy-btn" onclick="copyToClipboard('${escapeHtml(o.number)}')">📋</button>
+            </div>
+            <div style="font-size:11px;color:var(--muted);margin-top:4px;font-family:monospace">UUID: ${escapeHtml(o.order_uuid)}</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:2px">Sisa: ${o.remaining_time||0}s</div>
+          </div>
+          <span class="badge badge-warning">${escapeHtml(o.status)}</span>
+        </div>
+        <div id="active-otp-${o.order_uuid}" style="margin-top:10px">
+          ${o.sms&&o.sms.length?`<div class="otp-display" style="font-size:22px;padding:12px">${escapeHtml(o.sms[o.sms.length-1].code)}</div>`:'<p style="color:var(--muted);font-size:13px">⏳ Menunggu SMS...</p>'}
+        </div>
+        <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
+          <button class="btn btn-success btn-sm" onclick="finishOrder('${o.order_uuid}')">✅ Finish</button>
+          <button class="btn btn-danger btn-sm" onclick="cancelOrder('${o.order_uuid}')">❌ Cancel</button>
+          <button class="btn btn-warning btn-sm" onclick="startPolling('${o.order_uuid}');showToast('🔄 Polling dimulai')">🔄 Poll OTP</button>
+        </div>
+      </div>`).join('');
+
+    orders.forEach(o=>{if(!pollingIntervals[o.order_uuid])startPolling(o.order_uuid)});
+  }catch(e){
+    $('activeOrdersList').innerHTML='<div class="empty-state">Gagal memuat</div>';
+  }
+}
+
+/* ---------- History ---------- */
+async function loadHistory(){
+  try{
+    const q=$('historySearch').value.trim();
+    const endpoint=q?`/orders/history?search=${encodeURIComponent(q)}`:'/orders/history';
+    const data=await apiCall(endpoint);
+    const orders=data.data||[];
+    if(!orders.length){$('historyList').innerHTML='<div class="empty-state"><div class="empty-state-icon">📜</div>Tidak ada riwayat</div>';return}
+    $('historyList').innerHTML=`
+      <table>
+        <thead><tr><th>Nomor</th><th>Status</th><th>Harga</th><th>SMS</th><th>Aksi</th></tr></thead>
+        <tbody>${orders.map(o=>`
+          <tr>
+            <td><b>${escapeHtml(o.number)}</b></td>
+            <td><span class="badge badge-${o.status==='completed'?'success':'secondary'}">${escapeHtml(o.status)}</span></td>
+            <td>${formatRupiah(o.price||0)}</td>
+            <td>${o.sms&&o.sms.length?escapeHtml(o.sms[o.sms.length-1].code):'-'}</td>
+            <td>${o.status==='completed'?`<button class="btn btn-warning btn-sm" onclick="requestRefund('${o.order_uuid}')">💸 Refund</button>`:'-'}</td>
+          </tr>`).join('')}</tbody>
+      </table>`;
+  }catch(e){$('historyList').innerHTML='<div class="empty-state">Gagal memuat</div>'}
+}
+
+/* =========================================================
+   GMAIL
+========================================================= */
+async function loadGmailStock(){
+  try{
+    const data=await apiCall('/gmail/stock');
+    const d=data.data||{};
+    $('gmailStock').innerHTML=`
+      <div class="grid-2">
+        <div class="card white" style="text-align:center">
+          <div style="font-size:28px;font-weight:800;color:var(--primary)">${d.stock||0}</div>
+          <div style="color:var(--muted);font-size:12px">Stok Tersedia</div>
+        </div>
+        <div class="card white" style="text-align:center">
+          <div style="font-size:28px;font-weight:800;color:var(--success)">${formatRupiah(d.sell_price||0)}</div>
+          <div style="color:var(--muted);font-size:12px">Harga / Akun</div>
+        </div>
+      </div>`;
+  }catch(e){$('gmailStock').innerHTML='<div class="empty-state">Gagal memuat</div>'}
+}
+async function buyGmail(){
+  const qty=parseInt($('gmailQty').value)||1;
+  try{
+    await apiCall('/gmail/orders','POST',{qty});
+    showAlert('success',`✅ Berhasil beli ${qty} akun Gmail`);
+    await loadGmailOrders(); await refreshBalance();
+  }catch(e){showAlert('error',e.message)}
+}
+async function loadGmailOrders(){
+  try{
+    const data=await apiCall('/gmail/orders');
+    const orders=data.data?.orders||[];
+    if(!orders.length){$('gmailOrdersList').innerHTML='<div class="empty-state">Belum ada order</div>';return}
+    $('gmailOrdersList').innerHTML=orders.map(o=>`
+      <div class="card white" style="margin-bottom:10px">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+          <div>
+            <div style="font-weight:700">${escapeHtml(o.email)}</div>
+            <div style="font-family:monospace;color:var(--muted);margin-top:4px;font-size:13px">
+              ${escapeHtml(o.password)}
+              <button class="copy-btn" onclick="copyToClipboard('${escapeHtml(o.email)}:${escapeHtml(o.password)}')">📋</button>
+            </div>
+          </div>
+          <span class="badge badge-${o.status==='completed'?'success':'warning'}">${escapeHtml(o.status)}</span>
+        </div>
+      </div>`).join('');
+  }catch(e){}
+}
+
+/* =========================================================
+   EMAIL RENTAL
+========================================================= */
+async function loadEmailSuggestions(){
+  try{
+    const data=await apiCall('/email-rental/suggestions');
+    const sites=data.data?.sites||[];
+    $('emailSite').innerHTML='<option value="">Pilih Site</option>'+sites.map(s=>`<option value="${escapeHtml(s)}">${escapeHtml(s)}</option>`).join('');
+  }catch(e){}
+}
+async function loadEmailDomains(){
+  const site=$('emailSite').value;if(!site)return;
+  try{
+    const data=await apiCall(`/email-rental/domains?site=${encodeURIComponent(site)}`);
+    const domains=data.data?.domains||[];
+    $('emailDomain').innerHTML='<option value="">Pilih Domain</option>'+domains.map(d=>`<option value="${escapeHtml(d.name)}">${escapeHtml(d.name)} — ${formatRupiah(d.price)} (${d.count||0})</option>`).join('');
+  }catch(e){}
+}
+async function rentEmail(){
+  const site=$('emailSite').value,domain=$('emailDomain').value;
+  if(!site||!domain){showAlert('error','Pilih site dan domain');return}
+  try{
+    const data=await apiCall('/email-rental/orders','POST',{site,domain});
+    showAlert('success','✅ Email berhasil dirental');
+    await loadEmailOrders(); await refreshBalance();
+    if(data.data?.order_uuid)startEmailPolling(data.data.order_uuid);
+  }catch(e){showAlert('error',e.message)}
+}
+function startEmailPolling(uuid){
+  const iv=setInterval(async()=>{
+    try{
+      const data=await apiCall(`/email-rental/orders/${uuid}`);
+      if(data.data?.code){
+        clearInterval(iv);
+        showToast('🔔 Kode email: '+data.data.code);
+        await loadEmailOrders();
+      }
+    }catch(e){}
+  },5000);
+}
+async function loadEmailOrders(){
+  try{
+    const data=await apiCall('/email-rental/orders');
+    const orders=data.data?.orders||[];
+    if(!orders.length){$('emailOrdersList').innerHTML='<div class="empty-state">Tidak ada rental aktif</div>';return}
+    $('emailOrdersList').innerHTML=orders.map(o=>`
+      <div class="card white" style="margin-bottom:10px">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+          <div>
+            <div style="font-weight:700">${escapeHtml(o.email)}</div>
+            ${o.code?`<div class="otp-display" style="font-size:18px;padding:10px;margin:8px 0">${escapeHtml(o.code)}</div>`:'<p style="color:var(--muted);font-size:13px">⏳ Menunggu kode...</p>'}
+          </div>
+          <div style="display:flex;gap:8px;align-items:center">
+            <span class="badge badge-${o.status==='completed'?'success':'warning'}">${escapeHtml(o.status)}</span>
+            ${o.cancellable?`<button class="btn btn-danger btn-sm" onclick="cancelEmailRental('${o.order_uuid}')">✖</button>`:''}
+          </div>
+        </div>
+      </div>`).join('');
+  }catch(e){}
+}
+async function cancelEmailRental(uuid){
+  if(!confirm('Yakin cancel rental ini?'))return;
+  try{
+    await apiCall(`/email-rental/orders/${uuid}/cancel`,'POST');
+    showAlert('success','✅ Rental dibatalkan');
+    await loadEmailOrders(); await refreshBalance();
+  }catch(e){showAlert('error',e.message)}
+}
+
+/* =========================================================
+   WA READY
+========================================================= */
+async function loadWAReadyInfo(){
+  try{
+    const data=await apiCall('/wa-ready/info');
+    const info=data.data||{};
+    const countries=info.countries||[];
+    $('waReadyInfo').innerHTML=`
+      <div class="alert alert-info" style="display:block">
+        <b>⚠️ Aturan:</b><br>${(info.usage_rules||[]).map(r=>'• '+escapeHtml(r)).join('<br>')}
+      </div>
+      <div class="grid">${countries.map(c=>`
+        <div class="card white" style="text-align:center">
+          <div style="font-weight:700">${escapeHtml(c.name)}</div>
+          <div style="color:var(--primary);font-weight:800;font-size:18px;margin:6px 0">${formatRupiah(c.price)}</div>
+          <div style="color:var(--muted);font-size:12px">Stok: ${c.stock||0}</div>
+        </div>`).join('')}</div>`;
+    $('waCountry').innerHTML=countries.map(c=>`<option value="${escapeHtml(c.iso)}">${escapeHtml(c.name)} — ${formatRupiah(c.price)}</option>`).join('');
+  }catch(e){$('waReadyInfo').innerHTML='<div class="empty-state">Gagal memuat</div>'}
+}
+async function buyWAReady(){
+  const country=$('waCountry').value;
+  try{
+    const data=await apiCall('/wa-ready/orders','POST',{country});
+    showAlert('success','✅ WA Ready berhasil dibeli');
+    await loadWAReadyOrders(); await refreshBalance();
+    if(data.data?.order?.order_uuid)startWAPolling(data.data.order.order_uuid);
+  }catch(e){showAlert('error',e.message)}
+}
+function startWAPolling(uuid){
+  const iv=setInterval(async()=>{
+    try{
+      const data=await apiCall(`/wa-ready/orders/${uuid}`);
+      const o=data.data?.order;
+      if(o?.latest_code){
+        clearInterval(iv);
+        showOTPModal({formatted_number:o.phone,latest_code:o.latest_code,order_uuid:uuid});
+      }
+      if(o?.status==='completed'||o?.status==='failed')clearInterval(iv);
+      await loadWAReadyOrders();
+    }catch(e){}
+  },4000);
+}
+async function loadWAReadyOrders(){
+  try{
+    const data=await apiCall('/wa-ready/orders');
+    const orders=data.data?.orders||[];
+    if(!orders.length){$('waReadyOrdersList').innerHTML='<div class="empty-state">Belum ada order WA Ready</div>';return}
+    $('waReadyOrdersList').innerHTML=orders.map(o=>`
+      <div class="card white" style="margin-bottom:10px">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+          <div>
+            <div style="font-weight:700;font-size:16px">${escapeHtml(o.phone)}</div>
+            ${o.latest_code?`<div class="otp-display" style="font-size:18px;padding:10px;margin:8px 0">${escapeHtml(o.latest_code)}</div>`:''}
+          </div>
+          <span class="badge badge-${o.status==='completed'?'success':o.status==='failed'?'danger':'warning'}">${escapeHtml(o.status)}</span>
+        </div>
+      </div>`).join('');
+  }catch(e){}
+}
+
+/* =========================================================
+   SMM
+========================================================= */
+async function loadSMMPlatforms(){
+  try{
+    const data=await apiCall('/smm/platforms');
+    const platforms=data.data?.platforms||[];
+    $('smmPlatform').innerHTML='<option value="">Pilih Platform</option>'+platforms.map(p=>`<option value="${escapeHtml(p.key)}">${escapeHtml(p.label)} (${p.total||0})</option>`).join('');
+  }catch(e){}
+}
+async function loadSMMTypes(){
+  const platform=$('smmPlatform').value;if(!platform)return;
+  try{
+    const data=await apiCall('/smm/platforms');
+    const p=(data.data?.platforms||[]).find(x=>x.key===platform);
+    $('smmType').innerHTML='<option value="">Pilih Tipe</option>'+(p?.types||[]).map(t=>`<option value="${escapeHtml(t.type)}">${escapeHtml(t.type)} (${t.total||0})</option>`).join('');
+  }catch(e){}
+}
+async function loadSMMServices(){
+  const platform=$('smmPlatform').value,type=$('smmType').value;
+  if(!platform||!type)return;
+  try{
+    const data=await apiCall(`/smm/services?platform=${encodeURIComponent(platform)}&type=${encodeURIComponent(type)}`);
+    const list=data.data?.services||[];
+    if(!list.length){$('smmServicesList').innerHTML='<div class="empty-state">Tidak ada layanan</div>';return}
+    $('smmServicesList').innerHTML=list.map(s=>`
+      <div class="card white" style="margin-bottom:8px">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+          <div>
+            <div style="font-weight:600">${escapeHtml(s.name)}</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:3px">${escapeHtml(s.category||'')} • Min ${s.min} • Max ${s.max}</div>
+          </div>
+          <div style="font-weight:700;color:var(--primary)">${formatRupiah(s.price_per_1000)}/1000</div>
+        </div>
+      </div>`).join('');
+  }catch(e){}
+}
+async function loadSMMOrders(){
+  try{
+    const data=await apiCall('/smm/orders');
+    const orders=data.data?.orders||[];
+    if(!orders.length){$('smmOrdersList').innerHTML='<div class="empty-state">Belum ada order SMM</div>';return}
+    $('smmOrdersList').innerHTML=orders.map(o=>`
+      <div class="card white" style="margin-bottom:8px">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+          <div>
+            <div style="font-weight:600">${escapeHtml(o.service_name||'Order')}</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:3px">Target: ${escapeHtml(o.target||'-')} • Qty: ${o.quantity||'-'}</div>
+          </div>
+          <span class="badge badge-${o.status==='completed'?'success':o.status==='in_progress'?'warning':'secondary'}">${escapeHtml(o.status)}</span>
+        </div>
+      </div>`).join('');
+  }catch(e){}
+}
+
+/* =========================================================
+   REFUND
+========================================================= */
+async function loadRefunds(){
+  try{
+    const data=await apiCall('/refunds/eligible');
+    const vn=data.data?.vn||[], quota=data.data?.quota||{};
+    let html=`
+      <div class="card white" style="margin-bottom:12px">
+        <div class="pay-detail"><span class="label">Daily Limit</span><span class="value">${quota.daily_left||0}/${quota.daily_limit||0}</span></div>
+        <div class="pay-detail"><span class="label">Monthly Limit</span><span class="value">${quota.monthly_left||0}/${quota.monthly_limit||0}</span></div>
+      </div>`;
+    if(vn.length){
+      html+='<div style="font-weight:600;margin-bottom:8px;font-size:13px">📱 Nomor Eligible:</div>';
+      html+=vn.map(r=>`
+        <div class="card white" style="margin-bottom:8px">
+          <div style="font-weight:600;font-family:monospace;font-size:13px">${escapeHtml(r.order_uuid)}</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:3px">${formatRupiah(r.amount)} • ${escapeHtml(r.created_at||'')}</div>
+        </div>`).join('');
+    }else{
+      html+='<div class="empty-state">Tidak ada order eligible</div>';
+    }
+    $('refundEligibleList').innerHTML=html;
+
+    const hist=await apiCall('/refunds');
+    const refunds=hist.data?.refunds||[];
+    $('refundHistoryList').innerHTML=refunds.length?refunds.map(r=>`
+      <div class="card white" style="margin-bottom:8px">
+        <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap">
+          <div>
+            <div style="font-weight:600;font-family:monospace;font-size:12px">${escapeHtml(r.order_uuid)}</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:3px">${escapeHtml(r.type||'')} • ${formatRupiah(r.amount)}</div>
+          </div>
+          <span class="badge badge-${r.status==='approved'?'success':r.status==='rejected'?'danger':'warning'}">${escapeHtml(r.status)}</span>
+        </div>
+      </div>`).join(''):'<div class="empty-state">Belum ada riwayat refund</div>';
+  }catch(e){}
+}
+async function requestRefund(uuid){
+  if(!confirm('Ajukan refund untuk order ini?'))return;
+  try{
+    await apiCall(`/refunds/${uuid}`,'POST',{reason:'Request from user'});
+    showAlert('success','✅ Refund diajukan');
+    loadRefunds();
+  }catch(e){showAlert('error',e.message)}
+}
+
+/* =========================================================
+   DEPOSIT
+========================================================= */
+let paymentMethodsCache = [];
+let currentDeposit = null;
+
+function setDeposit(amount,btn){
+  $('depositAmount').value=amount;
+  document.querySelectorAll('.preset-btn').forEach(b=>b.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+}
+function updateDepositPreview(){
+  const val=parseInt($('depositAmount').value)||0;
+  document.querySelectorAll('.preset-btn').forEach(b=>{
+    const n=parseInt(b.textContent.replace(/\D/g,''));
+    b.classList.toggle('active',n===val);
+  });
+}
+
+async function loadPaymentMethods(){
+  try{
+    const data=await apiCall('/payment-methods');
+    paymentMethodsCache=data.data||[];
+    renderMethodList(paymentMethodsCache);
+  }catch(e){
+    $('methodList').innerHTML='<div class="empty-state">Gagal memuat metode</div>';
+  }
+}
+function renderMethodList(methods){
+  if(!methods.length){
+    $('methodList').innerHTML='<div class="empty-state">Tidak ada metode</div>';
+    return;
+  }
+  $('methodList').innerHTML=methods.map(m=>`
+    <div class="method-item" data-id="${m.id}" onclick="selectMethod(${m.id},this)">
+      <div>
+        <div class="method-name">${escapeHtml(m.name)}</div>
+        <div class="method-meta">${escapeHtml(m.category_name||'')} • Exp: ${m.expiration_time||'—'} menit</div>
+      </div>
+      <div class="method-fee">${m.fee? 'Fee '+formatRupiah(m.fee) : 'Instan'}</div>
+    </div>`).join('');
+  // auto-select first
+  const first=$('methodList').querySelector('.method-item');
+  if(first)selectMethod(parseInt(first.dataset.id),first);
+}
+function selectMethod(id,el){
+  document.querySelectorAll('.method-item').forEach(i=>i.classList.remove('active'));
+  if(el)el.classList.add('active');
+  $('paymentMethod').innerHTML=`<option value="${id}" selected>${id}</option>`;
+  $('paymentMethod').value=id;
+}
+
+async function createDeposit(){
+  const amount=parseInt($('depositAmount').value)||0;
+  const methodId=parseInt($('paymentMethod').value)||0;
+
+  if(amount<10000){showAlert('error','Minimal deposit Rp 10.000');return}
+  if(!methodId){showAlert('error','Pilih metode pembayaran');return}
+
+  const btn=$('btnDeposit');
+  const original=btn.innerHTML;
+  btn.disabled=true;btn.innerHTML='⏳ Memproses...';
+
+  try{
+    const data=await apiCall('/deposits','POST',{amount,method:methodId});
+    currentDeposit=data.data||{};
+    renderDepositInstructions(currentDeposit);
+    showAlert('success','✅ Instruksi pembayaran dibuat');
+  }catch(e){
+    showAlert('error',e.message||'Gagal membuat deposit');
+  }finally{
+    btn.disabled=false;btn.innerHTML=original;
+  }
+}
+
+function renderDepositInstructions(d){
+  // toggle views
+  $('depositPlaceholder').style.display='none';
+  $('depositResult').style.display='block';
+
+  const total=d.total_amount||d.amount||0;
+  const payCode=d.payment_code||d.pay_code||d.va_number||d.payment_number||d.pay_code||'';
+  const status=d.status||'pending';
+
+  $('depositTotal').textContent=formatRupiah(total);
+  $('depositTotal').dataset.raw=total;
+  $('depositStatusBadge').textContent=(status||'').toUpperCase();
+  $('depositStatusBadge').className='badge badge-'+(status==='success'?'success':status==='pending'?'warning':'danger')+' spacer';
+
+  /* ---------- QR SECTION ---------- */
+  let qrHtml='';
+  let qrSource='';
+
+  // Priority 1: raw base64 PNG
+  if(d.qr_code_base64){
+    let b64=String(d.qr_code_base64).trim();
+    if(!b64.startsWith('data:image'))b64='data:image/png;base64,'+b64.replace(/^data:image\/[a-z]+;base64,/,'');
+    qrSource=`<img src="${b64}" alt="QR Code" onerror="this.parentNode.innerHTML='<div class=\\'qr-placeholder\\'>Gagal memuat QR</div>'">`;
+  }
+  // Priority 2: URL image
+  else if(d.qr_url){
+    qrSource=`<img src="${escapeHtml(d.qr_url)}" alt="QR Code" onerror="this.parentNode.innerHTML='<div class=\\'qr-placeholder\\'>Gagal memuat QR</div>'">`;
+  }
+  // Priority 3: QR string -> generate via qrserver
+  else if(d.qr_string){
+    const enc=encodeURIComponent(d.qr_string);
+    qrSource=`<img src="https://api.qrserver.com/v1/create-qr-code/?size=280x280&margin=8&data=${enc}" alt="QR Code" onerror="this.parentNode.innerHTML='<div class=\\'qr-placeholder\\'>Gagal memuat QR</div>'">`;
+  }
+  else if(d.qr_code){
+    // Could be string or url
+    const s=String(d.qr_code);
+    if(s.startsWith('http'))qrSource=`<img src="${escapeHtml(s)}" alt="QR Code">`;
+    else if(s.length>50&&/^[A-Za-z0-9+/=]+$/.test(s)){
+      qrSource=`<img src="data:image/png;base64,${s}" alt="QR Code">`;
+    } else {
+      qrSource=`<img src="https://api.qrserver.com/v1/create-qr-code/?size=280x280&margin=8&data=${encodeURIComponent(s)}" alt="QR Code">`;
+    }
+  }
+
+  if(qrSource){
+    qrHtml=`
+      <div class="qr-container">
+        ${qrSource}
+        <div class="qr-label">Scan QRIS</div>
+        <div class="qr-badge">QRIS • Semua e-wallet & m-banking</div>
+      </div>`;
+  } else {
+    qrHtml=`
+      <div class="qr-container">
+        <div class="qr-placeholder">
+          ${d.payment_url?'Klik tombol di bawah untuk membuka halaman pembayaran':'QR tidak tersedia untuk metode ini'}
+        </div>
+      </div>`;
+  }
+  $('qrSection').innerHTML=qrHtml;
+
+  /* ---------- PAY DETAIL ---------- */
+  let detailHtml='';
+  if(payCode){
+    detailHtml+=`
+      <div class="pay-detail">
+        <span class="label">Kode Pembayaran</span>
+        <span class="value">
+          <span class="pay-code">${escapeHtml(payCode)}</span>
+          <button class="copy-btn" onclick="copyToClipboard('${escapeHtml(payCode)}')">📋</button>
+        </span>
+      </div>`;
+  }
+  if(d.uniqcode_tx){
+    detailHtml+=`
+      <div class="pay-detail">
+        <span class="label">Kode Transaksi</span>
+        <span class="value" style="font-size:12px;font-family:monospace">
+          ${escapeHtml(d.uniqcode_tx)}
+          <button class="copy-btn" onclick="copyToClipboard('${escapeHtml(d.uniqcode_tx)}')">📋</button>
+        </span>
+      </div>`;
+  }
+  detailHtml+=`
+    <div class="pay-detail">
+      <span class="label">Total Pembayaran</span>
+      <span class="value" style="color:var(--primary)">
+        ${formatRupiah(total)}
+        <button class="copy-btn" onclick="copyToClipboard('${total}')">📋</button>
+      </span>
+    </div>`;
+  if(d.expires_at_iso||d.expires_at){
+    detailHtml+=`
+      <div class="pay-detail">
+        <span class="label">Kedaluwarsa</span>
+        <span class="value" style="font-size:12px">${escapeHtml(d.expires_at_iso||d.expires_at)}</span>
+      </div>`;
+  }
+  if(d.payment_url){
+    detailHtml+=`
+      <div style="text-align:center;margin-top:14px">
+        <a href="${escapeHtml(d.payment_url)}" target="_blank" rel="noopener" class="btn btn-primary" style="text-decoration:none">🔗 Buka Halaman Pembayaran</a>
+      </div>`;
+  }
+  $('payDetailSection').innerHTML=detailHtml;
+
+  /* ---------- COUNTDOWN ---------- */
+  startDepositCountdown(d);
+
+  /* ---------- POLLING ---------- */
+  if(currentDeposit.uniqcode_tx)startDepositPolling(currentDeposit.uniqcode_tx);
+}
+
+function startDepositCountdown(d){
+  clearInterval(depositTimer);
+  const el=$('depositCountdown');
+  if(!el)return;
+
+  // Determine expiry time
+  let expiryMs=0;
+  const expiryStr=d.expires_at_iso||d.expires_at;
+  if(expiryStr){
+    const parsed=Date.parse(expiryStr.replace(' ','T'));
+    if(!isNaN(parsed))expiryMs=parsed;
+  }
+  if(!expiryMs&&d.expiration_time){
+    // fallback: now + minutes
+    expiryMs=Date.now()+parseInt(d.expiration_time)*60000;
+  }
+  if(!expiryMs&&d.expires_in_seconds){
+    expiryMs=Date.now()+parseInt(d.expires_in_seconds)*1000;
+  }
+
+  if(!expiryMs){
+    el.textContent='⏱️ Tanpa batas waktu';
+    return;
+  }
+
+  function tick(){
+    const diff=expiryMs-Date.now();
+    if(diff<=0){
+      el.textContent='⏱️ Kedaluwarsa';
+      el.classList.add('expired');
+      clearInterval(depositTimer);
+      return;
+    }
+    const h=Math.floor(diff/3600000);
+    const m=Math.floor((diff%3600000)/60000);
+    const s=Math.floor((diff%60000)/1000);
+    el.textContent=`⏱️ ${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    el.classList.remove('expired');
+  }
+  tick();
+  depositTimer=setInterval(tick,1000);
+}
+
+function startDepositPolling(uniqcode){
+  clearInterval(depositPollTimer);
+  depositPollTimer=setInterval(async()=>{
+    try{
+      const data=await apiCall(`/transactions/${uniqcode}`);
+      const status=data.data?.status;
+      if(status==='success'){
+        clearInterval(depositPollTimer);
+        clearInterval(depositTimer);
+        showAlert('success','✅ Pembayaran diterima! Saldo sudah ditambahkan.');
+        await refreshBalance();
+        await loadTransactions();
+        const badge=$('depositStatusBadge');
+        if(badge){badge.textContent='SUCCESS';badge.className='badge badge-success spacer'}
+        showToast('💰 Deposit berhasil!');
+      } else if(status==='failed'||status==='expired'){
+        clearInterval(depositPollTimer);
+        clearInterval(depositTimer);
+        showAlert('error','❌ Pembayaran '+status);
+      }
+    }catch(e){/*silent*/}
+  },8000);
+}
+
+async function checkDepositStatus(){
+  if(!currentDeposit||!currentDeposit.uniqcode_tx){
+    showAlert('error','Tidak ada deposit aktif');
+    return;
+  }
+  try{
+    const data=await apiCall(`/transactions/${currentDeposit.uniqcode_tx}`);
+    const st=data.data?.status;
+    if(st==='success'){
+      showAlert('success','✅ Pembayaran sudah diterima');
+      await refreshBalance();
+      await loadTransactions();
+    } else {
+      showAlert('info','Status: '+st);
+    }
+  }catch(e){showAlert('error',e.message)}
+}
+
+function resetDeposit(){
+  clearInterval(depositTimer);
+  clearInterval(depositPollTimer);
+  currentDeposit=null;
+  $('depositResult').style.display='none';
+  $('depositPlaceholder').style.display='flex';
+  $('depositAmount').value=50000;
+  updateDepositPreview();
+}
+
+async function createCryptoDeposit(){
+  const amount=prompt('Jumlah deposit dalam USD (1–10.000):','10');
+  if(!amount)return;
+  const val=parseFloat(amount);
+  if(isNaN(val)||val<1||val>10000){showAlert('error','Nominal tidak valid');return}
+  try{
+    const data=await apiCall('/deposits/crypto','POST',{amount:val});
+    if(data.data?.checkout_url){
+      window.open(data.data.checkout_url,'_blank');
+      showAlert('success','✅ Halaman checkout crypto dibuka di tab baru');
+    }
+  }catch(e){showAlert('error',e.message)}
+}
+
+/* ---------- Transactions ---------- */
+async function loadTransactions(){
+  try{
+    const data=await apiCall('/transactions');
+    const list=data.data?.transactions||[];
+    if(!list.length){
+      $('transactionsList').innerHTML='<div class="empty-state">Belum ada transaksi</div>';
+      return;
+    }
+    $('transactionsList').innerHTML=`
+      <table>
+        <thead><tr><th>Kode</th><th>Jumlah</th><th>Status</th><th>Metode</th><th>Waktu</th></tr></thead>
+        <tbody>${list.map(t=>`
+          <tr>
+            <td style="font-family:monospace;font-size:12px">${escapeHtml(t.uniqcode_tx)}</td>
+            <td><b>${formatRupiah(t.total_amount||0)}</b></td>
+            <td><span class="badge badge-${t.status==='success'?'success':t.status==='pending'?'warning':'danger'}">${escapeHtml(t.status)}</span></td>
+            <td style="font-size:12px">${escapeHtml(t.payment_method?.name||'-')}</td>
+            <td style="font-size:12px;color:var(--muted)">${escapeHtml(t.created_at_iso||'-')}</td>
+          </tr>`).join('')}</tbody>
+      </table>`;
+  }catch(e){$('transactionsList').innerHTML='<div class="empty-state">Gagal memuat</div>'}
+}
+
+/* =========================================================
+   MISC
+========================================================= */
+async function refreshAll(){
+  await refreshBalance(); await loadProfile(); await loadActiveOrders();
+  showToast('🔄 Data diperbarui');
+}
+
+/* ---------- INIT ---------- */
+window.addEventListener('DOMContentLoaded',async()=>{
+  await refreshBalance();
+  await loadProfile();
+  await loadPopularServices();
+  await loadActiveOrders();
+  await loadPaymentMethods(); // pre-load deposit methods
+
+  setInterval(refreshBalance,30000);
+  setInterval(()=>{
+    if($('activeOrders').classList.contains('active'))loadActiveOrders();
+  },15000);
+});
+</script>
 </body>
 </html>
