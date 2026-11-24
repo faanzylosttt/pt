@@ -1,396 +1,1579 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GOALIQ — AI Prediksi Bola</title>
-<script src="https://js.puter.com/v2/"></script>
-<style>
-  :root{
-    --bg:#070b12; --panel:#0d1420; --panel2:#111b2b; --line:#1c2a40;
-    --green:#22e584; --green2:#0ea961; --gold:#ffd166; --red:#ff5c7a;
-    --text:#e8eef7; --muted:#8ba0bd; --blue:#4da3ff;
-  }
-  *{margin:0;padding:0;box-sizing:border-box}
-  body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;height:100vh;display:flex;overflow:hidden}
-  /* ========== SIDEBAR ========== */
-  #sidebar{width:340px;min-width:340px;background:var(--panel);border-right:1px solid var(--line);display:flex;flex-direction:column;overflow-y:auto}
-  .logo{padding:18px 20px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--line)}
-  .logo-ball{width:40px;height:40px;border-radius:50%;background:conic-gradient(from 20deg,#0d3d26,#22e584,#0d3d26);display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 0 18px rgba(34,229,132,.35)}
-  .logo h1{font-size:20px;letter-spacing:1px}
-  .logo h1 span{color:var(--green)}
-  .logo small{display:block;color:var(--muted);font-size:11px;font-weight:400}
-  .side-section{padding:16px 20px;border-bottom:1px solid var(--line)}
-  .side-section h3{font-size:12px;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-bottom:12px}
-  .method{display:flex;gap:10px;align-items:flex-start;padding:7px 0;font-size:13px;color:#c6d4e6}
-  .method b{color:var(--green);font-weight:600}
-  .method .dot{width:8px;height:8px;border-radius:50%;background:var(--green);margin-top:5px;flex-shrink:0;box-shadow:0 0 8px var(--green)}
-  /* simulator */
-  .sim-field{margin-bottom:10px}
-  .sim-field label{display:block;font-size:11px;color:var(--muted);margin-bottom:4px}
-  .sim-field input{width:100%;background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:9px 12px;color:var(--text);font-size:14px;outline:none}
-  .sim-field input:focus{border-color:var(--green)}
-  .sim-row{display:flex;gap:10px}
-  .sim-row .sim-field{flex:1}
-  .btn{width:100%;padding:11px;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;transition:.15s}
-  .btn-green{background:linear-gradient(135deg,var(--green),var(--green2));color:#04160c}
-  .btn-green:hover{filter:brightness(1.1);transform:translateY(-1px)}
-  .btn-blue{background:var(--panel2);color:var(--blue);border:1px solid #1e3d5f;margin-top:8px}
-  .btn-blue:hover{background:#152238}
-  #simResult{display:none;margin-top:12px;background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:14px;font-size:13px}
-  .prob-bar{height:10px;border-radius:6px;background:#1a2436;overflow:hidden;display:flex;margin:8px 0 14px}
-  .prob-bar div{height:100%}
-  .pb-home{background:var(--green)} .pb-draw{background:var(--gold)} .pb-away{background:var(--blue)}
-  .score-line{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px dashed #1c2a40;color:#c6d4e6}
-  .score-line b{color:var(--gold)}
-  /* ========== MAIN ========== */
-  #main{flex:1;display:flex;flex-direction:column;min-width:0}
-  header{padding:14px 24px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:14px;background:var(--panel)}
-  header .title{font-size:16px;font-weight:600}
-  header .badge{font-size:11px;background:#122b1e;color:var(--green);border:1px solid #1d4a33;padding:3px 10px;border-radius:20px}
-  .hspace{flex:1}
-  select{background:var(--panel2);border:1px solid var(--line);color:var(--text);border-radius:8px;padding:7px 10px;font-size:13px;outline:none;cursor:pointer}
-  .toggle-wrap{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);cursor:pointer;user-select:none}
-  .toggle{width:40px;height:22px;border-radius:20px;background:#1a2436;position:relative;transition:.2s;border:1px solid var(--line)}
-  .toggle::after{content:'';position:absolute;width:16px;height:16px;border-radius:50%;background:#5b7089;top:2px;left:2px;transition:.2s}
-  .toggle.on{background:#12351f;border-color:#1d5c37}
-  .toggle.on::after{left:20px;background:var(--green)}
-  /* chat */
-  #chat{flex:1;overflow-y:auto;padding:26px;display:flex;flex-direction:column;gap:18px}
-  .msg{max-width:78%;padding:14px 18px;border-radius:16px;line-height:1.65;font-size:15px;white-space:pre-wrap;word-wrap:break-word}
-  .msg.user{align-self:flex-end;background:linear-gradient(135deg,#14532d,#166534);border-bottom-right-radius:4px}
-  .msg.ai{align-self:flex-start;background:var(--panel2);border:1px solid var(--line);border-bottom-left-radius:4px}
-  .msg.ai table{border-collapse:collapse;margin:10px 0;font-size:13px}
-  .msg.ai th,.msg.ai td{border:1px solid var(--line);padding:6px 12px;text-align:center}
-  .msg.ai th{background:#16233a;color:var(--green)}
-  .msg .role{font-size:11px;color:var(--muted);display:block;margin-bottom:6px;text-transform:uppercase;letter-spacing:1px}
-  #typing{display:none;align-self:flex-start;padding:14px 18px;background:var(--panel2);border:1px solid var(--line);border-radius:16px;border-bottom-left-radius:4px;gap:5px}
-  #typing span{width:8px;height:8px;border-radius:50%;background:var(--green);animation:blink 1.2s infinite}
-  #typing span:nth-child(2){animation-delay:.2s} #typing span:nth-child(3){animation-delay:.4s}
-  @keyframes blink{0%,80%,100%{opacity:.25}40%{opacity:1}}
-  /* composer */
-  #composer{padding:16px 24px 20px;border-top:1px solid var(--line);background:var(--panel)}
-  #chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
-  .chip{font-size:12px;padding:6px 14px;border-radius:20px;background:var(--panel2);border:1px solid var(--line);color:#b9c9dd;cursor:pointer;transition:.15s}
-  .chip:hover{border-color:var(--green);color:var(--green)}
-  #inputRow{display:flex;gap:10px}
-  #input{flex:1;background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:13px 16px;color:var(--text);font-size:15px;outline:none;resize:none;font-family:inherit;height:50px}
-  #input:focus{border-color:var(--green)}
-  #sendBtn{width:50px;height:50px;border-radius:12px;border:none;background:linear-gradient(135deg,var(--green),var(--green2));color:#04160c;font-size:20px;cursor:pointer;transition:.15s;flex-shrink:0}
-  #sendBtn:hover{filter:brightness(1.12)}
-  #stopBtn{display:none;width:50px;height:50px;border-radius:12px;border:1px solid var(--red);background:transparent;color:var(--red);font-size:18px;cursor:pointer;flex-shrink:0}
-  footer{padding:8px 24px;font-size:11px;color:#4a5c74;text-align:center;border-top:1px solid var(--line);background:var(--panel)}
-  footer a{color:#5d7492;text-decoration:none}
-  footer a:hover{color:var(--green)}
-  #toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:#2a1520;border:1px solid #5c2740;color:#ffb3c6;padding:10px 20px;border-radius:10px;font-size:13px;display:none;z-index:50;max-width:80%}
-  @media(max-width:900px){#sidebar{display:none}.msg{max-width:92%}}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VirtusIM OTP - Jual Beli Nomor Kosong 24 Jam</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+        .header {
+            background: rgba(255,255,255,0.95);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .header h1 { color: #667eea; font-size: 28px; margin-bottom: 5px; }
+        .header p { color: #666; font-size: 14px; }
+        .status-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            background: #4CAF50;
+            color: white;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
+        .balance-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .balance-amount { font-size: 36px; font-weight: bold; }
+        .balance-label { font-size: 14px; opacity: 0.9; }
+        .refresh-btn {
+            background: rgba(255,255,255,0.2);
+            border: 2px solid white;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        .refresh-btn:hover { background: rgba(255,255,255,0.3); }
+        .tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab {
+            padding: 12px 24px;
+            background: rgba(255,255,255,0.8);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            color: #666;
+            transition: all 0.3s;
+        }
+        .tab:hover { background: white; transform: translateY(-2px); }
+        .tab.active { background: #667eea; color: white; box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4); }
+        .content { background: rgba(255,255,255,0.95); border-radius: 15px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .section { display: none; }
+        .section.active { display: block; }
+        .card { background: #f8f9fa; border-radius: 12px; padding: 20px; margin-bottom: 15px; border: 1px solid #e0e0e0; }
+        .card-title { font-size: 18px; font-weight: bold; color: #333; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: 600; color: #555; font-size: 14px; }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 14px; transition: border-color 0.3s;
+        }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: #667eea; }
+        .btn { padding: 12px 30px; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.3s; }
+        .btn-primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4); }
+        .btn-success { background: #4CAF50; color: white; }
+        .btn-danger { background: #f44336; color: white; }
+        .btn-warning { background: #ff9800; color: white; }
+        .btn-secondary { background: #6c757d; color: white; }
+        .btn-sm { padding: 8px 16px; font-size: 12px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 15px; }
+        .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #e0e0e0; }
+        th { background: #f8f9fa; font-weight: 600; color: #555; }
+        tr:hover { background: #f8f9fa; }
+        .badge { display: inline-block; padding: 4px 12px; border-radius: 12px; font-size: 12px; font-weight: 600; }
+        .badge-success { background: #e8f5e9; color: #4CAF50; }
+        .badge-warning { background: #fff3e0; color: #ff9800; }
+        .badge-danger { background: #ffebee; color: #f44336; }
+        .badge-info { background: #e3f2fd; color: #2196F3; }
+        .badge-secondary { background: #f5f5f5; color: #666; }
+        .otp-display {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white; padding: 20px; border-radius: 12px; text-align: center;
+            font-size: 32px; font-weight: bold; letter-spacing: 5px; margin: 15px 0;
+        }
+        .number-display {
+            background: #f8f9fa; border: 2px dashed #667eea; padding: 15px; border-radius: 12px;
+            text-align: center; font-size: 24px; font-weight: bold; color: #667eea; margin: 15px 0;
+        }
+        .alert { padding: 15px; border-radius: 8px; margin-bottom: 15px; display: none; }
+        .alert-success { background: #e8f5e9; color: #4CAF50; border-left: 4px solid #4CAF50; }
+        .alert-error { background: #ffebee; color: #f44336; border-left: 4px solid #f44336; }
+        .alert-info { background: #e3f2fd; color: #2196F3; border-left: 4px solid #2196F3; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center; }
+        .modal-content { background: white; border-radius: 15px; padding: 30px; max-width: 600px; width: 90%; max-height: 80vh; overflow-y: auto; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .modal-close { background: none; border: none; font-size: 24px; cursor: pointer; color: #666; }
+        .service-card {
+            background: white; border-radius: 12px; padding: 15px; text-align: center;
+            cursor: pointer; transition: all 0.3s; border: 2px solid #e0e0e0;
+        }
+        .service-card:hover { border-color: #667eea; transform: translateY(-5px); box-shadow: 0 10px 25px rgba(102, 126, 234, 0.2); }
+        .service-card.selected { border-color: #667eea; background: linear-gradient(135deg, #667eea10 0%, #764ba210 100%); }
+        .service-icon {
+            width: 50px; height: 50px; border-radius: 12px;
+            background: linear-gradient(135deg, #667eea20 0%, #764ba220 100%);
+            display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; font-size: 24px;
+        }
+        .country-card { background: white; border-radius: 10px; padding: 15px; border: 2px solid #e0e0e0; cursor: pointer; transition: all 0.3s; }
+        .country-card:hover { border-color: #667eea; }
+        .country-card.selected { border-color: #667eea; background: linear-gradient(135deg, #667eea10 0%, #764ba210 100%); }
+        .toast { position: fixed; bottom: 20px; right: 20px; padding: 15px 25px; background: #333; color: white; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); display: none; z-index: 2000; }
+        @media (max-width: 768px) { .grid-2 { grid-template-columns: 1fr; } .balance-card { flex-direction: column; gap: 15px; text-align: center; } }
+        .auto-buy-panel { background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%); border: 2px solid #667eea; border-radius: 15px; padding: 20px; margin-bottom: 20px; }
+        .auto-buy-status { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
+        .status-dot { width: 12px; height: 12px; border-radius: 50%; background: #4CAF50; animation: pulse 2s infinite; }
+        .status-dot.off { background: #f44336; }
+        .copy-btn { background: #e3f2fd; border: none; color: #2196F3; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 12px; margin-left: 5px; }
+        .copy-btn:hover { background: #bbdefb; }
+        .qr-code { text-align: center; margin: 15px 0; }
+        .qr-code img { max-width: 250px; border-radius: 10px; }
+        .search-box { position: relative; margin-bottom: 20px; }
+        .search-box input { width: 100%; padding: 15px 20px 15px 50px; border: 2px solid #e0e0e0; border-radius: 30px; font-size: 16px; }
+        .search-box::before { content: "🔍"; position: absolute; left: 20px; top: 50%; transform: translateY(-50%); font-size: 18px; }
+    </style>
 </head>
 <body>
+    <div class="container">
+        <div class="header">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+                <div>
+                    <h1>📱 VirtusIM OTP Store</h1>
+                    <p>Jual Beli Nomor Kosong Otomatis 24 Jam - Semua Layanan dalam Satu Platform</p>
+                </div>
+                <div style="text-align: right;">
+                    <span class="status-badge">🟢 ONLINE 24 JAM</span>
+                    <p style="margin-top: 5px; font-size: 12px; color: #999;" id="lastUpdate">Last update: -</p>
+                </div>
+            </div>
+        </div>
 
-<!-- ================= SIDEBAR ================= -->
-<div id="sidebar">
-  <div class="logo">
-    <div class="logo-ball">⚽</div>
-    <div><h1>GOAL<span>IQ</span></h1><small>AI Football Prediction Engine</small></div>
-  </div>
+        <div class="balance-card">
+            <div>
+                <div class="balance-label">💰 Saldo Anda</div>
+                <div class="balance-amount" id="balanceDisplay">Rp 0</div>
+                <div style="font-size: 12px; opacity: 0.8; margin-top: 5px;" id="pendingBalance">Pending: Rp 0</div>
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <button class="refresh-btn" onclick="refreshBalance()">🔄 Refresh</button>
+                <button class="refresh-btn" onclick="showSection('deposit')">💳 Top Up</button>
+            </div>
+        </div>
 
-  <div class="side-section">
-    <h3>🧠 Metode Analisis</h3>
-    <div class="method"><div class="dot"></div><div><b>Distribusi Poisson</b> — memodelkan jumlah gol dengan expected goals (xG) tiap tim.</div></div>
-    <div class="method"><div class="dot"></div><div><b>Elo Rating</b> — rating kekuatan dinamis berbasis hasil pertandingan historis.</div></div>
-    <div class="method"><div class="dot"></div><div><b>xG (Expected Goals)</b> — kualitas peluang dari data shot-level.</div></div>
-    <div class="method"><div class="dot"></div><div><b>Head-to-Head</b> — rekam jejak pertemuan langsung kedua tim.</div></div>
-    <div class="method"><div class="dot"></div><div><b>Form 5 Laga</b> — tren performa terkini dengan bobot laga terbaru lebih besar.</div></div>
-    <div class="method"><div class="dot"></div><div><b>Home/Away & Motivasi</b> — faktor kandang, kelelahan, cedera, dan beban klasemen.</div></div>
-  </div>
+        <div class="alert alert-success" id="alertSuccess"></div>
+        <div class="alert alert-error" id="alertError"></div>
+        <div class="alert alert-info" id="alertInfo"></div>
 
-  <div class="side-section">
-    <h3>⚡ Simulasi Monte Carlo (10.000x)</h3>
-    <div class="sim-field"><label>Tim Tuan Rumah</label><input id="simHome" value="Real Madrid"></div>
-    <div class="sim-field"><label>Tim Tamu</label><input id="simAway" value="Barcelona"></div>
-    <div class="sim-row">
-      <div class="sim-field"><label>xG Home</label><input id="xgHome" type="number" step="0.1" value="1.8"></div>
-      <div class="sim-field"><label>xG Away</label><input id="xgAway" type="number" step="0.1" value="1.4"></div>
+        <div class="tabs">
+            <button class="tab active" onclick="showSection('dashboard')">📊 Dashboard</button>
+            <button class="tab" onclick="showSection('buyNumber')">📱 Beli Nomor</button>
+            <button class="tab" onclick="showSection('activeOrders')">⏳ Order Aktif</button>
+            <button class="tab" onclick="showSection('history')">📜 Riwayat</button>
+            <button class="tab" onclick="showSection('gmail')">📧 Gmail</button>
+            <button class="tab" onclick="showSection('emailRental')">📮 Rental Email</button>
+            <button class="tab" onclick="showSection('waReady')">💬 WA Ready</button>
+            <button class="tab" onclick="showSection('smm')">📈 SMM</button>
+            <button class="tab" onclick="showSection('refund')">💸 Refund</button>
+            <button class="tab" onclick="showSection('deposit')">💳 Deposit</button>
+        </div>
+
+        <div class="content">
+
+            <!-- Dashboard Section -->
+            <div class="section active" id="dashboard">
+                <div class="card">
+                    <div class="card-title">📊 Statistik Akun</div>
+                    <div class="grid" id="dashboardStats">
+                        <div class="card" style="text-align: center;">
+                            <div style="font-size: 36px; font-weight: bold; color: #667eea;" id="statTotalOrders">0</div>
+                            <div style="color: #666;">Total Orders</div>
+                        </div>
+                        <div class="card" style="text-align: center;">
+                            <div style="font-size: 36px; font-weight: bold; color: #4CAF50;" id="statActiveOrders">0</div>
+                            <div style="color: #666;">Order Aktif</div>
+                        </div>
+                        <div class="card" style="text-align: center;">
+                            <div style="font-size: 36px; font-weight: bold; color: #ff9800;" id="statTotalSMS">0</div>
+                            <div style="color: #666;">Total SMS</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">⚡ Quick Actions</div>
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                        <button class="btn btn-primary" onclick="showSection('buyNumber')">📱 Beli Nomor Baru</button>
+                        <button class="btn btn-success" onclick="showSection('activeOrders')">⏳ Lihat Order Aktif</button>
+                        <button class="btn btn-warning" onclick="showSection('deposit')">💳 Top Up Saldo</button>
+                        <button class="btn btn-secondary" onclick="refreshAll()">🔄 Refresh Semua</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">📈 Layanan Populer</div>
+                    <div class="grid" id="popularServices"></div>
+                </div>
+            </div>
+
+            <!-- Buy Number Section -->
+            <div class="section" id="buyNumber">
+                <div class="card">
+                    <div class="card-title">📱 Beli Nomor Kosong (SMS OTP)</div>
+
+                    <div class="auto-buy-panel">
+                        <div class="auto-buy-status">
+                            <div class="status-dot" id="autoBuyDot"></div>
+                            <span id="autoBuyStatus">Auto-Polling: OFF</span>
+                        </div>
+                        <p style="font-size: 13px; color: #666; margin-bottom: 10px;">
+                            Sistem akan otomatis membeli nomor dan mengambil kode OTP secara otomatis
+                        </p>
+                        <div style="display: flex; gap: 10px;">
+                            <button class="btn btn-success btn-sm" onclick="toggleAutoMode()" id="autoModeBtn">▶️ Mulai Auto Mode</button>
+                            <button class="btn btn-danger btn-sm" onclick="stopAutoMode()" id="stopAutoBtn" style="display:none;">⏹️ Stop Auto Mode</button>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>1️⃣ Pilih Layanan/Service</label>
+                        <div class="search-box">
+                            <input type="text" id="serviceSearch" placeholder="Cari layanan..." onkeyup="filterServices()">
+                        </div>
+                        <div class="grid" id="servicesGrid" style="max-height: 400px; overflow-y: auto;"></div>
+                    </div>
+
+                    <div class="form-group" id="countrySection" style="display:none;">
+                        <label>2️⃣ Pilih Negara</label>
+                        <div class="grid" id="countriesGrid" style="max-height: 300px; overflow-y: auto;"></div>
+                    </div>
+
+                    <div class="form-group" id="buySection" style="display:none;">
+                        <label>3️⃣ Konfirmasi Pembelian</label>
+                        <div class="card" style="background: white;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                                <span>Layanan:</span>
+                                <strong id="selectedServiceName">-</strong>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                                <span>Negara:</span>
+                                <strong id="selectedCountryName">-</strong>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                                <span>Harga:</span>
+                                <strong style="color: #667eea;" id="selectedPrice">-</strong>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+                                <span>Stok:</span>
+                                <strong id="selectedStock">-</strong>
+                            </div>
+                            <div class="form-group">
+                                <label>Jumlah Nomor (1-30)</label>
+                                <input type="number" id="quantity" value="1" min="1" max="30">
+                            </div>
+                            <button class="btn btn-primary" style="width: 100%;" onclick="buyNumber()">
+                                🛒 Beli Sekarang
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" id="orderResult" style="display:none;">
+                    <div class="card-title">📋 Detail Order</div>
+                    <div id="orderDetails"></div>
+                </div>
+            </div>
+
+            <!-- Active Orders Section -->
+            <div class="section" id="activeOrders">
+                <div class="card">
+                    <div class="card-title">
+                        ⏳ Order Aktif
+                        <button class="btn btn-secondary btn-sm" onclick="loadActiveOrders()" style="margin-left: auto;">🔄 Refresh</button>
+                    </div>
+                    <div id="activeOrdersList"></div>
+                </div>
+            </div>
+
+            <!-- History Section -->
+            <div class="section" id="history">
+                <div class="card">
+                    <div class="card-title">
+                        📜 Riwayat Order
+                        <button class="btn btn-secondary btn-sm" onclick="loadHistory()" style="margin-left: auto;">🔄 Refresh</button>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="historySearch" placeholder="Cari nomor atau layanan..." onkeyup="loadHistory()">
+                    </div>
+                    <div id="historyList"></div>
+                </div>
+            </div>
+
+            <!-- Gmail Section -->
+            <div class="section" id="gmail">
+                <div class="card">
+                    <div class="card-title">📧 Beli Akun Gmail</div>
+                    <div id="gmailStock" style="margin-bottom: 20px;"></div>
+                    <div class="form-group">
+                        <label>Jumlah (1-50)</label>
+                        <input type="number" id="gmailQty" value="1" min="1" max="50">
+                    </div>
+                    <button class="btn btn-primary" onclick="buyGmail()">🛒 Beli Gmail</button>
+                </div>
+                <div class="card">
+                    <div class="card-title">
+                        📧 Order Gmail Saya
+                        <button class="btn btn-secondary btn-sm" onclick="loadGmailOrders()" style="margin-left: auto;">🔄 Refresh</button>
+                    </div>
+                    <div id="gmailOrdersList"></div>
+                </div>
+            </div>
+
+            <!-- Email Rental Section -->
+            <div class="section" id="emailRental">
+                <div class="card">
+                    <div class="card-title">📮 Rental Email</div>
+                    <div class="form-group">
+                        <label>Site Target</label>
+                        <select id="emailSite" onchange="loadEmailDomains()">
+                            <option value="">Pilih Site</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Domain</label>
+                        <select id="emailDomain">
+                            <option value="">Pilih Domain</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-primary" onclick="rentEmail()">📮 Rental Email Sekarang</button>
+                </div>
+                <div class="card">
+                    <div class="card-title">
+                        📮 Rental Aktif
+                        <button class="btn btn-secondary btn-sm" onclick="loadEmailOrders()" style="margin-left: auto;">🔄 Refresh</button>
+                    </div>
+                    <div id="emailOrdersList"></div>
+                </div>
+            </div>
+
+            <!-- WA Ready Section -->
+            <div class="section" id="waReady">
+                <div class="card">
+                    <div class="card-title">💬 WhatsApp Ready Numbers</div>
+                    <div id="waReadyInfo" style="margin-bottom: 20px;"></div>
+                    <div class="form-group">
+                        <label>Pilih Negara</label>
+                        <select id="waCountry"></select>
+                    </div>
+                    <button class="btn btn-primary" onclick="buyWAReady()">💬 Beli WA Ready</button>
+                </div>
+                <div class="card">
+                    <div class="card-title">
+                        💬 Order WA Ready
+                        <button class="btn btn-secondary btn-sm" onclick="loadWAReadyOrders()" style="margin-left: auto;">🔄 Refresh</button>
+                    </div>
+                    <div id="waReadyOrdersList"></div>
+                </div>
+            </div>
+
+            <!-- SMM Section -->
+            <div class="section" id="smm">
+                <div class="card">
+                    <div class="card-title">📈 Social Media Marketing (SMM)</div>
+                    <div class="form-group">
+                        <label>Platform</label>
+                        <select id="smmPlatform" onchange="loadSMMTypes()">
+                            <option value="">Pilih Platform</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Tipe Layanan</label>
+                        <select id="smmType" onchange="loadSMMServices()">
+                            <option value="">Pilih Tipe</option>
+                        </select>
+                    </div>
+                    <div id="smmServicesList" style="margin-top: 15px;"></div>
+                </div>
+                <div class="card">
+                    <div class="card-title">
+                        📈 Order SMM
+                        <button class="btn btn-secondary btn-sm" onclick="loadSMMOrders()" style="margin-left: auto;">🔄 Refresh</button>
+                    </div>
+                    <div id="smmOrdersList"></div>
+                </div>
+            </div>
+
+            <!-- Refund Section -->
+            <div class="section" id="refund">
+                <div class="card">
+                    <div class="card-title">
+                        💸 Refund Eligible
+                        <button class="btn btn-secondary btn-sm" onclick="loadRefunds()" style="margin-left: auto;">🔄 Refresh</button>
+                    </div>
+                    <div id="refundEligibleList"></div>
+                </div>
+                <div class="card">
+                    <div class="card-title">💸 Riwayat Refund</div>
+                    <div id="refundHistoryList"></div>
+                </div>
+            </div>
+
+            <!-- Deposit Section -->
+            <div class="section" id="deposit">
+                <div class="card">
+                    <div class="card-title">💳 Deposit / Top Up Saldo</div>
+                    <div class="form-group">
+                        <label>Jumlah Deposit (Min. Rp 10.000)</label>
+                        <input type="number" id="depositAmount" value="50000" min="10000" step="1000">
+                    </div>
+                    <div class="form-group">
+                        <label>Metode Pembayaran</label>
+                        <select id="paymentMethod"></select>
+                    </div>
+                    <button class="btn btn-primary" onclick="createDeposit()">💳 Buat Deposit</button>
+                    <button class="btn btn-warning" onclick="createCryptoDeposit()" style="margin-left: 10px;">₿ Crypto (USD)</button>
+                </div>
+                <div class="card" id="depositResult" style="display:none;">
+                    <div class="card-title">💳 Instruksi Pembayaran</div>
+                    <div id="depositDetails"></div>
+                </div>
+                <div class="card">
+                    <div class="card-title">
+                        💳 Riwayat Transaksi
+                        <button class="btn btn-secondary btn-sm" onclick="loadTransactions()" style="margin-left: auto;">🔄 Refresh</button>
+                    </div>
+                    <div id="transactionsList"></div>
+                </div>
+            </div>
+
+        </div>
     </div>
-    <button class="btn btn-green" id="runSim">▶ Jalankan Simulasi</button>
-    <button class="btn btn-blue" id="simToAi" style="display:none">💬 Bahas hasil ini dengan AI</button>
-    <div id="simResult"></div>
-  </div>
 
-  <div class="side-section">
-    <h3>ℹ️ Catatan</h3>
-    <p style="font-size:12px;color:var(--muted);line-height:1.6">Prediksi adalah estimasi probabilitas, <b style="color:var(--gold)">bukan jaminan hasil</b>. Sepak bola selalu punya faktor kejutan. Gunakan sebagai referensi analisis, bukan kepastian.</p>
-  </div>
-</div>
-
-<!-- ================= MAIN ================= -->
-<div id="main">
-  <header>
-    <div class="title">💬 Analisis & Prediksi Pertandingan</div>
-    <div class="badge">● Online</div>
-    <div class="hspace"></div>
-    <div class="toggle-wrap" id="wsWrap"><div class="toggle" id="wsToggle"></div> Data Real-time (Web Search)</div>
-    <select id="modelSel">
-      <option value="gpt-4o-mini">gpt-4o-mini (cepat)</option>
-      <option value="gpt-4o">gpt-4o (akurat + web)</option>
-      <option value="claude-sonnet-4-6">claude-sonnet-4-6</option>
-      <option value="gemini-2.5-flash">gemini-2.5-flash</option>
-    </select>
-    <select id="tempSel">
-      <option value="0.2">Presisi</option>
-      <option value="0.7" selected>Seimbang</option>
-      <option value="1.0">Kreatif</option>
-    </select>
-    <button class="btn btn-blue" id="clearBtn" style="width:auto;padding:8px 14px;margin:0">🗑</button>
-  </header>
-
-  <div id="chat"></div>
-
-  <div id="typing"><span></span><span></span><span></span></div>
-
-  <div id="composer">
-    <div id="chips">
-      <div class="chip" data-q="Prediksi Arsenal vs Liverpool beserta probabilitas 1X2 dan skor paling mungkin">🏴󠁧󠁢󠁥󠁮󠁧󠁿 Arsenal vs Liverpool</div>
-      <div class="chip" data-q="Prediksi Real Madrid vs Barcelona: analisis El Clasico dengan metode Elo dan Poisson">🇪🇸 El Clasico</div>
-      <div class="chip" data-q="Prediksi Inter vs Juventus Serie A lengkap dengan tips taruhan over/under dan BTTS">🇮🇹 Inter vs Juventus</div>
-      <div class="chip" data-q="Bagaimana cara kerja prediksi AI ini? Jelaskan metodologinya">🧠 Cara kerja AI</div>
+    <div class="modal" id="otpModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>📱 Kode OTP Diterima!</h2>
+                <button class="modal-close" onclick="closeModal('otpModal')">&times;</button>
+            </div>
+            <div id="otpModalContent"></div>
+        </div>
     </div>
-    <div id="inputRow">
-      <textarea id="input" placeholder="Tanya prediksi pertandingan… misal: 'Prediksi MU vs Chelsea besok'" rows="1"></textarea>
-      <button id="stopBtn" title="Stop">■</button>
-      <button id="sendBtn" title="Kirim">➤</button>
-    </div>
-  </div>
-  <footer>Diberdayakan oleh <a href="https://developer.puter.com" target="_blank">Puter.js</a> — 500+ model AI · GOALIQ © 2026 · Prediksi bersifat probabilistik, bukan jaminan.</footer>
-</div>
 
-<div id="toast"></div>
+    <div class="toast" id="toast"></div>
 
-<script>
-/* ================================================================
-   GOALIQ — AI Prediksi Bola dengan Puter.js
-   ================================================================ */
+    <script>
+        const API_KEY = 'vcoBYGVHKtLfaW1f3DnVsRDZ5aZk1NQd';
+        const BASE_URL = 'https://virtusimotp.com/api/v1';
 
-const SYSTEM_PROMPT = `Kamu adalah GOALIQ, AI analis prediksi sepak bola kelas dunia yang berbahasa Indonesia.
-Gaya bicaramu: analitis, percaya diri, sportif, dan menggunakan format yang rapi. Selalu gunakan data & metode ilmiah:
+        let currentBalance = 0;
+        let services = [];
+        let selectedService = null;
+        let selectedCountry = null;
+        let autoMode = false;
+        let pollingIntervals = {};
 
-1. DISTRIBUSI POISSON — hitung probabilitas skor dari expected goals (xG) kedua tim.
-2. ELO RATING — perkirakan selisih kekuatan dinamis antar tim.
-3. EXPECTED GOALS (xG) — nilai kualitas peluang dari data shot-level.
-4. HEAD-TO-HEAD — rekam jejak pertemuan langsung 5-10 laga terakhir.
-5. FORM GUIDE 5 LAGA — W/D/L terkini dengan bobot exponensial pada laga terbaru.
-6. FAKTOR KONTEKSTUAL — kandung (home advantage ~ +0.35 gol), cedera/suspensi pemain kunci, kelelahan jadwal, motivasi klasemen, cuaca, dan rotasi.
+        async function apiCall(endpoint, method = 'GET', body = null) {
+            const options = {
+                method: method,
+                headers: { 'X-API-Key': API_KEY }
+            };
 
-ATURAN FORMAT SETIAP PREDIKSI PERTANDINGAN:
-- Awali dengan 1 kalimat kesimpulan berani.
-- Tabel probabilitas 1X2 (Menang Tuan Rumah / Seri / Menang Tamu) dalam persen.
-- 3 skor paling mungkin beserta probabilitasnya (dari matriks Poisson).
-- Saran pasar: Over/Under 2.5 gol, BTTS (Both Teams To Score), dan prediksi pencetak gol jika relevan.
-- Penjelasan singkat 3-4 poin mengapa.
-- Tingkat keyakinan (Rendah/Sedang/Tinggi) + alasan.
-- Akhiri dengan 1 kalimat disclaimer bahwa prediksi bersifat probabilistik dan bukan jaminan.
+            if (body) {
+                options.headers['Content-Type'] = 'application/json';
+                options.body = JSON.stringify(body);
+            }
 
-Jika pengguna mengirim hasil simulasi Monte Carlo, gunakan angka itu sebagai dasar dan padukan dengan analisismu.
-Jika ditanya hal di luar sepak bola, jawab singkat lalu arahkan kembali ke sepak bola.`;
+            if (method === 'POST') {
+                options.headers['Idempotency-Key'] = generateUUID();
+            }
 
-const chatEl   = document.getElementById('chat');
-const inputEl  = document.getElementById('input');
-const sendBtn  = document.getElementById('sendBtn');
-const stopBtn  = document.getElementById('stopBtn');
-const typingEl = document.getElementById('typing');
-const toastEl  = document.getElementById('toast');
+            try {
+                const response = await fetch(BASE_URL + endpoint, options);
+                const data = await response.json();
 
-let messages = [];          // API message history
-let controller = null;      // AbortController
-let webSearch = false;
+                if (!data.success) {
+                    throw new Error(data.message || 'API Error');
+                }
 
-/* ---------- render ---------- */
-function addMsg(role, text){
-  const div = document.createElement('div');
-  div.className = 'msg ' + role;
-  div.innerHTML = `<span class="role">${role==='user'?'Anda':'GOALIQ AI'}</span><span class="body"></span>`;
-  div.querySelector('.body').textContent = text;
-  chatEl.appendChild(div);
-  chatEl.scrollTop = chatEl.scrollHeight;
-  return div;
-}
-function toast(msg){
-  toastEl.textContent = msg;
-  toastEl.style.display = 'block';
-  setTimeout(()=> toastEl.style.display='none', 5000);
-}
+                return data;
+            } catch (error) {
+                showAlert('error', error.message);
+                throw error;
+            }
+        }
 
-/* ---------- persistence ---------- */
-function saveChat(){
-  try{ localStorage.setItem('goalqi_chat', JSON.stringify(messages.slice(-20))); }catch(e){}
-}
-function loadChat(){
-  try{
-    const saved = JSON.parse(localStorage.getItem('goalqi_chat') || '[]');
-    if(saved.length){
-      messages = saved;
-      saved.forEach(m => addMsg(m.role === 'user' ? 'user' : 'ai', typeof m.content === 'string' ? m.content : ''));
-    }
-  }catch(e){}
-}
-document.getElementById('clearBtn').onclick = () => {
-  messages = [];
-  chatEl.innerHTML = '';
-  localStorage.removeItem('goalqi_chat');
-};
+        function generateUUID() {
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                const r = Math.random() * 16 | 0;
+                return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+            });
+        }
 
-/* ---------- send ---------- */
-async function send(text){
-  text = (text ?? inputEl.value).trim();
-  if(!text) return;
-  inputEl.value = '';
-  addMsg('user', text);
-  messages.push({ role:'user', content: text });
-  saveChat();
+        function showAlert(type, message) {
+            const alertEl = document.getElementById('alert' + type.charAt(0).toUpperCase() + type.slice(1));
+            alertEl.textContent = message;
+            alertEl.style.display = 'block';
+            setTimeout(() => { alertEl.style.display = 'none'; }, 5000);
+        }
 
-  const model = document.getElementById('modelSel').value;
-  const temperature = parseFloat(document.getElementById('tempSel').value);
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.style.display = 'block';
+            setTimeout(() => { toast.style.display = 'none'; }, 3000);
+        }
 
-  typingEl.style.display = 'flex';
-  sendBtn.style.display = 'none';
-  stopBtn.style.display = 'block';
-  chatEl.scrollTop = chatEl.scrollHeight;
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.getElementById(sectionId).classList.add('active');
+            event.target.classList.add('active');
 
-  controller = new AbortController();
-  const aiDiv = addMsg('ai', '');
-  const body = aiDiv.querySelector('.body');
-  let full = '';
+            switch(sectionId) {
+                case 'dashboard': loadDashboard(); break;
+                case 'buyNumber': loadServices(); break;
+                case 'activeOrders': loadActiveOrders(); break;
+                case 'history': loadHistory(); break;
+                case 'gmail': loadGmailStock(); loadGmailOrders(); break;
+                case 'emailRental': loadEmailSuggestions(); loadEmailOrders(); break;
+                case 'waReady': loadWAReadyInfo(); loadWAReadyOrders(); break;
+                case 'smm': loadSMMPlatforms(); loadSMMOrders(); break;
+                case 'refund': loadRefunds(); break;
+                case 'deposit': loadPaymentMethods(); loadTransactions(); break;
+            }
+        }
 
-  try{
-    const options = { model, temperature, stream:true, signal: controller.signal };
-    if(webSearch){
-      options.tools = [{ type: 'web_search' }];   // OpenAI models: akses internet real-time
-      if(!model.startsWith('gpt')) options.model = 'gpt-4o';
-    }
-    const resp = await puter.ai.chat(
-      [{ role:'system', content: SYSTEM_PROMPT }, ...messages],
-      options
-    );
-    for await (const part of resp){
-      if(part.type === 'error'){
-        toast('⚠️ ' + part.message);
-        if(!full) body.textContent = '⚠️ Terjadi kesalahan: ' + part.message;
-        break;
-      }
-      if(part.text){
-        full += part.text;
-        body.textContent = full;
-        chatEl.scrollTop = chatEl.scrollHeight;
-      }
-    }
-    if(full){
-      messages.push({ role:'assistant', content: full });
-      saveChat();
-    }
-  }catch(err){
-    if(err.name === 'AbortError'){
-      body.textContent = full + '\n\n⏹ (dihentikan)';
-    }else{
-      toast('⚠️ ' + err.message);
-      if(!full) body.textContent = '⚠️ Error: ' + err.message + '\n\nCoba ganti model di dropdown kanan atas, atau nonaktifkan Web Search.';
-    }
-  }finally{
-    typingEl.style.display = 'none';
-    sendBtn.style.display = 'block';
-    stopBtn.style.display = 'none';
-    controller = null;
-  }
-}
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
 
-sendBtn.onclick = () => send();
-stopBtn.onclick = () => controller && controller.abort();
-inputEl.addEventListener('keydown', e => {
-  if(e.key === 'Enter' && !e.shiftKey){ e.preventDefault(); send(); }
-});
-document.querySelectorAll('.chip').forEach(c => c.onclick = () => send(c.dataset.q));
+        function formatRupiah(amount) {
+            return 'Rp ' + amount.toLocaleString('id-ID');
+        }
 
-/* ---------- web search toggle ---------- */
-document.getElementById('wsWrap').onclick = () => {
-  webSearch = !webSearch;
-  document.getElementById('wsToggle').classList.toggle('on', webSearch);
-  if(webSearch){
-    document.getElementById('modelSel').value = 'gpt-4o';
-    toast('🌐 Web Search aktif — AI mengambil data terbaru dari internet');
-  }
-};
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                showToast('📋 Disalin: ' + text);
+            });
+        }
 
-/* ================================================================
-   MONTE CARLO SIMULATOR (Poisson) — berjalan lokal di browser
-   ================================================================ */
-function poissonSample(lambda){
-  // Knuth
-  let L = Math.exp(-lambda), k = 0, p = 1;
-  do { k++; p *= Math.random(); } while (p > L);
-  return k - 1;
-}
-let lastSimText = '';
-document.getElementById('runSim').onclick = () => {
-  const home = document.getElementById('simHome').value || 'Home';
-  const away = document.getElementById('simAway').value || 'Away';
-  const xgH  = Math.max(0.1, parseFloat(document.getElementById('xgHome').value) || 1.4);
-  const xgA  = Math.max(0.1, parseFloat(document.getElementById('xgAway').value) || 1.1);
-  const N = 10000;
-  let hw=0, dr=0, aw=0;
-  const scores = {};
-  for(let i=0;i<N;i++){
-    const gh = poissonSample(xgH), ga = poissonSample(xgA);
-    const key = gh + ' - ' + ga;
-    scores[key] = (scores[key]||0) + 1;
-    if(gh>ga) hw++; else if(gh===ga) dr++; else aw++;
-  }
-  const top = Object.entries(scores).sort((a,b)=>b[1]-a[1]).slice(0,5);
-  const p = v => (v/N*100).toFixed(1);
+        async function refreshBalance() {
+            try {
+                const data = await apiCall('/balance');
+                currentBalance = data.data.balance;
+                document.getElementById('balanceDisplay').textContent = data.data.balance_formatted;
+                document.getElementById('pendingBalance').textContent = 'Pending: ' + formatRupiah(data.data.pending_balance || 0);
+                document.getElementById('lastUpdate').textContent = 'Last update: ' + new Date().toLocaleTimeString();
+            } catch (e) {}
+        }
 
-  lastSimText = `HASIL SIMULASI MONTE CARLO (Poisson, N=10.000):\n` +
-    `${home} (xG ${xgH}) vs ${away} (xG ${xgA})\n` +
-    `Probabilitas 1X2: ${home} menang ${p(hw)}% | Seri ${p(dr)}% | ${away} menang ${p(aw)}%\n` +
-    `Skor paling mungkin: ${top.map(([s,c])=>s+' ('+p(c)+'%)').join(', ')}\n` +
-    `Silakan bahas & padukan dengan analisismu.`;
+        async function loadProfile() {
+            try {
+                const data = await apiCall('/profile');
+                document.getElementById('statTotalOrders').textContent = data.data.stats.total_orders;
+                document.getElementById('statTotalSMS').textContent = data.data.stats.total_sms;
+            } catch (e) {}
+        }
 
-  const box = document.getElementById('simResult');
-  box.style.display = 'block';
-  box.innerHTML = `
-    <div style="color:var(--muted);font-size:12px;margin-bottom:4px">${home} vs ${away} · xG ${xgH} – ${xgA}</div>
-    <div style="display:flex;justify-content:space-between;font-size:12px">
-      <span style="color:var(--green)">${home} <b>${p(hw)}%</b></span>
-      <span style="color:var(--gold)">Seri <b>${p(dr)}%</b></span>
-      <span style="color:var(--blue)">${away} <b>${p(aw)}%</b></span>
-    </div>
-    <div class="prob-bar">
-      <div class="pb-home" style="width:${p(hw)}%"></div>
-      <div class="pb-draw" style="width:${p(dr)}%"></div>
-      <div class="pb-away" style="width:${p(aw)}%"></div>
-    </div>
-    <div style="font-size:12px;color:var(--muted);margin-bottom:2px">Skor teratas:</div>
-    ${top.map(([s,c])=>`<div class="score-line"><span>${s}</span><b>${p(c)}%</b></div>`).join('')}
-  `;
-  document.getElementById('simToAi').style.display = 'block';
-};
-document.getElementById('simToAi').onclick = () => {
-  if(lastSimText) send(lastSimText);
-};
+        async function loadDashboard() {
+            await refreshBalance();
+            await loadProfile();
+            await loadPopularServices();
+        }
 
-/* ---------- greeting ---------- */
-loadChat();
-if(!messages.length){
-  addMsg('ai',
-`⚽ Selamat datang di GOALIQ — AI Prediksi Bola!
+        async function loadPopularServices() {
+            try {
+                const data = await apiCall('/services');
+                services = data.data;
+                const popular = services.slice(0, 8);
+                const html = popular.map(s => `
+                    <div class="service-card" onclick="quickBuyService(${s.id}, '${s.text}')">
+                        <div class="service-icon">${getServiceIcon(s.text)}</div>
+                        <div style="font-weight: 600; font-size: 14px;">${s.text}</div>
+                    </div>
+                `).join('');
+                document.getElementById('popularServices').innerHTML = html;
+            } catch (e) {}
+        }
 
-Saya menganalisis pertandingan dengan metode ilmiah: Distribusi Poisson, Elo Rating, Expected Goals (xG), Head-to-Head, dan Form 5 Laga.
+        function getServiceIcon(name) {
+            const icons = {
+                'whatsapp': '💬', 'telegram': '✈️', 'google': '🔍', 'gmail': '📧',
+                'facebook': '📘', 'instagram': '📷', 'twitter': '🐦', 'tiktok': '🎵',
+                'youtube': '📺', 'discord': '🎮', 'snapchat': '👻', 'linkedin': '💼'
+            };
+            const lower = name.toLowerCase();
+            for (const key in icons) {
+                if (lower.includes(key)) return icons[key];
+            }
+            return '📱';
+        }
 
-Coba:
-• Klik chip pertandingan di bawah, atau
-• Ketik: "Prediksi [Tim A] vs [Tim B]", atau
-• Jalankan Simulasi Monte Carlo di panel kiri lalu bahas hasilnya dengan saya.
+        function quickBuyService(serviceId, serviceName) {
+            showSection('buyNumber');
+            selectService(serviceId, serviceName);
+        }
 
-Aktifkan 🌐 Web Search agar saya mengambil data terbaru dari internet.`);
-}
-</script>
+        async function loadServices() {
+            try {
+                const data = await apiCall('/services');
+                services = data.data;
+                renderServices(services);
+            } catch (e) {}
+        }
+
+        function renderServices(servicesList) {
+            const html = servicesList.map(s => `
+                <div class="service-card" id="service-${s.id}" onclick="selectService(${s.id}, '${s.text.replace(/'/g, "\'")}')">
+                    <div class="service-icon">${getServiceIcon(s.text)}</div>
+                    <div style="font-weight: 600; font-size: 14px;">${s.text}</div>
+                </div>
+            `).join('');
+            document.getElementById('servicesGrid').innerHTML = html;
+        }
+
+        function filterServices() {
+            const search = document.getElementById('serviceSearch').value.toLowerCase();
+            const filtered = services.filter(s => s.text.toLowerCase().includes(search));
+            renderServices(filtered);
+        }
+
+        async function selectService(serviceId, serviceName) {
+            selectedService = { id: serviceId, name: serviceName };
+            document.querySelectorAll('.service-card').forEach(c => c.classList.remove('selected'));
+            document.getElementById('service-' + serviceId)?.classList.add('selected');
+            document.getElementById('selectedServiceName').textContent = serviceName;
+            document.getElementById('countrySection').style.display = 'block';
+            await loadCountries(serviceId);
+        }
+
+        async function loadCountries(serviceId) {
+            try {
+                const data = await apiCall(`/services/${serviceId}/countries`);
+                const countries = data.data.countries || [];
+                const html = countries.map(c => `
+                    <div class="country-card" id="country-${c.id}" onclick="selectCountry(${c.id}, '${c.name.replace(/'/g, "\'")}', ${c.price}, ${c.stock || 0})">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <div style="font-weight: 600;">${c.name}</div>
+                                <div style="font-size: 12px; color: #666;">${c.prefix || ''} • Stok: ${c.stock || 0}</div>
+                            </div>
+                            <div style="text-align: right;">
+                                <div style="font-weight: bold; color: #667eea;">${c.price_formatted}</div>
+                                <div style="font-size: 11px; color: #4CAF50;">${c.delivery_percent || 0}% success</div>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+                document.getElementById('countriesGrid').innerHTML = html;
+            } catch (e) {
+                document.getElementById('countriesGrid').innerHTML = '<p>Gagal memuat negara</p>';
+            }
+        }
+
+        function selectCountry(countryId, countryName, price, stock) {
+            selectedCountry = { id: countryId, name: countryName, price: price, stock: stock };
+            document.querySelectorAll('.country-card').forEach(c => c.classList.remove('selected'));
+            document.getElementById('country-' + countryId)?.classList.add('selected');
+            document.getElementById('selectedCountryName').textContent = countryName;
+            document.getElementById('selectedPrice').textContent = formatRupiah(price);
+            document.getElementById('selectedStock').textContent = stock;
+            document.getElementById('buySection').style.display = 'block';
+        }
+
+        async function buyNumber() {
+            if (!selectedService || !selectedCountry) {
+                showAlert('error', 'Pilih layanan dan negara terlebih dahulu');
+                return;
+            }
+
+            const quantity = parseInt(document.getElementById('quantity').value) || 1;
+
+            try {
+                showAlert('info', '⏳ Sedang memproses pembelian...');
+                const data = await apiCall('/orders', 'POST', {
+                    service_id: selectedService.id,
+                    country: selectedCountry.id,
+                    quantity: quantity
+                });
+
+                showAlert('success', '✅ Pembelian berhasil!');
+                displayOrderResult(data);
+                await refreshBalance();
+
+                if (data.order) {
+                    startPolling(data.order.order_uuid);
+                }
+
+                if (data.data?.results?.length > 1) {
+                    data.data.results.forEach(r => {
+                        if (r.order_uuid) startPolling(r.order_uuid);
+                    });
+                }
+            } catch (e) {
+                console.error('Buy failed:', e);
+            }
+        }
+
+        function displayOrderResult(data) {
+            const resultDiv = document.getElementById('orderResult');
+            const detailsDiv = document.getElementById('orderDetails');
+
+            let html = '';
+
+            if (data.order) {
+                const order = data.order;
+                html = `
+                    <div class="number-display">
+                        ${order.formatted_number || order.number}
+                        <button class="copy-btn" onclick="copyToClipboard('${order.number}')">📋 Copy</button>
+                    </div>
+                    <div class="grid-2">
+                        <div>
+                            <p><strong>Order UUID:</strong> ${order.order_uuid}</p>
+                            <p><strong>Status:</strong> <span class="badge badge-warning">${order.status}</span></p>
+                            <p><strong>Layanan:</strong> ${order.service?.name}</p>
+                        </div>
+                        <div>
+                            <p><strong>Harga:</strong> ${formatRupiah(order.price)}</p>
+                            <p><strong>Sisa Waktu:</strong> <span id="timer-${order.order_uuid}">${order.remaining_time}s</span></p>
+                            <p><strong>Expired:</strong> ${order.expired_at}</p>
+                        </div>
+                    </div>
+                    <div id="otp-container-${order.order_uuid}" style="margin-top: 15px;">
+                        <p style="text-align: center; color: #666;">⏳ Menunggu kode OTP...</p>
+                    </div>
+                    <div style="display: flex; gap: 10px; margin-top: 15px; flex-wrap: wrap;">
+                        <button class="btn btn-success btn-sm" onclick="finishOrder('${order.order_uuid}')">✅ Finish</button>
+                        <button class="btn btn-danger btn-sm" onclick="cancelOrder('${order.order_uuid}')">❌ Cancel & Refund</button>
+                        <button class="btn btn-warning btn-sm" onclick="checkSMSNow('${order.order_uuid}')">🔄 Check SMS</button>
+                        <button class="btn btn-secondary btn-sm" onclick="requestNewSMS('${order.order_uuid}')">📱 Request SMS Baru</button>
+                    </div>
+                `;
+            }
+
+            if (data.data?.results?.length > 1) {
+                html += '<hr style="margin: 20px 0;"><h4>📦 Bulk Orders:</h4>';
+                data.data.results.forEach((r, i) => {
+                    if (r.order) {
+                        html += `
+                            <div class="card" style="background: white; margin-top: 10px;">
+                                <div class="number-display" style="font-size: 18px;">
+                                    ${r.order.formatted_number || r.order.number}
+                                    <button class="copy-btn" onclick="copyToClipboard('${r.order.number}')">📋</button>
+                                </div>
+                                <div id="otp-container-${r.order_uuid}"></div>
+                            </div>
+                        `;
+                    }
+                });
+            }
+
+            detailsDiv.innerHTML = html;
+            resultDiv.style.display = 'block';
+            resultDiv.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function startPolling(orderUuid) {
+            if (pollingIntervals[orderUuid]) {
+                clearInterval(pollingIntervals[orderUuid]);
+            }
+
+            pollingIntervals[orderUuid] = setInterval(async () => {
+                try {
+                    const data = await apiCall(`/orders/${orderUuid}`);
+                    const order = data.data;
+
+                    const timerEl = document.getElementById(`timer-${orderUuid}`);
+                    if (timerEl) {
+                        timerEl.textContent = order.remaining_time + 's';
+                    }
+
+                    if (order.latest_code) {
+                        clearInterval(pollingIntervals[orderUuid]);
+
+                        const otpContainer = document.getElementById(`otp-container-${orderUuid}`);
+                        if (otpContainer) {
+                            otpContainer.innerHTML = `
+                                <div class="otp-display">${order.latest_code}</div>
+                                <p style="text-align: center; color: #4CAF50; font-weight: bold;">✅ Kode OTP Diterima!</p>
+                                ${order.messages?.length > 0 ? `
+                                    <div style="margin-top: 10px; padding: 10px; background: #f8f9fa; border-radius: 8px;">
+                                        <strong>Pesan:</strong> ${order.messages[0].text}
+                                    </div>
+                                ` : ''}
+                            `;
+                        }
+
+                        showOTPModal(order);
+
+                        if (autoMode) {
+                            setTimeout(() => finishOrder(orderUuid), 2000);
+                        }
+
+                        showToast('🔔 Kode OTP diterima: ' + order.latest_code);
+                    }
+
+                    if (order.is_expired) {
+                        clearInterval(pollingIntervals[orderUuid]);
+                        showAlert('info', '⏰ Order expired');
+                    }
+                } catch (e) {
+                    console.error('Polling error:', e);
+                }
+            }, 5000);
+        }
+
+        function showOTPModal(order) {
+            const modal = document.getElementById('otpModal');
+            const content = document.getElementById('otpModalContent');
+
+            content.innerHTML = `
+                <div class="number-display">${order.formatted_number || order.number}</div>
+                <div class="otp-display">${order.latest_code}</div>
+                <p style="text-align: center; margin-bottom: 15px;">
+                    <button class="copy-btn" onclick="copyToClipboard('${order.latest_code}')" style="font-size: 16px; padding: 10px 20px;">
+                        📋 Copy Kode OTP
+                    </button>
+                </p>
+                <div style="text-align: center;">
+                    <button class="btn btn-primary" onclick="closeModal('otpModal'); finishOrder('${order.order_uuid}')">✅ Selesai & Finish</button>
+                </div>
+            `;
+
+            modal.style.display = 'flex';
+        }
+
+        function toggleAutoMode() {
+            autoMode = !autoMode;
+
+            if (autoMode) {
+                document.getElementById('autoBuyStatus').textContent = 'Auto-Polling: ON - Sistem akan otomatis membeli dan ambil OTP';
+                document.getElementById('autoBuyDot').classList.remove('off');
+                document.getElementById('autoModeBtn').style.display = 'none';
+                document.getElementById('stopAutoBtn').style.display = 'inline-block';
+                showAlert('success', '✅ Auto Mode AKTIF');
+            } else {
+                stopAutoMode();
+            }
+        }
+
+        function stopAutoMode() {
+            autoMode = false;
+            document.getElementById('autoBuyStatus').textContent = 'Auto-Polling: OFF';
+            document.getElementById('autoBuyDot').classList.add('off');
+            document.getElementById('autoModeBtn').style.display = 'inline-block';
+            document.getElementById('stopAutoBtn').style.display = 'none';
+
+            Object.keys(pollingIntervals).forEach(key => {
+                clearInterval(pollingIntervals[key]);
+            });
+            pollingIntervals = {};
+        }
+
+        async function finishOrder(orderUuid) {
+            try {
+                await apiCall(`/orders/${orderUuid}/finish`, 'POST');
+                showAlert('success', '✅ Order finished');
+                clearInterval(pollingIntervals[orderUuid]);
+                await refreshBalance();
+                await loadActiveOrders();
+            } catch (e) {}
+        }
+
+        async function cancelOrder(orderUuid) {
+            if (!confirm('Yakin ingin cancel order ini? Dana akan dikembalikan.')) return;
+
+            try {
+                await apiCall(`/orders/${orderUuid}/cancel`, 'POST');
+                showAlert('success', '✅ Order cancelled & refunded');
+                clearInterval(pollingIntervals[orderUuid]);
+                await refreshBalance();
+                await loadActiveOrders();
+            } catch (e) {}
+        }
+
+        async function checkSMSNow(orderUuid) {
+            try {
+                const data = await apiCall(`/orders/${orderUuid}/check-sms`, 'POST');
+                if (data.has_sms) {
+                    showAlert('success', '📱 SMS diterima!');
+                    startPolling(orderUuid);
+                } else {
+                    showAlert('info', '⏳ Belum ada SMS');
+                }
+            } catch (e) {}
+        }
+
+        async function requestNewSMS(orderUuid) {
+            try {
+                await apiCall(`/orders/${orderUuid}/request-sms`, 'POST');
+                showAlert('info', '📱 Permintaan SMS baru dikirim. Silakan resend code di aplikasi target.');
+            } catch (e) {}
+        }
+
+        async function loadActiveOrders() {
+            try {
+                const data = await apiCall('/orders/active');
+                const orders = data.data.orders || [];
+
+                document.getElementById('statActiveOrders').textContent = orders.length;
+
+                if (orders.length === 0) {
+                    document.getElementById('activeOrdersList').innerHTML = '<p style="text-align: center; color: #666;">Tidak ada order aktif</p>';
+                    return;
+                }
+
+                const html = orders.map(o => `
+                    <div class="card" style="background: white; margin-bottom: 10px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                            <div>
+                                <div style="font-size: 20px; font-weight: bold; color: #667eea;">
+                                    ${o.number}
+                                    <button class="copy-btn" onclick="copyToClipboard('${o.number}')">📋</button>
+                                </div>
+                                <div style="font-size: 13px; color: #666; margin-top: 5px;">
+                                    UUID: ${o.order_uuid} | Sisa waktu: ${o.remaining_time}s
+                                </div>
+                            </div>
+                            <div>
+                                <span class="badge badge-warning">${o.status}</span>
+                            </div>
+                        </div>
+                        <div id="active-otp-${o.order_uuid}" style="margin-top: 10px;">
+                            ${o.sms?.length > 0 ? `
+                                <div class="otp-display" style="font-size: 24px; padding: 10px;">${o.sms[o.sms.length-1].code}</div>
+                            ` : '<p style="color: #666; font-size: 13px;">⏳ Menunggu SMS...</p>'}
+                        </div>
+                        <div style="display: flex; gap: 10px; margin-top: 10px;">
+                            <button class="btn btn-success btn-sm" onclick="finishOrder('${o.order_uuid}')">✅ Finish</button>
+                            <button class="btn btn-danger btn-sm" onclick="cancelOrder('${o.order_uuid}')">❌ Cancel</button>
+                            <button class="btn btn-warning btn-sm" onclick="startPolling('${o.order_uuid}'); showToast('🔄 Polling started')">🔄 Poll OTP</button>
+                        </div>
+                    </div>
+                `).join('');
+
+                document.getElementById('activeOrdersList').innerHTML = html;
+
+                orders.forEach(o => {
+                    if (!pollingIntervals[o.order_uuid]) {
+                        startPolling(o.order_uuid);
+                    }
+                });
+            } catch (e) {
+                document.getElementById('activeOrdersList').innerHTML = '<p>Gagal memuat order aktif</p>';
+            }
+        }
+
+        async function loadHistory() {
+            try {
+                const search = document.getElementById('historySearch').value;
+                const endpoint = search ? `/orders/history?search=${encodeURIComponent(search)}` : '/orders/history';
+                const data = await apiCall(endpoint);
+                const orders = data.data || [];
+
+                if (orders.length === 0) {
+                    document.getElementById('historyList').innerHTML = '<p style="text-align: center; color: #666;">Tidak ada riwayat</p>';
+                    return;
+                }
+
+                const html = `
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Nomor</th>
+                                <th>Status</th>
+                                <th>Harga</th>
+                                <th>SMS</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${orders.map(o => `
+                                <tr>
+                                    <td>${o.number}</td>
+                                    <td><span class="badge badge-${o.status === 'completed' ? 'success' : 'secondary'}">${o.status}</span></td>
+                                    <td>${formatRupiah(o.price || 0)}</td>
+                                    <td>${o.sms?.length > 0 ? o.sms[o.sms.length-1].code : '-'}</td>
+                                    <td>
+                                        ${o.status === 'completed' ? `
+                                            <button class="btn btn-warning btn-sm" onclick="requestRefund('${o.order_uuid}')">💸 Refund</button>
+                                        ` : ''}
+                                    </td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                `;
+
+                document.getElementById('historyList').innerHTML = html;
+            } catch (e) {
+                document.getElementById('historyList').innerHTML = '<p>Gagal memuat riwayat</p>';
+            }
+        }
+
+        async function loadGmailStock() {
+            try {
+                const data = await apiCall('/gmail/stock');
+                document.getElementById('gmailStock').innerHTML = `
+                    <div class="grid-2">
+                        <div class="card" style="text-align: center; background: white;">
+                            <div style="font-size: 32px; font-weight: bold; color: #667eea;">${data.data.stock}</div>
+                            <div style="color: #666;">Stok Tersedia</div>
+                        </div>
+                        <div class="card" style="text-align: center; background: white;">
+                            <div style="font-size: 32px; font-weight: bold; color: #4CAF50;">${formatRupiah(data.data.sell_price)}</div>
+                            <div style="color: #666;">Harga per Akun</div>
+                        </div>
+                    </div>
+                `;
+            } catch (e) {}
+        }
+
+        async function buyGmail() {
+            const qty = parseInt(document.getElementById('gmailQty').value) || 1;
+
+            try {
+                const data = await apiCall('/gmail/orders', 'POST', { qty });
+                showAlert('success', '✅ Berhasil membeli ' + qty + ' akun Gmail!');
+                await loadGmailOrders();
+                await refreshBalance();
+            } catch (e) {}
+        }
+
+        async function loadGmailOrders() {
+            try {
+                const data = await apiCall('/gmail/orders');
+                const orders = data.data?.orders || [];
+
+                if (orders.length === 0) {
+                    document.getElementById('gmailOrdersList').innerHTML = '<p style="text-align: center; color: #666;">Belum ada order Gmail</p>';
+                    return;
+                }
+
+                const html = orders.map(o => `
+                    <div class="card" style="background: white; margin-bottom: 10px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <div style="font-weight: bold; font-size: 16px;">${o.email}</div>
+                                <div style="font-family: monospace; color: #666; margin-top: 5px;">
+                                    Password: ${o.password}
+                                    <button class="copy-btn" onclick="copyToClipboard('${o.email}:${o.password}')">📋 Copy</button>
+                                </div>
+                            </div>
+                            <div>
+                                <span class="badge badge-${o.status === 'completed' ? 'success' : 'warning'}">${o.status}</span>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+
+                document.getElementById('gmailOrdersList').innerHTML = html;
+            } catch (e) {}
+        }
+
+        async function loadEmailSuggestions() {
+            try {
+                const data = await apiCall('/email-rental/suggestions');
+                const sites = data.data.sites || [];
+
+                const select = document.getElementById('emailSite');
+                select.innerHTML = '<option value="">Pilih Site</option>' + 
+                    sites.map(s => `<option value="${s}">${s}</option>`).join('');
+            } catch (e) {}
+        }
+
+        async function loadEmailDomains() {
+            const site = document.getElementById('emailSite').value;
+            if (!site) return;
+
+            try {
+                const data = await apiCall(`/email-rental/domains?site=${encodeURIComponent(site)}`);
+                const domains = data.data.domains || [];
+
+                const select = document.getElementById('emailDomain');
+                select.innerHTML = '<option value="">Pilih Domain</option>' + 
+                    domains.map(d => `<option value="${d.name}">${d.name} - ${formatRupiah(d.price)} (${d.count} stok)</option>`).join('');
+            } catch (e) {}
+        }
+
+        async function rentEmail() {
+            const site = document.getElementById('emailSite').value;
+            const domain = document.getElementById('emailDomain').value;
+
+            if (!site || !domain) {
+                showAlert('error', 'Pilih site dan domain terlebih dahulu');
+                return;
+            }
+
+            try {
+                const data = await apiCall('/email-rental/orders', 'POST', { site, domain });
+                showAlert('success', '✅ Email berhasil dirental!');
+                await loadEmailOrders();
+                await refreshBalance();
+                startEmailPolling(data.data.order_uuid);
+            } catch (e) {}
+        }
+
+        function startEmailPolling(uuid) {
+            const interval = setInterval(async () => {
+                try {
+                    const data = await apiCall(`/email-rental/orders/${uuid}`);
+                    if (data.data.code) {
+                        clearInterval(interval);
+                        showToast('🔔 Kode email diterima: ' + data.data.code);
+                        await loadEmailOrders();
+                    }
+                } catch (e) {}
+            }, 5000);
+        }
+
+        async function loadEmailOrders() {
+            try {
+                const data = await apiCall('/email-rental/orders');
+                const orders = data.data?.orders || [];
+
+                if (orders.length === 0) {
+                    document.getElementById('emailOrdersList').innerHTML = '<p style="text-align: center; color: #666;">Tidak ada rental aktif</p>';
+                    return;
+                }
+
+                const html = orders.map(o => `
+                    <div class="card" style="background: white; margin-bottom: 10px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <div style="font-weight: bold;">${o.email}</div>
+                                ${o.code ? `
+                                    <div class="otp-display" style="font-size: 20px; padding: 10px; margin: 10px 0;">${o.code}</div>
+                                ` : '<p style="color: #666; font-size: 13px;">⏳ Menunggu kode...</p>'}
+                            </div>
+                            <div>
+                                <span class="badge badge-${o.status === 'completed' ? 'success' : 'warning'}">${o.status}</span>
+                                ${o.cancellable ? `
+                                    <button class="btn btn-danger btn-sm" style="margin-left: 10px;" onclick="cancelEmailRental('${o.order_uuid}')">❌ Cancel</button>
+                                ` : ''}
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+
+                document.getElementById('emailOrdersList').innerHTML = html;
+            } catch (e) {}
+        }
+
+        async function cancelEmailRental(uuid) {
+            if (!confirm('Yakin ingin cancel rental ini?')) return;
+
+            try {
+                await apiCall(`/email-rental/orders/${uuid}/cancel`, 'POST');
+                showAlert('success', '✅ Rental cancelled');
+                await loadEmailOrders();
+                await refreshBalance();
+            } catch (e) {}
+        }
+
+        async function loadWAReadyInfo() {
+            try {
+                const data = await apiCall('/wa-ready/info');
+                const info = data.data;
+
+                let html = `
+                    <div class="alert alert-info" style="display: block;">
+                        <strong>⚠️ Aturan Penggunaan:</strong><br>
+                        ${info.usage_rules.map(r => '• ' + r).join('<br>')}
+                    </div>
+                    <div class="grid">
+                        ${info.countries.map(c => `
+                            <div class="card" style="text-align: center; background: white;">
+                                <div style="font-size: 24px; font-weight: bold;">${c.name}</div>
+                                <div style="color: #667eea; font-size: 20px; font-weight: bold;">${formatRupiah(c.price)}</div>
+                                <div style="color: #666; font-size: 13px;">Stok: ${c.stock}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+
+                document.getElementById('waReadyInfo').innerHTML = html;
+
+                const select = document.getElementById('waCountry');
+                select.innerHTML = info.countries.map(c => 
+                    `<option value="${c.iso}">${c.name} - ${formatRupiah(c.price)}</option>`
+                ).join('');
+            } catch (e) {}
+        }
+
+        async function buyWAReady() {
+            const country = document.getElementById('waCountry').value;
+
+            try {
+                const data = await apiCall('/wa-ready/orders', 'POST', { country });
+                showAlert('success', '✅ WA Ready berhasil dibeli!');
+                await loadWAReadyOrders();
+                await refreshBalance();
+                startWAPolling(data.data.order.order_uuid);
+            } catch (e) {}
+        }
+
+        function startWAPolling(uuid) {
+            const interval = setInterval(async () => {
+                try {
+                    const data = await apiCall(`/wa-ready/orders/${uuid}`);
+                    const order = data.data.order;
+
+                    if (order.latest_code) {
+                        clearInterval(interval);
+                        showOTPModal({
+                            formatted_number: order.phone,
+                            latest_code: order.latest_code,
+                            order_uuid: uuid
+                        });
+                    }
+
+                    if (order.status === 'completed' || order.status === 'failed') {
+                        clearInterval(interval);
+                    }
+
+                    await loadWAReadyOrders();
+                } catch (e) {}
+            }, 4000);
+        }
+
+        async function loadWAReadyOrders() {
+            try {
+                const data = await apiCall('/wa-ready/orders');
+                const orders = data.data?.orders || [];
+
+                if (orders.length === 0) {
+                    document.getElementById('waReadyOrdersList').innerHTML = '<p style="text-align: center; color: #666;">Belum ada order WA Ready</p>';
+                    return;
+                }
+
+                const html = orders.map(o => `
+                    <div class="card" style="background: white; margin-bottom: 10px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <div style="font-weight: bold; font-size: 18px;">${o.phone}</div>
+                                ${o.latest_code ? `
+                                    <div class="otp-display" style="font-size: 20px; padding: 10px; margin: 10px 0;">${o.latest_code}</div>
+                                ` : ''}
+                            </div>
+                            <div>
+                                <span class="badge badge-${o.status === 'completed' ? 'success' : o.status === 'failed' ? 'danger' : 'warning'}">${o.status}</span>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+
+                document.getElementById('waReadyOrdersList').innerHTML = html;
+            } catch (e) {}
+        }
+
+        async function loadSMMPlatforms() {
+            try {
+                const data = await apiCall('/smm/platforms');
+                const platforms = data.data.platforms || [];
+
+                const select = document.getElementById('smmPlatform');
+                select.innerHTML = '<option value="">Pilih Platform</option>' + 
+                    platforms.map(p => `<option value="${p.key}">${p.label} (${p.total} layanan)</option>`).join('');
+            } catch (e) {}
+        }
+
+        async function loadSMMTypes() {
+            const platform = document.getElementById('smmPlatform').value;
+            if (!platform) return;
+
+            try {
+                const data = await apiCall('/smm/platforms');
+                const p = data.data.platforms.find(x => x.key === platform);
+
+                const select = document.getElementById('smmType');
+                select.innerHTML = '<option value="">Pilih Tipe</option>' + 
+                    (p?.types || []).map(t => `<option value="${t.type}">${t.type} (${t.total})</option>`).join('');
+            } catch (e) {}
+        }
+
+        async function loadSMMServices() {
+            const platform = document.getElementById('smmPlatform').value;
+            const type = document.getElementById('smmType').value;
+
+            if (!platform || !type) return;
+
+            try {
+                const data = await apiCall(`/smm/services?platform=${platform}&type=${encodeURIComponent(type)}`);
+                const services = data.data?.services || [];
+
+                const html = services.map(s => `
+                    <div class="card" style="background: white; margin-bottom: 10px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <div style="font-weight: bold;">${s.name}</div>
+                                <div style="font-size: 13px; color: #666;">
+                                    ${s.category || ''} • Min: ${s.min} • Max: ${s.max}
+                                </div>
+                            </div>
+                            <div style="text-align: right;">
+                                <div style="font-weight: bold; color: #667eea;">${formatRupiah(s.price_per_1000)}/1000</div>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+
+                document.getElementById('smmServicesList').innerHTML = html;
+            } catch (e) {}
+        }
+
+        async function loadSMMOrders() {
+            try {
+                const data = await apiCall('/smm/orders');
+                const orders = data.data?.orders || [];
+
+                if (orders.length === 0) {
+                    document.getElementById('smmOrdersList').innerHTML = '<p style="text-align: center; color: #666;">Belum ada order SMM</p>';
+                    return;
+                }
+
+                const html = orders.map(o => `
+                    <div class="card" style="background: white; margin-bottom: 10px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <div style="font-weight: bold;">${o.service_name || 'SMM Order'}</div>
+                                <div style="font-size: 13px; color: #666;">
+                                    Target: ${o.target || '-'} • Qty: ${o.quantity || '-'}
+                                </div>
+                            </div>
+                            <div>
+                                <span class="badge badge-${o.status === 'completed' ? 'success' : o.status === 'in_progress' ? 'warning' : 'secondary'}">${o.status}</span>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+
+                document.getElementById('smmOrdersList').innerHTML = html;
+            } catch (e) {}
+        }
+
+        async function loadRefunds() {
+            try {
+                const data = await apiCall('/refunds/eligible');
+                const vnRefunds = data.data.vn || [];
+                const quota = data.data.quota || {};
+
+                let html = `
+                    <div class="card" style="background: white; margin-bottom: 15px;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                            <span>Daily Limit:</span>
+                            <strong>${quota.daily_left || 0}/${quota.daily_limit || 0}</strong>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <span>Monthly Limit:</span>
+                            <strong>${quota.monthly_left || 0}/${quota.monthly_limit || 0}</strong>
+                        </div>
+                    </div>
+                `;
+
+                if (vnRefunds.length > 0) {
+                    html += '<h4 style="margin-bottom: 10px;">📱 Nomor Eligible untuk Refund:</h4>';
+                    html += vnRefunds.map(r => `
+                        <div class="card" style="background: white; margin-bottom: 10px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div>
+                                    <div style="font-weight: bold;">${r.order_uuid}</div>
+                                    <div style="font-size: 13px; color: #666;">${formatRupiah(r.amount)} • ${r.created_at}</div>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('');
+                } else {
+                    html += '<p style="text-align: center; color: #666;">Tidak ada order yang eligible untuk refund</p>';
+                }
+
+                document.getElementById('refundEligibleList').innerHTML = html;
+
+                const historyData = await apiCall('/refunds');
+                const refunds = historyData.data?.refunds || [];
+
+                if (refunds.length > 0) {
+                    const historyHtml = refunds.map(r => `
+                        <div class="card" style="background: white; margin-bottom: 10px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div>
+                                    <div style="font-weight: bold;">${r.order_uuid}</div>
+                                    <div style="font-size: 13px; color: #666;">${r.type} • ${formatRupiah(r.amount)}</div>
+                                </div>
+                                <div>
+                                    <span class="badge badge-${r.status === 'approved' ? 'success' : r.status === 'rejected' ? 'danger' : 'warning'}">${r.status}</span>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('');
+                    document.getElementById('refundHistoryList').innerHTML = historyHtml;
+                } else {
+                    document.getElementById('refundHistoryList').innerHTML = '<p style="text-align: center; color: #666;">Belum ada riwayat refund</p>';
+                }
+            } catch (e) {}
+        }
+
+        async function loadPaymentMethods() {
+            try {
+                const data = await apiCall('/payment-methods');
+                const methods = data.data || [];
+
+                const select = document.getElementById('paymentMethod');
+                select.innerHTML = methods.map(m => 
+                    `<option value="${m.id}">${m.name} (${m.category_name}) - Exp: ${m.expiration_time} menit</option>`
+                ).join('');
+            } catch (e) {}
+        }
+
+        async function createDeposit() {
+            const amount = parseInt(document.getElementById('depositAmount').value);
+            const method = parseInt(document.getElementById('paymentMethod').value);
+
+            if (amount < 10000) {
+                showAlert('error', 'Minimal deposit Rp 10.000');
+                return;
+            }
+
+            try {
+                const data = await apiCall('/deposits', 'POST', { amount, method });
+
+                document.getElementById('depositResult').style.display = 'block';
+
+                let html = `
+                    <div style="text-align: center; margin-bottom: 20px;">
+                        <div style="font-size: 24px; font-weight: bold; color: #667eea;">${formatRupiah(data.data.total_amount)}</div>
+                        <div style="color: #666;">Total pembayaran (termasuk fee)</div>
+                    </div>
+                    <p><strong>Kode Transaksi:</strong> ${data.data.uniqcode_tx}</p>
+                    <p><strong>Status:</strong> <span class="badge badge-warning">${data.data.status}</span></p>
+                    <p><strong>Expired:</strong> ${data.data.expires_at_iso}</p>
+                `;
+
+                if (data.data.qr_code_base64) {
+                    html += `
+                        <div class="qr-code">
+                            <img src="data:image/png;base64,${data.data.qr_code_base64}" alt="QR Code">
+                            <p style="margin-top: 10px; color: #666;">Scan QR code untuk membayar</p>
+                        </div>
+                    `;
+                }
+
+                if (data.data.payment_url) {
+                    html += `
+                        <div style="text-align: center; margin-top: 15px;">
+                            <a href="${data.data.payment_url}" target="_blank" class="btn btn-primary">🔗 Buka Halaman Pembayaran</a>
+                        </div>
+                    `;
+                }
+
+                document.getElementById('depositDetails').innerHTML = html;
+                startDepositPolling(data.data.uniqcode_tx);
+            } catch (e) {}
+        }
+
+        async function createCryptoDeposit() {
+            const amount = prompt('Jumlah deposit dalam USD (1-10000):', '10');
+            if (!amount) return;
+
+            try {
+                const data = await apiCall('/deposits/crypto', 'POST', { amount: parseFloat(amount) });
+
+                if (data.data.checkout_url) {
+                    window.open(data.data.checkout_url, '_blank');
+                    showAlert('success', '✅ Checkout URL dibuka di tab baru');
+                }
+            } catch (e) {}
+        }
+
+        function startDepositPolling(uniqcode) {
+            const interval = setInterval(async () => {
+                try {
+                    const data = await apiCall(`/transactions/${uniqcode}`);
+                    if (data.data.status === 'success') {
+                        clearInterval(interval);
+                        showAlert('success', '✅ Deposit berhasil! Saldo telah ditambahkan.');
+                        await refreshBalance();
+                        await loadTransactions();
+                    }
+                } catch (e) {}
+            }, 10000);
+        }
+
+        async function loadTransactions() {
+            try {
+                const data = await apiCall('/transactions');
+                const transactions = data.data?.transactions || [];
+
+                if (transactions.length === 0) {
+                    document.getElementById('transactionsList').innerHTML = '<p style="text-align: center; color: #666;">Belum ada transaksi</p>';
+                    return;
+                }
+
+                const html = `
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Kode</th>
+                                <th>Jumlah</th>
+                                <th>Status</th>
+                                <th>Metode</th>
+                                <th>Waktu</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${transactions.map(t => `
+                                <tr>
+                                    <td>${t.uniqcode_tx}</td>
+                                    <td>${formatRupiah(t.total_amount)}</td>
+                                    <td><span class="badge badge-${t.status === 'success' ? 'success' : t.status === 'pending' ? 'warning' : 'danger'}">${t.status}</span></td>
+                                    <td>${t.payment_method?.name || '-'}</td>
+                                    <td>${t.created_at_iso || '-'}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                `;
+
+                document.getElementById('transactionsList').innerHTML = html;
+            } catch (e) {}
+        }
+
+        async function refreshAll() {
+            await refreshBalance();
+            await loadProfile();
+            await loadActiveOrders();
+            showToast('🔄 Semua data diperbarui');
+        }
+
+        window.onload = async function() {
+            await refreshBalance();
+            await loadProfile();
+            await loadPopularServices();
+            await loadActiveOrders();
+
+            setInterval(refreshBalance, 30000);
+
+            setInterval(() => {
+                if (document.getElementById('activeOrders').classList.contains('active')) {
+                    loadActiveOrders();
+                }
+            }, 15000);
+        };
+    </script>
 </body>
 </html>
