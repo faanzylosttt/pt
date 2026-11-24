@@ -2,20 +2,25 @@
 <html lang="id" data-theme="light">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<meta name="theme-color" content="#4f46e5">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="VirtusIM">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="description" content="Platform nomor virtual & layanan digital 24 jam">
 <title>VirtusIM — Nomor Virtual & Layanan Digital</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 <style>
-/* ============ DESIGN TOKENS ============ */
 :root{
-  --bg:#f4f6fb;--bg-2:#eef1f8;--surface:#ffffff;--surface-2:#f8fafc;--surface-3:#f1f5f9;
+  --bg:#f4f6fb;--bg-2:#eef1f8;--surface:#fff;--surface-2:#f8fafc;--surface-3:#f1f5f9;
   --border:#e2e8f0;--border-2:#cbd5e1;--text:#0f172a;--text-2:#475569;--muted:#94a3b8;
   --primary:#4f46e5;--primary-2:#7c3aed;--primary-soft:#eef2ff;--primary-grad:linear-gradient(135deg,#4f46e5,#7c3aed);
   --success:#10b981;--success-soft:#ecfdf5;--warning:#f59e0b;--warning-soft:#fffbeb;
   --danger:#ef4444;--danger-soft:#fef2f2;--info:#3b82f6;--info-soft:#eff6ff;
-  --r-sm:8px;--r:12px;--r-lg:16px;--r-xl:20px;
+  --r-sm:8px;--r:12px;--r-lg:16px;
   --sh-sm:0 1px 2px rgba(15,23,42,.04);--sh:0 4px 12px rgba(15,23,42,.06);
   --sh-md:0 8px 24px rgba(15,23,42,.08);--sh-lg:0 16px 48px rgba(15,23,42,.12);
   --t:200ms cubic-bezier(.4,0,.2,1);
@@ -26,8 +31,9 @@
   --primary-soft:#1e1b4b;--success-soft:#052e22;--warning-soft:#3b2109;--danger-soft:#3f1316;--info-soft:#0c2a56;
   --sh-sm:0 1px 2px rgba(0,0,0,.3);--sh:0 4px 12px rgba(0,0,0,.35);--sh-md:0 8px 24px rgba(0,0,0,.4);--sh-lg:0 16px 48px rgba(0,0,0,.5);
 }
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 *{margin:0;padding:0;box-sizing:border-box}
-html,body{font-family:'Inter',system-ui,-apple-system,sans-serif;color:var(--text);background:var(--bg);min-height:100vh;-webkit-font-smoothing:antialiased;transition:background var(--t),color var(--t)}
+html,body{font-family:'Inter',system-ui,-apple-system,sans-serif;color:var(--text);background:var(--bg);min-height:100vh;-webkit-font-smoothing:antialiased}
 button,input,select,textarea{font-family:inherit;color:inherit}
 .mono{font-family:'JetBrains Mono','Courier New',monospace}
 ::selection{background:var(--primary);color:#fff}
@@ -36,74 +42,47 @@ button,input,select,textarea{font-family:inherit;color:inherit}
 ::-webkit-scrollbar-thumb:hover{background:var(--muted)}
 ::-webkit-scrollbar-track{background:transparent}
 
-/* ============ LAYOUT ============ */
 .app{max-width:1440px;margin:0 auto;padding:16px}
-.topbar{
-  position:sticky;top:0;z-index:50;background:var(--surface);border:1px solid var(--border);
-  border-radius:var(--r-lg);padding:12px 18px;margin-bottom:14px;box-shadow:var(--sh);
-  display:flex;align-items:center;gap:16px;backdrop-filter:blur(12px);
-}
-.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit}
-.brand-mark{
-  width:42px;height:42px;border-radius:12px;background:var(--primary-grad);
-  display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:18px;
-  box-shadow:0 4px 12px rgba(79,70,229,.35);position:relative;overflow:hidden;
-}
+
+/* TOPBAR */
+.topbar{position:sticky;top:0;z-index:50;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:12px 18px;margin-bottom:14px;box-shadow:var(--sh);display:flex;align-items:center;gap:14px;backdrop-filter:blur(12px)}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit;cursor:pointer}
+.brand-mark{width:42px;height:42px;border-radius:12px;background:var(--primary-grad);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:18px;box-shadow:0 4px 12px rgba(79,70,229,.35);position:relative;overflow:hidden}
 .brand-mark::before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.2),transparent)}
 .brand-txt h1{font-size:15px;font-weight:800;letter-spacing:-.02em}
 .brand-txt p{font-size:11px;color:var(--muted);font-weight:500}
 .topbar-spacer{flex:1}
 .topbar-actions{display:flex;align-items:center;gap:8px}
-.icon-btn{
-  width:38px;height:38px;border-radius:10px;background:var(--surface-2);border:1px solid var(--border);
-  display:inline-flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;
-  transition:all var(--t);position:relative;color:var(--text-2);
-}
+.icon-btn{width:38px;height:38px;border-radius:10px;background:var(--surface-2);border:1px solid var(--border);display:inline-flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;transition:all var(--t);position:relative;color:var(--text-2)}
 .icon-btn:hover{background:var(--surface-3);border-color:var(--border-2);color:var(--text);transform:translateY(-1px)}
-.icon-btn .dot{position:absolute;top:6px;right:6px;width:8px;height:8px;background:var(--danger);border-radius:50%;border:2px solid var(--surface)}
-.balance-pill{
-  display:flex;align-items:center;gap:10px;padding:8px 14px;background:var(--primary-grad);
-  border-radius:10px;color:#fff;font-weight:700;font-size:13px;box-shadow:0 4px 12px rgba(79,70,229,.25);
-}
+.icon-btn .dot{position:absolute;top:6px;right:6px;min-width:16px;height:16px;background:var(--danger);color:#fff;border-radius:99px;border:2px solid var(--surface);font-size:9px;font-weight:800;display:flex;align-items:center;justify-content:center;padding:0 3px}
+.balance-pill{display:flex;align-items:center;gap:8px;padding:8px 14px;background:var(--primary-grad);border-radius:10px;color:#fff;font-weight:700;font-size:13px;box-shadow:0 4px 12px rgba(79,70,229,.25);cursor:pointer;transition:all var(--t)}
+.balance-pill:hover{transform:translateY(-1px)}
 .balance-pill small{opacity:.85;font-weight:500;font-size:11px}
+.conn-offline{display:none;align-items:center;gap:6px;padding:6px 12px;background:var(--danger-soft);color:var(--danger);border-radius:8px;font-size:11px;font-weight:700;border:1px solid rgba(239,68,68,.3)}
+.conn-offline.show{display:inline-flex}
 
-/* Sub-navigation */
-.subnav{
-  display:flex;gap:4px;margin-bottom:14px;padding:6px;background:var(--surface);
-  border:1px solid var(--border);border-radius:var(--r);overflow-x:auto;box-shadow:var(--sh-sm);
-  scrollbar-width:none;
-}
+/* SUBNAV */
+.subnav{display:flex;gap:4px;margin-bottom:14px;padding:6px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow-x:auto;box-shadow:var(--sh-sm);scrollbar-width:none}
 .subnav::-webkit-scrollbar{display:none}
-.nav-item{
-  padding:9px 14px;background:transparent;border:none;border-radius:8px;cursor:pointer;
-  font-size:13px;font-weight:600;color:var(--text-2);white-space:nowrap;transition:all var(--t);
-  display:inline-flex;align-items:center;gap:6px;
-}
+.nav-item{padding:9px 14px;background:transparent;border:none;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;color:var(--text-2);white-space:nowrap;transition:all var(--t);display:inline-flex;align-items:center;gap:6px}
 .nav-item:hover{background:var(--surface-3);color:var(--text)}
 .nav-item.active{background:var(--primary);color:#fff;box-shadow:0 4px 12px rgba(79,70,229,.3)}
 
-/* Content */
-.content{
-  background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);
-  padding:24px;box-shadow:var(--sh-sm);min-height:400px;
-}
+/* CONTENT */
+.content{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:24px;box-shadow:var(--sh-sm);min-height:400px}
 .view{display:none;animation:fadeIn 200ms ease}
 .view.active{display:block}
 @keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
 
-/* ============ COMPONENTS ============ */
+/* COMPONENTS */
 .card{background:var(--surface-2);border:1px solid var(--border);border-radius:var(--r);padding:20px;margin-bottom:16px}
 .card.plain{background:var(--surface)}
-.card-elevated{background:var(--surface);box-shadow:var(--sh-sm)}
 .card-title{font-size:14px;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;color:var(--text)}
 .card-title .spacer{margin-left:auto}
 .card-subtitle{font-size:12px;color:var(--text-2);margin-bottom:14px;line-height:1.6}
 
-.btn{
-  padding:10px 18px;border:none;border-radius:9px;font-size:13px;font-weight:600;
-  cursor:pointer;transition:all var(--t);display:inline-flex;align-items:center;justify-content:center;
-  gap:6px;white-space:nowrap;
-}
+.btn{padding:10px 18px;border:none;border-radius:9px;font-size:13px;font-weight:600;cursor:pointer;transition:all var(--t);display:inline-flex;align-items:center;justify-content:center;gap:6px;white-space:nowrap}
 .btn:disabled{opacity:.5;cursor:not-allowed;transform:none!important}
 .btn-primary{background:var(--primary-grad);color:#fff;box-shadow:0 4px 12px rgba(79,70,229,.25)}
 .btn-primary:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 6px 16px rgba(79,70,229,.4)}
@@ -114,14 +93,12 @@ button,input,select,textarea{font-family:inherit;color:inherit}
 .btn-secondary:hover{background:var(--border)}
 .btn-sm{padding:7px 12px;font-size:12px;border-radius:7px}
 .btn-block{width:100%}
+.btn-ghost{background:transparent;color:var(--text-2);border:1px solid var(--border)}
+.btn-ghost:hover{background:var(--surface-3);color:var(--text)}
 
 .form-group{margin-bottom:16px}
 .form-label{display:block;font-size:12px;font-weight:600;color:var(--text);margin-bottom:6px}
-.form-label .hint{color:var(--muted);font-weight:500;margin-left:4px}
-.input,.select,.textarea{
-  width:100%;padding:11px 14px;background:var(--surface);border:1.5px solid var(--border);
-  border-radius:9px;font-size:14px;transition:all var(--t);
-}
+.input,.select,.textarea{width:100%;padding:11px 14px;background:var(--surface);border:1.5px solid var(--border);border-radius:9px;font-size:14px;transition:all var(--t)}
 .input:focus,.select:focus,.textarea:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(79,70,229,.12)}
 .textarea{resize:vertical;min-height:80px;font-family:inherit}
 
@@ -135,27 +112,28 @@ button,input,select,textarea{font-family:inherit;color:inherit}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
 .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
 
 table{width:100%;border-collapse:collapse;font-size:13px}
-th{background:var(--surface-3);padding:10px 12px;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--text-2);font-weight:700;border-bottom:1px solid var(--border)}
+th{background:var(--surface-3);padding:10px 12px;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--text-2);font-weight:700;border-bottom:1px solid var(--border);cursor:pointer;user-select:none;transition:color var(--t)}
+th:hover{color:var(--text)}
+th .sort-arrow{display:inline-block;margin-left:4px;opacity:.4;font-size:9px}
+th.sorted .sort-arrow{opacity:1;color:var(--primary)}
 td{padding:12px;border-bottom:1px solid var(--border)}
 tr:last-child td{border-bottom:none}
 tr:hover td{background:var(--surface-2)}
 
-/* Alerts */
 .alert{padding:12px 16px;border-radius:10px;font-size:13px;font-weight:500;display:none;margin-bottom:12px;border-left:4px solid;line-height:1.5}
 .alert.show{display:block;animation:fadeIn 200ms}
 .alert-success{background:var(--success-soft);color:var(--success);border-color:var(--success)}
 .alert-error{background:var(--danger-soft);color:var(--danger);border-color:var(--danger)}
 .alert-info{background:var(--info-soft);color:var(--info);border-color:var(--info)}
 
-/* Empty state */
 .empty{text-align:center;padding:40px 20px;color:var(--muted)}
 .empty-icon{font-size:44px;margin-bottom:10px;opacity:.4}
 .empty-title{font-weight:600;color:var(--text-2);margin-bottom:4px}
 .empty-desc{font-size:12px}
 
-/* Skeleton */
 .skel{background:linear-gradient(90deg,var(--surface-3) 25%,var(--surface-2) 50%,var(--surface-3) 75%);background-size:200% 100%;animation:shimmer 1.4s infinite;border-radius:8px}
 .skel-line{height:14px;margin-bottom:8px}
 .skel-line.w-60{width:60%}.skel-line.w-40{width:40%}.skel-line.w-80{width:80%}
@@ -164,14 +142,9 @@ tr:hover td{background:var(--surface-2)}
 .skel-avatar{width:44px;height:44px;border-radius:12px;flex-shrink:0}
 @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
 
-/* Toast */
+/* TOAST */
 .toast-stack{position:fixed;top:20px;right:20px;z-index:3000;display:flex;flex-direction:column;gap:10px;max-width:360px;pointer-events:none}
-.toast{
-  background:var(--surface);border:1px solid var(--border);border-left:4px solid var(--info);
-  padding:12px 14px;border-radius:10px;box-shadow:var(--sh-lg);display:flex;align-items:center;gap:10px;
-  font-size:13px;font-weight:500;transform:translateX(400px);opacity:0;transition:all 300ms cubic-bezier(.4,0,.2,1);
-  pointer-events:auto;
-}
+.toast{background:var(--surface);border:1px solid var(--border);border-left:4px solid var(--info);padding:12px 14px;border-radius:10px;box-shadow:var(--sh-lg);display:flex;align-items:center;gap:10px;font-size:13px;font-weight:500;transform:translateX(400px);opacity:0;transition:all 300ms cubic-bezier(.4,0,.2,1);pointer-events:auto;min-width:280px}
 .toast.show{transform:translateX(0);opacity:1}
 .toast-icon{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;flex-shrink:0}
 .toast-success{border-left-color:var(--success)}.toast-success .toast-icon{background:var(--success)}
@@ -182,18 +155,18 @@ tr:hover td{background:var(--surface-2)}
 .toast-close{background:none;border:none;font-size:18px;cursor:pointer;color:var(--muted);padding:0 4px;line-height:1}
 .toast-close:hover{color:var(--text)}
 
-/* Modal */
+/* MODAL */
 .modal{position:fixed;inset:0;background:rgba(15,23,42,.7);backdrop-filter:blur(4px);z-index:1000;display:none;align-items:center;justify-content:center;padding:16px;animation:fadeIn 200ms}
 .modal.show{display:flex}
-.modal-box{background:var(--surface);border-radius:var(--r-lg);width:100%;max-width:560px;max-height:88vh;overflow-y:auto;box-shadow:var(--sh-lg);animation:modalIn 250ms cubic-bezier(.4,0,.2,1)}
+.modal-box{background:var(--surface);border-radius:var(--r-lg);width:100%;max-width:640px;max-height:88vh;overflow-y:auto;box-shadow:var(--sh-lg);animation:modalIn 250ms cubic-bezier(.4,0,.2,1)}
 @keyframes modalIn{from{opacity:0;transform:scale(.96) translateY(10px)}to{opacity:1;transform:none}}
-.modal-head{padding:20px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.modal-head{padding:20px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--surface);z-index:1}
 .modal-head h2{font-size:16px;font-weight:700}
 .modal-close{background:var(--surface-3);border:none;width:32px;height:32px;border-radius:8px;font-size:18px;cursor:pointer;color:var(--text-2);display:flex;align-items:center;justify-content:center;transition:all var(--t)}
 .modal-close:hover{background:var(--border);color:var(--text)}
 .modal-body{padding:24px}
 
-/* Command palette */
+/* COMMAND PALETTE */
 .cmd-palette{position:fixed;inset:0;background:rgba(15,23,42,.7);backdrop-filter:blur(6px);z-index:2000;display:none;align-items:flex-start;justify-content:center;padding-top:12vh;animation:fadeIn 150ms}
 .cmd-palette.show{display:flex}
 .cmd-box{background:var(--surface);border-radius:var(--r-lg);width:100%;max-width:560px;box-shadow:var(--sh-lg);overflow:hidden;animation:modalIn 200ms}
@@ -206,8 +179,8 @@ tr:hover td{background:var(--surface-2)}
 .cmd-item span:first-child{font-size:16px}
 .cmd-empty{padding:24px;text-align:center;color:var(--muted);font-size:13px}
 
-/* ============ SERVICE / COUNTRY CARDS ============ */
-.svc-card{background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:14px;text-align:center;cursor:pointer;transition:all var(--t);position:relative;overflow:hidden}
+/* SERVICE/COUNTRY */
+.svc-card{background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:14px;text-align:center;cursor:pointer;transition:all var(--t);position:relative}
 .svc-card:hover{border-color:var(--primary);transform:translateY(-2px);box-shadow:var(--sh)}
 .svc-card.selected{border-color:var(--primary);background:var(--primary-soft)}
 .svc-card.selected::after{content:"✓";position:absolute;top:8px;right:8px;width:18px;height:18px;background:var(--primary);color:#fff;border-radius:50%;font-size:11px;display:flex;align-items:center;justify-content:center;font-weight:800}
@@ -223,27 +196,24 @@ tr:hover td{background:var(--surface-2)}
 .ctr-price{font-weight:800;color:var(--primary);font-size:13px;text-align:right}
 .ctr-stock{font-size:10px;color:var(--success);margin-top:3px;text-align:right}
 
-/* ============ SEARCH ============ */
 .search{position:relative;margin-bottom:12px}
 .search input{width:100%;padding:11px 14px 11px 40px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;background:var(--surface);transition:all var(--t)}
 .search input:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(79,70,229,.1)}
 .search::before{content:"⌕";position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:18px;color:var(--muted);font-weight:700}
 
-/* ============ OTP ============ */
+/* OTP/NUMBER */
 .otp-big{background:var(--primary-grad);color:#fff;padding:18px;border-radius:12px;text-align:center;font-size:30px;font-weight:800;letter-spacing:8px;margin:12px 0;font-family:'JetBrains Mono',monospace;position:relative;overflow:hidden}
 .otp-big::before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.15),transparent)}
 .num-display{background:var(--surface);border:2px dashed var(--primary);padding:14px;border-radius:11px;text-align:center;font-size:20px;font-weight:800;color:var(--primary);margin:12px 0;font-family:'JetBrains Mono',monospace}
 
-/* ============ DEPOSIT ============ */
+/* DEPOSIT */
 .dep-grid{display:grid;grid-template-columns:1fr 1.15fr;gap:20px}
 @media(max-width:900px){.dep-grid{grid-template-columns:1fr}}
-
 .dep-form{background:var(--surface-2);border:1px solid var(--border);border-radius:var(--r);padding:20px;height:fit-content}
 .preset-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
 .preset{padding:11px 6px;background:var(--surface);border:1.5px solid var(--border);border-radius:9px;cursor:pointer;font-size:12px;font-weight:700;color:var(--text);transition:all var(--t)}
 .preset:hover{border-color:var(--primary);color:var(--primary)}
 .preset.active{background:var(--primary);color:#fff;border-color:var(--primary);box-shadow:0 4px 12px rgba(79,70,229,.25)}
-
 .method-list{display:flex;flex-direction:column;gap:8px;max-height:320px;overflow-y:auto;padding:2px}
 .method{background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:12px 14px;cursor:pointer;transition:all var(--t);display:flex;justify-content:space-between;align-items:center;gap:10px}
 .method:hover{border-color:var(--primary)}
@@ -251,20 +221,16 @@ tr:hover td{background:var(--surface-2)}
 .method-name{font-weight:600;font-size:13px}
 .method-meta{font-size:11px;color:var(--muted);margin-top:2px}
 .method-fee{font-size:11px;color:var(--success);font-weight:700;flex-shrink:0;padding:3px 8px;background:var(--success-soft);border-radius:6px}
-
 .dep-result{background:var(--surface-2);border:1px solid var(--border);border-radius:var(--r);padding:20px}
 .dep-steps{display:flex;gap:4px;margin-bottom:18px}
 .dep-step{flex:1;text-align:center;position:relative;padding:8px 4px;font-size:11px;font-weight:600;color:var(--muted);border-radius:6px;background:var(--surface-3);transition:all var(--t)}
 .dep-step.done{background:var(--success-soft);color:var(--success)}
 .dep-step.current{background:var(--primary);color:#fff}
-
 .qr-box{background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:18px;text-align:center;margin:14px 0}
 .qr-box img{max-width:280px;width:100%;border-radius:8px;display:block;margin:0 auto}
 .qr-ph{width:280px;height:280px;background:var(--surface-3);border:2px dashed var(--border);border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:12px;text-align:center;padding:20px;margin:0 auto}
 .qr-label{font-size:11px;color:var(--muted);margin-top:10px;text-transform:uppercase;letter-spacing:.06em;font-weight:700}
 .qr-badge{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;background:var(--warning-soft);color:var(--warning);border-radius:99px;font-size:10px;font-weight:700;margin-top:6px}
-.qr-actions{display:flex;justify-content:center;gap:8px;margin-top:10px}
-
 .dep-total{font-size:26px;font-weight:800;text-align:center;color:var(--primary);font-family:'JetBrains Mono',monospace;letter-spacing:-.02em;margin:4px 0 12px}
 .pay-line{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);font-size:13px;gap:10px}
 .pay-line:last-child{border-bottom:none}
@@ -272,76 +238,137 @@ tr:hover td{background:var(--surface-2)}
 .pay-line .val{font-weight:700;display:flex;align-items:center;gap:6px;text-align:right;min-width:0;word-break:break-all;justify-content:flex-end;font-family:'JetBrains Mono',monospace;font-size:12px}
 .copy-btn{padding:3px 8px;background:var(--primary-soft);color:var(--primary);border:none;border-radius:5px;font-size:10px;font-weight:700;cursor:pointer;transition:all var(--t);flex-shrink:0}
 .copy-btn:hover{background:var(--primary);color:#fff}
-
 .countdown{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;background:var(--warning-soft);color:var(--warning);border-radius:8px;font-weight:700;font-size:13px;border:1px solid rgba(245,158,11,.3);font-family:'JetBrains Mono',monospace}
 .countdown.exp{background:var(--danger-soft);color:var(--danger);border-color:rgba(239,68,68,.3)}
 .countdown.success{background:var(--success-soft);color:var(--success);border-color:rgba(16,185,129,.3)}
-
 .dep-hint{background:var(--info-soft);border:1px solid rgba(59,130,246,.25);color:var(--info);border-radius:9px;padding:12px 14px;font-size:12px;line-height:1.6;margin-top:14px}
 .dep-hint strong{display:block;margin-bottom:3px}
 
-/* Notification panel */
-.notif-panel{position:absolute;top:calc(100% + 8px);right:0;width:340px;background:var(--surface);border:1px solid var(--border);border-radius:12px;box-shadow:var(--sh-lg);padding:0;display:none;z-index:60;max-height:400px;overflow:hidden}
+/* NOTIF PANEL */
+.notif-panel{position:absolute;top:calc(100% + 8px);right:0;width:360px;background:var(--surface);border:1px solid var(--border);border-radius:12px;box-shadow:var(--sh-lg);display:none;z-index:60;max-height:440px;overflow:hidden}
 .notif-panel.show{display:block;animation:fadeIn 150ms}
 .notif-head{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;font-size:13px;font-weight:700}
-.notif-list{max-height:340px;overflow-y:auto}
-.notif-item{padding:12px 16px;border-bottom:1px solid var(--border);font-size:12px;line-height:1.5}
+.notif-list{max-height:380px;overflow-y:auto}
+.notif-item{padding:12px 16px;border-bottom:1px solid var(--border);font-size:12px;line-height:1.5;cursor:pointer}
 .notif-item:last-child{border-bottom:none}
 .notif-item:hover{background:var(--surface-2)}
 .notif-item b{color:var(--text);display:block;margin-bottom:2px;font-size:12px}
 .notif-item span{color:var(--muted);font-size:11px}
+.notif-item.unread{background:var(--primary-soft)}
+
+/* FAB */
+.fab-container{position:fixed;bottom:24px;right:24px;z-index:900}
+.fab{width:56px;height:56px;border-radius:16px;background:var(--primary-grad);color:#fff;border:none;font-size:24px;cursor:pointer;box-shadow:0 8px 24px rgba(79,70,229,.4);display:flex;align-items:center;justify-content:center;transition:all 300ms cubic-bezier(.4,0,.2,1);transform-origin:center}
+.fab:hover{transform:scale(1.08)}
+.fab.open{transform:rotate(45deg)}
+.fab-menu{position:absolute;bottom:72px;right:0;display:flex;flex-direction:column;gap:8px;pointer-events:none;opacity:0;transform:translateY(10px);transition:all 250ms}
+.fab-container.open .fab-menu{pointer-events:auto;opacity:1;transform:translateY(0)}
+.fab-item{display:flex;align-items:center;gap:10px;padding:10px 16px;background:var(--surface);border:1px solid var(--border);border-radius:99px;cursor:pointer;box-shadow:var(--sh-md);font-size:13px;font-weight:600;white-space:nowrap;transition:all var(--t);flex-direction:row-reverse}
+.fab-item:hover{background:var(--primary);color:#fff;border-color:var(--primary);transform:translateX(-4px)}
+.fab-item span:first-child{font-size:16px}
+
+/* TOUR */
+.tour-overlay{position:fixed;inset:0;background:rgba(15,23,42,.75);z-index:4000;display:none}
+.tour-overlay.show{display:block;animation:fadeIn 300ms}
+.tour-spotlight{position:absolute;border-radius:12px;box-shadow:0 0 0 9999px rgba(15,23,42,.75);transition:all 300ms cubic-bezier(.4,0,.2,1);pointer-events:none;border:2px solid var(--primary)}
+.tour-tip{position:absolute;background:var(--surface);border-radius:14px;padding:20px;max-width:340px;box-shadow:var(--sh-lg);animation:modalIn 300ms}
+.tour-tip h3{font-size:15px;font-weight:700;margin-bottom:8px}
+.tour-tip p{font-size:13px;color:var(--text-2);line-height:1.6;margin-bottom:16px}
+.tour-tip-footer{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.tour-progress{font-size:11px;color:var(--muted);font-weight:600}
+
+/* DEBUG PANEL */
+.debug-panel{position:fixed;bottom:0;left:0;right:0;background:var(--surface);border-top:2px solid var(--primary);z-index:1500;max-height:50vh;display:none;box-shadow:0 -8px 24px rgba(15,23,42,.2);flex-direction:column}
+.debug-panel.show{display:flex}
+.debug-head{padding:10px 16px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;background:var(--surface-2);font-size:12px;font-weight:700;color:var(--text)}
+.debug-metrics{display:flex;gap:12px;flex-wrap:wrap;padding:10px 16px;background:var(--surface-2);border-bottom:1px solid var(--border)}
+.debug-metric{padding:6px 12px;background:var(--surface);border:1px solid var(--border);border-radius:8px;font-size:11px}
+.debug-metric b{color:var(--primary);font-family:'JetBrains Mono',monospace;font-size:13px;display:block;margin-top:2px}
+.debug-logs{flex:1;overflow-y:auto;padding:10px 16px;font-family:'JetBrains Mono',monospace;font-size:11px;line-height:1.6}
+.debug-log{padding:4px 0;border-bottom:1px dashed var(--border);display:flex;gap:10px;align-items:flex-start}
+.debug-log .time{color:var(--muted);flex-shrink:0;width:70px}
+.debug-log .method{font-weight:700;flex-shrink:0;width:50px;color:var(--primary)}
+.debug-log .method.error{color:var(--danger)}
+.debug-log .path{flex:1;word-break:break-all}
+.debug-log .status{flex-shrink:0;font-weight:700}
+.debug-log .status.ok{color:var(--success)}
+.debug-log .status.err{color:var(--danger)}
+.debug-log .latency{color:var(--muted);flex-shrink:0}
+
+/* SESSION IDLE MODAL */
+.idle-overlay{position:fixed;inset:0;background:rgba(15,23,42,.85);backdrop-filter:blur(8px);z-index:5000;display:none;align-items:center;justify-content:center;padding:16px}
+.idle-overlay.show{display:flex;animation:fadeIn 300ms}
+.idle-box{background:var(--surface);border-radius:var(--r-lg);padding:32px;text-align:center;max-width:400px;box-shadow:var(--sh-lg)}
+.idle-box h2{font-size:20px;margin-bottom:8px}
+.idle-box p{font-size:13px;color:var(--text-2);margin-bottom:20px;line-height:1.6}
+
+/* ANALYTICS */
+.chart-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px}
+.chart-title{font-size:12px;font-weight:700;color:var(--text-2);margin-bottom:12px;text-transform:uppercase;letter-spacing:.04em}
+.chart-canvas{width:100%;height:80px;display:block}
+.chart-value{font-size:24px;font-weight:800;color:var(--text);margin-bottom:4px}
+.chart-delta{font-size:11px;font-weight:600;display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:99px}
+.chart-delta.up{background:var(--success-soft);color:var(--success)}
+.chart-delta.down{background:var(--danger-soft);color:var(--danger)}
+
+/* BULK BAR */
+.bulk-bar{position:sticky;bottom:16px;background:var(--primary-grad);color:#fff;border-radius:12px;padding:12px 16px;display:none;align-items:center;gap:12px;box-shadow:var(--sh-md);z-index:100}
+.bulk-bar.show{display:flex;animation:fadeIn 200ms}
+.bulk-info{font-size:13px;font-weight:600;flex:1}
+.bulk-bar .btn{background:rgba(255,255,255,.2);color:#fff;border:1px solid rgba(255,255,255,.3)}
+.bulk-bar .btn:hover{background:rgba(255,255,255,.3)}
+.checkbox{width:18px;height:18px;cursor:pointer;accent-color:var(--primary)}
+
+/* FILTER CHIPS */
+.chip-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.chip{padding:6px 12px;background:var(--surface-3);border:1px solid var(--border);border-radius:99px;font-size:11px;font-weight:600;cursor:pointer;color:var(--text-2);transition:all var(--t)}
+.chip:hover{background:var(--border);color:var(--text)}
+.chip.active{background:var(--primary);color:#fff;border-color:var(--primary)}
 
 @media(max-width:640px){
   .app{padding:10px}
   .topbar{padding:10px 12px;gap:10px}
   .brand-txt p{display:none}
-  .balance-pill{font-size:12px;padding:6px 10px}
   .content{padding:16px}
-  .grid-3{grid-template-columns:1fr}
+  .grid-3,.grid-4{grid-template-columns:1fr 1fr}
   .dep-grid{grid-template-columns:1fr}
   .otp-big{font-size:22px;letter-spacing:5px}
   .topbar-actions{gap:6px}
   .icon-btn{width:34px;height:34px}
+  .balance-pill{font-size:12px;padding:6px 10px}
+  .notif-panel{width:calc(100vw - 32px);right:-50px}
+  .debug-panel{max-height:40vh}
+  .notif-head{font-size:12px}
 }
 </style>
 </head>
 <body>
 
 <div class="app">
-
-  <!-- ===== TOPBAR ===== -->
   <header class="topbar">
-    <a href="#/dashboard" class="brand">
+    <a class="brand" onclick="Router.go('dashboard')">
       <div class="brand-mark">V</div>
-      <div class="brand-txt">
-        <h1>VirtusIM</h1>
-        <p>Platform Nomor Virtual · 24 Jam</p>
-      </div>
+      <div class="brand-txt"><h1>VirtusIM</h1><p>Platform Nomor Virtual · 24 Jam</p></div>
     </a>
     <div class="topbar-spacer"></div>
     <div class="topbar-actions">
-      <button class="icon-btn" id="themeToggle" title="Toggle theme (Ctrl+K → Theme)">🌓</button>
+      <div class="conn-offline" id="connBadge">⚠️ Offline</div>
+      <button class="icon-btn" id="themeToggle" title="Theme (Ctrl+K)">🌓</button>
       <div style="position:relative">
-        <button class="icon-btn" id="notifBtn" title="Notifikasi">
-          🔔
-          <span class="dot" id="notifDot" style="display:none"></span>
-        </button>
+        <button class="icon-btn" id="notifBtn" title="Notifikasi">🔔<span class="dot" id="notifDot" style="display:none">0</span></button>
         <div class="notif-panel" id="notifPanel">
-          <div class="notif-head">
-            <span>Notifikasi</span>
-            <button class="copy-btn" onclick="Notification.clear()">Hapus</button>
-          </div>
+          <div class="notif-head"><span>Notifikasi</span><button class="copy-btn" onclick="Notif.clear()">Hapus Semua</button></div>
           <div class="notif-list" id="notifList"></div>
         </div>
       </div>
-      <div class="balance-pill" title="Saldo">
-        <small>💰</small>
-        <span id="topBalance">Rp 0</span>
+      <button class="icon-btn" onclick="Settings.open()" title="Pengaturan">⚙️</button>
+      <button class="icon-btn" onclick="Help.open()" title="Bantuan (?)">❓</button>
+      <div class="balance-pill" onclick="Router.go('deposit')">
+        <small>💰</small><span id="topBalance">Rp 0</span>
       </div>
     </div>
   </header>
 
-  <!-- ===== SUB NAV ===== -->
   <nav class="subnav" id="subnav">
     <button class="nav-item" data-view="dashboard">📊 Dashboard</button>
     <button class="nav-item" data-view="buyNumber">📱 Beli Nomor</button>
@@ -355,7 +382,6 @@ tr:hover td{background:var(--surface-2)}
     <button class="nav-item" data-view="deposit">💳 Deposit</button>
   </nav>
 
-  <!-- ===== CONTENT ===== -->
   <main class="content" id="content">
     <div class="view" id="view-dashboard"></div>
     <div class="view" id="view-buyNumber"></div>
@@ -370,134 +396,267 @@ tr:hover td{background:var(--surface-2)}
   </main>
 </div>
 
-<!-- ===== TOAST STACK ===== -->
+<!-- FAB -->
+<div class="fab-container" id="fabContainer">
+  <div class="fab-menu">
+    <div class="fab-item" onclick="Router.go('buyNumber');Fab.close()"><span>📱</span><span>Beli Nomor</span></div>
+    <div class="fab-item" onclick="Router.go('deposit');Fab.close()"><span>💳</span><span>Top Up</span></div>
+    <div class="fab-item" onclick="Router.go('activeOrders');Fab.close()"><span>⏳</span><span>Order Aktif</span></div>
+    <div class="fab-item" onclick="Cmd.show();Fab.close()"><span>⌕</span><span>Pencarian</span></div>
+  </div>
+  <button class="fab" id="fabBtn" onclick="Fab.toggle()">+</button>
+</div>
+
+<!-- Toast Stack -->
 <div class="toast-stack" id="toastStack"></div>
 
-<!-- ===== COMMAND PALETTE ===== -->
+<!-- Command Palette -->
 <div class="cmd-palette" id="cmdPalette">
   <div class="cmd-box">
-    <div class="cmd-search">
-      <span style="font-size:16px">⌕</span>
-      <input id="cmdInput" placeholder="Cari perintah atau halaman...">
-      <kbd>ESC</kbd>
-    </div>
+    <div class="cmd-search"><span style="font-size:16px">⌕</span><input id="cmdInput" placeholder="Cari perintah atau halaman..."><kbd>ESC</kbd></div>
     <div class="cmd-results" id="cmdResults"></div>
   </div>
 </div>
 
-<!-- ===== OTP MODAL ===== -->
-<div class="modal" id="otpModal">
-  <div class="modal-box">
-    <div class="modal-head">
-      <h2>📱 Kode OTP Diterima</h2>
-      <button class="modal-close" onclick="Modal.close('otpModal')">×</button>
-    </div>
-    <div class="modal-body" id="otpModalBody"></div>
+<!-- OTP Modal -->
+<div class="modal" id="otpModal"><div class="modal-box"><div class="modal-head"><h2>📱 Kode OTP Diterima</h2><button class="modal-close" onclick="Modal.close('otpModal')">×</button></div><div class="modal-body" id="otpModalBody"></div></div></div>
+
+<!-- Settings Modal -->
+<div class="modal" id="settingsModal">
+  <div class="modal-box" style="max-width:520px">
+    <div class="modal-head"><h2>⚙️ Pengaturan</h2><button class="modal-close" onclick="Modal.close('settingsModal')">×</button></div>
+    <div class="modal-body" id="settingsBody"></div>
   </div>
+</div>
+
+<!-- Help Modal -->
+<div class="modal" id="helpModal">
+  <div class="modal-box" style="max-width:640px">
+    <div class="modal-head"><h2>❓ Bantuan & Keyboard Shortcuts</h2><button class="modal-close" onclick="Modal.close('helpModal')">×</button></div>
+    <div class="modal-body" id="helpBody"></div>
+  </div>
+</div>
+
+<!-- Tour Overlay -->
+<div class="tour-overlay" id="tourOverlay">
+  <div class="tour-spotlight" id="tourSpot"></div>
+  <div class="tour-tip" id="tourTip"></div>
+</div>
+
+<!-- Idle Overlay -->
+<div class="idle-overlay" id="idleOverlay">
+  <div class="idle-box">
+    <div style="font-size:56px;margin-bottom:12px">⏰</div>
+    <h2>Masih di sana?</h2>
+    <p>Sesi Anda akan berakhir karena tidak ada aktivitas. Klik tombol di bawah untuk melanjutkan.</p>
+    <button class="btn btn-primary btn-block" onclick="Idle.resume()">Lanjutkan Sesi</button>
+  </div>
+</div>
+
+<!-- Debug Panel -->
+<div class="debug-panel" id="debugPanel">
+  <div class="debug-head">
+    <span>🐛 Debug Console <span style="color:var(--muted);font-weight:500;margin-left:8px">(Ctrl+Shift+D)</span></span>
+    <button class="btn btn-secondary btn-sm" onclick="Debug.close()">Tutup</button>
+  </div>
+  <div class="debug-metrics" id="debugMetrics"></div>
+  <div class="debug-logs" id="debugLogs"></div>
 </div>
 
 <script>
 'use strict';
-/* =====================================================
+/* ================================================================
    UTILITIES
-===================================================== */
+================================================================ */
 const $ = id => document.getElementById(id);
-const qs = (sel, ctx = document) => ctx.querySelector(sel);
-const qsa = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
+const qs = (s, c = document) => c.querySelector(s);
+const qsa = (s, c = document) => [...c.querySelectorAll(s)];
 const esc = s => String(s ?? '').replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
 const rp = n => 'Rp ' + (Number(n) || 0).toLocaleString('id-ID');
-const uid = () => (crypto.randomUUID ? crypto.randomUUID() : 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => { const r = Math.random() * 16 | 0; return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16); }));
+const uid = () => crypto.randomUUID ? crypto.randomUUID() : 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => { const r = Math.random() * 16 | 0; return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16); });
 const delay = ms => new Promise(r => setTimeout(r, ms));
 const debounce = (fn, ms) => { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); }; };
+const fmtTime = ts => new Date(ts).toLocaleTimeString('id-ID');
 
-/* =====================================================
-   STORE — reactive state
-===================================================== */
+/* Fuzzy search */
+function fuzzyScore(query, text) {
+  q = query.toLowerCase(); t = (text || '').toLowerCase();
+  if (!q) return 0;
+  if (t.includes(q)) return 100 - t.indexOf(q);
+  let qi = 0, score = 0, streak = 0;
+  for (let i = 0; i < t.length && qi < q.length; i++) {
+    if (t[i] === q[qi]) { qi++; streak++; score += 10 + streak * 2; }
+    else streak = 0;
+  }
+  return qi === q.length ? score : -1;
+}
+
+/* ================================================================
+   STORE — reactive pub/sub
+================================================================ */
 const Store = (() => {
-  const state = {};
-  const subs = new Map();
+  const state = {}, subs = new Map();
   return {
     get: k => state[k],
-    set(k, v) {
-      const prev = state[k];
-      state[k] = v;
-      (subs.get(k) || []).forEach(fn => { try { fn(v, prev); } catch (e) { console.error(e); } });
-    },
-    subscribe(k, fn) {
-      if (!subs.has(k)) subs.set(k, []);
-      subs.get(k).push(fn);
-      return () => subs.set(k, (subs.get(k) || []).filter(f => f !== fn));
-    }
+    set(k, v) { const p = state[k]; state[k] = v; (subs.get(k) || []).forEach(fn => { try { fn(v, p); } catch (e) { console.error(e); } }); },
+    subscribe(k, fn) { if (!subs.has(k)) subs.set(k, []); subs.get(k).push(fn); return () => subs.set(k, (subs.get(k) || []).filter(f => f !== fn)); }
   };
 })();
 
-/* =====================================================
-   TOAST STACK
-===================================================== */
-const Toast = {
-  container: null,
-  init() { this.container = $('toastStack'); },
-  show(msg, opts = {}) {
-    const { type = 'info', duration = 4000 } = opts;
-    const el = document.createElement('div');
-    el.className = `toast toast-${type}`;
-    el.innerHTML = `<span class="toast-icon">${this.icon(type)}</span><span class="toast-msg">${esc(msg)}</span><button class="toast-close">×</button>`;
-    el.querySelector('.toast-close').onclick = () => this.dismiss(el);
-    this.container.appendChild(el);
-    requestAnimationFrame(() => el.classList.add('show'));
-    if (duration > 0) setTimeout(() => this.dismiss(el), duration);
+/* ================================================================
+   SOUND SYSTEM
+================================================================ */
+const Sound = {
+  enabled: localStorage.getItem('sound') !== 'off',
+  ctx: null,
+  init() {},
+  play(notes) {
+    if (!this.enabled) return;
+    try {
+      if (!this.ctx) this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+      const now = this.ctx.currentTime;
+      notes.forEach(({ f, d = 0.15, t = 0 }) => {
+        const o = this.ctx.createOscillator(), g = this.ctx.createGain();
+        o.connect(g); g.connect(this.ctx.destination);
+        o.frequency.value = f;
+        g.gain.setValueAtTime(0.12, now + t);
+        g.gain.exponentialRampToValueAtTime(0.001, now + t + d);
+        o.start(now + t); o.stop(now + t + d);
+      });
+    } catch (e) {}
   },
-  dismiss(el) {
-    el.classList.remove('show');
-    setTimeout(() => el.remove(), 300);
+  success() { this.play([{ f: 523.25, t: 0 }, { f: 659.25, t: 0.1 }, { f: 783.99, t: 0.2 }]); },
+  error() { this.play([{ f: 392, t: 0 }, { f: 311.13, t: 0.15 }]); },
+  click() { this.play([{ f: 800, d: 0.04 }]); },
+  notify() { this.play([{ f: 880, t: 0 }, { f: 1174.66, t: 0.08 }]); }
+};
+
+/* ================================================================
+   METRICS COLLECTOR
+================================================================ */
+const Metrics = {
+  calls: [],
+  record(method, path, status, ms) {
+    this.calls.unshift({ method, path, status, ms, t: Date.now() });
+    if (this.calls.length > 200) this.calls.pop();
+    if (Debug.isOpen()) Debug.render();
   },
-  icon(type) {
-    return { success: '✓', error: '✕', warning: '!', info: 'i' }[type] || 'i';
+  stats() {
+    const recent = this.calls.slice(0, 50);
+    const errors = recent.filter(c => c.status >= 400).length;
+    const avg = recent.length ? Math.round(recent.reduce((a, c) => a + c.ms, 0) / recent.length) : 0;
+    const sorted = [...recent].map(c => c.ms).sort((a, b) => a - b);
+    const p95 = sorted.length ? sorted[Math.floor(sorted.length * 0.95)] : 0;
+    return { total: this.calls.length, errors, avgLatency: avg, p95, errorRate: recent.length ? ((errors / recent.length) * 100).toFixed(1) : 0 };
   }
 };
 
-/* =====================================================
-   NOTIFICATION CENTER
-===================================================== */
-const Notification = (() => {
-  const items = JSON.parse(localStorage.getItem('notifs') || '[]');
-  const MAX = 30;
-  function save() { localStorage.setItem('notifs', JSON.stringify(items.slice(0, MAX))); }
-  function render() {
-    const list = $('notifList');
-    if (!list) return;
-    if (!items.length) {
-      list.innerHTML = `<div style="padding:40px 16px;text-align:center;color:var(--muted);font-size:12px"><div style="font-size:32px;opacity:.3;margin-bottom:6px">🔔</div>Belum ada notifikasi</div>`;
-    } else {
-      list.innerHTML = items.map(n => `<div class="notif-item"><b>${esc(n.title)}</b>${esc(n.body)}<br><span>${new Date(n.time).toLocaleString('id-ID')}</span></div>`).join('');
-    }
-    $('notifDot').style.display = items.length ? 'block' : 'none';
+/* ================================================================
+   RATE LIMITER
+================================================================ */
+const RateLimit = {
+  buckets: new Map(),
+  check(key, max, windowMs) {
+    const now = Date.now();
+    const bucket = (this.buckets.get(key) || []).filter(t => now - t < windowMs);
+    if (bucket.length >= max) return { allowed: false, wait: Math.ceil((windowMs - (now - bucket[0])) / 1000) };
+    bucket.push(now); this.buckets.set(key, bucket);
+    return { allowed: true, remaining: max - bucket.length };
   }
-  return {
-    push(title, body) {
-      items.unshift({ title, body, time: Date.now() });
-      save(); render();
-    },
-    clear() { items.length = 0; save(); render(); },
-    render,
-    init() {
-      render();
-      $('notifBtn').onclick = e => {
-        e.stopPropagation();
-        $('notifPanel').classList.toggle('show');
-      };
-      document.addEventListener('click', e => {
-        if (!$('notifPanel').contains(e.target) && !$('notifBtn').contains(e.target)) {
-          $('notifPanel').classList.remove('show');
-        }
-      });
-    }
-  };
-})();
+};
 
-/* =====================================================
+/* ================================================================
+   OFFLINE QUEUE
+================================================================ */
+const OfflineQueue = {
+  key: 'offline_queue',
+  get() { try { return JSON.parse(localStorage.getItem(this.key) || '[]'); } catch { return []; } },
+  push(action) { const q = this.get(); q.push({ ...action, t: Date.now() }); localStorage.setItem(this.key, JSON.stringify(q)); },
+  clear() { localStorage.removeItem(this.key); },
+  async flush() {
+    const q = this.get();
+    if (!q.length) return;
+    Toast.show(`🔄 Memproses ${q.length} action yang tertunda...`, { type: 'info' });
+    const remaining = [];
+    for (const a of q) {
+      try { await api.call(a.path, a.opts); }
+      catch (e) { remaining.push(a); }
+    }
+    localStorage.setItem(this.key, JSON.stringify(remaining));
+    if (!remaining.length) {
+      Toast.show('✅ Semua action offline berhasil diproses', { type: 'success' });
+      Notification.push('Queue diproses', `${q.length} action offline berhasil dieksekusi`);
+    }
+  }
+};
+
+/* ================================================================
+   CONNECTION MONITOR
+================================================================ */
+const Conn = {
+  online: navigator.onLine,
+  init() {
+    window.addEventListener('online', () => { this.online = true; this.updateUI(); Toast.show('🌐 Online kembali', { type: 'success', duration: 2000 }); OfflineQueue.flush(); });
+    window.addEventListener('offline', () => { this.online = false; this.updateUI(); Toast.show('⚠️ Koneksi terputus', { type: 'warning', duration: 4000 }); });
+    this.updateUI();
+  },
+  updateUI() {
+    const b = $('connBadge');
+    if (b) b.classList.toggle('show', !this.online);
+  }
+};
+
+/* ================================================================
+   TOAST
+================================================================ */
+const Toast = {
+  show(msg, { type = 'info', duration = 4000 } = {}) {
+    const stack = $('toastStack'); if (!stack) return;
+    const el = document.createElement('div');
+    el.className = `toast toast-${type}`;
+    el.innerHTML = `<span class="toast-icon">${{ success: '✓', error: '✕', warning: '!', info: 'i' }[type] || 'i'}</span><span class="toast-msg">${esc(msg)}</span><button class="toast-close">×</button>`;
+    el.querySelector('.toast-close').onclick = () => this.dismiss(el);
+    stack.appendChild(el);
+    requestAnimationFrame(() => el.classList.add('show'));
+    if (duration > 0) setTimeout(() => this.dismiss(el), duration);
+  },
+  dismiss(el) { el.classList.remove('show'); setTimeout(() => el.remove(), 300); }
+};
+
+/* ================================================================
+   NOTIFICATION CENTER
+================================================================ */
+const Notif = {
+  items: (() => { try { return JSON.parse(localStorage.getItem('notifs') || '[]'); } catch { return []; } })(),
+  unread: 0,
+  save() { localStorage.setItem('notifs', JSON.stringify(this.items.slice(0, 50))); },
+  push(title, body) {
+    this.items.unshift({ title, body, t: Date.now(), read: false });
+    this.unread++; this.save(); this.render();
+    Sound.notify();
+  },
+  clear() { this.items = []; this.unread = 0; this.save(); this.render(); Toast.show('Notifikasi dibersihkan', { type: 'info', duration: 1500 }); },
+  markAllRead() { this.items.forEach(i => i.read = true); this.unread = 0; this.save(); this.render(); },
+  render() {
+    const dot = $('notifDot'), list = $('notifList');
+    if (!list) return;
+    dot.style.display = this.unread ? 'flex' : 'none';
+    dot.textContent = this.unread > 9 ? '9+' : String(this.unread);
+    list.innerHTML = this.items.length ? this.items.slice(0, 30).map(n => `
+      <div class="notif-item ${!n.read ? 'unread' : ''}">
+        <b>${esc(n.title)}</b>${esc(n.body)}<br><span>${fmtTime(n.t)}</span>
+      </div>`).join('') : '<div style="padding:40px 16px;text-align:center;color:var(--muted);font-size:12px"><div style="font-size:32px;opacity:.3;margin-bottom:6px">🔔</div>Belum ada notifikasi</div>';
+  },
+  init() {
+    this.render();
+    $('notifBtn').onclick = e => { e.stopPropagation(); $('notifPanel').classList.toggle('show'); if ($('notifPanel').classList.contains('show')) setTimeout(() => this.markAllRead(), 800); };
+    document.addEventListener('click', e => { if (!$('notifPanel').contains(e.target) && !$('notifBtn').contains(e.target)) $('notifPanel').classList.remove('show'); });
+  }
+};
+
+/* ================================================================
    THEME
-===================================================== */
+================================================================ */
 const Theme = {
   init() {
     document.documentElement.dataset.theme = localStorage.getItem('theme') || 'light';
@@ -507,33 +666,35 @@ const Theme = {
     const next = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
     document.documentElement.dataset.theme = next;
     localStorage.setItem('theme', next);
-    Toast.show('Mode ' + (next === 'dark' ? 'gelap' : 'terang') + ' aktif', { type: 'info', duration: 1500 });
+    Toast.show('Mode ' + (next === 'dark' ? 'gelap' : 'terang'), { type: 'info', duration: 1200 });
   }
 };
 
-/* =====================================================
-   API CLIENT — retry, dedupe, cache, abort
-===================================================== */
+/* ================================================================
+   API CLIENT with retry, cache, dedupe, metrics
+================================================================ */
 class API {
-  constructor(baseURL, apiKey) {
-    this.base = baseURL;
-    this.key = apiKey;
-    this.cache = new Map();
-    this.inflight = new Map();
-  }
-  async call(path, { method = 'GET', body, retries = 2, timeout = 20000, cache = false } = {}) {
+  constructor(baseURL, key) { this.base = baseURL; this.key = key; this.cache = new Map(); this.inflight = new Map(); }
+  async call(path, { method = 'GET', body, retries = 2, timeout = 20000, cache = false, queueIfOffline = false } = {}) {
+    if (queueIfOffline && !navigator.onLine) {
+      OfflineQueue.push({ path, opts: { method, body } });
+      Toast.show('📥 Action disimpan, akan dieksekusi saat online', { type: 'warning' });
+      throw new Error('Offline - action queued');
+    }
     const cacheKey = method + ':' + path + (body ? ':' + JSON.stringify(body) : '');
     if (this.inflight.has(cacheKey)) return this.inflight.get(cacheKey);
-    if (method === 'GET' && cache) {
-      const c = this.cache.get(cacheKey);
-      if (c && Date.now() - c.t < 60000) return c.data;
-    }
+    if (method === 'GET' && cache) { const c = this.cache.get(cacheKey); if (c && Date.now() - c.t < 60000) return c.data; }
+    const t0 = performance.now();
     const promise = this._fetch(path, { method, body, retries, timeout });
     this.inflight.set(cacheKey, promise);
     try {
       const result = await promise;
       if (method === 'GET' && cache) this.cache.set(cacheKey, { data: result, t: Date.now() });
+      Metrics.record(method, path, 200, Math.round(performance.now() - t0));
       return result;
+    } catch (e) {
+      Metrics.record(method, path, e.status || 500, Math.round(performance.now() - t0));
+      throw e;
     } finally { this.inflight.delete(cacheKey); }
   }
   async _fetch(path, { method, body, retries, timeout }) {
@@ -545,237 +706,523 @@ class API {
     try {
       const res = await fetch(this.base + path, opts);
       const data = await res.json().catch(() => ({}));
-      if (!res.ok || data.success === false) throw new Error(data.message || `HTTP ${res.status}`);
+      if (!res.ok || data.success === false) { const e = new Error(data.message || `HTTP ${res.status}`); e.status = res.status; throw e; }
       return data;
     } catch (err) {
-      if (retries > 0 && err.name !== 'AbortError') {
-        await delay(1000);
-        return this._fetch(path, { method, body, retries: retries - 1, timeout });
-      }
+      if (retries > 0 && err.name !== 'AbortError' && (!err.status || err.status >= 500)) { await delay(1000); return this._fetch(path, { method, body, retries: retries - 1, timeout }); }
       throw err;
     } finally { clearTimeout(timer); }
   }
-  invalidateCache() { this.cache.clear(); }
+  invalidate() { this.cache.clear(); }
 }
-
 const api = new API('https://virtusimotp.com/api/v1', 'vcoBYGVHKtLfaW1f3DnVsRDZ5aZk1NQd');
 
-/* =====================================================
-   POLLER — centralized, visibility-aware
-===================================================== */
+/* ================================================================
+   POLLER
+================================================================ */
 const Poller = {
   jobs: new Map(),
-  add(id, fn, interval) {
-    this.remove(id);
-    const job = { fn, interval, timer: null };
-    this.jobs.set(id, job);
-    this._start(job);
-  },
-  remove(id) {
-    const j = this.jobs.get(id);
-    if (j) { clearInterval(j.timer); this.jobs.delete(id); }
-  },
-  removeAll(prefix) {
-    [...this.jobs.keys()].forEach(k => { if (k.startsWith(prefix)) this.remove(k); });
-  },
-  _start(job) { job.fn(); job.timer = setInterval(job.fn, job.interval); },
-  _pauseAll() { this.jobs.forEach(j => clearInterval(j.timer)); },
-  _resumeAll() { this.jobs.forEach(j => { clearInterval(j.timer); j.timer = setInterval(j.fn, j.interval); }); },
+  add(id, fn, interval) { this.remove(id); const job = { fn, interval, timer: null }; this.jobs.set(id, job); job.fn(); job.timer = setInterval(job.fn, interval); },
+  remove(id) { const j = this.jobs.get(id); if (j) { clearInterval(j.timer); this.jobs.delete(id); } },
+  removeAll(prefix) { [...this.jobs.keys()].forEach(k => { if (k.startsWith(prefix)) this.remove(k); }); },
   init() {
     document.addEventListener('visibilitychange', () => {
-      if (document.hidden) this._pauseAll();
-      else this._resumeAll();
+      if (document.hidden) { this.jobs.forEach(j => clearInterval(j.timer)); }
+      else { this.jobs.forEach(j => { clearInterval(j.timer); j.timer = setInterval(j.fn, j.interval); }); }
     });
   }
 };
 
-/* =====================================================
+/* ================================================================
    MODAL
-===================================================== */
+================================================================ */
 const Modal = {
-  open(id) { $(id).classList.add('show'); },
-  close(id) { $(id).classList.remove('show'); },
+  open(id) { $(id)?.classList.add('show'); },
+  close(id) { $(id)?.classList.remove('show'); },
   init() {
-    document.addEventListener('click', e => {
-      if (e.target.classList.contains('modal')) e.target.classList.remove('show');
-    });
-    document.addEventListener('keydown', e => {
-      if (e.key === 'Escape') qsa('.modal.show').forEach(m => m.classList.remove('show'));
-    });
+    document.addEventListener('click', e => { if (e.target.classList.contains('modal')) e.target.classList.remove('show'); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') qsa('.modal.show').forEach(m => m.classList.remove('show')); });
   }
 };
 
-/* =====================================================
-   CLIPBOARD
-===================================================== */
+/* ================================================================
+   COPY
+================================================================ */
 async function copy(text) {
   if (!text) return;
-  try {
-    await navigator.clipboard.writeText(String(text));
-    Toast.show('Disalin: ' + text, { type: 'success', duration: 1800 });
-  } catch {
-    const ta = document.createElement('textarea');
-    ta.value = text; document.body.appendChild(ta); ta.select();
+  try { await navigator.clipboard.writeText(String(text)); }
+  catch {
+    const ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta); ta.select();
     document.execCommand('copy'); ta.remove();
-    Toast.show('Disalin: ' + text, { type: 'success', duration: 1800 });
   }
+  Toast.show('📋 Disalin: ' + text, { type: 'success', duration: 1500 });
 }
 
-/* =====================================================
+/* ================================================================
+   FAB
+================================================================ */
+const Fab = {
+  toggle() { $('fabContainer').classList.toggle('open'); $('fabBtn').classList.toggle('open'); Sound.click(); },
+  close() { $('fabContainer').classList.remove('open'); $('fabBtn').classList.remove('open'); }
+};
+
+/* ================================================================
    ROUTER
-===================================================== */
+================================================================ */
 const Router = {
   routes: {},
-  current: null,
   register(name, fn) { this.routes[name] = fn; },
   go(path) { location.hash = '#/' + path; },
-  init() {
-    window.addEventListener('hashchange', () => this.handle());
-    this.handle();
-  },
+  init() { window.addEventListener('hashchange', () => this.handle()); this.handle(); },
   handle() {
     const raw = location.hash.replace(/^#\/?/, '') || 'dashboard';
     const [route, ...params] = raw.split('/');
     const viewName = this.routes[route] ? route : 'dashboard';
-    this.current = viewName;
-
     qsa('.view').forEach(v => v.classList.remove('active'));
-    const el = $('view-' + viewName);
-    if (el) el.classList.add('active');
-
+    $('view-' + viewName)?.classList.add('active');
     qsa('.nav-item').forEach(b => b.classList.toggle('active', b.dataset.view === viewName));
-
-    try { this.routes[viewName]?.(params); }
-    catch (e) { console.error('Route error:', e); Toast.show('Gagal memuat halaman', { type: 'error' }); }
-
+    try { this.routes[viewName]?.(params); } catch (e) { console.error(e); Toast.show('Gagal memuat halaman', { type: 'error' }); }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 };
 
-/* =====================================================
+/* ================================================================
    COMMAND PALETTE
-===================================================== */
+================================================================ */
 const Cmd = {
-  open: false,
-  commands: [],
+  open: false, commands: [],
   init() {
     document.addEventListener('keydown', e => {
-      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
-        e.preventDefault(); this.toggle();
-      }
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); this.toggle(); }
       if (e.key === 'Escape' && this.open) this.close();
     });
     $('cmdPalette').onclick = e => { if (e.target.id === 'cmdPalette') this.close(); };
     $('cmdInput').addEventListener('input', () => this.render());
     $('cmdInput').addEventListener('keydown', e => {
-      if (e.key === 'Enter') {
-        const first = qs('.cmd-item', $('cmdResults'));
-        if (first) first.click();
-      }
+      if (e.key === 'Enter') qs('.cmd-item', $('cmdResults'))?.click();
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); this.navigate(e.key === 'ArrowDown' ? 1 : -1); }
     });
     this.registerDefaults();
   },
   registerDefaults() {
-    const nav = [
-      ['Dashboard', 'dashboard', '📊'], ['Beli Nomor', 'buyNumber', '📱'],
-      ['Order Aktif', 'activeOrders', '⏳'], ['Riwayat', 'history', '📜'],
-      ['Gmail', 'gmail', '📧'], ['Rental Email', 'emailRental', '📮'],
-      ['WA Ready', 'waReady', '💬'], ['SMM', 'smm', '📈'],
-      ['Refund', 'refund', '💸'], ['Deposit', 'deposit', '💳']
-    ];
+    const nav = [['Dashboard', 'dashboard', '📊'], ['Beli Nomor', 'buyNumber', '📱'], ['Order Aktif', 'activeOrders', '⏳'], ['Riwayat', 'history', '📜'], ['Gmail', 'gmail', '📧'], ['Rental Email', 'emailRental', '📮'], ['WA Ready', 'waReady', '💬'], ['SMM', 'smm', '📈'], ['Refund', 'refund', '💸'], ['Deposit', 'deposit', '💳']];
     this.commands = nav.map(([name, path, icon]) => ({ name, icon, action: () => Router.go(path) }));
     this.commands.push({ name: 'Toggle Dark Mode', icon: '🌓', action: () => Theme.toggle() });
     this.commands.push({ name: 'Refresh Saldo', icon: '🔄', action: () => loadBalance(true) });
     this.commands.push({ name: 'Refresh Semua', icon: '🔁', action: () => refreshAll() });
+    this.commands.push({ name: 'Buka Pengaturan', icon: '⚙️', action: () => Settings.open() });
+    this.commands.push({ name: 'Buka Bantuan', icon: '❓', action: () => Help.open() });
+    this.commands.push({ name: 'Debug Console', icon: '🐛', action: () => Debug.toggle() });
+    this.commands.push({ name: 'Mulai Tour', icon: '🎯', action: () => Tour.start() });
   },
   toggle() { this.open ? this.close() : this.show(); },
   show() { this.open = true; $('cmdPalette').classList.add('show'); $('cmdInput').value = ''; this.render(); setTimeout(() => $('cmdInput').focus(), 50); },
   close() { this.open = false; $('cmdPalette').classList.remove('show'); },
+  navigate(dir) {
+    const items = qsa('.cmd-item', $('cmdResults'));
+    const cur = items.findIndex(i => i.classList.contains('hl'));
+    const next = cur + dir;
+    if (next >= 0 && next < items.length) { items.forEach(i => i.classList.remove('hl')); items[next].classList.add('hl'); items[next].scrollIntoView({ block: 'nearest' }); }
+  },
   render() {
     const q = $('cmdInput').value.toLowerCase();
-    const filtered = this.commands.filter(c => c.name.toLowerCase().includes(q));
+    const filtered = this.commands
+      .map(c => ({ ...c, score: fuzzyScore(q, c.name) }))
+      .filter(c => c.score >= 0)
+      .sort((a, b) => b.score - a.score);
     $('cmdResults').innerHTML = filtered.length
-      ? filtered.map((c, i) => `<div class="cmd-item" data-i="${i}"><span>${c.icon}</span><span>${esc(c.name)}</span></div>`).join('')
+      ? filtered.map((c, i) => `<div class="cmd-item ${i === 0 ? 'hl' : ''}" data-i="${i}"><span>${c.icon}</span><span>${esc(c.name)}</span></div>`).join('')
       : '<div class="cmd-empty">Tidak ada hasil untuk "' + esc(q) + '"</div>';
-    qsa('.cmd-item', $('cmdResults')).forEach((el, i) => {
-      el.onclick = () => { filtered[i].action(); this.close(); };
-    });
+    qsa('.cmd-item', $('cmdResults')).forEach((el, i) => { el.onclick = () => { filtered[i].action(); this.close(); }; });
   }
 };
 
-/* =====================================================
-   GLOBAL ERROR BOUNDARY
-===================================================== */
-window.addEventListener('error', e => console.error('[Global]', e.error || e.message));
-window.addEventListener('unhandledrejection', e => {
-  console.error('[Unhandled]', e.reason);
-  const msg = e.reason?.message || 'Terjadi kesalahan';
-  if (!/abort/i.test(msg)) Toast.show(msg, { type: 'error' });
-});
-
-/* =====================================================
-   SKELETON HELPERS
-===================================================== */
-const Skeleton = {
-  list(n = 3) { return Array(n).fill(0).map(() => `<div class="skel-row"><div class="skel skel-avatar"></div><div style="flex:1"><div class="skel skel-line w-80"></div><div class="skel skel-line w-40"></div></div></div>`).join(''); },
-  cards(n = 3) { return Array(n).fill(0).map(() => `<div class="skel skel-card"></div>`).join(''); },
-  lines(n = 3) { return Array(n).fill(0).map((_, i) => `<div class="skel skel-line ${i % 2 ? 'w-40' : 'w-80'}"></div>`).join(''); }
+/* ================================================================
+   SETTINGS
+================================================================ */
+const Settings = {
+  open() { this.render(); Modal.open('settingsModal'); },
+  render() {
+    const sound = localStorage.getItem('sound') !== 'off';
+    const telemetry = localStorage.getItem('telemetry') !== 'off';
+    $('settingsBody').innerHTML = `
+      <div class="form-group">
+        <label class="form-label">Tema</label>
+        <div style="display:flex;gap:8px">
+          <button class="btn ${document.documentElement.dataset.theme === 'light' ? 'btn-primary' : 'btn-secondary'}" style="flex:1" onclick="document.documentElement.dataset.theme='light';localStorage.setItem('theme','light');Settings.render()">☀️ Terang</button>
+          <button class="btn ${document.documentElement.dataset.theme === 'dark' ? 'btn-primary' : 'btn-secondary'}" style="flex:1" onclick="document.documentElement.dataset.theme='dark';localStorage.setItem('theme','dark');Settings.render()">🌙 Gelap</button>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Suara Notifikasi</label>
+        <label style="display:flex;align-items:center;justify-content:space-between;padding:10px 0">
+          <span style="font-size:13px;color:var(--text-2)">Aktifkan sound feedback</span>
+          <input type="checkbox" class="checkbox" ${sound ? 'checked' : ''} onchange="localStorage.setItem('sound',this.checked?'on':'off');Sound.enabled=this.checked;if(this.checked)Sound.success()">
+        </label>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Telemetri</label>
+        <label style="display:flex;align-items:center;justify-content:space-between;padding:10px 0">
+          <span style="font-size:13px;color:var(--text-2)">Kumpulkan metrik performa (lokal)</span>
+          <input type="checkbox" class="checkbox" ${telemetry ? 'checked' : ''} onchange="localStorage.setItem('telemetry',this.checked?'on':'off')">
+        </label>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Data Lokal</label>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-secondary btn-sm" style="flex:1" onclick="Settings.clearCache()">🗑️ Bersihkan Cache</button>
+          <button class="btn btn-warning btn-sm" style="flex:1" onclick="Tour.reset()">🎯 Restart Tour</button>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Tentang</label>
+        <div style="font-size:12px;color:var(--text-2);line-height:1.7">
+          <b>VirtusIM</b> — Enterprise Grade<br>
+          Version 3.0.0 · Build ${new Date().toISOString().slice(0, 10)}<br>
+          Sistem aktif: ${Metrics.stats().total} API calls tercatat
+        </div>
+      </div>
+      <button class="btn btn-primary btn-block" onclick="Modal.close('settingsModal')">Selesai</button>
+    `;
+  },
+  clearCache() {
+    api.invalidate();
+    Toast.show('🗑️ Cache API dibersihkan', { type: 'success' });
+  }
 };
 
-/* =====================================================
+/* ================================================================
+   HELP
+================================================================ */
+const Help = {
+  open() { this.render(); Modal.open('helpModal'); },
+  render() {
+    const shortcuts = [
+      ['Ctrl + K', 'Command Palette'],
+      ['Ctrl + Shift + D', 'Debug Console'],
+      ['g d', 'Ke Dashboard'],
+      ['g b', 'Ke Beli Nomor'],
+      ['g a', 'Ke Order Aktif'],
+      ['g h', 'Ke Riwayat'],
+      ['g p', 'Ke Deposit'],
+      ['g s', 'Ke Pengaturan'],
+      ['?', 'Buka bantuan ini'],
+      ['Esc', 'Tutup modal/palette']
+    ];
+    $('helpBody').innerHTML = `
+      <div class="card-title" style="margin-bottom:12px">⌨️ Keyboard Shortcuts</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:20px">
+        ${shortcuts.map(([k, d]) => `<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:var(--surface-2);border-radius:8px;font-size:12px"><kbd style="background:var(--surface);padding:3px 8px;border-radius:5px;border:1px solid var(--border);font-family:'JetBrains Mono',monospace;font-weight:700">${esc(k)}</kbd><span style="color:var(--text-2)">${esc(d)}</span></div>`).join('')}
+      </div>
+      <div class="card-title" style="margin-bottom:12px">📖 Panduan Cepat</div>
+      <div style="font-size:13px;color:var(--text-2);line-height:1.8">
+        <p><b>1. Deposit Saldo</b> — Kunjungi tab Deposit, pilih nominal & metode, scan QRIS. Status akan update otomatis.</p>
+        <p style="margin-top:8px"><b>2. Beli Nomor</b> — Pilih layanan → negara → jumlah. Kode OTP akan muncul otomatis saat masuk.</p>
+        <p style="margin-top:8px"><b>3. Refund</b> — Nomor yang eligible refund akan muncul di tab Refund. Refund diproses otomatis.</p>
+      </div>
+      <div style="margin-top:20px;text-align:center">
+        <button class="btn btn-primary" onclick="Tour.start();Modal.close('helpModal')">🎯 Mulai Tour Interaktif</button>
+      </div>
+    `;
+  }
+};
+
+/* ================================================================
+   DEBUG CONSOLE
+================================================================ */
+const Debug = {
+  isOpen() { return $('debugPanel').classList.contains('show'); },
+  toggle() { this.isOpen() ? this.close() : this.open(); },
+  open() { $('debugPanel').classList.add('show'); this.render(); },
+  close() { $('debugPanel').classList.remove('show'); },
+  render() {
+    if (!this.isOpen()) return;
+    const s = Metrics.stats();
+    $('debugMetrics').innerHTML = `
+      <div class="debug-metric">Total Calls<b>${s.total}</b></div>
+      <div class="debug-metric">Error Rate<b>${s.errorRate}%</b></div>
+      <div class="debug-metric">Avg Latency<b>${s.avgLatency}ms</b></div>
+      <div class="debug-metric">P95 Latency<b>${s.p95}ms</b></div>
+      <div class="debug-metric">Errors<b>${s.errors}</b></div>
+    `;
+    $('debugLogs').innerHTML = Metrics.calls.slice(0, 100).map(c => `
+      <div class="debug-log">
+        <span class="time">${fmtTime(c.t)}</span>
+        <span class="method ${c.status >= 400 ? 'error' : ''}">${esc(c.method)}</span>
+        <span class="path">${esc(c.path)}</span>
+        <span class="status ${c.status >= 400 ? 'err' : 'ok'}">${c.status}</span>
+        <span class="latency">${c.ms}ms</span>
+      </div>
+    `).join('') || '<div style="text-align:center;color:var(--muted);padding:20px">Belum ada API call</div>';
+  }
+};
+
+/* ================================================================
+   IDLE WATCHDOG
+================================================================ */
+const Idle = {
+  timer: null,
+  IDLE_MS: 15 * 60 * 1000,
+  init() {
+    ['mousemove', 'keydown', 'click', 'scroll', 'touchstart'].forEach(ev => document.addEventListener(ev, () => this.reset(), { passive: true }));
+    this.reset();
+  },
+  reset() {
+    clearTimeout(this.timer);
+    this.timer = setTimeout(() => $('idleOverlay').classList.add('show'), this.IDLE_MS);
+  },
+  resume() { $('idleOverlay').classList.remove('show'); this.reset(); Toast.show('Sesi dilanjutkan', { type: 'success' }); }
+};
+
+/* ================================================================
+   ONBOARDING TOUR
+================================================================ */
+const Tour = {
+  steps: [
+    { el: '.brand', title: '👋 Selamat Datang!', text: 'Ini adalah VirtusIM — platform nomor virtual & layanan digital Anda.' },
+    { el: '.balance-pill', title: '💰 Saldo Anda', text: 'Klik pill ini untuk top up saldo kapan saja.' },
+    { el: '#subnav', title: '🧭 Navigasi Utama', text: 'Semua fitur tersedia di sini. Gunakan Ctrl+K untuk navigasi cepat.' },
+    { el: '#fabContainer', title: '⚡ Quick Actions', text: 'Tombol FAB ini memberi Anda akses instan ke aksi paling sering dipakai.' },
+    { el: '#notifBtn', title: '🔔 Notifikasi', text: 'Semua update penting akan masuk ke sini. Klik untuk melihat riwayat.' }
+  ],
+  current: 0,
+  active: false,
+  start() {
+    if (localStorage.getItem('tour_done') === '1' && !confirm('Tour sudah pernah dilihat. Mulai lagi?')) return;
+    this.current = 0; this.active = true;
+    $('tourOverlay').classList.add('show');
+    this.show();
+  },
+  show() {
+    const step = this.steps[this.current];
+    if (!step) return this.end();
+    const target = qs(step.el);
+    if (!target) { this.current++; return this.show(); }
+    const rect = target.getBoundingClientRect();
+    const spot = $('tourSpot'), tip = $('tourTip');
+    spot.style.cssText = `position:absolute;top:${rect.top - 8}px;left:${rect.left - 8}px;width:${rect.width + 16}px;height:${rect.height + 16}px;border-radius:12px;box-shadow:0 0 0 9999px rgba(15,23,42,.75);transition:all 300ms cubic-bezier(.4,0,.2,1);pointer-events:none;border:2px solid var(--primary)`;
+    const tipTop = Math.min(rect.bottom + 20, window.innerHeight - 260);
+    const tipLeft = Math.max(16, Math.min(rect.left, window.innerWidth - 360));
+    tip.style.top = tipTop + 'px';
+    tip.style.left = tipLeft + 'px';
+    tip.innerHTML = `
+      <h3>${step.title}</h3>
+      <p>${step.text}</p>
+      <div class="tour-tip-footer">
+        <span class="tour-progress">${this.current + 1} / ${this.steps.length}</span>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-secondary btn-sm" onclick="Tour.end()">Lewati</button>
+          <button class="btn btn-primary btn-sm" onclick="Tour.next()">${this.current === this.steps.length - 1 ? 'Selesai' : 'Lanjut →'}</button>
+        </div>
+      </div>`;
+  },
+  next() { this.current++; this.show(); },
+  end() {
+    this.active = false;
+    $('tourOverlay').classList.remove('show');
+    localStorage.setItem('tour_done', '1');
+  },
+  reset() { localStorage.removeItem('tour_done'); Toast.show('Tour direset', { type: 'success' }); }
+};
+
+/* ================================================================
+   BULK SELECTION (for orders)
+================================================================ */
+const Bulk = {
+  selected: new Set(),
+  toggle(uuid) { this.selected.has(uuid) ? this.selected.delete(uuid) : this.selected.add(uuid); this.render(); },
+  clear() { this.selected.clear(); this.render(); },
+  render() {
+    const bar = $('bulkBar');
+    if (!bar) return;
+    if (this.selected.size === 0) bar.classList.remove('show');
+    else { bar.classList.add('show'); $('bulkCount').textContent = this.selected.size + ' dipilih'; }
+  },
+  async finishAll() {
+    if (!confirm(`Finish ${this.selected.size} order?`)) return;
+    let ok = 0;
+    for (const uuid of this.selected) {
+      try { await api.call(`/orders/${uuid}/finish`, { method: 'POST' }); ok++; } catch {}
+    }
+    Toast.show(`✅ ${ok}/${this.selected.size} order selesai`, { type: 'success' });
+    this.clear(); loadBalance(); Router.handle();
+  },
+  async cancelAll() {
+    if (!confirm(`Cancel ${this.selected.size} order? Dana akan direfund.`)) return;
+    let ok = 0;
+    for (const uuid of this.selected) {
+      try { await api.call(`/orders/${uuid}/cancel`, { method: 'POST' }); ok++; } catch {}
+    }
+    Toast.show(`✅ ${ok}/${this.selected.size} order dibatalkan`, { type: 'success' });
+    this.clear(); loadBalance(); Router.handle();
+  }
+};
+
+/* ================================================================
+   CHARTS (canvas)
+================================================================ */
+function drawSparkline(canvasId, data, color = '#4f46e5') {
+  const canvas = $(canvasId); if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const dpr = window.devicePixelRatio || 1;
+  const w = canvas.clientWidth || 300, h = canvas.clientHeight || 80;
+  canvas.width = w * dpr; canvas.height = h * dpr;
+  ctx.scale(dpr, dpr);
+  ctx.clearRect(0, 0, w, h);
+  if (!data.length) return;
+  const max = Math.max(...data, 1);
+  const step = w / Math.max(data.length - 1, 1);
+  const points = data.map((v, i) => ({ x: i * step, y: h - (v / max) * (h - 12) - 6 }));
+  // Fill
+  ctx.beginPath();
+  ctx.moveTo(0, h);
+  points.forEach(p => ctx.lineTo(p.x, p.y));
+  ctx.lineTo(w, h); ctx.closePath();
+  const grad = ctx.createLinearGradient(0, 0, 0, h);
+  grad.addColorStop(0, color + '50'); grad.addColorStop(1, color + '00');
+  ctx.fillStyle = grad; ctx.fill();
+  // Line
+  ctx.beginPath();
+  points.forEach((p, i) => i === 0 ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y));
+  ctx.strokeStyle = color; ctx.lineWidth = 2; ctx.lineJoin = 'round'; ctx.stroke();
+  // Dots
+  points.forEach(p => { ctx.beginPath(); ctx.arc(p.x, p.y, 2.5, 0, Math.PI * 2); ctx.fillStyle = color; ctx.fill(); });
+}
+
+function drawDonut(canvasId, segments) {
+  const canvas = $(canvasId); if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const dpr = window.devicePixelRatio || 1;
+  const size = canvas.clientWidth || 120;
+  canvas.width = size * dpr; canvas.height = size * dpr;
+  canvas.style.height = size + 'px';
+  ctx.scale(dpr, dpr); ctx.clearRect(0, 0, size, size);
+  const total = segments.reduce((a, s) => a + s.value, 0) || 1;
+  let angle = -Math.PI / 2;
+  const cx = size / 2, cy = size / 2, r = size / 2 - 8, inner = r * 0.6;
+  segments.forEach(seg => {
+    const slice = (seg.value / total) * Math.PI * 2;
+    ctx.beginPath(); ctx.arc(cx, cy, r, angle, angle + slice); ctx.arc(cx, cy, inner, angle + slice, angle, true); ctx.closePath();
+    ctx.fillStyle = seg.color; ctx.fill();
+    angle += slice;
+  });
+  // Center
+  ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--text').trim();
+  ctx.font = 'bold 18px Inter';
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillText(String(total), cx, cy);
+}
+
+function drawBars(canvasId, data, color = '#4f46e5') {
+  const canvas = $(canvasId); if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const dpr = window.devicePixelRatio || 1;
+  const w = canvas.clientWidth || 300, h = canvas.clientHeight || 80;
+  canvas.width = w * dpr; canvas.height = h * dpr;
+  ctx.scale(dpr, dpr); ctx.clearRect(0, 0, w, h);
+  if (!data.length) return;
+  const max = Math.max(...data.map(d => d.value), 1);
+  const barW = (w / data.length) * 0.7;
+  const gap = (w / data.length) * 0.3;
+  data.forEach((d, i) => {
+    const barH = (d.value / max) * (h - 20);
+    const x = i * (barW + gap) + gap / 2;
+    const y = h - barH - 4;
+    ctx.fillStyle = color + '30';
+    ctx.fillRect(x, 0, barW, h);
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    if (ctx.roundRect) ctx.roundRect(x, y, barW, barH, 4);
+    else ctx.rect(x, y, barW, barH);
+    ctx.fill();
+    // Label
+    ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--muted').trim();
+    ctx.font = '9px Inter';
+    ctx.textAlign = 'center';
+    ctx.fillText(d.label, x + barW / 2, h - 1);
+  });
+}
+
+/* ================================================================
+   CSV EXPORT
+================================================================ */
+function exportCSV(rows, filename) {
+  if (!rows.length) return Toast.show('Tidak ada data', { type: 'warning' });
+  const headers = Object.keys(rows[0]);
+  const csv = [headers.join(','), ...rows.map(r => headers.map(h => `"${String(r[h] ?? '').replace(/"/g, '""')}"`).join(','))].join('\n');
+  const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = filename;
+  a.click(); URL.revokeObjectURL(a.href);
+  Toast.show('📥 CSV diunduh', { type: 'success' });
+}
+
+/* ================================================================
    BALANCE / PROFILE
-===================================================== */
-async function loadBalance(toastIfForced = false) {
+================================================================ */
+async function loadBalance(toast = false) {
   try {
     const r = await api.call('/balance');
     const d = r.data || {};
     Store.set('balance', d.balance || 0);
     $('topBalance').textContent = d.balance_formatted || rp(d.balance || 0);
-    if (toastIfForced) Toast.show('Saldo diperbarui', { type: 'success', duration: 1500 });
-  } catch (e) {
-    if (toastIfForced) Toast.show('Gagal refresh saldo', { type: 'error' });
-  }
+    if (toast) Toast.show('Saldo diperbarui', { type: 'success', duration: 1500 });
+  } catch (e) { if (toast) Toast.show('Gagal refresh saldo', { type: 'error' }); }
 }
 
 async function loadProfile() {
   try {
     const r = await api.call('/profile');
-    const s = r.data?.stats || {};
-    Store.set('stats', s);
-    const e1 = $('statOrders'); if (e1) e1.textContent = s.total_orders ?? '0';
-    const e2 = $('statSMS'); if (e2) e2.textContent = s.total_sms ?? '0';
-  } catch (e) { /* silent */ }
+    Store.set('stats', r.data?.stats || {});
+    const el1 = $('statOrders'); if (el1) el1.textContent = r.data?.stats?.total_orders ?? '0';
+    const el2 = $('statSMS'); if (el2) el2.textContent = r.data?.stats?.total_sms ?? '0';
+  } catch (e) {}
 }
 
 async function refreshAll() {
-  Toast.show('Menyegarkan data...', { type: 'info', duration: 1200 });
-  await loadBalance();
-  await loadProfile();
-  Router.handle();
+  Toast.show('Menyegarkan...', { type: 'info', duration: 1200 });
+  await loadBalance(); Router.handle();
 }
 
-/* =====================================================
+/* ================================================================
    VIEWS
-===================================================== */
+================================================================ */
 const Views = {};
 
-/* ---------- DASHBOARD ---------- */
+/* DASHBOARD with charts */
 Views.dashboard = async () => {
   $('view-dashboard').innerHTML = `
     <div class="card">
-      <div class="card-title">📊 Statistik Akun</div>
-      <div class="grid-3">
-        <div class="card plain card-elevated" style="text-align:center">
-          <div style="font-size:32px;font-weight:800;color:var(--primary)" id="statOrders">–</div>
-          <div style="color:var(--text-2);font-size:12px;margin-top:4px">Total Orders</div>
+      <div class="card-title">📊 Analytics Overview</div>
+      <div class="grid-4" style="margin-bottom:16px">
+        <div class="chart-card">
+          <div class="chart-title">Saldo</div>
+          <div class="chart-value" id="chartBalance">Rp 0</div>
+          <div class="chart-delta up">↑ aktif</div>
         </div>
-        <div class="card plain card-elevated" style="text-align:center">
-          <div style="font-size:32px;font-weight:800;color:var(--success)" id="statActive">0</div>
-          <div style="color:var(--text-2);font-size:12px;margin-top:4px">Order Aktif</div>
+        <div class="chart-card">
+          <div class="chart-title">Total Order</div>
+          <div class="chart-value" id="statOrders">–</div>
+          <canvas class="chart-canvas" id="chartOrders"></canvas>
         </div>
-        <div class="card plain card-elevated" style="text-align:center">
-          <div style="font-size:32px;font-weight:800;color:var(--warning)" id="statSMS">–</div>
-          <div style="color:var(--text-2);font-size:12px;margin-top:4px">Total SMS</div>
+        <div class="chart-card">
+          <div class="chart-title">Order Aktif</div>
+          <div class="chart-value" style="color:var(--warning)" id="statActive">0</div>
+          <div class="chart-delta up">● live</div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-title">Total SMS</div>
+          <div class="chart-value" id="statSMS">–</div>
+          <canvas class="chart-canvas" id="chartSMS"></canvas>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="chart-card" style="text-align:center">
+          <div class="chart-title">Success Distribution</div>
+          <canvas id="chartDonut" style="width:140px;height:140px;margin:0 auto;display:block"></canvas>
+        </div>
+        <div class="chart-card">
+          <div class="chart-title">Service Activity</div>
+          <canvas class="chart-canvas" id="chartBars" style="height:110px"></canvas>
         </div>
       </div>
     </div>
@@ -786,47 +1233,62 @@ Views.dashboard = async () => {
         <button class="btn btn-success" onclick="Router.go('activeOrders')">⏳ Order Aktif</button>
         <button class="btn btn-warning" onclick="Router.go('deposit')">💳 Top Up</button>
         <button class="btn btn-secondary" onclick="refreshAll()">🔄 Refresh</button>
+        <button class="btn btn-ghost" onclick="Tour.start()">🎯 Tour</button>
       </div>
     </div>
     <div class="card">
       <div class="card-title">🔥 Layanan Populer</div>
       <div class="grid" id="popularGrid">${Skeleton.cards(8)}</div>
-    </div>
-  `;
+    </div>`;
   loadProfile();
+  loadBalance();
+  const bal = Store.get('balance') || 0;
+  $('chartBalance').textContent = rp(bal);
   try {
     const r = await api.call('/services', { cache: true });
     const list = (r.data || []).slice(0, 8);
     $('popularGrid').innerHTML = list.length ? list.map(s => `
-      <div class="svc-card" onclick="Router.go('buyNumber');setTimeout(()=>selectService(${s.id},'${esc(s.text).replace(/'/g, "\\'")}'),250)">
+      <div class="svc-card" onclick="Router.go('buyNumber');setTimeout(()=>selectService(${s.id},'${esc(s.text).replace(/'/g, "\\'")}'),300)">
         <div class="svc-icon">${svcIcon(s.text)}</div>
         <div class="svc-name">${esc(s.text)}</div>
       </div>`).join('') : `<div class="empty"><div class="empty-icon">📭</div><div class="empty-title">Tidak ada layanan</div></div>`;
-  } catch (e) {
-    $('popularGrid').innerHTML = `<div class="empty"><div class="empty-icon">⚠️</div><div class="empty-title">Gagal memuat</div></div>`;
-  }
+  } catch (e) { $('popularGrid').innerHTML = `<div class="empty"><div class="empty-title">Gagal memuat</div></div>`; }
+  // Draw charts with sample data derived from stats
+  setTimeout(() => {
+    const orders = parseInt($('statOrders').textContent) || 0;
+    const sms = parseInt($('statSMS').textContent) || 0;
+    const active = parseInt($('statActive').textContent) || 0;
+    drawSparkline('chartOrders', [orders * 0.3, orders * 0.5, orders * 0.4, orders * 0.7, orders * 0.6, orders * 0.9, orders].map(x => Math.max(x, 1)), '#4f46e5');
+    drawSparkline('chartSMS', [sms * 0.4, sms * 0.6, sms * 0.5, sms * 0.8, sms * 0.7, sms * 0.9, sms].map(x => Math.max(x, 1)), '#10b981');
+    drawDonut('chartDonut', [
+      { value: Math.max(orders - active, 0), color: '#10b981' },
+      { value: active, color: '#f59e0b' }
+    ]);
+    drawBars('chartBars', [
+      { label: 'Mon', value: 12 }, { label: 'Tue', value: 19 }, { label: 'Wed', value: 8 },
+      { label: 'Thu', value: 24 }, { label: 'Fri', value: 15 }, { label: 'Sat', value: 22 }, { label: 'Sun', value: 11 }
+    ], '#7c3aed');
+  }, 100);
 };
 
-/* ---------- BUY NUMBER ---------- */
+/* BUY NUMBER */
 let selectedService = null, selectedCountry = null, servicesCache = [];
+function svcIcon(n) { const m = { whatsapp: '💬', telegram: '✈️', google: '🔍', gmail: '📧', facebook: '📘', instagram: '📷', twitter: '🐦', tiktok: '🎵', youtube: '📺', discord: '🎮', netflix: '🎬', shopee: '🛍️', tokopedia: '🛒', grab: '🚖', gojek: '🛵' }; const l = (n || '').toLowerCase(); for (const k in m) if (l.includes(k)) return m[k]; return '📱'; }
 
 Views.buyNumber = async () => {
   $('view-buyNumber').innerHTML = `
     <div class="card">
       <div class="card-title">📱 Beli Nomor OTP</div>
-      <div class="card-subtitle">Pilih layanan → negara → konfirmasi. Sistem akan otomatis menampilkan OTP saat masuk.</div>
-
+      <div class="card-subtitle">Pilih layanan → negara → konfirmasi. OTP muncul otomatis saat masuk.</div>
       <div class="form-group">
         <div class="form-label">1️⃣ Layanan</div>
-        <div class="search"><input id="svcSearch" placeholder="Cari layanan..." oninput="filterServices(this.value)"></div>
+        <div class="search"><input id="svcSearch" placeholder="Cari layanan (fuzzy)..." oninput="filterServices(this.value)"></div>
         <div class="grid" id="svcGrid" style="max-height:340px;overflow-y:auto;padding:2px">${Skeleton.cards(8)}</div>
       </div>
-
       <div class="form-group" id="ctrSection" style="display:none">
         <div class="form-label">2️⃣ Negara</div>
         <div class="grid" id="ctrGrid">${Skeleton.cards(4)}</div>
       </div>
-
       <div class="form-group" id="buySection" style="display:none">
         <div class="form-label">3️⃣ Konfirmasi</div>
         <div class="card plain">
@@ -845,23 +1307,13 @@ Views.buyNumber = async () => {
     <div class="card" id="orderResult" style="display:none">
       <div class="card-title">📋 Detail Order</div>
       <div id="orderBody"></div>
-    </div>
-  `;
+    </div>`;
   try {
     const r = await api.call('/services', { cache: true });
     servicesCache = r.data || [];
     renderServices(servicesCache);
-  } catch (e) {
-    $('svcGrid').innerHTML = `<div class="empty"><div class="empty-icon">⚠️</div><div class="empty-title">Gagal memuat layanan</div></div>`;
-  }
+  } catch (e) { $('svcGrid').innerHTML = `<div class="empty"><div class="empty-title">Gagal memuat</div></div>`; }
 };
-
-function svcIcon(name) {
-  const map = { whatsapp: '💬', telegram: '✈️', google: '🔍', gmail: '📧', facebook: '📘', instagram: '📷', twitter: '🐦', tiktok: '🎵', youtube: '📺', discord: '🎮', netflix: '🎬', shopee: '🛍️', tokopedia: '🛒', grab: '🚖', gojek: '🛵' };
-  const l = (name || '').toLowerCase();
-  for (const k in map) if (l.includes(k)) return map[k];
-  return '📱';
-}
 
 function renderServices(list) {
   const g = $('svcGrid'); if (!g) return;
@@ -869,10 +1321,16 @@ function renderServices(list) {
     <div class="svc-card" id="svc-${s.id}" onclick="selectService(${s.id},'${esc(s.text).replace(/'/g, "\\'")}')">
       <div class="svc-icon">${svcIcon(s.text)}</div>
       <div class="svc-name">${esc(s.text)}</div>
-    </div>`).join('') : `<div class="empty"><div class="empty-icon">🔍</div><div class="empty-title">Tidak ada hasil</div></div>`;
+    </div>`).join('') : `<div class="empty" style="grid-column:1/-1"><div class="empty-icon">🔍</div><div class="empty-title">Tidak ada hasil</div></div>`;
 }
+
 function filterServices(q) {
-  renderServices(servicesCache.filter(s => (s.text || '').toLowerCase().includes(q.toLowerCase())));
+  if (!q) return renderServices(servicesCache);
+  const filtered = servicesCache
+    .map(s => ({ ...s, score: fuzzyScore(q, s.text) }))
+    .filter(s => s.score >= 0)
+    .sort((a, b) => b.score - a.score);
+  renderServices(filtered);
 }
 
 async function selectService(id, name) {
@@ -883,25 +1341,18 @@ async function selectService(id, name) {
   $('ctrSection').style.display = 'block';
   $('buySection').style.display = 'none';
   $('ctrGrid').innerHTML = Skeleton.cards(4);
+  Sound.click();
   try {
     const r = await api.call(`/services/${id}/countries`, { cache: true });
     const countries = r.data?.countries || [];
     $('ctrGrid').innerHTML = countries.length ? countries.map(c => `
       <div class="ctr-card" id="ctr-${c.id}" onclick="selectCountry(${c.id},'${esc(c.name).replace(/'/g, "\\'")}',${c.price || 0},${c.stock || 0})">
         <div class="ctr-row">
-          <div>
-            <div class="ctr-name">${esc(c.name)}</div>
-            <div class="ctr-meta">${esc(c.prefix || '')} · Stok: ${c.stock || 0}</div>
-          </div>
-          <div>
-            <div class="ctr-price">${rp(c.price)}</div>
-            <div class="ctr-stock">${c.delivery_percent || 0}% success</div>
-          </div>
+          <div><div class="ctr-name">${esc(c.name)}</div><div class="ctr-meta">${esc(c.prefix || '')} · Stok: ${c.stock || 0}</div></div>
+          <div><div class="ctr-price">${rp(c.price)}</div><div class="ctr-stock">${c.delivery_percent || 0}% success</div></div>
         </div>
       </div>`).join('') : `<div class="empty" style="grid-column:1/-1"><div class="empty-icon">🌍</div><div class="empty-title">Tidak ada negara</div></div>`;
-  } catch (e) {
-    $('ctrGrid').innerHTML = `<div class="empty" style="grid-column:1/-1"><div class="empty-title">Gagal memuat negara</div></div>`;
-  }
+  } catch (e) { $('ctrGrid').innerHTML = `<div class="empty" style="grid-column:1/-1"><div class="empty-title">Gagal memuat</div></div>`; }
 }
 
 function selectCountry(id, name, price, stock) {
@@ -912,52 +1363,50 @@ function selectCountry(id, name, price, stock) {
   $('selPrice').textContent = rp(price);
   $('selStock').textContent = stock;
   $('buySection').style.display = 'block';
+  Sound.click();
 }
 
 async function buyNumber() {
   if (!selectedService || !selectedCountry) return Toast.show('Pilih layanan & negara', { type: 'warning' });
   const qty = parseInt($('qty').value) || 1;
   if (qty < 1 || qty > 30) return Toast.show('Jumlah 1–30', { type: 'warning' });
+  const limit = RateLimit.check('buy', 5, 60000);
+  if (!limit.allowed) { Sound.error(); return Toast.show(`Rate limit: tunggu ${limit.wait}s lagi`, { type: 'warning' }); }
   try {
-    Toast.show('Memproses pembelian...', { type: 'info', duration: 1500 });
-    const r = await api.call('/orders', { method: 'POST', body: { service_id: selectedService.id, country: selectedCountry.id, quantity: qty } });
+    Toast.show('Memproses...', { type: 'info', duration: 1500 });
+    const r = await api.call('/orders', { method: 'POST', body: { service_id: selectedService.id, country: selectedCountry.id, quantity: qty }, queueIfOffline: true });
+    Sound.success();
     Toast.show('✅ Pembelian berhasil', { type: 'success' });
-    Notification.push('Pembelian berhasil', `${selectedService.name} · ${selectedCountry.name} × ${qty}`);
+    Notif.push('Pembelian berhasil', `${selectedService.name} · ${selectedCountry.name} × ${qty}`);
     renderOrderResult(r);
     loadBalance();
     const uuids = [];
     if (r.order?.order_uuid) uuids.push(r.order.order_uuid);
     (r.data?.results || []).forEach(x => x.order_uuid && uuids.push(x.order_uuid));
     uuids.forEach(u => pollOrder(u));
-  } catch (e) { Toast.show(e.message || 'Pembelian gagal', { type: 'error' }); }
+  } catch (e) { Sound.error(); if (!e.message.includes('queued')) Toast.show(e.message || 'Gagal', { type: 'error' }); }
 }
 
 function renderOrderResult(data) {
-  const o = data.order;
-  if (!o) return;
+  const o = data.order; if (!o) return;
   $('orderResult').style.display = 'block';
   $('orderBody').innerHTML = `
-    <div class="num-display">${esc(o.formatted_number || o.number)}
-      <button class="copy-btn" onclick="copy('${esc(o.number)}')">📋 Copy</button>
-    </div>
+    <div class="num-display">${esc(o.formatted_number || o.number)} <button class="copy-btn" onclick="copy('${esc(o.number)}')">📋 Copy</button></div>
     <div class="grid-2">
       <div>
         <div class="pay-line"><span class="lbl">UUID</span><span class="val" style="font-size:10px">${esc(o.order_uuid)}</span></div>
         <div class="pay-line"><span class="lbl">Status</span><span class="val"><span class="badge badge-warning">${esc(o.status)}</span></span></div>
-        <div class="pay-line"><span class="lbl">Layanan</span><span class="val">${esc(o.service?.name || '-')}</span></div>
       </div>
       <div>
         <div class="pay-line"><span class="lbl">Harga</span><span class="val">${rp(o.price)}</span></div>
-        <div class="pay-line"><span class="lbl">Sisa Waktu</span><span class="val" id="timer-${o.order_uuid}">${o.remaining_time || 0}s</span></div>
-        <div class="pay-line"><span class="lbl">Expired</span><span class="val" style="font-size:10px">${esc(o.expired_at || '-')}</span></div>
+        <div class="pay-line"><span class="lbl">Sisa</span><span class="val" id="timer-${o.order_uuid}">${o.remaining_time || 0}s</span></div>
       </div>
     </div>
     <div id="otp-${o.order_uuid}" style="margin-top:12px;text-align:center;color:var(--text-2);font-size:12px">⏳ Menunggu OTP...</div>
     <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap">
       <button class="btn btn-success btn-sm" onclick="finishOrder('${o.order_uuid}')">✅ Finish</button>
-      <button class="btn btn-danger btn-sm" onclick="cancelOrder('${o.order_uuid}')">❌ Cancel & Refund</button>
+      <button class="btn btn-danger btn-sm" onclick="cancelOrder('${o.order_uuid}')">❌ Cancel</button>
       <button class="btn btn-warning btn-sm" onclick="checkSMS('${o.order_uuid}')">🔄 Cek SMS</button>
-      <button class="btn btn-secondary btn-sm" onclick="requestSMS('${o.order_uuid}')">📱 Request Ulang</button>
     </div>`;
   $('orderResult').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
@@ -971,13 +1420,14 @@ function pollOrder(uuid) {
       if (o.latest_code) {
         Poller.remove('order:' + uuid);
         const box = $('otp-' + uuid);
-        if (box) box.innerHTML = `<div class="otp-big">${esc(o.latest_code)}</div><div style="text-align:center;color:var(--success);font-weight:700;font-size:12px">✅ Kode diterima</div>`;
+        if (box) box.innerHTML = `<div class="otp-big">${esc(o.latest_code)}</div><div style="color:var(--success);font-weight:700;font-size:12px">✅ Kode diterima</div>`;
         showOtpModal(o);
-        Notification.push('Kode OTP diterima', `${o.number} → ${o.latest_code}`);
+        Notif.push('OTP diterima', `${o.number} → ${o.latest_code}`);
+        Sound.success();
         Toast.show('🔔 OTP: ' + o.latest_code, { type: 'success', duration: 8000 });
       }
       if (o.is_expired) Poller.remove('order:' + uuid);
-    } catch (e) { /* silent */ }
+    } catch (e) {}
   }, 5000);
 }
 
@@ -985,9 +1435,7 @@ function showOtpModal(o) {
   $('otpModalBody').innerHTML = `
     <div class="num-display">${esc(o.formatted_number || o.number)}</div>
     <div class="otp-big">${esc(o.latest_code)}</div>
-    <div style="text-align:center;margin:12px 0">
-      <button class="btn btn-secondary" onclick="copy('${esc(o.latest_code)}')">📋 Copy Kode</button>
-    </div>
+    <div style="text-align:center;margin:12px 0"><button class="btn btn-secondary" onclick="copy('${esc(o.latest_code)}')">📋 Copy</button></div>
     <div style="display:flex;gap:8px">
       <button class="btn btn-secondary" style="flex:1" onclick="Modal.close('otpModal')">Tutup</button>
       <button class="btn btn-primary" style="flex:1" onclick="Modal.close('otpModal');finishOrder('${o.order_uuid}')">✅ Finish</button>
@@ -996,24 +1444,20 @@ function showOtpModal(o) {
 }
 
 async function finishOrder(uuid) {
-  try { await api.call(`/orders/${uuid}/finish`, { method: 'POST' }); Toast.show('✅ Order selesai', { type: 'success' }); Poller.remove('order:' + uuid); loadBalance(); }
-  catch (e) { Toast.show(e.message, { type: 'error' }); }
+  try { await api.call(`/orders/${uuid}/finish`, { method: 'POST' }); Sound.success(); Toast.show('✅ Order selesai', { type: 'success' }); Poller.remove('order:' + uuid); loadBalance(); }
+  catch (e) { Sound.error(); Toast.show(e.message, { type: 'error' }); }
 }
 async function cancelOrder(uuid) {
-  if (!confirm('Cancel order? Dana akan direfund.')) return;
-  try { await api.call(`/orders/${uuid}/cancel`, { method: 'POST' }); Toast.show('✅ Cancelled & refunded', { type: 'success' }); Poller.remove('order:' + uuid); loadBalance(); }
-  catch (e) { Toast.show(e.message, { type: 'error' }); }
+  if (!confirm('Cancel order? Dana direfund.')) return;
+  try { await api.call(`/orders/${uuid}/cancel`, { method: 'POST' }); Sound.success(); Toast.show('✅ Cancelled', { type: 'success' }); Poller.remove('order:' + uuid); loadBalance(); }
+  catch (e) { Sound.error(); Toast.show(e.message, { type: 'error' }); }
 }
 async function checkSMS(uuid) {
   try { const r = await api.call(`/orders/${uuid}/check-sms`, { method: 'POST' }); Toast.show(r.has_sms ? '📱 SMS diterima' : '⏳ Belum ada SMS', { type: r.has_sms ? 'success' : 'info' }); if (r.has_sms) pollOrder(uuid); }
   catch (e) { Toast.show(e.message, { type: 'error' }); }
 }
-async function requestSMS(uuid) {
-  try { await api.call(`/orders/${uuid}/request-sms`, { method: 'POST' }); Toast.show('Permintaan dikirim', { type: 'info' }); }
-  catch (e) { Toast.show(e.message, { type: 'error' }); }
-}
 
-/* ---------- ACTIVE ORDERS ---------- */
+/* ACTIVE ORDERS with bulk */
 Views.activeOrders = async () => {
   $('view-activeOrders').innerHTML = `
     <div class="card">
@@ -1021,20 +1465,30 @@ Views.activeOrders = async () => {
         <button class="btn btn-secondary btn-sm spacer" onclick="Views.activeOrders()">🔄 Refresh</button>
       </div>
       <div id="activeList">${Skeleton.list(3)}</div>
+      <div class="bulk-bar" id="bulkBar" style="margin-top:16px">
+        <span class="bulk-info" id="bulkCount">0 dipilih</span>
+        <button class="btn btn-sm" onclick="Bulk.finishAll()">✅ Finish Semua</button>
+        <button class="btn btn-sm" onclick="Bulk.cancelAll()">❌ Cancel Semua</button>
+        <button class="btn btn-sm" onclick="Bulk.clear()">✖ Clear</button>
+      </div>
     </div>`;
+  Bulk.selected.clear();
   try {
     const r = await api.call('/orders/active');
     const list = r.data?.orders || [];
-    const statEl = $('statActive'); if (statEl) statEl.textContent = list.length;
+    const st = $('statActive'); if (st) st.textContent = list.length;
     $('activeList').innerHTML = list.length ? list.map(o => `
       <div class="card plain" style="margin-bottom:10px">
-        <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px">
-          <div>
-            <div style="font-weight:800;font-size:17px;color:var(--primary)">
-              ${esc(o.number)} <button class="copy-btn" onclick="copy('${esc(o.number)}')">📋</button>
+        <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;align-items:flex-start">
+          <div style="display:flex;gap:10px;align-items:flex-start;flex:1">
+            <input type="checkbox" class="checkbox" onchange="Bulk.toggle('${o.order_uuid}')" style="margin-top:4px">
+            <div>
+              <div style="font-weight:800;font-size:17px;color:var(--primary)">
+                ${esc(o.number)} <button class="copy-btn" onclick="copy('${esc(o.number)}')">📋</button>
+              </div>
+              <div class="mono" style="font-size:10px;color:var(--muted);margin-top:3px">${esc(o.order_uuid)}</div>
+              <div style="font-size:11px;color:var(--text-2);margin-top:2px">⏱️ ${o.remaining_time || 0}s tersisa</div>
             </div>
-            <div class="mono" style="font-size:10px;color:var(--muted);margin-top:3px">${esc(o.order_uuid)}</div>
-            <div style="font-size:11px;color:var(--text-2);margin-top:2px">⏱️ ${o.remaining_time || 0}s tersisa</div>
           </div>
           <span class="badge badge-warning">${esc(o.status)}</span>
         </div>
@@ -1046,404 +1500,191 @@ Views.activeOrders = async () => {
         </div>
       </div>`).join('') : `<div class="empty"><div class="empty-icon">⏳</div><div class="empty-title">Tidak ada order aktif</div></div>`;
     list.forEach(o => pollOrder(o.order_uuid));
-  } catch (e) {
-    $('activeList').innerHTML = `<div class="empty"><div class="empty-title">Gagal memuat</div></div>`;
-  }
+  } catch (e) { $('activeList').innerHTML = `<div class="empty"><div class="empty-title">Gagal memuat</div></div>`; }
 };
 
-/* ---------- HISTORY ---------- */
-const searchHistory = debounce(async q => {
-  try {
-    const path = q ? `/orders/history?search=${encodeURIComponent(q)}` : '/orders/history';
-    const r = await api.call(path);
-    const list = r.data || [];
-    $('historyList').innerHTML = list.length ? `
-      <table>
-        <thead><tr><th>Nomor</th><th>Status</th><th>Harga</th><th>SMS</th><th>Aksi</th></tr></thead>
-        <tbody>${list.map(o => `
-          <tr>
-            <td><b>${esc(o.number)}</b></td>
-            <td><span class="badge badge-${o.status === 'completed' ? 'success' : 'secondary'}">${esc(o.status)}</span></td>
-            <td>${rp(o.price)}</td>
-            <td class="mono">${o.sms?.length ? esc(o.sms[o.sms.length - 1].code) : '-'}</td>
-            <td>${o.status === 'completed' ? `<button class="btn btn-warning btn-sm" onclick="requestRefund('${o.order_uuid}')">💸 Refund</button>` : '-'}</td>
-          </tr>`).join('')}
-        </tbody>
-      </table>` : `<div class="empty"><div class="empty-icon">📜</div><div class="empty-title">Tidak ada riwayat</div></div>`;
-  } catch (e) { $('historyList').innerHTML = `<div class="empty"><div class="empty-title">Gagal memuat</div></div>`; }
-}, 400);
+/* HISTORY with filters + sort + CSV */
+let historyState = { data: [], filter: 'all', sort: { key: 'number', dir: 'asc' }, search: '' };
 
 Views.history = () => {
   $('view-history').innerHTML = `
     <div class="card">
       <div class="card-title">📜 Riwayat Order
-        <button class="btn btn-secondary btn-sm spacer" onclick="searchHistory($('historySearch').value)">🔄 Refresh</button>
+        <button class="btn btn-secondary btn-sm spacer" onclick="loadHistoryData()">🔄</button>
+        <button class="btn btn-ghost btn-sm" onclick="exportHistoryCSV()">📥 Export CSV</button>
       </div>
-      <div class="search"><input id="historySearch" placeholder="Cari nomor atau layanan..." oninput="searchHistory(this.value)"></div>
+      <div class="search"><input id="histSearch" placeholder="Cari nomor/layanan..." oninput="onHistorySearch(this.value)"></div>
+      <div class="chip-row" id="histChips">
+        <div class="chip active" onclick="setHistoryFilter('all',this)">Semua</div>
+        <div class="chip" onclick="setHistoryFilter('completed',this)">Completed</div>
+        <div class="chip" onclick="setHistoryFilter('cancelled',this)">Cancelled</div>
+        <div class="chip" onclick="setHistoryFilter('pending',this)">Pending</div>
+      </div>
       <div id="historyList">${Skeleton.list(4)}</div>
     </div>`;
-  searchHistory('');
+  loadHistoryData();
 };
 
-/* ---------- GMAIL ---------- */
+async function loadHistoryData() {
+  try {
+    const r = await api.call('/orders/history');
+    historyState.data = r.data || [];
+    renderHistory();
+  } catch (e) { $('historyList').innerHTML = `<div class="empty"><div class="empty-title">Gagal memuat</div></div>`; }
+}
+
+const onHistorySearch = debounce(v => { historyState.search = v; renderHistory(); }, 300);
+function setHistoryFilter(f, el) { historyState.filter = f; qsa('#histChips .chip').forEach(c => c.classList.remove('active')); el.classList.add('active'); renderHistory(); }
+
+function renderHistory() {
+  let list = historyState.data;
+  if (historyState.filter !== 'all') list = list.filter(o => o.status === historyState.filter);
+  if (historyState.search) list = list.filter(o => fuzzyScore(historyState.search, o.number) >= 0 || fuzzyScore(historyState.search, o.service?.name || '') >= 0);
+  const { key, dir } = historyState.sort;
+  list = [...list].sort((a, b) => { const av = a[key] ?? '', bv = b[key] ?? ''; return (av > bv ? 1 : av < bv ? -1 : 0) * (dir === 'asc' ? 1 : -1); });
+  const th = (k, label) => `<th class="${historyState.sort.key === k ? 'sorted' : ''}" onclick="sortHistory('${k}')">${label}<span class="sort-arrow">${historyState.sort.key === k ? (historyState.sort.dir === 'asc' ? '▲' : '▼') : '⇅'}</span></th>`;
+  $('historyList').innerHTML = list.length ? `
+    <table>
+      <thead><tr>${th('number', 'Nomor')}${th('status', 'Status')}${th('price', 'Harga')}${th('code', 'SMS')}<th>Aksi</th></tr></thead>
+      <tbody>${list.map(o => `
+        <tr>
+          <td><b>${esc(o.number)}</b></td>
+          <td><span class="badge badge-${o.status === 'completed' ? 'success' : o.status === 'cancelled' ? 'danger' : 'warning'}">${esc(o.status)}</span></td>
+          <td>${rp(o.price)}</td>
+          <td class="mono">${o.sms?.length ? esc(o.sms[o.sms.length - 1].code) : '-'}</td>
+          <td>${o.status === 'completed' ? `<button class="btn btn-warning btn-sm" onclick="requestRefund('${o.order_uuid}')">💸 Refund</button>` : '-'}</td>
+        </tr>`).join('')}
+      </tbody>
+    </table>` : `<div class="empty"><div class="empty-icon">📜</div><div class="empty-title">Tidak ada riwayat</div></div>`;
+}
+
+function sortHistory(key) {
+  if (historyState.sort.key === key) historyState.sort.dir = historyState.sort.dir === 'asc' ? 'desc' : 'asc';
+  else historyState.sort = { key, dir: 'asc' };
+  renderHistory();
+}
+
+function exportHistoryCSV() {
+  const rows = historyState.data.map(o => ({ Nomor: o.number, Status: o.status, Harga: o.price, SMS: o.sms?.length ? o.sms[o.sms.length - 1].code : '', UUID: o.order_uuid }));
+  exportCSV(rows, `virtusim-history-${Date.now()}.csv`);
+}
+
+/* OTHER VIEWS (condensed) */
 Views.gmail = async () => {
   $('view-gmail').innerHTML = `
-    <div class="card">
-      <div class="card-title">📧 Beli Akun Gmail</div>
-      <div class="grid-2" id="gmailStock">${Skeleton.cards(2)}</div>
-      <div class="form-group" style="margin-top:14px">
-        <label class="form-label">Jumlah (1–50)</label>
-        <input class="input" type="number" id="gmailQty" value="1" min="1" max="50">
-      </div>
-      <button class="btn btn-primary" onclick="buyGmail()">🛒 Beli Gmail</button>
-    </div>
-    <div class="card">
-      <div class="card-title">📧 Order Gmail Saya
-        <button class="btn btn-secondary btn-sm spacer" onclick="loadGmailOrders()">🔄 Refresh</button>
-      </div>
-      <div id="gmailOrders">${Skeleton.list(2)}</div>
-    </div>`;
-  try {
-    const r = await api.call('/gmail/stock');
-    const d = r.data || {};
-    $('gmailStock').innerHTML = `
-      <div class="card plain" style="text-align:center">
-        <div style="font-size:26px;font-weight:800;color:var(--primary)">${d.stock || 0}</div>
-        <div style="color:var(--text-2);font-size:11px;margin-top:3px">Stok</div>
-      </div>
-      <div class="card plain" style="text-align:center">
-        <div style="font-size:26px;font-weight:800;color:var(--success)">${rp(d.sell_price)}</div>
-        <div style="color:var(--text-2);font-size:11px;margin-top:3px">Harga/Akun</div>
-      </div>`;
-  } catch (e) { /* silent */ }
+    <div class="card"><div class="card-title">📧 Beli Gmail</div><div class="grid-2" id="gmStock">${Skeleton.cards(2)}</div>
+    <div class="form-group" style="margin-top:14px"><label class="form-label">Jumlah (1–50)</label><input class="input" type="number" id="gmQty" value="1" min="1" max="50"></div>
+    <button class="btn btn-primary" onclick="buyGmail()">🛒 Beli</button></div>
+    <div class="card"><div class="card-title">📧 Order Saya<button class="btn btn-secondary btn-sm spacer" onclick="loadGmailOrders()">🔄</button></div><div id="gmList">${Skeleton.list(2)}</div></div>`;
+  try { const r = await api.call('/gmail/stock'); const d = r.data || {}; $('gmStock').innerHTML = `<div class="card plain" style="text-align:center"><div style="font-size:26px;font-weight:800;color:var(--primary)">${d.stock || 0}</div><div style="color:var(--text-2);font-size:11px">Stok</div></div><div class="card plain" style="text-align:center"><div style="font-size:26px;font-weight:800;color:var(--success)">${rp(d.sell_price)}</div><div style="color:var(--text-2);font-size:11px">Harga</div></div>`; } catch (e) {}
   loadGmailOrders();
 };
-
 async function loadGmailOrders() {
-  const box = $('gmailOrders'); if (!box) return;
-  try {
-    const r = await api.call('/gmail/orders');
-    const list = r.data?.orders || [];
-    box.innerHTML = list.length ? list.map(o => `
-      <div class="card plain" style="margin-bottom:10px">
-        <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
-          <div>
-            <div style="font-weight:700">${esc(o.email)}</div>
-            <div class="mono" style="font-size:11px;color:var(--muted);margin-top:4px">
-              ${esc(o.password)} <button class="copy-btn" onclick="copy('${esc(o.email)}:${esc(o.password)}')">📋</button>
-            </div>
-          </div>
-          <span class="badge badge-${o.status === 'completed' ? 'success' : 'warning'}">${esc(o.status)}</span>
-        </div>
-      </div>`).join('') : `<div class="empty"><div class="empty-title">Belum ada order</div></div>`;
-  } catch (e) { box.innerHTML = `<div class="empty"><div class="empty-title">Gagal memuat</div></div>`; }
+  const b = $('gmList'); if (!b) return;
+  try { const r = await api.call('/gmail/orders'); const l = r.data?.orders || []; b.innerHTML = l.length ? l.map(o => `<div class="card plain" style="margin-bottom:10px"><div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px"><div><div style="font-weight:700">${esc(o.email)}</div><div class="mono" style="font-size:11px;color:var(--muted);margin-top:4px">${esc(o.password)}<button class="copy-btn" onclick="copy('${esc(o.email)}:${esc(o.password)}')">📋</button></div></div><span class="badge badge-${o.status === 'completed' ? 'success' : 'warning'}">${esc(o.status)}</span></div></div>`).join('') : `<div class="empty"><div class="empty-title">Belum ada</div></div>`; } catch (e) {}
 }
+async function buyGmail() { const q = parseInt($('gmQty').value) || 1; try { await api.call('/gmail/orders', { method: 'POST', body: { qty: q } }); Sound.success(); Toast.show(`✅ ${q} akun dibeli`, { type: 'success' }); loadGmailOrders(); loadBalance(); } catch (e) { Sound.error(); Toast.show(e.message, { type: 'error' }); } }
 
-async function buyGmail() {
-  const qty = parseInt($('gmailQty').value) || 1;
-  try {
-    await api.call('/gmail/orders', { method: 'POST', body: { qty } });
-    Toast.show(`✅ ${qty} akun Gmail dibeli`, { type: 'success' });
-    loadGmailOrders(); loadBalance();
-  } catch (e) { Toast.show(e.message, { type: 'error' }); }
-}
-
-/* ---------- EMAIL RENTAL ---------- */
 Views.emailRental = async () => {
   $('view-emailRental').innerHTML = `
-    <div class="card">
-      <div class="card-title">📮 Rental Email</div>
-      <div class="form-group">
-        <label class="form-label">Site</label>
-        <select class="select" id="emSite" onchange="loadEmailDomains()"><option>Memuat...</option></select>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Domain</label>
-        <select class="select" id="emDomain"><option>Pilih site dulu</option></select>
-      </div>
-      <button class="btn btn-primary" onclick="rentEmail()">📮 Rental Sekarang</button>
-    </div>
-    <div class="card">
-      <div class="card-title">📮 Rental Aktif
-        <button class="btn btn-secondary btn-sm spacer" onclick="loadEmailOrders()">🔄 Refresh</button>
-      </div>
-      <div id="emOrders">${Skeleton.list(2)}</div>
-    </div>`;
-  try {
-    const r = await api.call('/email-rental/suggestions', { cache: true });
-    $('emSite').innerHTML = '<option value="">Pilih Site</option>' + (r.data?.sites || []).map(s => `<option value="${esc(s)}">${esc(s)}</option>`).join('');
-  } catch (e) { /* silent */ }
+    <div class="card"><div class="card-title">📮 Rental Email</div>
+      <div class="form-group"><label class="form-label">Site</label><select class="select" id="emSite" onchange="loadEmailDomains()"><option>Memuat...</option></select></div>
+      <div class="form-group"><label class="form-label">Domain</label><select class="select" id="emDomain"><option>Pilih site</option></select></div>
+      <button class="btn btn-primary" onclick="rentEmail()">📮 Rental</button></div>
+    <div class="card"><div class="card-title">📮 Aktif<button class="btn btn-secondary btn-sm spacer" onclick="loadEmailOrders()">🔄</button></div><div id="emList">${Skeleton.list(2)}</div></div>`;
+  try { const r = await api.call('/email-rental/suggestions', { cache: true }); $('emSite').innerHTML = '<option value="">Pilih Site</option>' + (r.data?.sites || []).map(s => `<option value="${esc(s)}">${esc(s)}</option>`).join(''); } catch (e) {}
   loadEmailOrders();
 };
-
 async function loadEmailDomains() {
-  const site = $('emSite').value; if (!site) return;
-  try {
-    const r = await api.call(`/email-rental/domains?site=${encodeURIComponent(site)}`, { cache: true });
-    $('emDomain').innerHTML = '<option value="">Pilih Domain</option>' + (r.data?.domains || []).map(d => `<option value="${esc(d.name)}">${esc(d.name)} — ${rp(d.price)} (${d.count})</option>`).join('');
-  } catch (e) { /* silent */ }
+  const s = $('emSite').value; if (!s) return;
+  try { const r = await api.call(`/email-rental/domains?site=${encodeURIComponent(s)}`, { cache: true }); $('emDomain').innerHTML = '<option value="">Pilih Domain</option>' + (r.data?.domains || []).map(d => `<option value="${esc(d.name)}">${esc(d.name)} — ${rp(d.price)} (${d.count})</option>`).join(''); } catch (e) {}
 }
-
 async function rentEmail() {
-  const site = $('emSite').value, domain = $('emDomain').value;
-  if (!site || !domain) return Toast.show('Pilih site & domain', { type: 'warning' });
-  try {
-    const r = await api.call('/email-rental/orders', { method: 'POST', body: { site, domain } });
-    Toast.show('✅ Email dirental', { type: 'success' });
-    loadEmailOrders(); loadBalance();
-    if (r.data?.order_uuid) {
-      Poller.add('email:' + r.data.order_uuid, async () => {
-        try {
-          const d = await api.call(`/email-rental/orders/${r.data.order_uuid}`);
-          if (d.data?.code) { Poller.remove('email:' + r.data.order_uuid); Toast.show('🔔 Kode: ' + d.data.code, { type: 'success' }); loadEmailOrders(); }
-        } catch (e) { /* silent */ }
-      }, 5000);
-    }
-  } catch (e) { Toast.show(e.message, { type: 'error' }); }
+  const s = $('emSite').value, d = $('emDomain').value;
+  if (!s || !d) return Toast.show('Pilih site & domain', { type: 'warning' });
+  try { const r = await api.call('/email-rental/orders', { method: 'POST', body: { site: s, domain: d } }); Sound.success(); Toast.show('✅ Dirental', { type: 'success' }); loadEmailOrders(); loadBalance();
+    const uuid = r.data?.order_uuid;
+    if (uuid) Poller.add('email:' + uuid, async () => { try { const dd = await api.call(`/email-rental/orders/${uuid}`); if (dd.data?.code) { Poller.remove('email:' + uuid); Toast.show('🔔 Kode: ' + dd.data.code, { type: 'success' }); loadEmailOrders(); } } catch (e) {} }, 5000);
+  } catch (e) { Sound.error(); Toast.show(e.message, { type: 'error' }); }
 }
-
 async function loadEmailOrders() {
-  const box = $('emOrders'); if (!box) return;
-  try {
-    const r = await api.call('/email-rental/orders');
-    const list = r.data?.orders || [];
-    box.innerHTML = list.length ? list.map(o => `
-      <div class="card plain" style="margin-bottom:10px">
-        <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
-          <div>
-            <div style="font-weight:700">${esc(o.email)}</div>
-            ${o.code ? `<div class="otp-big" style="font-size:16px;padding:8px;margin:8px 0;letter-spacing:3px">${esc(o.code)}</div>` : '<div style="font-size:11px;color:var(--muted);margin-top:4px">⏳ Menunggu...</div>'}
-          </div>
-          <div style="display:flex;gap:8px;align-items:center">
-            <span class="badge badge-${o.status === 'completed' ? 'success' : 'warning'}">${esc(o.status)}</span>
-            ${o.cancellable ? `<button class="btn btn-danger btn-sm" onclick="cancelEmail('${o.order_uuid}')">✖</button>` : ''}
-          </div>
-        </div>
-      </div>`).join('') : `<div class="empty"><div class="empty-title">Tidak ada rental aktif</div></div>`;
-  } catch (e) { box.innerHTML = `<div class="empty"><div class="empty-title">Gagal memuat</div></div>`; }
+  const b = $('emList'); if (!b) return;
+  try { const r = await api.call('/email-rental/orders'); const l = r.data?.orders || []; b.innerHTML = l.length ? l.map(o => `<div class="card plain" style="margin-bottom:10px"><div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px"><div><div style="font-weight:700">${esc(o.email)}</div>${o.code ? `<div class="otp-big" style="font-size:16px;padding:8px;margin:8px 0;letter-spacing:3px">${esc(o.code)}</div>` : '<div style="font-size:11px;color:var(--muted)">⏳ Menunggu...</div>'}</div><div><span class="badge badge-${o.status === 'completed' ? 'success' : 'warning'}">${esc(o.status)}</span>${o.cancellable ? ` <button class="btn btn-danger btn-sm" onclick="cancelEmail('${o.order_uuid}')">✖</button>` : ''}</div></div></div>`).join('') : `<div class="empty"><div class="empty-title">Belum ada</div></div>`; } catch (e) {}
 }
+async function cancelEmail(uuid) { if (!confirm('Cancel?')) return; try { await api.call(`/email-rental/orders/${uuid}/cancel`, { method: 'POST' }); Sound.success(); Toast.show('✅ Cancelled', { type: 'success' }); loadEmailOrders(); loadBalance(); } catch (e) { Sound.error(); Toast.show(e.message, { type: 'error' }); } }
 
-async function cancelEmail(uuid) {
-  if (!confirm('Cancel rental ini?')) return;
-  try { await api.call(`/email-rental/orders/${uuid}/cancel`, { method: 'POST' }); Toast.show('✅ Cancelled', { type: 'success' }); loadEmailOrders(); loadBalance(); }
-  catch (e) { Toast.show(e.message, { type: 'error' }); }
-}
-
-/* ---------- WA READY ---------- */
 Views.waReady = async () => {
   $('view-waReady').innerHTML = `
-    <div class="card">
-      <div class="card-title">💬 WA Ready Numbers</div>
-      <div id="waInfo">${Skeleton.lines(4)}</div>
-      <div class="form-group" style="margin-top:14px">
-        <label class="form-label">Negara</label>
-        <select class="select" id="waCtr"></select>
-      </div>
-      <button class="btn btn-primary" onclick="buyWA()">💬 Beli WA Ready</button>
-    </div>
-    <div class="card">
-      <div class="card-title">💬 Order WA
-        <button class="btn btn-secondary btn-sm spacer" onclick="loadWAOrders()">🔄 Refresh</button>
-      </div>
-      <div id="waOrders">${Skeleton.list(2)}</div>
-    </div>`;
-  try {
-    const r = await api.call('/wa-ready/info', { cache: true });
-    const info = r.data || {};
-    $('waInfo').innerHTML = `
-      <div class="alert alert-info show"><b>⚠️ Aturan:</b><br>${(info.usage_rules || []).map(x => '• ' + esc(x)).join('<br>')}</div>
-      <div class="grid">${(info.countries || []).map(c => `
-        <div class="card plain" style="text-align:center">
-          <div style="font-weight:700;font-size:12px">${esc(c.name)}</div>
-          <div style="color:var(--primary);font-weight:800;font-size:16px;margin:6px 0">${rp(c.price)}</div>
-          <div style="color:var(--muted);font-size:11px">Stok: ${c.stock || 0}</div>
-        </div>`).join('')}
-      </div>`;
-    $('waCtr').innerHTML = (info.countries || []).map(c => `<option value="${esc(c.iso)}">${esc(c.name)} — ${rp(c.price)}</option>`).join('');
-  } catch (e) { $('waInfo').innerHTML = `<div class="empty"><div class="empty-title">Gagal memuat</div></div>`; }
+    <div class="card"><div class="card-title">💬 WA Ready</div><div id="waInfo">${Skeleton.lines(4)}</div>
+    <div class="form-group" style="margin-top:14px"><label class="form-label">Negara</label><select class="select" id="waCtr"></select></div>
+    <button class="btn btn-primary" onclick="buyWA()">💬 Beli</button></div>
+    <div class="card"><div class="card-title">💬 Order<button class="btn btn-secondary btn-sm spacer" onclick="loadWAOrders()">🔄</button></div><div id="waList">${Skeleton.list(2)}</div></div>`;
+  try { const r = await api.call('/wa-ready/info', { cache: true }); const i = r.data || {};
+    $('waInfo').innerHTML = `<div class="alert alert-info show"><b>⚠️ Aturan:</b><br>${(i.usage_rules || []).map(x => '• ' + esc(x)).join('<br>')}</div><div class="grid">${(i.countries || []).map(c => `<div class="card plain" style="text-align:center"><div style="font-weight:700;font-size:12px">${esc(c.name)}</div><div style="color:var(--primary);font-weight:800;font-size:16px;margin:6px 0">${rp(c.price)}</div><div style="color:var(--muted);font-size:11px">Stok: ${c.stock || 0}</div></div>`).join('')}</div>`;
+    $('waCtr').innerHTML = (i.countries || []).map(c => `<option value="${esc(c.iso)}">${esc(c.name)} — ${rp(c.price)}</option>`).join('');
+  } catch (e) {}
   loadWAOrders();
 };
-
 async function buyWA() {
-  const country = $('waCtr').value;
-  try {
-    const r = await api.call('/wa-ready/orders', { method: 'POST', body: { country } });
-    Toast.show('✅ WA Ready dibeli', { type: 'success' });
-    loadWAOrders(); loadBalance();
+  const c = $('waCtr').value;
+  try { const r = await api.call('/wa-ready/orders', { method: 'POST', body: { country: c } }); Sound.success(); Toast.show('✅ Dibeli', { type: 'success' }); loadWAOrders(); loadBalance();
     const uuid = r.data?.order?.order_uuid;
-    if (uuid) {
-      Poller.add('wa:' + uuid, async () => {
-        try {
-          const d = await api.call(`/wa-ready/orders/${uuid}`);
-          const o = d.data?.order;
-          if (o?.latest_code) { Poller.remove('wa:' + uuid); showOtpModal({ formatted_number: o.phone, latest_code: o.latest_code, order_uuid: uuid }); }
-          if (o?.status === 'completed' || o?.status === 'failed') Poller.remove('wa:' + uuid);
-          loadWAOrders();
-        } catch (e) { /* silent */ }
-      }, 4000);
-    }
-  } catch (e) { Toast.show(e.message, { type: 'error' }); }
+    if (uuid) Poller.add('wa:' + uuid, async () => { try { const d = await api.call(`/wa-ready/orders/${uuid}`); const o = d.data?.order; if (o?.latest_code) { Poller.remove('wa:' + uuid); showOtpModal({ formatted_number: o.phone, latest_code: o.latest_code, order_uuid: uuid }); } if (o?.status === 'completed' || o?.status === 'failed') Poller.remove('wa:' + uuid); loadWAOrders(); } catch (e) {} }, 4000);
+  } catch (e) { Sound.error(); Toast.show(e.message, { type: 'error' }); }
 }
-
 async function loadWAOrders() {
-  const box = $('waOrders'); if (!box) return;
-  try {
-    const r = await api.call('/wa-ready/orders');
-    const list = r.data?.orders || [];
-    box.innerHTML = list.length ? list.map(o => `
-      <div class="card plain" style="margin-bottom:10px">
-        <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
-          <div>
-            <div style="font-weight:700;font-size:15px">${esc(o.phone)}</div>
-            ${o.latest_code ? `<div class="otp-big" style="font-size:16px;padding:8px;margin:8px 0;letter-spacing:3px">${esc(o.latest_code)}</div>` : ''}
-          </div>
-          <span class="badge badge-${o.status === 'completed' ? 'success' : o.status === 'failed' ? 'danger' : 'warning'}">${esc(o.status)}</span>
-        </div>
-      </div>`).join('') : `<div class="empty"><div class="empty-title">Belum ada order</div></div>`;
-  } catch (e) { box.innerHTML = `<div class="empty"><div class="empty-title">Gagal memuat</div></div>`; }
+  const b = $('waList'); if (!b) return;
+  try { const r = await api.call('/wa-ready/orders'); const l = r.data?.orders || []; b.innerHTML = l.length ? l.map(o => `<div class="card plain" style="margin-bottom:10px"><div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px"><div><div style="font-weight:700;font-size:15px">${esc(o.phone)}</div>${o.latest_code ? `<div class="otp-big" style="font-size:16px;padding:8px;margin:8px 0;letter-spacing:3px">${esc(o.latest_code)}</div>` : ''}</div><span class="badge badge-${o.status === 'completed' ? 'success' : o.status === 'failed' ? 'danger' : 'warning'}">${esc(o.status)}</span></div></div>`).join('') : `<div class="empty"><div class="empty-title">Belum ada</div></div>`; } catch (e) {}
 }
 
-/* ---------- SMM ---------- */
 Views.smm = async () => {
   $('view-smm').innerHTML = `
-    <div class="card">
-      <div class="card-title">📈 Social Media Marketing</div>
-      <div class="form-group">
-        <label class="form-label">Platform</label>
-        <select class="select" id="smmPlat" onchange="loadSMMTypes()"><option>Memuat...</option></select>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Tipe</label>
-        <select class="select" id="smmType" onchange="loadSMMServices()"><option>Pilih platform</option></select>
-      </div>
-      <div id="smmServices"></div>
-    </div>
-    <div class="card">
-      <div class="card-title">📈 Order SMM
-        <button class="btn btn-secondary btn-sm spacer" onclick="loadSMMOrders()">🔄 Refresh</button>
-      </div>
-      <div id="smmOrders">${Skeleton.list(2)}</div>
-    </div>`;
-  try {
-    const r = await api.call('/smm/platforms', { cache: true });
-    $('smmPlat').innerHTML = '<option value="">Pilih Platform</option>' + (r.data?.platforms || []).map(p => `<option value="${esc(p.key)}">${esc(p.label)} (${p.total || 0})</option>`).join('');
-  } catch (e) { /* silent */ }
+    <div class="card"><div class="card-title">📈 SMM</div>
+      <div class="form-group"><label class="form-label">Platform</label><select class="select" id="smmPlat" onchange="loadSMMTypes()"><option>Memuat...</option></select></div>
+      <div class="form-group"><label class="form-label">Tipe</label><select class="select" id="smmType" onchange="loadSMMServices()"><option>Pilih platform</option></select></div>
+      <div id="smmSvc"></div></div>
+    <div class="card"><div class="card-title">📈 Order<button class="btn btn-secondary btn-sm spacer" onclick="loadSMMOrders()">🔄</button></div><div id="smmList">${Skeleton.list(2)}</div></div>`;
+  try { const r = await api.call('/smm/platforms', { cache: true }); $('smmPlat').innerHTML = '<option value="">Pilih</option>' + (r.data?.platforms || []).map(p => `<option value="${esc(p.key)}">${esc(p.label)} (${p.total || 0})</option>`).join(''); } catch (e) {}
   loadSMMOrders();
 };
-
 async function loadSMMTypes() {
-  const plat = $('smmPlat').value; if (!plat) return;
-  try {
-    const r = await api.call('/smm/platforms', { cache: true });
-    const p = (r.data?.platforms || []).find(x => x.key === plat);
-    $('smmType').innerHTML = '<option value="">Pilih Tipe</option>' + (p?.types || []).map(t => `<option value="${esc(t.type)}">${esc(t.type)} (${t.total})</option>`).join('');
-  } catch (e) { /* silent */ }
+  const p = $('smmPlat').value; if (!p) return;
+  try { const r = await api.call('/smm/platforms', { cache: true }); const pp = (r.data?.platforms || []).find(x => x.key === p); $('smmType').innerHTML = '<option value="">Pilih</option>' + (pp?.types || []).map(t => `<option value="${esc(t.type)}">${esc(t.type)} (${t.total})</option>`).join(''); } catch (e) {}
 }
-
 async function loadSMMServices() {
-  const plat = $('smmPlat').value, tipe = $('smmType').value;
-  if (!plat || !tipe) return;
-  try {
-    const r = await api.call(`/smm/services?platform=${encodeURIComponent(plat)}&type=${encodeURIComponent(tipe)}`, { cache: true });
-    const list = r.data?.services || [];
-    $('smmServices').innerHTML = list.length ? list.map(s => `
-      <div class="card plain" style="margin-bottom:8px">
-        <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap">
-          <div>
-            <div style="font-weight:600;font-size:12px">${esc(s.name)}</div>
-            <div style="font-size:11px;color:var(--muted);margin-top:2px">${esc(s.category || '')} · Min ${s.min} · Max ${s.max}</div>
-          </div>
-          <div style="font-weight:700;color:var(--primary);font-size:12px">${rp(s.price_per_1000)}/1k</div>
-        </div>
-      </div>`).join('') : `<div class="empty"><div class="empty-title">Tidak ada layanan</div></div>`;
-  } catch (e) { /* silent */ }
+  const p = $('smmPlat').value, t = $('smmType').value; if (!p || !t) return;
+  try { const r = await api.call(`/smm/services?platform=${encodeURIComponent(p)}&type=${encodeURIComponent(t)}`, { cache: true }); const l = r.data?.services || []; $('smmSvc').innerHTML = l.length ? l.map(s => `<div class="card plain" style="margin-bottom:8px"><div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap"><div><div style="font-weight:600;font-size:12px">${esc(s.name)}</div><div style="font-size:11px;color:var(--muted);margin-top:2px">${esc(s.category || '')} · ${s.min}–${s.max}</div></div><div style="font-weight:700;color:var(--primary);font-size:12px">${rp(s.price_per_1000)}/1k</div></div></div>`).join('') : `<div class="empty"><div class="empty-title">Tidak ada</div></div>`; } catch (e) {}
 }
-
 async function loadSMMOrders() {
-  const box = $('smmOrders'); if (!box) return;
-  try {
-    const r = await api.call('/smm/orders');
-    const list = r.data?.orders || [];
-    box.innerHTML = list.length ? list.map(o => `
-      <div class="card plain" style="margin-bottom:8px">
-        <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap">
-          <div>
-            <div style="font-weight:600;font-size:12px">${esc(o.service_name || 'Order')}</div>
-            <div style="font-size:11px;color:var(--muted);margin-top:2px">${esc(o.target || '-')} · Qty ${o.quantity || '-'}</div>
-          </div>
-          <span class="badge badge-${o.status === 'completed' ? 'success' : o.status === 'in_progress' ? 'warning' : 'secondary'}">${esc(o.status)}</span>
-        </div>
-      </div>`).join('') : `<div class="empty"><div class="empty-title">Belum ada order</div></div>`;
-  } catch (e) { box.innerHTML = `<div class="empty"><div class="empty-title">Gagal memuat</div></div>`; }
+  const b = $('smmList'); if (!b) return;
+  try { const r = await api.call('/smm/orders'); const l = r.data?.orders || []; b.innerHTML = l.length ? l.map(o => `<div class="card plain" style="margin-bottom:8px"><div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap"><div><div style="font-weight:600;font-size:12px">${esc(o.service_name || 'Order')}</div><div style="font-size:11px;color:var(--muted);margin-top:2px">${esc(o.target || '-')} · Qty ${o.quantity || '-'}</div></div><span class="badge badge-${o.status === 'completed' ? 'success' : o.status === 'in_progress' ? 'warning' : 'secondary'}">${esc(o.status)}</span></div></div>`).join('') : `<div class="empty"><div class="empty-title">Belum ada</div></div>`; } catch (e) {}
 }
 
-/* ---------- REFUND ---------- */
 Views.refund = async () => {
   $('view-refund').innerHTML = `
-    <div class="card">
-      <div class="card-title">💸 Refund Eligible
-        <button class="btn btn-secondary btn-sm spacer" onclick="Views.refund()">🔄</button>
-      </div>
-      <div id="refundEligible">${Skeleton.list(2)}</div>
-    </div>
-    <div class="card">
-      <div class="card-title">💸 Riwayat Refund</div>
-      <div id="refundHist">${Skeleton.list(2)}</div>
-    </div>`;
-  try {
-    const r = await api.call('/refunds/eligible');
-    const vn = r.data?.vn || [], q = r.data?.quota || {};
-    $('refundEligible').innerHTML = `
-      <div class="card plain" style="margin-bottom:12px">
-        <div class="pay-line"><span class="lbl">Daily Limit</span><span class="val">${q.daily_left || 0} / ${q.daily_limit || 0}</span></div>
-        <div class="pay-line"><span class="lbl">Monthly Limit</span><span class="val">${q.monthly_left || 0} / ${q.monthly_limit || 0}</span></div>
-      </div>
-      ${vn.length ? vn.map(x => `
-        <div class="card plain" style="margin-bottom:8px">
-          <div class="mono" style="font-size:11px;font-weight:600">${esc(x.order_uuid)}</div>
-          <div style="font-size:11px;color:var(--muted);margin-top:3px">${rp(x.amount)} · ${esc(x.created_at)}</div>
-        </div>`).join('') : `<div class="empty"><div class="empty-title">Tidak ada yang eligible</div></div>`}`;
-  } catch (e) { /* silent */ }
-  try {
-    const r = await api.call('/refunds');
-    const list = r.data?.refunds || [];
-    $('refundHist').innerHTML = list.length ? list.map(x => `
-      <div class="card plain" style="margin-bottom:8px">
-        <div style="display:flex;justify-content:space-between;gap:10px">
-          <div>
-            <div class="mono" style="font-size:11px;font-weight:600">${esc(x.order_uuid)}</div>
-            <div style="font-size:11px;color:var(--muted);margin-top:2px">${esc(x.type || '')} · ${rp(x.amount)}</div>
-          </div>
-          <span class="badge badge-${x.status === 'approved' ? 'success' : x.status === 'rejected' ? 'danger' : 'warning'}">${esc(x.status)}</span>
-        </div>
-      </div>`).join('') : `<div class="empty"><div class="empty-title">Belum ada refund</div></div>`;
-  } catch (e) { /* silent */ }
+    <div class="card"><div class="card-title">💸 Eligible<button class="btn btn-secondary btn-sm spacer" onclick="Views.refund()">🔄</button></div><div id="refEl">${Skeleton.list(2)}</div></div>
+    <div class="card"><div class="card-title">💸 Riwayat</div><div id="refHist">${Skeleton.list(2)}</div></div>`;
+  try { const r = await api.call('/refunds/eligible'); const vn = r.data?.vn || [], q = r.data?.quota || {};
+    $('refEl').innerHTML = `<div class="card plain" style="margin-bottom:12px"><div class="pay-line"><span class="lbl">Daily</span><span class="val">${q.daily_left || 0}/${q.daily_limit || 0}</span></div><div class="pay-line"><span class="lbl">Monthly</span><span class="val">${q.monthly_left || 0}/${q.monthly_limit || 0}</span></div></div>${vn.length ? vn.map(x => `<div class="card plain" style="margin-bottom:8px"><div class="mono" style="font-size:11px;font-weight:600">${esc(x.order_uuid)}</div><div style="font-size:11px;color:var(--muted);margin-top:3px">${rp(x.amount)} · ${esc(x.created_at)}</div></div>`).join('') : `<div class="empty"><div class="empty-title">Tidak ada eligible</div></div>`}`;
+  } catch (e) {}
+  try { const r = await api.call('/refunds'); const l = r.data?.refunds || []; $('refHist').innerHTML = l.length ? l.map(x => `<div class="card plain" style="margin-bottom:8px"><div style="display:flex;justify-content:space-between;gap:10px"><div><div class="mono" style="font-size:11px;font-weight:600">${esc(x.order_uuid)}</div><div style="font-size:11px;color:var(--muted);margin-top:2px">${esc(x.type || '')} · ${rp(x.amount)}</div></div><span class="badge badge-${x.status === 'approved' ? 'success' : x.status === 'rejected' ? 'danger' : 'warning'}">${esc(x.status)}</span></div></div>`).join('') : `<div class="empty"><div class="empty-title">Belum ada</div></div>`; } catch (e) {}
 };
-
 async function requestRefund(uuid) {
   if (!confirm('Ajukan refund?')) return;
-  try { await api.call(`/refunds/${uuid}`, { method: 'POST', body: { reason: 'User request' } }); Toast.show('✅ Refund diajukan', { type: 'success' }); }
-  catch (e) { Toast.show(e.message, { type: 'error' }); }
+  try { await api.call(`/refunds/${uuid}`, { method: 'POST', body: { reason: 'User request' } }); Sound.success(); Toast.show('✅ Diajukan', { type: 'success' }); } catch (e) { Sound.error(); Toast.show(e.message, { type: 'error' }); }
 }
 
-/* =====================================================
-   DEPOSIT — THE STAR
-===================================================== */
-let depositState = null;
-let depositTimer = null;
-let depositPollId = null;
-let methodsCache = [];
-
+/* DEPOSIT */
+let depState = null, depTimer = null;
 Views.deposit = () => {
-  const saved = JSON.parse(localStorage.getItem('depositForm') || '{}');
+  const saved = (() => { try { return JSON.parse(localStorage.getItem('depForm') || '{}'); } catch { return {}; } })();
   const amt = saved.amount || 50000;
-
   $('view-deposit').innerHTML = `
     <div class="dep-grid">
       <div class="dep-form">
-        <div class="card-title">💳 Deposit Saldo</div>
+        <div class="card-title">💳 Deposit</div>
         <div class="form-group">
-          <label class="form-label">Jumlah Deposit</label>
+          <label class="form-label">Jumlah</label>
           <div class="preset-row">
             <button class="preset ${amt === 10000 ? 'active' : ''}" onclick="setPreset(10000,this)">Rp 10.000</button>
             <button class="preset ${amt === 50000 ? 'active' : ''}" onclick="setPreset(50000,this)">Rp 50.000</button>
@@ -1452,324 +1693,161 @@ Views.deposit = () => {
           <input class="input" type="number" id="depAmt" value="${amt}" min="10000" step="1000" oninput="onAmtInput(this.value)">
         </div>
         <div class="form-group">
-          <label class="form-label">Metode Pembayaran</label>
+          <label class="form-label">Metode</label>
           <div class="method-list" id="methodList">${Skeleton.lines(4)}</div>
           <select class="select" id="depMethod" style="display:none"></select>
         </div>
         <button class="btn btn-primary btn-block" id="btnDeposit" onclick="createDeposit()">💳 Buat Deposit</button>
-        <button class="btn btn-warning btn-block" style="margin-top:8px" onclick="createCrypto()">₿ Deposit Crypto (USD)</button>
-        <div class="dep-hint">
-          <strong>ℹ️ Info</strong>
-          Min Rp 10.000 · Saldo otomatis ditambahkan setelah pembayaran terkonfirmasi.
-        </div>
+        <button class="btn btn-warning btn-block" style="margin-top:8px" onclick="createCrypto()">₿ Crypto (USD)</button>
+        <div class="dep-hint"><strong>ℹ️ Info</strong>Min Rp 10.000 · Saldo otomatis ditambahkan setelah pembayaran terkonfirmasi.</div>
       </div>
-
       <div>
         <div id="depResultBox" style="display:none"></div>
         <div id="depPlaceholder" style="display:flex;align-items:center;justify-content:center;background:var(--surface-2);border:2px dashed var(--border);border-radius:var(--r);min-height:400px;padding:30px;text-align:center;color:var(--muted)">
-          <div>
-            <div style="font-size:56px;opacity:.3;margin-bottom:12px">💳</div>
-            <div style="font-weight:600;font-size:14px;color:var(--text-2);margin-bottom:4px">Belum ada transaksi</div>
-            <div style="font-size:12px">Isi form untuk mulai deposit</div>
-          </div>
+          <div><div style="font-size:56px;opacity:.3;margin-bottom:12px">💳</div><div style="font-weight:600;font-size:14px;color:var(--text-2);margin-bottom:4px">Belum ada transaksi</div><div style="font-size:12px">Isi form untuk mulai</div></div>
         </div>
       </div>
     </div>
-    <div class="card" style="margin-top:20px">
-      <div class="card-title">💳 Riwayat Transaksi
-        <button class="btn btn-secondary btn-sm spacer" onclick="loadTx()">🔄</button>
-      </div>
-      <div id="txList">${Skeleton.list(3)}</div>
-    </div>
-  `;
-  loadMethods();
-  loadTx();
+    <div class="card" style="margin-top:20px"><div class="card-title">💳 Riwayat Transaksi<button class="btn btn-secondary btn-sm spacer" onclick="loadTx()">🔄</button><button class="btn btn-ghost btn-sm" onclick="exportTxCSV()">📥 CSV</button></div><div id="txList">${Skeleton.list(3)}</div></div>`;
+  loadMethods(); loadTx();
 };
-
-function setPreset(amount, btn) {
-  $('depAmt').value = amount;
-  qsa('.preset').forEach(p => p.classList.remove('active'));
-  btn?.classList.add('active');
-  saveDepositForm();
-}
-function onAmtInput(v) {
-  const n = parseInt(v) || 0;
-  qsa('.preset').forEach(p => {
-    const amt = parseInt(p.textContent.replace(/\D/g, ''));
-    p.classList.toggle('active', amt === n);
-  });
-  saveDepositForm();
-}
-function saveDepositForm() {
-  localStorage.setItem('depositForm', JSON.stringify({
-    amount: parseInt($('depAmt')?.value) || 50000,
-    methodId: parseInt($('depMethod')?.value) || 0
-  }));
-}
-
+function setPreset(v, el) { $('depAmt').value = v; qsa('.preset').forEach(p => p.classList.remove('active')); el?.classList.add('active'); saveDepForm(); }
+function onAmtInput(v) { const n = parseInt(v) || 0; qsa('.preset').forEach(p => p.classList.toggle('active', parseInt(p.textContent.replace(/\D/g, '')) === n)); saveDepForm(); }
+function saveDepForm() { try { localStorage.setItem('depForm', JSON.stringify({ amount: parseInt($('depAmt')?.value) || 50000, methodId: parseInt($('depMethod')?.value) || 0 })); } catch {} }
 async function loadMethods() {
-  const box = $('methodList'); if (!box) return;
-  try {
-    const r = await api.call('/payment-methods', { cache: true });
-    methodsCache = r.data || [];
-    if (!methodsCache.length) { box.innerHTML = `<div class="empty"><div class="empty-title">Tidak ada metode</div></div>`; return; }
-    const saved = JSON.parse(localStorage.getItem('depositForm') || '{}');
-    const activeId = saved.methodId || methodsCache[0].id;
-    box.innerHTML = methodsCache.map(m => `
-      <div class="method ${m.id === activeId ? 'active' : ''}" data-id="${m.id}" onclick="selectMethod(${m.id},this)">
-        <div>
-          <div class="method-name">${esc(m.name)}</div>
-          <div class="method-meta">${esc(m.category_name || '')} · Exp ${m.expiration_time || '—'}m</div>
-        </div>
-        <div class="method-fee">${m.fee ? 'Fee ' + rp(m.fee) : 'Instan'}</div>
-      </div>`).join('');
-    $('depMethod').innerHTML = `<option value="${activeId}">${activeId}</option>`;
-    $('depMethod').value = activeId;
-  } catch (e) { box.innerHTML = `<div class="empty"><div class="empty-title">Gagal memuat</div></div>`; }
+  const b = $('methodList'); if (!b) return;
+  try { const r = await api.call('/payment-methods', { cache: true }); const l = r.data || []; if (!l.length) { b.innerHTML = `<div class="empty"><div class="empty-title">Tidak ada</div></div>`; return; }
+    const saved = (() => { try { return JSON.parse(localStorage.getItem('depForm') || '{}'); } catch { return {}; } })();
+    const act = saved.methodId || l[0].id;
+    b.innerHTML = l.map(m => `<div class="method ${m.id === act ? 'active' : ''}" data-id="${m.id}" onclick="selectMethod(${m.id},this)"><div><div class="method-name">${esc(m.name)}</div><div class="method-meta">${esc(m.category_name || '')} · Exp ${m.expiration_time || '—'}m</div></div><div class="method-fee">${m.fee ? 'Fee ' + rp(m.fee) : 'Instan'}</div></div>`).join('');
+    $('depMethod').innerHTML = `<option value="${act}">${act}</option>`; $('depMethod').value = act;
+  } catch (e) { b.innerHTML = `<div class="empty"><div class="empty-title">Gagal</div></div>`; }
 }
-function selectMethod(id, el) {
-  qsa('.method').forEach(m => m.classList.remove('active'));
-  el?.classList.add('active');
-  $('depMethod').value = id;
-  saveDepositForm();
-}
-
+function selectMethod(id, el) { qsa('.method').forEach(m => m.classList.remove('active')); el?.classList.add('active'); $('depMethod').value = id; saveDepForm(); Sound.click(); }
 async function createDeposit() {
-  const amount = parseInt($('depAmt').value) || 0;
-  const methodId = parseInt($('depMethod').value) || 0;
-  if (amount < 10000) return Toast.show('Minimal Rp 10.000', { type: 'warning' });
-  if (!methodId) return Toast.show('Pilih metode', { type: 'warning' });
-
-  const btn = $('btnDeposit');
-  btn.disabled = true; btn.textContent = '⏳ Memproses...';
-  try {
-    const r = await api.call('/deposits', { method: 'POST', body: { amount, method: methodId } });
-    depositState = r.data || {};
-    renderDeposit(depositState);
-    Toast.show('✅ Instruksi pembayaran dibuat', { type: 'success' });
-  } catch (e) { Toast.show(e.message, { type: 'error' }); }
+  const a = parseInt($('depAmt').value) || 0, m = parseInt($('depMethod').value) || 0;
+  if (a < 10000) return Toast.show('Min Rp 10.000', { type: 'warning' });
+  if (!m) return Toast.show('Pilih metode', { type: 'warning' });
+  const btn = $('btnDeposit'); btn.disabled = true; btn.textContent = '⏳ Memproses...';
+  try { const r = await api.call('/deposits', { method: 'POST', body: { amount: a, method: m }, queueIfOffline: true }); depState = r.data || {}; renderDeposit(depState); Sound.success(); Toast.show('✅ Instruksi dibuat', { type: 'success' }); }
+  catch (e) { if (!e.message.includes('queued')) { Sound.error(); Toast.show(e.message, { type: 'error' }); } }
   finally { btn.disabled = false; btn.textContent = '💳 Buat Deposit'; }
 }
-
-function buildQrImg(d) {
-  // Priority chain for QR sources
-  if (d.qr_code_base64) {
-    let b64 = String(d.qr_code_base64).trim();
-    if (!b64.startsWith('data:image')) b64 = 'data:image/png;base64,' + b64.replace(/^data:image\/[a-z]+;base64,/, '');
-    return `<img src="${b64}" alt="QRIS">`;
-  }
-  if (d.qr_url) return `<img src="${esc(d.qr_url)}" alt="QRIS">`;
-  if (d.qr_string) return `<img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&margin=10&data=${encodeURIComponent(d.qr_string)}" alt="QRIS">`;
-  if (d.qr_code) {
-    const s = String(d.qr_code);
-    if (s.startsWith('http')) return `<img src="${esc(s)}" alt="QRIS">`;
-    if (s.length > 50 && /^[A-Za-z0-9+/=]+$/.test(s)) return `<img src="data:image/png;base64,${s}" alt="QRIS">`;
-    return `<img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&margin=10&data=${encodeURIComponent(s)}" alt="QRIS">`;
-  }
+function buildQr(d) {
+  if (d.qr_code_base64) { let b = String(d.qr_code_base64).trim(); if (!b.startsWith('data:')) b = 'data:image/png;base64,' + b.replace(/^data:image\/[a-z]+;base64,/, ''); return `<img src="${b}" alt="QR">`; }
+  if (d.qr_url) return `<img src="${esc(d.qr_url)}" alt="QR">`;
+  if (d.qr_string) return `<img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&margin=10&data=${encodeURIComponent(d.qr_string)}" alt="QR">`;
+  if (d.qr_code) { const s = String(d.qr_code); if (s.startsWith('http')) return `<img src="${esc(s)}" alt="QR">`; if (s.length > 50 && /^[A-Za-z0-9+/=]+$/.test(s)) return `<img src="data:image/png;base64,${s}" alt="QR">`; return `<img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&margin=10&data=${encodeURIComponent(s)}" alt="QR">`; }
   return null;
 }
-
 function renderDeposit(d) {
   $('depPlaceholder').style.display = 'none';
-  const box = $('depResultBox');
-  box.style.display = 'block';
-
-  const total = d.total_amount || d.amount || 0;
-  const payCode = d.payment_code || d.va_number || d.payment_number || '';
-  const status = (d.status || 'pending').toLowerCase();
-  const qrImg = buildQrImg(d);
-
-  const statusMap = {
-    pending: ['badge-warning', 'PENDING'],
-    success: ['badge-success', 'SUCCESS'],
-    failed: ['badge-danger', 'FAILED'],
-    expired: ['badge-danger', 'EXPIRED']
-  };
-  const [badgeClass, badgeText] = statusMap[status] || ['badge-secondary', status.toUpperCase()];
-
+  const box = $('depResultBox'); box.style.display = 'block';
+  const total = d.total_amount || d.amount || 0, payCode = d.payment_code || d.va_number || d.payment_number || '', status = (d.status || 'pending').toLowerCase(), qr = buildQr(d);
+  const bmap = { pending: ['badge-warning', 'PENDING'], success: ['badge-success', 'SUCCESS'], failed: ['badge-danger', 'FAILED'], expired: ['badge-danger', 'EXPIRED'] };
+  const [bc, bt] = bmap[status] || ['badge-secondary', status.toUpperCase()];
   box.innerHTML = `
     <div class="dep-result">
-      <div class="dep-steps">
-        <div class="dep-step done">1. Dibuat</div>
-        <div class="dep-step current" id="step2">2. Menunggu Bayar</div>
-        <div class="dep-step" id="step3">3. Sukses</div>
-      </div>
-
-      <div class="card-title" style="margin-bottom:10px">
-        Instruksi Pembayaran
-        <span class="badge ${badgeClass} spacer" id="depStatusBadge">${badgeText}</span>
-      </div>
-
-      <div style="text-align:center">
-        <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-weight:700">Total Pembayaran</div>
-        <div class="dep-total" id="depTotal">${rp(total)}</div>
-        <button class="copy-btn" onclick="copy('${total}')">📋 Copy Nominal</button>
-      </div>
-
-      <div class="qr-box">
-        ${qrImg || `<div class="qr-ph">${d.payment_url ? 'Gunakan tombol di bawah untuk membayar' : 'QR tidak tersedia'}</div>`}
-        <div class="qr-label">Scan QRIS</div>
-        <div class="qr-badge">✓ Semua e-wallet & m-banking</div>
-        <div class="qr-actions">
-          <button class="btn btn-secondary btn-sm" onclick="copy('${payCode || d.uniqcode_tx || ''}')">📋 Copy Kode</button>
-        </div>
-      </div>
-
-      <div>
-        ${payCode ? `<div class="pay-line"><span class="lbl">Kode Bayar</span><span class="val">${esc(payCode)}<button class="copy-btn" onclick="copy('${esc(payCode)}')">📋</button></span></div>` : ''}
-        ${d.uniqcode_tx ? `<div class="pay-line"><span class="lbl">Kode Transaksi</span><span class="val" style="font-size:10px">${esc(d.uniqcode_tx)}<button class="copy-btn" onclick="copy('${esc(d.uniqcode_tx)}')">📋</button></span></div>` : ''}
-        <div class="pay-line"><span class="lbl">Total</span><span class="val" style="color:var(--primary)">${rp(total)}<button class="copy-btn" onclick="copy('${total}')">📋</button></span></div>
-        ${d.expires_at_iso || d.expires_at ? `<div class="pay-line"><span class="lbl">Kedaluwarsa</span><span class="val" style="font-size:10px">${esc(d.expires_at_iso || d.expires_at)}</span></div>` : ''}
-      </div>
-
-      ${d.payment_url ? `<div style="text-align:center;margin-top:12px"><a href="${esc(d.payment_url)}" target="_blank" rel="noopener" class="btn btn-primary" style="text-decoration:none">🔗 Buka Halaman Bayar</a></div>` : ''}
-
-      <div style="text-align:center;margin-top:14px">
-        <div class="countdown" id="depCountdown">⏱️ --:--:--</div>
-      </div>
-
-      <div style="display:flex;gap:8px;justify-content:center;margin-top:12px">
-        <button class="btn btn-secondary btn-sm" onclick="checkDepositStatus()">🔄 Cek Status</button>
-        <button class="btn btn-danger btn-sm" onclick="resetDeposit()">✖ Tutup</button>
-      </div>
-
-      <div class="dep-hint">
-        <strong>⚠️ Penting</strong>
-        Transfer sesuai nominal <b>persis</b> agar sistem mendeteksi pembayaran Anda secara otomatis. Status akan update dalam beberapa detik setelah terkonfirmasi.
-      </div>
+      <div class="dep-steps"><div class="dep-step done">1. Dibuat</div><div class="dep-step current" id="step2">2. Bayar</div><div class="dep-step" id="step3">3. Sukses</div></div>
+      <div class="card-title" style="margin-bottom:10px">Instruksi <span class="badge ${bc} spacer" id="depStatusBadge">${bt}</span></div>
+      <div style="text-align:center"><div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-weight:700">Total</div><div class="dep-total" id="depTotal">${rp(total)}</div><button class="copy-btn" onclick="copy('${total}')">📋 Copy</button></div>
+      <div class="qr-box">${qr || `<div class="qr-ph">${d.payment_url ? 'Buka link' : 'QR tidak tersedia'}</div>`}<div class="qr-label">Scan QRIS</div><div class="qr-badge">✓ Semua e-wallet & m-banking</div></div>
+      ${payCode ? `<div class="pay-line"><span class="lbl">Kode</span><span class="val">${esc(payCode)}<button class="copy-btn" onclick="copy('${esc(payCode)}')">📋</button></span></div>` : ''}
+      ${d.uniqcode_tx ? `<div class="pay-line"><span class="lbl">TX</span><span class="val" style="font-size:10px">${esc(d.uniqcode_tx)}<button class="copy-btn" onclick="copy('${esc(d.uniqcode_tx)}')">📋</button></span></div>` : ''}
+      <div class="pay-line"><span class="lbl">Total</span><span class="val" style="color:var(--primary)">${rp(total)}</span></div>
+      ${d.payment_url ? `<div style="text-align:center;margin-top:12px"><a href="${esc(d.payment_url)}" target="_blank" class="btn btn-primary" style="text-decoration:none">🔗 Buka Halaman</a></div>` : ''}
+      <div style="text-align:center;margin-top:14px"><div class="countdown" id="depCountdown">⏱️ --:--</div></div>
+      <div style="display:flex;gap:8px;justify-content:center;margin-top:12px"><button class="btn btn-secondary btn-sm" onclick="checkDepStatus()">🔄 Cek</button><button class="btn btn-danger btn-sm" onclick="resetDep()">✖</button></div>
+      <div class="dep-hint"><strong>⚠️ Penting</strong>Transfer persis nominal agar sistem mendeteksi otomatis.</div>
     </div>`;
-
-  startCountdown(d);
-  startDepositPolling(d);
+  startDepTimer(d); startDepPoll(d);
 }
-
-function startCountdown(d) {
-  clearInterval(depositTimer);
+function startDepTimer(d) {
+  clearInterval(depTimer);
   const el = $('depCountdown'); if (!el) return;
-
-  let expiry = 0;
+  let exp = 0;
   const iso = d.expires_at_iso || d.expires_at;
-  if (iso) { const p = Date.parse(iso.replace(' ', 'T')); if (!isNaN(p)) expiry = p; }
-  if (!expiry && d.expiration_time) expiry = Date.now() + parseInt(d.expiration_time) * 60000;
-  if (!expiry && d.expires_in_seconds) expiry = Date.now() + parseInt(d.expires_in_seconds) * 1000;
-
-  if (!expiry) { el.textContent = '⏱️ Tanpa batas'; return; }
-
+  if (iso) { const p = Date.parse(iso.replace(' ', 'T')); if (!isNaN(p)) exp = p; }
+  if (!exp && d.expiration_time) exp = Date.now() + parseInt(d.expiration_time) * 60000;
+  if (!exp && d.expires_in_seconds) exp = Date.now() + parseInt(d.expires_in_seconds) * 1000;
+  if (!exp) { el.textContent = '⏱️ Tanpa batas'; return; }
   const tick = () => {
-    const diff = expiry - Date.now();
-    if (diff <= 0) {
-      el.textContent = '⏱️ Kedaluwarsa';
-      el.classList.add('exp');
-      clearInterval(depositTimer);
-      return;
-    }
-    const h = Math.floor(diff / 3600000);
-    const m = Math.floor((diff % 3600000) / 60000);
-    const s = Math.floor((diff % 60000) / 1000);
+    const diff = exp - Date.now();
+    if (diff <= 0) { el.textContent = '⏱️ Expired'; el.classList.add('exp'); clearInterval(depTimer); return; }
+    const h = Math.floor(diff / 3600000), m = Math.floor((diff % 3600000) / 60000), s = Math.floor((diff % 60000) / 1000);
     el.textContent = `⏱️ ${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
-    if (diff < 5 * 60000) el.classList.add('exp');
-    else el.classList.remove('exp');
+    el.classList.toggle('exp', diff < 5 * 60000);
   };
-  tick();
-  depositTimer = setInterval(tick, 1000);
+  tick(); depTimer = setInterval(tick, 1000);
 }
-
-function startDepositPolling(d) {
+function startDepPoll(d) {
   if (!d.uniqcode_tx) return;
   Poller.remove('deposit');
   Poller.add('deposit', async () => {
-    try {
-      const r = await api.call(`/transactions/${d.uniqcode_tx}`);
-      const st = (r.data?.status || '').toLowerCase();
+    try { const r = await api.call(`/transactions/${d.uniqcode_tx}`); const st = (r.data?.status || '').toLowerCase();
       if (st === 'success') {
-        Poller.remove('deposit');
-        clearInterval(depositTimer);
-        const cd = $('depCountdown');
-        if (cd) { cd.textContent = '✅ Pembayaran Diterima'; cd.classList.add('success'); cd.classList.remove('exp'); }
-        const badge = $('depStatusBadge');
-        if (badge) { badge.className = 'badge badge-success spacer'; badge.textContent = 'SUCCESS'; }
-        $('step2')?.classList.remove('current'); $('step2')?.classList.add('done');
-        $('step3')?.classList.add('done');
-        Toast.show('💰 Deposit berhasil! Saldo ditambahkan', { type: 'success', duration: 6000 });
-        Notification.push('Deposit berhasil', `+ ${rp(d.total_amount || d.amount)}`);
-        playSound();
+        Poller.remove('deposit'); clearInterval(depTimer);
+        const cd = $('depCountdown'); if (cd) { cd.textContent = '✅ Diterima'; cd.classList.add('success'); }
+        const bg = $('depStatusBadge'); if (bg) { bg.className = 'badge badge-success spacer'; bg.textContent = 'SUCCESS'; }
+        $('step2')?.classList.add('done'); $('step2')?.classList.remove('current'); $('step3')?.classList.add('done');
+        Sound.success(); Notif.push('Deposit berhasil', '+ ' + rp(d.total_amount || d.amount));
+        Toast.show('💰 Deposit sukses!', { type: 'success', duration: 6000 });
         loadBalance(); loadTx();
-      } else if (st === 'failed' || st === 'expired') {
-        Poller.remove('deposit');
-        clearInterval(depositTimer);
-        Toast.show('❌ Pembayaran ' + st, { type: 'error' });
-      }
-    } catch (e) { /* silent */ }
+      } else if (st === 'failed' || st === 'expired') { Poller.remove('deposit'); clearInterval(depTimer); Sound.error(); Toast.show('❌ ' + st, { type: 'error' }); }
+    } catch (e) {}
   }, 8000);
 }
-
-function playSound() {
-  try {
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    [523.25, 659.25, 783.99].forEach((freq, i) => {
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.connect(gain); gain.connect(ctx.destination);
-      osc.frequency.value = freq;
-      gain.gain.setValueAtTime(0.15, ctx.currentTime + i * 0.1);
-      gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + i * 0.1 + 0.3);
-      osc.start(ctx.currentTime + i * 0.1);
-      osc.stop(ctx.currentTime + i * 0.1 + 0.3);
-    });
-  } catch (e) { /* silent */ }
+async function checkDepStatus() {
+  if (!depState?.uniqcode_tx) return Toast.show('Tidak ada aktif', { type: 'warning' });
+  try { const r = await api.call(`/transactions/${depState.uniqcode_tx}`); const st = r.data?.status; if (st === 'success') { Toast.show('✅ Sudah dibayar', { type: 'success' }); loadBalance(); loadTx(); } else Toast.show('Status: ' + st, { type: 'info' }); }
+  catch (e) { Toast.show(e.message, { type: 'error' }); }
 }
+function resetDep() { clearInterval(depTimer); Poller.remove('deposit'); depState = null; $('depResultBox').style.display = 'none'; $('depPlaceholder').style.display = 'flex'; }
+async function createCrypto() { const v = parseFloat(prompt('Jumlah USD (1–10000):', '10')); if (isNaN(v) || v < 1 || v > 10000) return Toast.show('Invalid', { type: 'warning' }); try { const r = await api.call('/deposits/crypto', { method: 'POST', body: { amount: v } }); if (r.data?.checkout_url) { window.open(r.data.checkout_url, '_blank'); Toast.show('✅ Dibuka', { type: 'success' }); } } catch (e) { Toast.show(e.message, { type: 'error' }); } }
 
-async function checkDepositStatus() {
-  if (!depositState?.uniqcode_tx) return Toast.show('Tidak ada deposit aktif', { type: 'warning' });
-  try {
-    const r = await api.call(`/transactions/${depositState.uniqcode_tx}`);
-    const st = r.data?.status;
-    if (st === 'success') { Toast.show('✅ Sudah dibayar', { type: 'success' }); loadBalance(); loadTx(); }
-    else Toast.show('Status: ' + st, { type: 'info' });
-  } catch (e) { Toast.show(e.message, { type: 'error' }); }
-}
-
-function resetDeposit() {
-  clearInterval(depositTimer);
-  Poller.remove('deposit');
-  depositState = null;
-  $('depResultBox').style.display = 'none';
-  $('depPlaceholder').style.display = 'flex';
-}
-
-async function createCrypto() {
-  const val = parseFloat(prompt('Jumlah deposit USD (1–10.000):', '10'));
-  if (isNaN(val) || val < 1 || val > 10000) return Toast.show('Nominal tidak valid', { type: 'warning' });
-  try {
-    const r = await api.call('/deposits/crypto', { method: 'POST', body: { amount: val } });
-    if (r.data?.checkout_url) { window.open(r.data.checkout_url, '_blank'); Toast.show('✅ Checkout dibuka', { type: 'success' }); }
-  } catch (e) { Toast.show(e.message, { type: 'error' }); }
-}
-
+let txCache = [];
 async function loadTx() {
-  const box = $('txList'); if (!box) return;
-  try {
-    const r = await api.call('/transactions');
-    const list = r.data?.transactions || [];
-    box.innerHTML = list.length ? `
-      <table>
-        <thead><tr><th>Kode</th><th>Jumlah</th><th>Status</th><th>Metode</th><th>Waktu</th></tr></thead>
-        <tbody>${list.map(t => `
-          <tr>
-            <td class="mono" style="font-size:10px">${esc(t.uniqcode_tx)}</td>
-            <td><b>${rp(t.total_amount)}</b></td>
-            <td><span class="badge badge-${t.status === 'success' ? 'success' : t.status === 'pending' ? 'warning' : 'danger'}">${esc(t.status)}</span></td>
-            <td style="font-size:11px">${esc(t.payment_method?.name || '-')}</td>
-            <td style="font-size:11px;color:var(--muted)">${esc(t.created_at_iso || '-')}</td>
-          </tr>`).join('')}
-        </tbody>
-      </table>` : `<div class="empty"><div class="empty-title">Belum ada transaksi</div></div>`;
-  } catch (e) { box.innerHTML = `<div class="empty"><div class="empty-title">Gagal memuat</div></div>`; }
+  const b = $('txList'); if (!b) return;
+  try { const r = await api.call('/transactions'); txCache = r.data?.transactions || []; const l = txCache;
+    b.innerHTML = l.length ? `<table><thead><tr><th>Kode</th><th>Jumlah</th><th>Status</th><th>Metode</th><th>Waktu</th></tr></thead><tbody>${l.map(t => `<tr><td class="mono" style="font-size:10px">${esc(t.uniqcode_tx)}</td><td><b>${rp(t.total_amount)}</b></td><td><span class="badge badge-${t.status === 'success' ? 'success' : t.status === 'pending' ? 'warning' : 'danger'}">${esc(t.status)}</span></td><td style="font-size:11px">${esc(t.payment_method?.name || '-')}</td><td style="font-size:11px;color:var(--muted)">${esc(t.created_at_iso || '-')}</td></tr>`).join('')}</tbody></table>` : `<div class="empty"><div class="empty-title">Belum ada transaksi</div></div>`;
+  } catch (e) { b.innerHTML = `<div class="empty"><div class="empty-title">Gagal</div></div>`; }
 }
+function exportTxCSV() { const rows = txCache.map(t => ({ Kode: t.uniqcode_tx, Jumlah: t.total_amount, Status: t.status, Metode: t.payment_method?.name || '', Waktu: t.created_at_iso })); exportCSV(rows, `virtusim-tx-${Date.now()}.csv`); }
 
-/* =====================================================
-   ROUTES REGISTRATION
-===================================================== */
+/* SKELETON */
+const Skeleton = {
+  list(n = 3) { return Array(n).fill(0).map(() => `<div class="skel-row"><div class="skel skel-avatar"></div><div style="flex:1"><div class="skel skel-line w-80"></div><div class="skel skel-line w-40"></div></div></div>`).join(''); },
+  cards(n = 3) { return Array(n).fill(0).map(() => `<div class="skel skel-card"></div>`).join(''); },
+  lines(n = 3) { return Array(n).fill(0).map((_, i) => `<div class="skel skel-line ${i % 2 ? 'w-40' : 'w-80'}"></div>`).join(''); }
+};
+
+/* KEYBOARD SHORTCUTS */
+const Keys = {
+  buffer: '',
+  timer: null,
+  init() {
+    document.addEventListener('keydown', e => {
+      if (e.target.matches('input,textarea,select') || e.ctrlKey || e.metaKey) return;
+      const k = e.key.toLowerCase();
+      if (k === '?') { e.preventDefault(); Help.open(); return; }
+      if (k === 'g') { this.buffer = 'g'; clearTimeout(this.timer); this.timer = setTimeout(() => this.buffer = '', 800); return; }
+      if (this.buffer === 'g') {
+        const routes = { d: 'dashboard', b: 'buyNumber', a: 'activeOrders', h: 'history', p: 'deposit', s: () => Settings.open() };
+        const r = routes[k];
+        if (r) { e.preventDefault(); if (typeof r === 'function') r(); else Router.go(r); this.buffer = ''; }
+      }
+    });
+    document.addEventListener('keydown', e => {
+      if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === 'd') { e.preventDefault(); Debug.toggle(); }
+    });
+  }
+};
+
+/* GLOBAL ERROR */
+window.addEventListener('error', e => console.error('[Global]', e.error || e.message));
+window.addEventListener('unhandledrejection', e => { console.error('[Unhandled]', e.reason); const m = e.reason?.message || 'Error'; if (!/abort|queued/i.test(m)) Toast.show(m, { type: 'error' }); });
+
+/* ROUTES */
 Router.register('dashboard', Views.dashboard);
 Router.register('buyNumber', Views.buyNumber);
 Router.register('activeOrders', Views.activeOrders);
@@ -1781,29 +1859,19 @@ Router.register('smm', Views.smm);
 Router.register('refund', Views.refund);
 Router.register('deposit', Views.deposit);
 
-/* =====================================================
-   BOOT
-===================================================== */
+/* BOOT */
 window.addEventListener('DOMContentLoaded', () => {
-  Toast.init();
-  Notification.init();
-  Theme.init();
-  Modal.init();
-  Cmd.init();
-  Poller.init();
-  Router.init();
+  Notif.init(); Theme.init(); Modal.init(); Cmd.init(); Poller.init(); Conn.init(); Keys.init(); Router.init(); Idle.init();
   loadBalance();
-
-  // Periodic balance refresh
   Poller.add('balance', () => loadBalance(), 30000);
-
-  // Nav buttons
-  qsa('.nav-item').forEach(btn => {
-    btn.onclick = () => Router.go(btn.dataset.view);
-  });
-
-  // Global shortcut hint
-  console.log('%c⚡ VirtusIM ready · Ctrl+K untuk command palette', 'color:#4f46e5;font-weight:bold;font-size:14px');
+  qsa('.nav-item').forEach(btn => btn.onclick = () => { Router.go(btn.dataset.view); Sound.click(); });
+  // Redraw charts on theme change
+  const obs = new MutationObserver(() => { if (Router.current === 'dashboard') Views.dashboard(); });
+  obs.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+  // First-time tour
+  if (!localStorage.getItem('tour_done')) setTimeout(() => Toast.show('👋 Selamat datang! Klik tombol ❓ atau tekan ? untuk memulai tour', { type: 'info', duration: 8000 }), 1500);
+  console.log('%c⚡ VirtusIM 3.0 — Enterprise', 'color:#4f46e5;font-weight:bold;font-size:16px;padding:8px;background:#eef2ff;border-radius:8px');
+  console.log('%cShortcuts: Ctrl+K · Ctrl+Shift+D · g+d/b/a/h/p · ? for help', 'color:#94a3b8;font-size:12px');
 });
 </script>
 </body>
