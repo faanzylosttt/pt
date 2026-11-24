@@ -2,1670 +2,1448 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VirtusIM OTP — Platform Nomor Virtual 24 Jam</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+<meta name="theme-color" content="#05080f">
+<title>ZyanOTPs — Jual Beli Nomor Kosong</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
+/* ============ RESET & TOKENS ============ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg: #0f172a;
-  --bg-soft: #1e293b;
-  --surface: #ffffff;
-  --surface-alt: #f8fafc;
-  --border: #e2e8f0;
-  --text: #0f172a;
-  --muted: #64748b;
-  --primary: #4f46e5;
-  --primary-soft: #eef2ff;
-  --primary-grad: linear-gradient(135deg,#4f46e5 0%,#7c3aed 100%);
-  --success: #10b981;
-  --warning: #f59e0b;
-  --danger: #ef4444;
-  --info: #3b82f6;
-  --radius: 14px;
-  --shadow-sm: 0 1px 2px rgba(15,23,42,.05);
-  --shadow: 0 4px 12px rgba(15,23,42,.08);
-  --shadow-lg: 0 12px 32px rgba(15,23,42,.12);
+  --bg:#05080f;
+  --panel:rgba(255,255,255,.042);
+  --panel-2:rgba(255,255,255,.022);
+  --line:rgba(255,255,255,.08);
+  --line-strong:rgba(255,255,255,.15);
+  --blue:#2f7bff;
+  --blue-2:#5b9bff;
+  --blue-dark:#1b4fd8;
+  --text:#e9eefb;
+  --muted:#8896b3;
+  --green:#25d366;
+  --red:#ff5c6c;
+  --amber:#ffb340;
+  --radius:18px;
+  --shadow:0 24px 60px -24px rgba(0,0,0,.9);
 }
-*{margin:0;padding:0;box-sizing:border-box}
-html,body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:var(--text);background:#f1f5f9;min-height:100vh;-webkit-font-smoothing:antialiased}
-button{font-family:inherit}
-.container{max-width:1440px;margin:0 auto;padding:20px}
-.app-header{
-  background:var(--surface);border-radius:var(--radius);padding:16px 22px;
-  margin-bottom:16px;box-shadow:var(--shadow-sm);border:1px solid var(--border);
-  display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  background:var(--bg);color:var(--text);min-height:100vh;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;position:relative;
+}
+body::before{
+  content:'';position:fixed;inset:0;z-index:-2;pointer-events:none;
+  background:
+    radial-gradient(1000px 520px at 10% -10%, rgba(47,123,255,.22), transparent 62%),
+    radial-gradient(820px 440px at 92% 2%, rgba(27,79,216,.16), transparent 60%),
+    radial-gradient(760px 520px at 50% 112%, rgba(47,123,255,.10), transparent 66%);
+}
+body::after{
+  content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.5;
+  background-image:linear-gradient(rgba(255,255,255,.022) 1px,transparent 1px),
+                   linear-gradient(90deg,rgba(255,255,255,.022) 1px,transparent 1px);
+  background-size:52px 52px;
+  mask-image:radial-gradient(circle at 50% 0%,#000 20%,transparent 78%);
+  -webkit-mask-image:radial-gradient(circle at 50% 0%,#000 20%,transparent 78%);
+}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12);border-radius:20px;border:2px solid var(--bg)}
+::-webkit-scrollbar-thumb:hover{background:rgba(47,123,255,.5)}
+::selection{background:rgba(47,123,255,.35)}
+
+/* ============ LAYOUT ============ */
+.app{max-width:1180px;margin:0 auto;padding:0 20px 70px}
+
+/* ============ TOPBAR ============ */
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  padding:20px 0 16px;position:relative;
 }
 .brand{display:flex;align-items:center;gap:12px}
-.brand-logo{
-  width:44px;height:44px;border-radius:12px;background:var(--primary-grad);
-  display:flex;align-items:center;justify-content:center;color:#fff;font-size:22px;font-weight:800;
+.logo{
+  width:46px;height:46px;border-radius:14px;flex:0 0 auto;
+  background:linear-gradient(140deg,#2f7bff,#0e3bb0);
+  display:grid;place-items:center;font-weight:800;font-size:21px;color:#fff;
+  box-shadow:0 10px 28px -10px rgba(47,123,255,.95), inset 0 1px 0 rgba(255,255,255,.35);
+  letter-spacing:-.5px;
 }
-.brand h1{font-size:18px;font-weight:800;letter-spacing:-.01em}
-.brand p{font-size:12px;color:var(--muted);margin-top:2px}
-.brand-status{display:flex;align-items:center;gap:10px}
-.pill{
-  display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:99px;
-  font-size:12px;font-weight:600;background:#ecfdf5;color:#059669;border:1px solid #a7f3d0;
+.brand h1{font-size:19px;font-weight:800;letter-spacing:-.4px;line-height:1.1}
+.brand h1 span{color:var(--blue-2)}
+.brand p{font-size:11.5px;color:var(--muted);margin-top:2px;letter-spacing:.2px}
+.top-actions{display:flex;align-items:center;gap:10px}
+.saldo-chip{
+  display:flex;align-items:center;gap:10px;cursor:pointer;
+  background:linear-gradient(180deg,rgba(47,123,255,.16),rgba(47,123,255,.06));
+  border:1px solid rgba(47,123,255,.34);
+  padding:9px 14px;border-radius:14px;transition:.2s;user-select:none;
 }
-.pill-dot{width:8px;height:8px;border-radius:50%;background:#10b981;box-shadow:0 0 0 3px rgba(16,185,129,.2);animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.55}}
+.saldo-chip:hover{border-color:rgba(47,123,255,.65);transform:translateY(-1px)}
+.saldo-chip .label{font-size:10.5px;color:var(--muted);display:block;letter-spacing:.6px;text-transform:uppercase}
+.saldo-chip .value{font-size:15px;font-weight:800;color:#fff;letter-spacing:-.3px}
+.saldo-chip .plus{
+  width:24px;height:24px;border-radius:8px;display:grid;place-items:center;
+  background:var(--blue);color:#fff;font-weight:800;font-size:15px;line-height:1;
+  box-shadow:0 4px 12px -4px rgba(47,123,255,.9);
+}
+.icon-btn{
+  width:40px;height:40px;border-radius:12px;border:1px solid var(--line-strong);
+  background:var(--panel);color:var(--muted);font-size:17px;cursor:pointer;transition:.2s;
+  display:grid;place-items:center;
+}
+.icon-btn:hover{color:#fff;border-color:rgba(47,123,255,.5);background:rgba(47,123,255,.1)}
 
-.balance-card{
-  background:var(--primary-grad);color:#fff;border-radius:var(--radius);padding:24px 28px;
-  margin-bottom:16px;box-shadow:var(--shadow);display:flex;justify-content:space-between;
-  align-items:center;gap:20px;flex-wrap:wrap;position:relative;overflow:hidden;
+/* ============ TABS ============ */
+.tabs{
+  display:flex;gap:6px;padding:6px;border-radius:16px;margin-bottom:26px;
+  background:rgba(255,255,255,.028);border:1px solid var(--line);
+  overflow-x:auto;scrollbar-width:none;
 }
-.balance-card::after{
-  content:"";position:absolute;right:-60px;top:-60px;width:220px;height:220px;
-  border-radius:50%;background:rgba(255,255,255,.08);pointer-events:none;
-}
-.balance-label{font-size:13px;opacity:.85;font-weight:500;letter-spacing:.02em}
-.balance-amount{font-size:34px;font-weight:800;margin-top:4px;letter-spacing:-.02em}
-.balance-sub{font-size:12px;opacity:.8;margin-top:6px}
-.balance-actions{display:flex;gap:10px;flex-wrap:wrap;position:relative;z-index:1}
-.btn-ghost{
-  background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);color:#fff;
-  padding:10px 16px;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;
-  transition:all .2s;display:inline-flex;align-items:center;gap:6px;
-}
-.btn-ghost:hover{background:rgba(255,255,255,.28)}
-
-.alert{padding:12px 16px;border-radius:10px;margin-bottom:12px;font-size:14px;font-weight:500;display:none;border-left:4px solid}
-.alert-success{background:#ecfdf5;color:#065f46;border-color:var(--success)}
-.alert-error{background:#fef2f2;color:#991b1b;border-color:var(--danger)}
-.alert-info{background:#eff6ff;color:#1e40af;border-color:var(--info)}
-
-.tabs{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;background:var(--surface);padding:8px;border-radius:var(--radius);box-shadow:var(--shadow-sm);border:1px solid var(--border)}
+.tabs::-webkit-scrollbar{display:none}
 .tab{
-  padding:10px 16px;background:transparent;border:none;border-radius:9px;cursor:pointer;
-  font-size:13px;font-weight:600;color:var(--muted);transition:all .2s;white-space:nowrap;
+  flex:1 0 auto;padding:11px 18px;border-radius:11px;border:1px solid transparent;
+  background:transparent;color:var(--muted);font-family:inherit;font-size:13.5px;
+  font-weight:600;cursor:pointer;transition:.2s;white-space:nowrap;
 }
-.tab:hover{background:var(--surface-alt);color:var(--text)}
-.tab.active{background:var(--primary);color:#fff;box-shadow:0 4px 10px rgba(79,70,229,.3)}
-
-.content{background:var(--surface);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow-sm);border:1px solid var(--border)}
-.section{display:none}
-.section.active{display:block}
-
-.card{background:var(--surface-alt);border-radius:12px;padding:20px;margin-bottom:14px;border:1px solid var(--border)}
-.card-title{font-size:15px;font-weight:700;color:var(--text);margin-bottom:16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.card-title .spacer{margin-left:auto}
-.card.white{background:var(--surface)}
-
-.form-group{margin-bottom:16px}
-.form-group label{display:block;margin-bottom:6px;font-weight:600;color:var(--text);font-size:13px}
-.form-group input,.form-group select,.form-group textarea{
-  width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:9px;
-  font-size:14px;transition:all .2s;background:#fff;font-family:inherit;color:var(--text);
-}
-.form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(79,70,229,.1)}
-
-.btn{padding:11px 20px;border:none;border-radius:9px;font-size:14px;font-weight:600;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:6px;justify-content:center}
-.btn-primary{background:var(--primary-grad);color:#fff;box-shadow:0 4px 12px rgba(79,70,229,.25)}
-.btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(79,70,229,.35)}
-.btn-success{background:var(--success);color:#fff}
-.btn-danger{background:var(--danger);color:#fff}
-.btn-warning{background:var(--warning);color:#fff}
-.btn-secondary{background:#64748b;color:#fff}
-.btn-sm{padding:7px 12px;font-size:12px}
-.btn-block{width:100%}
-
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
-.grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-
-table{width:100%;border-collapse:collapse;margin-top:12px;font-size:14px}
-th,td{padding:12px;text-align:left;border-bottom:1px solid var(--border)}
-th{background:var(--surface-alt);font-weight:600;color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.05em}
-tr:hover{background:var(--surface-alt)}
-
-.badge{display:inline-block;padding:4px 10px;border-radius:99px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.03em}
-.badge-success{background:#ecfdf5;color:#065f46}
-.badge-warning{background:#fffbeb;color:#92400e}
-.badge-danger{background:#fef2f2;color:#991b1b}
-.badge-info{background:#eff6ff;color:#1e40af}
-.badge-secondary{background:#f1f5f9;color:#475569}
-
-.otp-display{
-  background:var(--primary-grad);color:#fff;padding:18px;border-radius:12px;text-align:center;
-  font-size:28px;font-weight:800;letter-spacing:6px;margin:12px 0;font-variant-numeric:tabular-nums;
-}
-.number-display{
-  background:#fff;border:2px dashed var(--primary);padding:14px;border-radius:12px;
-  text-align:center;font-size:22px;font-weight:800;color:var(--primary);margin:12px 0;
-  font-variant-numeric:tabular-nums;letter-spacing:.5px;
+.tab:hover{color:#cfdcf5;background:rgba(255,255,255,.04)}
+.tab.active{
+  background:linear-gradient(180deg,rgba(47,123,255,.26),rgba(47,123,255,.1));
+  border-color:rgba(47,123,255,.45);color:#bcd4ff;
+  box-shadow:0 8px 22px -14px rgba(47,123,255,.9), inset 0 1px 0 rgba(255,255,255,.09);
 }
 
-.service-card{
-  background:#fff;border-radius:12px;padding:14px;text-align:center;cursor:pointer;
-  transition:all .2s;border:1.5px solid var(--border);position:relative;
-}
-.service-card:hover{border-color:var(--primary);transform:translateY(-2px);box-shadow:var(--shadow)}
-.service-card.selected{border-color:var(--primary);background:var(--primary-soft)}
-.service-icon{
-  width:48px;height:48px;border-radius:12px;background:var(--primary-soft);
-  display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:22px;
-}
-.service-name{font-weight:600;font-size:13px}
-
-.country-card{background:#fff;border-radius:10px;padding:14px;border:1.5px solid var(--border);cursor:pointer;transition:all .2s}
-.country-card:hover{border-color:var(--primary)}
-.country-card.selected{border-color:var(--primary);background:var(--primary-soft)}
-
-.toast{
-  position:fixed;bottom:24px;right:24px;padding:14px 22px;background:#0f172a;color:#fff;
-  border-radius:10px;box-shadow:var(--shadow-lg);display:none;z-index:2000;font-size:14px;font-weight:500;
-  max-width:340px;
-}
-
-.modal{display:none;position:fixed;inset:0;background:rgba(15,23,42,.65);z-index:1000;justify-content:center;align-items:center;padding:16px;backdrop-filter:blur(4px)}
-.modal.show{display:flex}
-.modal-content{background:#fff;border-radius:var(--radius);padding:28px;max-width:520px;width:100%;max-height:88vh;overflow-y:auto;box-shadow:var(--shadow-lg)}
-.modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
-.modal-header h2{font-size:18px;font-weight:700}
-.modal-close{background:var(--surface-alt);border:none;width:34px;height:34px;border-radius:9px;font-size:20px;cursor:pointer;color:var(--muted);display:flex;align-items:center;justify-content:center;transition:all .2s}
-.modal-close:hover{background:var(--border);color:var(--text)}
-
-.search-box{position:relative}
-.search-box input{width:100%;padding:12px 16px 12px 44px;border:1.5px solid var(--border);border-radius:10px;font-size:14px;font-family:inherit}
-.search-box input:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(79,70,229,.1)}
-.search-box::before{content:"🔍";position:absolute;left:15px;top:50%;transform:translateY(-50%);font-size:15px;opacity:.6}
-
-.auto-buy-panel{
-  background:linear-gradient(135deg,rgba(79,70,229,.06) 0%,rgba(124,58,237,.06) 100%);
-  border:1.5px solid var(--primary);border-radius:12px;padding:18px;margin-bottom:18px;
-}
-.auto-buy-status{display:flex;align-items:center;gap:10px;margin-bottom:8px;font-weight:600;font-size:14px}
-.status-dot{width:10px;height:10px;border-radius:50%;background:var(--success);animation:pulse 2s infinite}
-.status-dot.off{background:var(--danger);animation:none}
-.auto-buy-desc{font-size:13px;color:var(--muted);margin-bottom:12px;line-height:1.5}
-
-.empty-state{text-align:center;padding:32px 16px;color:var(--muted)}
-.empty-state-icon{font-size:36px;margin-bottom:8px;opacity:.5}
-
-.copy-btn{background:var(--primary-soft);border:none;color:var(--primary);padding:5px 10px;border-radius:6px;cursor:pointer;font-size:11px;font-weight:600;margin-left:6px;transition:all .2s}
-.copy-btn:hover{background:#ddd6fe}
-
-/* Deposit */
-.deposit-wrapper{display:grid;grid-template-columns:1fr 1fr;gap:20px}
-@media (max-width:860px){.deposit-wrapper{grid-template-columns:1fr}}
-.deposit-instruction{background:var(--surface-alt);border-radius:12px;padding:20px;border:1px solid var(--border)}
-.deposit-total{
-  font-size:30px;font-weight:800;color:var(--primary);text-align:center;
-  margin:4px 0 14px;letter-spacing:-.02em;
-}
-.qr-container{
-  background:#fff;border:2px solid var(--border);border-radius:14px;padding:16px;
-  text-align:center;margin:16px 0;
-}
-.qr-container img{max-width:260px;width:100%;height:auto;border-radius:8px;display:block;margin:0 auto}
-.qr-placeholder{
-  width:260px;height:260px;background:var(--surface-alt);border:2px dashed var(--border);
-  border-radius:8px;display:flex;align-items:center;justify-content:center;
-  color:var(--muted);font-size:13px;text-align:center;padding:20px;margin:0 auto;
-}
-.qr-label{font-size:12px;color:var(--muted);margin-top:10px;text-transform:uppercase;letter-spacing:.05em;font-weight:600}
-.qr-badge{display:inline-block;padding:4px 10px;background:#fef3c7;color:#92400e;border-radius:99px;font-size:11px;font-weight:700;margin-top:8px}
-
-.pay-detail{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--border);font-size:14px}
-.pay-detail:last-child{border-bottom:none}
-.pay-detail .label{color:var(--muted);font-weight:500}
-.pay-detail .value{font-weight:700;color:var(--text);display:flex;align-items:center;gap:8px;font-variant-numeric:tabular-nums}
-.pay-code{
-  font-family:'Courier New',monospace;background:var(--surface-alt);padding:6px 10px;
-  border-radius:6px;border:1px solid var(--border);font-size:14px;letter-spacing:.5px;
-}
-
-.countdown{
-  display:inline-flex;align-items:center;gap:6px;padding:8px 14px;background:#fffbeb;color:#92400e;
-  border-radius:8px;font-weight:700;font-size:14px;border:1px solid #fde68a;font-variant-numeric:tabular-nums;
-}
-.countdown.expired{background:#fef2f2;color:#991b1b;border-color:#fecaca}
-
-.deposit-hint{background:#eff6ff;border:1px solid #bfdbfe;color:#1e40af;border-radius:10px;padding:12px 14px;font-size:13px;line-height:1.6;margin-top:14px}
-.deposit-hint strong{display:block;margin-bottom:4px}
-
-.deposit-form-card{background:var(--surface-alt);border:1px solid var(--border);border-radius:12px;padding:20px;height:fit-content}
-.preset-amounts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
-.preset-btn{
-  padding:10px 6px;background:#fff;border:1.5px solid var(--border);border-radius:8px;
-  cursor:pointer;font-size:12px;font-weight:600;color:var(--text);transition:all .2s;
-}
-.preset-btn:hover{border-color:var(--primary);color:var(--primary)}
-.preset-btn.active{background:var(--primary);color:#fff;border-color:var(--primary)}
-
-.method-list{display:flex;flex-direction:column;gap:8px;max-height:280px;overflow-y:auto;padding-right:4px}
-.method-item{
-  padding:12px 14px;background:#fff;border:1.5px solid var(--border);border-radius:9px;
-  cursor:pointer;transition:all .2s;display:flex;justify-content:space-between;align-items:center;font-size:13px;
-}
-.method-item:hover{border-color:var(--primary);background:var(--primary-soft)}
-.method-item.active{border-color:var(--primary);background:var(--primary-soft);box-shadow:0 0 0 3px rgba(79,70,229,.1)}
-.method-item .method-name{font-weight:600;color:var(--text)}
-.method-item .method-meta{font-size:11px;color:var(--muted);margin-top:2px}
-.method-item .method-fee{font-size:11px;color:var(--success);font-weight:600}
-
-.loading{text-align:center;padding:24px;color:var(--muted);font-size:14px}
-.spinner{width:22px;height:22px;border:3px solid var(--border);border-top-color:var(--primary);border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 10px}
+/* ============ VIEWS ============ */
+.view{display:none;animation:fadeUp .35s ease}
+.view.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes pop{from{opacity:0;transform:scale(.94) translateY(14px)}to{opacity:1;transform:none}}
 @keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pulseDot{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(37,211,102,.5)}50%{opacity:.7;box-shadow:0 0 0 7px rgba(37,211,102,0)}}
 
-@media(max-width:768px){
-  .container{padding:12px}
-  .balance-card{flex-direction:column;align-items:flex-start;text-align:left}
-  .balance-amount{font-size:28px}
-  .grid-2{grid-template-columns:1fr}
-  .content{padding:16px}
-  .tabs{padding:6px;gap:4px}
-  .tab{padding:8px 12px;font-size:12px}
-  .preset-amounts{grid-template-columns:repeat(2,1fr)}
+/* ============ HERO ============ */
+.hero{
+  position:relative;border-radius:26px;padding:52px 40px;margin-bottom:22px;overflow:hidden;
+  background:linear-gradient(150deg,rgba(47,123,255,.16),rgba(10,16,32,.6) 45%,rgba(5,8,15,.9));
+  border:1px solid var(--line-strong);
+  box-shadow:var(--shadow);
+}
+.hero::before{
+  content:'';position:absolute;width:420px;height:420px;right:-120px;top:-180px;border-radius:50%;
+  background:radial-gradient(circle,rgba(47,123,255,.45),transparent 70%);filter:blur(30px);
+}
+.hero-inner{position:relative;z-index:1;max-width:640px}
+.badge{
+  display:inline-flex;align-items:center;gap:7px;padding:6px 13px;border-radius:100px;
+  background:rgba(47,123,255,.13);border:1px solid rgba(47,123,255,.35);
+  font-size:11.5px;font-weight:700;color:#9dc0ff;letter-spacing:.5px;text-transform:uppercase;
+  margin-bottom:20px;
+}
+.badge .dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulseDot 2s infinite}
+.hero h2{
+  font-size:clamp(28px,4.6vw,46px);font-weight:800;line-height:1.1;letter-spacing:-1.4px;
+  margin-bottom:16px;
+}
+.hero h2 em{
+  font-style:normal;
+  background:linear-gradient(100deg,#5b9bff,#2f7bff 55%,#8fb8ff);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.hero p{color:#a3b2cd;font-size:15px;line-height:1.65;margin-bottom:28px;max-width:520px}
+.hero-cta{display:flex;gap:12px;flex-wrap:wrap}
+
+/* ============ BUTTONS ============ */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  padding:12px 22px;border-radius:12px;border:1px solid var(--line-strong);
+  background:var(--panel);color:var(--text);font-weight:600;font-size:14px;
+  cursor:pointer;transition:.2s;font-family:inherit;letter-spacing:.1px;
+}
+.btn:hover{background:rgba(255,255,255,.085);border-color:rgba(255,255,255,.24);transform:translateY(-1px)}
+.btn:active{transform:translateY(0)}
+.btn-primary{
+  background:linear-gradient(135deg,#3a86ff,#1b4fd8);border-color:transparent;color:#fff;
+  box-shadow:0 12px 32px -14px rgba(47,123,255,1);
+}
+.btn-primary:hover{filter:brightness(1.1);background:linear-gradient(135deg,#4a92ff,#2159e6)}
+.btn-ghost{background:transparent}
+.btn-block{width:100%}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none!important;filter:none!important}
+.btn-sm{padding:8px 14px;font-size:12.5px;border-radius:10px}
+
+/* ============ CARDS ============ */
+.card{
+  background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.015));
+  border:1px solid var(--line);border-radius:var(--radius);padding:24px;
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+}
+.card h3{font-size:15px;font-weight:700;margin-bottom:16px;letter-spacing:-.2px;display:flex;align-items:center;gap:9px}
+.card h3 .n{
+  width:22px;height:22px;border-radius:7px;background:rgba(47,123,255,.2);color:#8fb8ff;
+  display:grid;place-items:center;font-size:11.5px;font-weight:800;border:1px solid rgba(47,123,255,.35);
+}
+
+/* ============ STATS ============ */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-bottom:26px}
+.stat{
+  background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.012));
+  border:1px solid var(--line);border-radius:16px;padding:20px;
+  transition:.22s;position:relative;overflow:hidden;
+}
+.stat:hover{border-color:rgba(47,123,255,.4);transform:translateY(-3px)}
+.stat .v{font-size:24px;font-weight:800;letter-spacing:-.8px;color:#fff}
+.stat .k{font-size:11.5px;color:var(--muted);margin-top:5px;letter-spacing:.4px;text-transform:uppercase;font-weight:600}
+
+/* ============ SECTION HEAD ============ */
+.section-head{margin-bottom:22px}
+.section-head h2{font-size:23px;font-weight:800;letter-spacing:-.7px;margin-bottom:6px}
+.section-head p{color:var(--muted);font-size:13.5px;line-height:1.6}
+
+/* ============ FEATURES ============ */
+.feat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin-bottom:26px}
+.feat{
+  background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.012));
+  border:1px solid var(--line);border-radius:16px;padding:22px;transition:.22s;
+}
+.feat:hover{border-color:rgba(47,123,255,.38);transform:translateY(-3px);background:linear-gradient(180deg,rgba(47,123,255,.09),rgba(255,255,255,.012))}
+.feat .ico{
+  width:40px;height:40px;border-radius:12px;display:grid;place-items:center;font-size:18px;
+  background:linear-gradient(140deg,rgba(47,123,255,.3),rgba(47,123,255,.08));
+  border:1px solid rgba(47,123,255,.3);margin-bottom:14px;
+}
+.feat h4{font-size:14.5px;font-weight:700;margin-bottom:7px}
+.feat p{font-size:12.8px;color:var(--muted);line-height:1.6}
+
+/* ============ STEPS ============ */
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px}
+.step{
+  padding:20px;border-radius:16px;border:1px solid var(--line);
+  background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.01));
+  position:relative;
+}
+.step .num{
+  font-size:11px;font-weight:800;letter-spacing:1.4px;color:var(--blue-2);margin-bottom:10px;
+}
+.step h4{font-size:14px;font-weight:700;margin-bottom:6px}
+.step p{font-size:12.5px;color:var(--muted);line-height:1.6}
+
+/* ============ FILTERS ============ */
+.filters{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px}
+.field{display:flex;flex-direction:column;gap:7px;min-width:160px}
+.field.grow{flex:1;min-width:220px}
+.field label{font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.7px;text-transform:uppercase}
+.field input,.field select,.field textarea{
+  width:100%;padding:12px 14px;border-radius:12px;border:1px solid var(--line-strong);
+  background:rgba(255,255,255,.035);color:var(--text);font-family:inherit;font-size:13.5px;
+  outline:none;transition:.2s;
+}
+.field textarea{resize:vertical;min-height:78px;line-height:1.5}
+.field input::placeholder,.field textarea::placeholder{color:#5d6b86}
+.field input:focus,.field select:focus,.field textarea:focus{
+  border-color:rgba(47,123,255,.65);background:rgba(47,123,255,.07);
+  box-shadow:0 0 0 4px rgba(47,123,255,.1);
+}
+.field select option{background:#0b1220;color:var(--text)}
+
+/* ============ SERVICE GRID ============ */
+.svc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:13px}
+.svc{
+  display:flex;align-items:center;gap:13px;padding:15px 16px;border-radius:15px;
+  border:1px solid var(--line);cursor:pointer;transition:.2s;
+  background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.012));
+  position:relative;overflow:hidden;
+}
+.svc::after{
+  content:'';position:absolute;inset:0;border-radius:15px;opacity:0;transition:.25s;
+  background:radial-gradient(220px circle at var(--mx,50%) var(--my,50%),rgba(47,123,255,.14),transparent 70%);
+  pointer-events:none;
+}
+.svc:hover{border-color:rgba(47,123,255,.45);transform:translateY(-2px);box-shadow:0 16px 34px -22px rgba(47,123,255,.9)}
+.svc:hover::after{opacity:1}
+.svc-ico{
+  width:42px;height:42px;border-radius:12px;flex:0 0 auto;display:grid;place-items:center;
+  font-weight:800;font-size:16px;color:#fff;letter-spacing:-.5px;
+  background:linear-gradient(145deg,var(--c,#2f7bff),rgba(0,0,0,.55));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.28),0 6px 16px -8px var(--c,#2f7bff);
+}
+.svc-info{flex:1;min-width:0}
+.svc-info h4{font-size:13.8px;font-weight:700;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.svc-info span{font-size:11.5px;color:var(--muted);display:flex;align-items:center;gap:5px}
+.svc-info span::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green)}
+.svc-price{text-align:right;flex:0 0 auto}
+.svc-price b{display:block;font-size:13.5px;font-weight:800;color:#8fb8ff;letter-spacing:-.3px}
+.svc-price small{font-size:10px;color:var(--muted);letter-spacing:.3px}
+
+/* ============ DEPOSIT ============ */
+.deposit-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}
+.amount-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.amt{
+  padding:14px 8px;border-radius:12px;border:1px solid var(--line-strong);
+  background:rgba(255,255,255,.03);color:var(--text);font-family:inherit;font-size:13px;
+  font-weight:700;cursor:pointer;transition:.2s;
+}
+.amt:hover{border-color:rgba(47,123,255,.5);background:rgba(47,123,255,.08)}
+.amt.active{
+  background:linear-gradient(135deg,rgba(47,123,255,.3),rgba(27,79,216,.16));
+  border-color:rgba(47,123,255,.8);color:#fff;
+  box-shadow:0 10px 26px -16px rgba(47,123,255,1);
+}
+.qris-area{
+  border:1.5px dashed rgba(255,255,255,.16);border-radius:16px;padding:30px 20px;
+  text-align:center;transition:.25s;background:rgba(255,255,255,.014);
+}
+.qris-area.filled{border-style:solid;border-color:rgba(47,123,255,.4);background:rgba(47,123,255,.05);padding:22px}
+.qris-area .ph-ico{font-size:34px;opacity:.35;margin-bottom:10px}
+.qris-area p{font-size:12.8px;color:var(--muted);line-height:1.6}
+.qr-frame{
+  background:#fff;padding:12px;border-radius:16px;display:inline-block;line-height:0;
+  box-shadow:0 16px 44px -18px rgba(47,123,255,.9);
+}
+.qr-frame img{width:100%;max-width:230px;height:auto;border-radius:6px;display:block}
+.qr-meta{margin-top:16px}
+.qr-meta .amt-big{font-size:26px;font-weight:800;letter-spacing:-1px;color:#fff}
+.qr-meta .inv{font-size:11.5px;color:var(--muted);margin-top:4px;font-family:ui-monospace,monospace}
+.demo-tag{
+  display:inline-block;margin-top:12px;padding:5px 11px;border-radius:8px;font-size:10.5px;
+  font-weight:800;letter-spacing:1px;text-transform:uppercase;
+  background:rgba(255,179,64,.14);color:var(--amber);border:1px solid rgba(255,179,64,.35);
+}
+
+/* ============ HISTORY ============ */
+.hist-list{display:flex;flex-direction:column;gap:10px}
+.hist{
+  display:flex;align-items:center;gap:14px;padding:16px 18px;border-radius:15px;
+  border:1px solid var(--line);background:linear-gradient(180deg,rgba(255,255,255,.038),rgba(255,255,255,.01));
+  transition:.2s;
+}
+.hist:hover{border-color:rgba(47,123,255,.32);transform:translateX(3px)}
+.hist .ico{
+  width:40px;height:40px;border-radius:12px;flex:0 0 auto;display:grid;place-items:center;
+  font-weight:800;font-size:15px;color:#fff;
+}
+.hist .body{flex:1;min-width:0}
+.hist .body h4{font-size:13.5px;font-weight:700;margin-bottom:4px}
+.hist .body p{font-size:11.5px;color:var(--muted);font-family:ui-monospace,monospace;letter-spacing:.2px}
+.hist .right{text-align:right;flex:0 0 auto}
+.hist .right .p{font-size:13px;font-weight:800;color:#fff;margin-bottom:5px}
+.pill{
+  display:inline-block;padding:3.5px 9px;border-radius:7px;font-size:10px;font-weight:800;
+  letter-spacing:.6px;text-transform:uppercase;
+}
+.pill.wait{background:rgba(255,179,64,.14);color:var(--amber);border:1px solid rgba(255,179,64,.3)}
+.pill.ok{background:rgba(37,211,102,.14);color:var(--green);border:1px solid rgba(37,211,102,.3)}
+.pill.exp{background:rgba(255,92,108,.13);color:var(--red);border:1px solid rgba(255,92,108,.28)}
+.pill.dep{background:rgba(47,123,255,.16);color:#8fb8ff;border:1px solid rgba(47,123,255,.35)}
+
+/* ============ EMPTY ============ */
+.empty{
+  text-align:center;padding:56px 24px;border-radius:18px;
+  border:1.5px dashed rgba(255,255,255,.12);background:rgba(255,255,255,.012);
+}
+.empty .e-ico{font-size:38px;opacity:.3;margin-bottom:12px}
+.empty h4{font-size:15px;font-weight:700;margin-bottom:7px}
+.empty p{font-size:13px;color:var(--muted);line-height:1.6;max-width:340px;margin:0 auto}
+
+/* ============ MODAL ============ */
+.overlay{
+  position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;
+  padding:20px;background:rgba(3,6,12,.8);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+}
+.overlay.open{display:flex;animation:fade .2s ease}
+.modal{
+  width:100%;max-width:430px;max-height:92vh;overflow-y:auto;
+  background:linear-gradient(180deg,#0d1526,#070b15);
+  border:1px solid var(--line-strong);border-radius:22px;padding:26px;
+  box-shadow:0 40px 90px -30px rgba(0,0,0,1);animation:pop .28s cubic-bezier(.2,.9,.3,1.15);
+}
+.modal-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:20px}
+.modal-head h3{font-size:17px;font-weight:800;letter-spacing:-.4px}
+.modal-head p{font-size:12px;color:var(--muted);margin-top:4px}
+.close-x{
+  width:32px;height:32px;border-radius:10px;border:1px solid var(--line-strong);
+  background:var(--panel);color:var(--muted);font-size:16px;cursor:pointer;flex:0 0 auto;
+  display:grid;place-items:center;transition:.2s;font-family:inherit;line-height:1;
+}
+.close-x:hover{color:#fff;background:rgba(255,92,108,.16);border-color:rgba(255,92,108,.4)}
+.rows{display:flex;flex-direction:column;gap:1px;border-radius:14px;overflow:hidden;margin-bottom:18px;border:1px solid var(--line)}
+.row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:13px 15px;background:rgba(255,255,255,.028);font-size:13px}
+.row .k{color:var(--muted);font-size:12.5px}
+.row .v{font-weight:700;text-align:right}
+.row .v.blue{color:#8fb8ff}
+.row .v.green{color:var(--green)}
+.row .v.red{color:var(--red)}
+
+.num-box{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:16px 18px;border-radius:14px;margin-bottom:14px;
+  background:linear-gradient(135deg,rgba(47,123,255,.18),rgba(47,123,255,.05));
+  border:1px solid rgba(47,123,255,.4);
+}
+.num-box .n{font-size:19px;font-weight:800;letter-spacing:.5px;font-family:ui-monospace,monospace;color:#fff}
+.num-box button{
+  padding:8px 13px;border-radius:9px;border:1px solid rgba(47,123,255,.5);
+  background:rgba(47,123,255,.2);color:#bcd4ff;font-size:11.5px;font-weight:700;
+  cursor:pointer;font-family:inherit;transition:.2s;white-space:nowrap;
+}
+.num-box button:hover{background:rgba(47,123,255,.35);color:#fff}
+.timer-line{display:flex;align-items:center;justify-content:center;gap:8px;font-size:12.5px;color:var(--muted);margin-bottom:18px}
+.timer-line b{color:var(--amber);font-family:ui-monospace,monospace;font-weight:800;letter-spacing:.5px}
+.timer-line b.exp{color:var(--red)}
+.live-head{
+  display:flex;align-items:center;justify-content:center;gap:8px;font-size:12px;font-weight:700;
+  color:var(--green);letter-spacing:.6px;text-transform:uppercase;margin-bottom:16px;
+}
+.live-head .dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulseDot 1.6s infinite}
+.otp-box{
+  text-align:center;padding:22px;border-radius:16px;margin-bottom:16px;
+  background:linear-gradient(135deg,rgba(37,211,102,.16),rgba(37,211,102,.04));
+  border:1px solid rgba(37,211,102,.4);
+}
+.otp-box .lbl{font-size:10.5px;font-weight:800;letter-spacing:1.6px;text-transform:uppercase;color:var(--green);margin-bottom:9px}
+.otp-box .code{font-size:34px;font-weight:800;letter-spacing:9px;color:#fff;font-family:ui-monospace,monospace;text-indent:9px}
+.loader{width:34px;height:34px;border-radius:50%;border:3px solid rgba(47,123,255,.2);border-top-color:var(--blue);animation:spin .8s linear infinite;margin:0 auto 16px}
+.center{text-align:center}
+.center p{font-size:13px;color:var(--muted);line-height:1.6}
+
+/* ============ TOAST ============ */
+#toast{
+  position:fixed;left:50%;bottom:26px;transform:translate(-50%,26px);z-index:300;
+  background:rgba(14,23,41,.97);border:1px solid var(--line-strong);
+  padding:13px 22px;border-radius:13px;font-size:13.5px;font-weight:600;
+  opacity:0;pointer-events:none;transition:.3s cubic-bezier(.2,.9,.3,1.2);
+  box-shadow:0 20px 46px -18px rgba(0,0,0,.95);max-width:90vw;text-align:center;
+  backdrop-filter:blur(12px);
+}
+#toast.show{opacity:1;transform:translate(-50%,0)}
+#toast.ok{border-color:rgba(37,211,102,.5)}
+#toast.err{border-color:rgba(255,92,108,.5)}
+
+/* ============ SETTINGS ============ */
+.note{
+  display:flex;gap:11px;padding:15px 17px;border-radius:13px;font-size:12.5px;line-height:1.65;
+  background:rgba(255,179,64,.08);border:1px solid rgba(255,179,64,.28);color:#e8cfa5;
+  margin-bottom:18px;
+}
+.note.blue{background:rgba(47,123,255,.09);border-color:rgba(47,123,255,.3);color:#b6cdf5}
+.note b{color:#fff}
+pre.log{
+  background:#03060d;border:1px solid var(--line);border-radius:12px;padding:14px;
+  font-size:11.5px;line-height:1.6;color:#8fb8ff;overflow-x:auto;max-height:220px;
+  font-family:ui-monospace,monospace;white-space:pre-wrap;word-break:break-word;
+}
+.switch-row{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px 16px;border-radius:13px;background:rgba(255,255,255,.03);border:1px solid var(--line);margin-bottom:16px}
+.switch-row .txt strong{display:block;font-size:13.5px;margin-bottom:3px}
+.switch-row .txt span{font-size:11.8px;color:var(--muted);line-height:1.5}
+.switch{position:relative;width:48px;height:27px;flex:0 0 auto}
+.switch input{opacity:0;width:0;height:0;position:absolute}
+.switch .sl{
+  position:absolute;inset:0;border-radius:100px;cursor:pointer;transition:.25s;
+  background:rgba(255,255,255,.13);border:1px solid var(--line-strong);
+}
+.switch .sl::before{
+  content:'';position:absolute;width:19px;height:19px;border-radius:50%;left:3px;top:3px;
+  background:#8896b3;transition:.25s cubic-bezier(.2,.9,.3,1.3);
+}
+.switch input:checked + .sl{background:rgba(47,123,255,.45);border-color:rgba(47,123,255,.7)}
+.switch input:checked + .sl::before{transform:translateX(21px);background:#fff;box-shadow:0 0 12px rgba(47,123,255,.9)}
+
+/* ============ RESPONSIVE ============ */
+@media (max-width:820px){
+  .deposit-grid{grid-template-columns:1fr}
+  .hero{padding:38px 24px;border-radius:22px}
+  .app{padding:0 15px 60px}
+}
+@media (max-width:620px){
+  .brand p{display:none}
+  .saldo-chip .label{display:none}
+  .saldo-chip{padding:8px 11px}
+  .saldo-chip .value{font-size:13.5px}
+  .hero h2{letter-spacing:-.9px}
+  .hero p{font-size:14px}
+  .modal{padding:22px;border-radius:20px}
+  .svc-grid{grid-template-columns:1fr}
+  .amount-grid{grid-template-columns:repeat(2,1fr)}
+  .tabs{padding:5px}
+  .tab{padding:10px 14px;font-size:12.5px}
+  .hist{flex-wrap:wrap}
+  .hist .right{width:100%;display:flex;align-items:center;justify-content:space-between;margin-top:8px;padding-top:10px;border-top:1px solid var(--line)}
+  .hist .right .p{margin:0}
+  .otp-box .code{font-size:28px;letter-spacing:6px}
+  .num-box .n{font-size:16px}
 }
 </style>
 </head>
 <body>
-<div class="container">
 
-  <!-- Header -->
-  <header class="app-header">
+<div class="app">
+
+  <!-- ============ TOPBAR ============ -->
+  <header class="topbar">
     <div class="brand">
-      <div class="brand-logo">V</div>
+      <div class="logo">Z</div>
       <div>
-        <h1>VirtusIM OTP</h1>
-        <p>Platform Nomor Virtual & Layanan Digital 24 Jam</p>
+        <h1>Zyan<span>OTPs</span></h1>
+        <p>Nomor Kosong • OTP Instan 24 Jam</p>
       </div>
     </div>
-    <div class="brand-status">
-      <span class="pill"><span class="pill-dot"></span>Online 24 Jam</span>
-      <span style="font-size:12px;color:var(--muted)" id="lastUpdate">—</span>
+    <div class="top-actions">
+      <div class="saldo-chip" onclick="go('deposit')" title="Klik untuk deposit">
+        <div>
+          <span class="label">Saldo</span>
+          <span class="value" id="saldoTop">Rp 0</span>
+        </div>
+        <span class="plus">+</span>
+      </div>
+      <button class="icon-btn" onclick="location.reload()" title="Muat ulang">⟳</button>
     </div>
   </header>
 
-  <!-- Balance -->
-  <div class="balance-card">
-    <div>
-      <div class="balance-label">Saldo Tersedia</div>
-      <div class="balance-amount" id="balanceDisplay">Rp 0</div>
-      <div class="balance-sub" id="pendingBalance">Pending: Rp 0</div>
-    </div>
-    <div class="balance-actions">
-      <button class="btn-ghost" onclick="refreshBalance()">🔄 Refresh</button>
-      <button class="btn-ghost" onclick="switchTab('deposit')">💳 Top Up</button>
-    </div>
-  </div>
+  <!-- ============ TABS ============ -->
+  <nav class="tabs" id="tabs">
+    <button class="tab active" data-view="home">Beranda</button>
+    <button class="tab" data-view="buy">Beli Nomor</button>
+    <button class="tab" data-view="deposit">Deposit</button>
+    <button class="tab" data-view="history">Riwayat</button>
+    <button class="tab" data-view="settings">Pengaturan</button>
+  </nav>
 
-  <!-- Alerts -->
-  <div class="alert alert-success" id="alertSuccess"></div>
-  <div class="alert alert-error" id="alertError"></div>
-  <div class="alert alert-info" id="alertInfo"></div>
+  <main>
 
-  <!-- Tabs -->
-  <div class="tabs" id="tabs">
-    <button class="tab active" data-tab="dashboard" onclick="switchTab('dashboard', event)">📊 Dashboard</button>
-    <button class="tab" data-tab="buyNumber" onclick="switchTab('buyNumber', event)">📱 Beli Nomor</button>
-    <button class="tab" data-tab="activeOrders" onclick="switchTab('activeOrders', event)">⏳ Order Aktif</button>
-    <button class="tab" data-tab="history" onclick="switchTab('history', event)">📜 Riwayat</button>
-    <button class="tab" data-tab="gmail" onclick="switchTab('gmail', event)">📧 Gmail</button>
-    <button class="tab" data-tab="emailRental" onclick="switchTab('emailRental', event)">📮 Rental Email</button>
-    <button class="tab" data-tab="waReady" onclick="switchTab('waReady', event)">💬 WA Ready</button>
-    <button class="tab" data-tab="smm" onclick="switchTab('smm', event)">📈 SMM</button>
-    <button class="tab" data-tab="refund" onclick="switchTab('refund', event)">💸 Refund</button>
-    <button class="tab" data-tab="deposit" onclick="switchTab('deposit', event)">💳 Deposit</button>
-  </div>
-
-  <div class="content">
-
-    <!-- DASHBOARD -->
-    <section class="section active" id="dashboard">
-      <div class="card">
-        <div class="card-title">📊 Statistik Akun</div>
-        <div class="grid">
-          <div class="card white" style="text-align:center">
-            <div style="font-size:32px;font-weight:800;color:var(--primary)" id="statTotalOrders">0</div>
-            <div style="color:var(--muted);font-size:13px">Total Orders</div>
-          </div>
-          <div class="card white" style="text-align:center">
-            <div style="font-size:32px;font-weight:800;color:var(--success)" id="statActiveOrders">0</div>
-            <div style="color:var(--muted);font-size:13px">Order Aktif</div>
-          </div>
-          <div class="card white" style="text-align:center">
-            <div style="font-size:32px;font-weight:800;color:var(--warning)" id="statTotalSMS">0</div>
-            <div style="color:var(--muted);font-size:13px">Total SMS</div>
+    <!-- ============ HOME ============ -->
+    <section class="view active" id="view-home">
+      <div class="hero">
+        <div class="hero-inner">
+          <div class="badge"><span class="dot"></span> Server Online • Stok Real-time</div>
+          <h2>Nomor Kosong untuk <em>Verifikasi OTP</em> Tanpa Ribet.</h2>
+          <p>
+            Dapatkan nomor virtual dari 18+ layanan populer dan 8 negara.
+            Nomor aktif dalam hitungan detik, kode OTP langsung masuk, harga mulai
+            <b style="color:#8fb8ff">Rp 2.500</b>.
+          </p>
+          <div class="hero-cta">
+            <button class="btn btn-primary" onclick="go('buy')">🛒 Beli Nomor Sekarang</button>
+            <button class="btn btn-ghost" onclick="go('deposit')">💳 Isi Saldo QRIS</button>
           </div>
         </div>
       </div>
-      <div class="card">
-        <div class="card-title">⚡ Aksi Cepat</div>
+
+      <div class="stats">
+        <div class="stat"><div class="v" id="statSvc">18</div><div class="k">Layanan</div></div>
+        <div class="stat"><div class="v" id="statCty">8</div><div class="k">Negara</div></div>
+        <div class="stat"><div class="v" id="statOrd">0</div><div class="k">Transaksi Anda</div></div>
+        <div class="stat"><div class="v" id="statSaldo">Rp 0</div><div class="k">Saldo Aktif</div></div>
+      </div>
+
+      <div class="section-head">
+        <h2>Kenapa ZyanOTPs?</h2>
+        <p>Dirancang untuk kecepatan, keamanan, dan kenyamanan kamu.</p>
+      </div>
+      <div class="feat-grid">
+        <div class="feat">
+          <div class="ico">⚡</div>
+          <h4>OTP Instan</h4>
+          <p>Nomor langsung aktif setelah pembelian. Kode verifikasi masuk dalam hitungan detik.</p>
+        </div>
+        <div class="feat">
+          <div class="ico">🛡️</div>
+          <h4>Aman & Privat</h4>
+          <p>Nomor sekali pakai. Tidak ada data pribadi yang tersimpan atau dibagikan.</p>
+        </div>
+        <div class="feat">
+          <div class="ico">💠</div>
+          <h4>Deposit QRIS</h4>
+          <p>Isi saldo instan lewat QRIS semua e-wallet & m-banking. Tanpa biaya admin.</p>
+        </div>
+        <div class="feat">
+          <div class="ico">📊</div>
+          <h4>Riwayat Lengkap</h4>
+          <p>Semua transaksi tersimpan rapi dan bisa dibuka kembali kapan saja.</p>
+        </div>
+      </div>
+
+      <div class="section-head">
+        <h2>Cara Kerja</h2>
+        <p>Empat langkah sederhana, selesai di bawah satu menit.</p>
+      </div>
+      <div class="steps">
+        <div class="step"><div class="num">LANGKAH 01</div><h4>Isi Saldo</h4><p>Deposit via QRIS mulai dari Rp 10.000. Saldo masuk otomatis.</p></div>
+        <div class="step"><div class="num">LANGKAH 02</div><h4>Pilih Layanan</h4><p>Tentukan layanan dan negara tujuan nomor kosong.</p></div>
+        <div class="step"><div class="num">LANGKAH 03</div><h4>Terima Nomor</h4><p>Nomor aktif langsung ditampilkan beserta timer masa berlaku.</p></div>
+        <div class="step"><div class="num">LANGKAH 04</div><h4>Ambil OTP</h4><p>Tekan "Cek OTP", salin kode verifikasi, selesai.</p></div>
+      </div>
+    </section>
+
+    <!-- ============ BUY ============ -->
+    <section class="view" id="view-buy">
+      <div class="section-head">
+        <h2>Beli Nomor Kosong</h2>
+        <p>Pilih negara dan layanan. Nomor aktif dalam hitungan detik.</p>
+      </div>
+
+      <div class="filters">
+        <div class="field">
+          <label>Negara</label>
+          <select id="countrySel" onchange="onCountryChange()"></select>
+        </div>
+        <div class="field grow">
+          <label>Cari Layanan</label>
+          <input id="searchSvc" placeholder="Cari WhatsApp, Telegram, Shopee…" oninput="renderServices()">
+        </div>
+      </div>
+
+      <div class="svc-grid" id="svcGrid"></div>
+    </section>
+
+    <!-- ============ DEPOSIT ============ -->
+    <section class="view" id="view-deposit">
+      <div class="section-head">
+        <h2>Deposit Saldo</h2>
+        <p>Isi saldo instan lewat QRIS — proses otomatis 24 jam.</p>
+      </div>
+
+      <div class="deposit-grid">
+        <div class="card">
+          <h3><span class="n">1</span> Pilih Nominal</h3>
+          <div class="amount-grid" id="amountGrid"></div>
+          <div class="field" style="margin-top:14px">
+            <label>Nominal Lain</label>
+            <input id="customAmount" type="number" inputmode="numeric" placeholder="Minimal Rp 10.000" oninput="onCustomAmount()">
+          </div>
+          <button class="btn btn-primary btn-block" style="margin-top:18px" onclick="createDeposit()">
+            Lanjut ke Pembayaran →
+          </button>
+        </div>
+
+        <div class="card">
+          <h3><span class="n">2</span> Scan &amp; Bayar</h3>
+          <div class="qris-area" id="qrisArea">
+            <div class="ph-ico">▣</div>
+            <p>Pilih nominal di samping untuk<br>menampilkan kode QRIS.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ HISTORY ============ -->
+    <section class="view" id="view-history">
+      <div class="section-head">
+        <h2>Riwayat Transaksi</h2>
+        <p>Semua pembelian nomor dan deposit saldo kamu.</p>
+      </div>
+      <div class="hist-list" id="histList"></div>
+    </section>
+
+    <!-- ============ SETTINGS ============ -->
+    <section class="view" id="view-settings">
+      <div class="section-head">
+        <h2>Pengaturan API</h2>
+        <p>Hubungkan website dengan panel NexusSMM kamu.</p>
+      </div>
+
+      <div class="note">
+        ⚠️ <div>
+          <b>Penting:</b> API Key yang disimpan di file HTML ini <b>terlihat oleh siapa pun</b> yang membuka
+          View Source. Untuk produksi, panggilan API sebaiknya dilewatkan ke backend/proxy sendiri.
+          Dokumen resmi <b>nexussmm.com/api/documentation</b> mengembalikan <b>403 Forbidden</b> saat diakses
+          otomatis — pastikan kamu login dulu di dashboard untuk melihat endpoint &amp; format parameter yang benar.
+        </div>
+      </div>
+
+      <div class="card" style="margin-bottom:16px">
+        <h3><span class="n">⚙</span> Kredensial Panel</h3>
+
+        <div class="field" style="margin-bottom:14px">
+          <label>Base URL</label>
+          <input id="cfgBase" placeholder="https://nexussmm.com">
+        </div>
+        <div class="field" style="margin-bottom:14px">
+          <label>API ID</label>
+          <input id="cfgId" placeholder="API ID">
+        </div>
+        <div class="field" style="margin-bottom:14px">
+          <label>API Key</label>
+          <input id="cfgKey" type="password" placeholder="API Key">
+        </div>
+        <div class="field" style="margin-bottom:16px">
+          <label>QRIS Statis (opsional)</label>
+          <textarea id="cfgQris" placeholder="Tempel payload QRIS statis milikmu di sini (000201010211…). Kosongkan untuk memakai QR demo."></textarea>
+        </div>
+
+        <div class="switch-row">
+          <div class="txt">
+            <strong>Mode Demo</strong>
+            <span>Semua transaksi disimulasikan tanpa memanggil API asli.</span>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="cfgDemo">
+            <span class="sl"></span>
+          </label>
+        </div>
+
         <div style="display:flex;gap:10px;flex-wrap:wrap">
-          <button class="btn btn-primary" onclick="switchTab('buyNumber')">📱 Beli Nomor Baru</button>
-          <button class="btn btn-success" onclick="switchTab('activeOrders')">⏳ Lihat Order Aktif</button>
-          <button class="btn btn-warning" onclick="switchTab('deposit')">💳 Top Up Saldo</button>
-          <button class="btn btn-secondary" onclick="refreshAll()">🔄 Refresh Semua</button>
+          <button class="btn btn-primary" onclick="saveSettings()">💾 Simpan Pengaturan</button>
+          <button class="btn" onclick="testApi()">🔌 Test Koneksi</button>
+          <button class="btn btn-ghost" onclick="resetData()" style="color:var(--red);border-color:rgba(255,92,108,.3)">🗑 Reset Data</button>
         </div>
       </div>
+
       <div class="card">
-        <div class="card-title">🔥 Layanan Populer</div>
-        <div class="grid" id="popularServices"><div class="loading"><div class="spinner"></div>Memuat...</div></div>
+        <h3><span class="n">◈</span> Log Respons API</h3>
+        <pre class="log" id="apiLog">Belum ada permintaan. Tekan "Test Koneksi" untuk mencoba.</pre>
       </div>
     </section>
 
-    <!-- BUY NUMBER -->
-    <section class="section" id="buyNumber">
-      <div class="card">
-        <div class="card-title">📱 Beli Nomor Kosong (SMS OTP)</div>
-        <div class="auto-buy-panel">
-          <div class="auto-buy-status">
-            <div class="status-dot off" id="autoBuyDot"></div>
-            <span id="autoBuyStatus">Auto-Polling: OFF</span>
-          </div>
-          <p class="auto-buy-desc">Sistem akan otomatis memantau OTP dan melakukan finish order saat kode diterima.</p>
-          <div style="display:flex;gap:10px">
-            <button class="btn btn-success btn-sm" onclick="toggleAutoMode()" id="autoModeBtn">▶️ Mulai Auto Mode</button>
-            <button class="btn btn-danger btn-sm" onclick="stopAutoMode()" id="stopAutoBtn" style="display:none">⏹️ Stop</button>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label>1️⃣ Pilih Layanan</label>
-          <div class="search-box" style="margin-bottom:12px">
-            <input type="text" id="serviceSearch" placeholder="Cari layanan..." onkeyup="filterServices()">
-          </div>
-          <div class="grid" id="servicesGrid" style="max-height:360px;overflow-y:auto;padding:4px"></div>
-        </div>
-
-        <div class="form-group" id="countrySection" style="display:none">
-          <label>2️⃣ Pilih Negara</label>
-          <div class="grid" id="countriesGrid" style="max-height:320px;overflow-y:auto;padding:4px"></div>
-        </div>
-
-        <div class="form-group" id="buySection" style="display:none">
-          <label>3️⃣ Konfirmasi Pembelian</label>
-          <div class="card white">
-            <div class="pay-detail"><span class="label">Layanan</span><span class="value" id="selectedServiceName">-</span></div>
-            <div class="pay-detail"><span class="label">Negara</span><span class="value" id="selectedCountryName">-</span></div>
-            <div class="pay-detail"><span class="label">Harga</span><span class="value" style="color:var(--primary)" id="selectedPrice">-</span></div>
-            <div class="pay-detail"><span class="label">Stok</span><span class="value" id="selectedStock">-</span></div>
-            <div class="form-group" style="margin-top:14px">
-              <label>Jumlah Nomor (1–30)</label>
-              <input type="number" id="quantity" value="1" min="1" max="30">
-            </div>
-            <button class="btn btn-primary btn-block" onclick="buyNumber()">🛒 Beli Sekarang</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="card" id="orderResult" style="display:none">
-        <div class="card-title">📋 Detail Order</div>
-        <div id="orderDetails"></div>
-      </div>
-    </section>
-
-    <!-- ACTIVE ORDERS -->
-    <section class="section" id="activeOrders">
-      <div class="card">
-        <div class="card-title">
-          ⏳ Order Aktif
-          <button class="btn btn-secondary btn-sm spacer" onclick="loadActiveOrders()">🔄 Refresh</button>
-        </div>
-        <div id="activeOrdersList"><div class="loading"><div class="spinner"></div>Memuat...</div></div>
-      </div>
-    </section>
-
-    <!-- HISTORY -->
-    <section class="section" id="history">
-      <div class="card">
-        <div class="card-title">
-          📜 Riwayat Order
-          <button class="btn btn-secondary btn-sm spacer" onclick="loadHistory()">🔄 Refresh</button>
-        </div>
-        <div class="form-group">
-          <input type="text" id="historySearch" placeholder="Cari nomor atau layanan..." onkeyup="debouncedHistory()">
-        </div>
-        <div id="historyList"></div>
-      </div>
-    </section>
-
-    <!-- GMAIL -->
-    <section class="section" id="gmail">
-      <div class="card">
-        <div class="card-title">📧 Beli Akun Gmail</div>
-        <div id="gmailStock"><div class="loading"><div class="spinner"></div>Memuat stok...</div></div>
-        <div class="form-group" style="margin-top:14px">
-          <label>Jumlah (1–50)</label>
-          <input type="number" id="gmailQty" value="1" min="1" max="50">
-        </div>
-        <button class="btn btn-primary" onclick="buyGmail()">🛒 Beli Gmail</button>
-      </div>
-      <div class="card">
-        <div class="card-title">
-          📧 Order Gmail Saya
-          <button class="btn btn-secondary btn-sm spacer" onclick="loadGmailOrders()">🔄 Refresh</button>
-        </div>
-        <div id="gmailOrdersList"></div>
-      </div>
-    </section>
-
-    <!-- EMAIL RENTAL -->
-    <section class="section" id="emailRental">
-      <div class="card">
-        <div class="card-title">📮 Rental Email</div>
-        <div class="form-group">
-          <label>Site Target</label>
-          <select id="emailSite" onchange="loadEmailDomains()"><option value="">Pilih Site</option></select>
-        </div>
-        <div class="form-group">
-          <label>Domain</label>
-          <select id="emailDomain"><option value="">Pilih Domain</option></select>
-        </div>
-        <button class="btn btn-primary" onclick="rentEmail()">📮 Rental Sekarang</button>
-      </div>
-      <div class="card">
-        <div class="card-title">
-          📮 Rental Aktif
-          <button class="btn btn-secondary btn-sm spacer" onclick="loadEmailOrders()">🔄 Refresh</button>
-        </div>
-        <div id="emailOrdersList"></div>
-      </div>
-    </section>
-
-    <!-- WA READY -->
-    <section class="section" id="waReady">
-      <div class="card">
-        <div class="card-title">💬 WhatsApp Ready Numbers</div>
-        <div id="waReadyInfo"><div class="loading"><div class="spinner"></div>Memuat...</div></div>
-        <div class="form-group" style="margin-top:14px">
-          <label>Pilih Negara</label>
-          <select id="waCountry"></select>
-        </div>
-        <button class="btn btn-primary" onclick="buyWAReady()">💬 Beli WA Ready</button>
-      </div>
-      <div class="card">
-        <div class="card-title">
-          💬 Order WA Ready
-          <button class="btn btn-secondary btn-sm spacer" onclick="loadWAReadyOrders()">🔄 Refresh</button>
-        </div>
-        <div id="waReadyOrdersList"></div>
-      </div>
-    </section>
-
-    <!-- SMM -->
-    <section class="section" id="smm">
-      <div class="card">
-        <div class="card-title">📈 Social Media Marketing</div>
-        <div class="form-group">
-          <label>Platform</label>
-          <select id="smmPlatform" onchange="loadSMMTypes()"><option value="">Pilih Platform</option></select>
-        </div>
-        <div class="form-group">
-          <label>Tipe Layanan</label>
-          <select id="smmType" onchange="loadSMMServices()"><option value="">Pilih Tipe</option></select>
-        </div>
-        <div id="smmServicesList"></div>
-      </div>
-      <div class="card">
-        <div class="card-title">
-          📈 Order SMM
-          <button class="btn btn-secondary btn-sm spacer" onclick="loadSMMOrders()">🔄 Refresh</button>
-        </div>
-        <div id="smmOrdersList"></div>
-      </div>
-    </section>
-
-    <!-- REFUND -->
-    <section class="section" id="refund">
-      <div class="card">
-        <div class="card-title">
-          💸 Refund Eligible
-          <button class="btn btn-secondary btn-sm spacer" onclick="loadRefunds()">🔄 Refresh</button>
-        </div>
-        <div id="refundEligibleList"></div>
-      </div>
-      <div class="card">
-        <div class="card-title">💸 Riwayat Refund</div>
-        <div id="refundHistoryList"></div>
-      </div>
-    </section>
-
-    <!-- DEPOSIT -->
-    <section class="section" id="deposit">
-      <div class="deposit-wrapper">
-        <!-- Form -->
-        <div class="deposit-form-card">
-          <div class="card-title">💳 Deposit Saldo</div>
-          <div class="form-group">
-            <label>Jumlah Deposit</label>
-            <div class="preset-amounts">
-              <button class="preset-btn" onclick="setDeposit(10000,this)">Rp 10.000</button>
-              <button class="preset-btn active" onclick="setDeposit(50000,this)">Rp 50.000</button>
-              <button class="preset-btn" onclick="setDeposit(100000,this)">Rp 100.000</button>
-            </div>
-            <input type="number" id="depositAmount" value="50000" min="10000" step="1000" onchange="updateDepositPreview()" oninput="updateDepositPreview()">
-          </div>
-          <div class="form-group">
-            <label>Metode Pembayaran</label>
-            <div class="method-list" id="methodList">
-              <div class="loading"><div class="spinner"></div>Memuat metode...</div>
-            </div>
-            <select id="paymentMethod" style="display:none"></select>
-          </div>
-          <button class="btn btn-primary btn-block" onclick="createDeposit()" id="btnDeposit">💳 Buat Deposit</button>
-          <button class="btn btn-warning btn-block" style="margin-top:8px" onclick="createCryptoDeposit()">₿ Deposit Crypto (USD)</button>
-
-          <div class="deposit-hint">
-            <strong>ℹ️ Informasi</strong>
-            Minimal deposit Rp 10.000. Saldo akan otomatis ditambahkan setelah pembayaran terkonfirmasi.
-          </div>
-        </div>
-
-        <!-- Result / Instructions -->
-        <div id="depositResult" style="display:none">
-          <div class="deposit-instruction">
-            <div class="card-title" style="margin-bottom:8px">
-              💳 Instruksi Pembayaran
-              <span class="badge badge-warning spacer" id="depositStatusBadge" style="margin-left:auto">PENDING</span>
-            </div>
-
-            <div style="text-align:center;margin-bottom:10px">
-              <div style="font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;font-weight:600">Total Pembayaran</div>
-              <div class="deposit-total" id="depositTotal">Rp 0</div>
-              <button class="copy-btn" onclick="copyToClipboard(document.getElementById('depositTotal').dataset.raw || '')">📋 Copy Nominal</button>
-            </div>
-
-            <div id="qrSection"></div>
-
-            <div id="payDetailSection"></div>
-
-            <div style="text-align:center;margin-top:16px">
-              <div class="countdown" id="depositCountdown">⏱️ --:--</div>
-            </div>
-
-            <div style="text-align:center;margin-top:14px">
-              <button class="btn btn-secondary btn-sm" onclick="checkDepositStatus()">🔄 Cek Status</button>
-              <button class="btn btn-danger btn-sm" style="margin-left:8px" onclick="resetDeposit()">✖ Tutup</button>
-            </div>
-
-            <div class="deposit-hint" style="margin-top:16px">
-              <strong>⚠️ Penting</strong>
-              Transfer sesuai nominal <b>persis</b> (termasuk kode unik) agar sistem dapat mendeteksi pembayaran Anda secara otomatis.
-            </div>
-          </div>
-        </div>
-
-        <!-- Placeholder when no result -->
-        <div id="depositPlaceholder" style="display:flex;align-items:center;justify-content:center;background:var(--surface-alt);border:2px dashed var(--border);border-radius:14px;min-height:300px;color:var(--muted);text-align:center;padding:24px">
-          <div>
-            <div style="font-size:48px;margin-bottom:8px;opacity:.4">💳</div>
-            <div style="font-weight:600;margin-bottom:4px">Belum ada transaksi</div>
-            <div style="font-size:13px">Isi form deposit di samping untuk memulai</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="card" style="margin-top:20px">
-        <div class="card-title">
-          💳 Riwayat Transaksi
-          <button class="btn btn-secondary btn-sm spacer" onclick="loadTransactions()">🔄 Refresh</button>
-        </div>
-        <div id="transactionsList"><div class="loading"><div class="spinner"></div>Memuat...</div></div>
-      </div>
-    </section>
-
-  </div>
+  </main>
 </div>
 
-<!-- OTP Modal -->
-<div class="modal" id="otpModal">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h2>📱 Kode OTP Diterima</h2>
-      <button class="modal-close" onclick="closeModal('otpModal')">×</button>
-    </div>
-    <div id="otpModalContent"></div>
-  </div>
+<!-- ============ MODAL ============ -->
+<div class="overlay" id="overlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal" id="modal"></div>
 </div>
 
-<div class="toast" id="toast"></div>
+<!-- ============ TOAST ============ -->
+<div id="toast"></div>
 
 <script>
-/* =========================================================
-   CORE
-========================================================= */
-const API_KEY = 'vcoBYGVHKtLfaW1f3DnVsRDZ5aZk1NQd';
-const BASE_URL = 'https://virtusimotp.com/api/v1';
+/* ==========================================================
+   ZyanOTPs — Single File App
+   ========================================================== */
 
-let currentBalance = 0;
-let services = [];
-let selectedService = null;
-let selectedCountry = null;
-let autoMode = false;
-let pollingIntervals = {};
-let depositTimer = null;
-let depositPollTimer = null;
-let historyDebounce = null;
+/* ---------------- CONSTANTS ---------------- */
+const CFG_KEY  = 'zyanotps_cfg_v1';
+const DATA_KEY = 'zyanotps_data_v1';
 
-/* ---------- Helpers ---------- */
-function $(id){return document.getElementById(id)}
-function generateUUID(){
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,c=>{
-    const r=Math.random()*16|0;return(c==='x'?r:(r&0x3|0x8)).toString(16);
-  });
+const DEFAULT_CFG = {
+  base_url : 'https://nexussmm.com',
+  api_id   : 'T3lLTFpMSFdnMm5zVmVkNlUxMnpQdz09',
+  api_key  : 'd0044e-59e1bf-b1c784-775023-14e4eb-043a54',
+  qris     : '',
+  demo     : true
+};
+
+const DEFAULT_DATA = { saldo: 0, orders: [] };
+
+/* ---------------- SERVICES ---------------- */
+const SERVICES = [
+  { id:'wa',       name:'WhatsApp',   color:'#25D366', base:2500 },
+  { id:'telegram', name:'Telegram',   color:'#2AABEE', base:2000 },
+  { id:'instagram',name:'Instagram',  color:'#E1306C', base:3000 },
+  { id:'facebook', name:'Facebook',   color:'#1877F2', base:2800 },
+  { id:'tiktok',   name:'TikTok',     color:'#FE2C55', base:3200 },
+  { id:'shopee',   name:'Shopee',     color:'#EE4D2D', base:2200 },
+  { id:'tokopedia',name:'Tokopedia',  color:'#42B549', base:2200 },
+  { id:'lazada',   name:'Lazada',     color:'#F57224', base:2300 },
+  { id:'grab',     name:'Grab',       color:'#00B14F', base:2600 },
+  { id:'gojek',    name:'Gojek',      color:'#00AA13', base:2600 },
+  { id:'x',        name:'X / Twitter',color:'#5A6B85', base:3500 },
+  { id:'discord',  name:'Discord',    color:'#5865F2', base:2900 },
+  { id:'google',   name:'Google',     color:'#4285F4', base:4000 },
+  { id:'line',     name:'LINE',       color:'#06C755', base:2700 },
+  { id:'tinder',   name:'Tinder',     color:'#FE3C72', base:4500 },
+  { id:'bumble',   name:'Bumble',     color:'#C9A227', base:4800 },
+  { id:'netflix',  name:'Netflix',    color:'#E50914', base:5000 },
+  { id:'steam',    name:'Steam',      color:'#66C0F4', base:4200 }
+];
+
+/* ---------------- COUNTRIES ---------------- */
+const COUNTRIES = [
+  { code:'ID', name:'Indonesia', flag:'🇮🇩', mult:1.00, prefix:['0812','0813','0821','0857','0895','0817'] },
+  { code:'MY', name:'Malaysia',  flag:'🇲🇾', mult:1.20, prefix:['011','012','013','019'] },
+  { code:'SG', name:'Singapura', flag:'🇸🇬', mult:1.40, prefix:['812','913','987'] },
+  { code:'VN', name:'Vietnam',   flag:'🇻🇳', mult:1.10, prefix:['032','056','070','090'] },
+  { code:'PH', name:'Filipina',  flag:'🇵🇭', mult:1.15, prefix:['0905','0917','0995'] },
+  { code:'TH', name:'Thailand',  flag:'🇹🇭', mult:1.25, prefix:['061','081','089'] },
+  { code:'MM', name:'Myanmar',   flag:'🇲🇲', mult:1.30, prefix:['0925','0940','0977'] },
+  { code:'KH', name:'Kamboja',   flag:'🇰🇭', mult:1.20, prefix:['010','092','097'] }
+];
+
+/* ---------------- STATE ---------------- */
+let CFG  = Object.assign({}, DEFAULT_CFG,  loadJSON(CFG_KEY,  {}));
+let DATA = Object.assign({}, DEFAULT_DATA, loadJSON(DATA_KEY, {}));
+
+let currentCountry = 'ID';
+let selectedAmount = 0;
+let pendingOrder   = null;
+let activeOrderId  = null;
+
+/* ---------------- HELPERS ---------------- */
+function loadJSON(k, d) {
+  try { const v = JSON.parse(localStorage.getItem(k)); return v === null ? d : v; }
+  catch (e) { return d; }
 }
-function formatRupiah(n){return 'Rp '+(Number(n)||0).toLocaleString('id-ID')}
-function escapeHtml(s){return String(s==null?'':s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+function saveCfg()  { localStorage.setItem(CFG_KEY,  JSON.stringify(CFG));  }
+function saveData() { localStorage.setItem(DATA_KEY, JSON.stringify(DATA)); }
 
-function showAlert(type,msg){
-  const el=$('alert'+type.charAt(0).toUpperCase()+type.slice(1));
-  if(!el)return;
-  el.textContent=msg;el.style.display='block';
-  clearTimeout(el._t);
-  el._t=setTimeout(()=>el.style.display='none',5000);
+function rp(n) {
+  return 'Rp ' + Math.round(n || 0).toLocaleString('id-ID');
 }
-function showToast(msg){
-  const t=$('toast');t.textContent=msg;t.style.display='block';
-  clearTimeout(t._t);t._t=setTimeout(()=>t.style.display='none',3000);
-}
-function copyToClipboard(text){
-  if(!text)return;
-  if(navigator.clipboard&&navigator.clipboard.writeText){
-    navigator.clipboard.writeText(text).then(()=>showToast('📋 Disalin: '+text)).catch(()=>fallbackCopy(text));
-  }else{fallbackCopy(text)}
-}
-function fallbackCopy(text){
-  const ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();
-  try{document.execCommand('copy');showToast('📋 Disalin: '+text)}catch(e){showToast('Gagal menyalin')}
-  document.body.removeChild(ta);
-}
-function closeModal(id){$(id).classList.remove('show')}
-function debouncedHistory(){clearTimeout(historyDebounce);historyDebounce=setTimeout(loadHistory,400)}
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+function uid(p) { return (p || 'ZY') + Date.now().toString(36).toUpperCase() + Math.random().toString(36).slice(2, 6).toUpperCase(); }
 
-/* ---------- API ---------- */
-async function apiCall(endpoint, method='GET', body=null){
-  const opts={method,headers:{'X-API-Key':API_KEY}};
-  if(body){opts.headers['Content-Type']='application/json';opts.body=JSON.stringify(body)}
-  if(method==='POST')opts.headers['Idempotency-Key']=generateUUID();
-
-  const res=await fetch(BASE_URL+endpoint,opts);
-  let data;
-  try{data=await res.json()}catch(e){throw new Error('Respons server tidak valid')}
-
-  if(!res.ok||data.success===false){
-    throw new Error(data.message||('HTTP '+res.status));
-  }
-  return data;
-}
-
-/* =========================================================
-   NAVIGATION
-========================================================= */
-function switchTab(tabId,event){
-  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-
-  const sec=$(tabId);if(sec)sec.classList.add('active');
-
-  document.querySelectorAll('.tab').forEach(t=>{
-    if(t.dataset.tab===tabId)t.classList.add('active');
-  });
-  if(event&&event.target&&event.target.classList.contains('tab'))event.target.classList.add('active');
-
-  switch(tabId){
-    case 'dashboard': loadDashboard(); break;
-    case 'buyNumber': loadServices(); break;
-    case 'activeOrders': loadActiveOrders(); break;
-    case 'history': loadHistory(); break;
-    case 'gmail': loadGmailStock(); loadGmailOrders(); break;
-    case 'emailRental': loadEmailSuggestions(); loadEmailOrders(); break;
-    case 'waReady': loadWAReadyInfo(); loadWAReadyOrders(); break;
-    case 'smm': loadSMMPlatforms(); loadSMMOrders(); break;
-    case 'refund': loadRefunds(); break;
-    case 'deposit': loadPaymentMethods(); loadTransactions(); break;
-  }
-  window.scrollTo({top:0,behavior:'smooth'});
+function toast(msg, type) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'show ' + (type || '');
+  clearTimeout(t._t);
+  t._t = setTimeout(() => { t.className = ''; }, 2800);
 }
 
-/* =========================================================
-   BALANCE / PROFILE
-========================================================= */
-async function refreshBalance(){
-  try{
-    const data=await apiCall('/balance');
-    const d=data.data||{};
-    currentBalance=d.balance||0;
-    $('balanceDisplay').textContent=d.balance_formatted||formatRupiah(currentBalance);
-    $('pendingBalance').textContent='Pending: '+formatRupiah(d.pending_balance||0);
-    $('lastUpdate').textContent='Update: '+new Date().toLocaleTimeString('id-ID');
-  }catch(e){/* silent */}
-}
-async function loadProfile(){
-  try{
-    const data=await apiCall('/profile');
-    const s=data.data?.stats||{};
-    $('statTotalOrders').textContent=s.total_orders||0;
-    $('statTotalSMS').textContent=s.total_sms||0;
-  }catch(e){}
-}
-async function loadDashboard(){
-  await refreshBalance(); await loadProfile(); await loadPopularServices();
-}
-
-/* =========================================================
-   SERVICES / BUY NUMBER
-========================================================= */
-function getServiceIcon(name){
-  const icons={'whatsapp':'💬','telegram':'✈️','google':'🔍','gmail':'📧','facebook':'📘','instagram':'📷','twitter':'🐦','tiktok':'🎵','youtube':'📺','discord':'🎮','snapchat':'👻','linkedin':'💼','shopee':'🛍️','tokopedia':'🛒','netflix':'🎬','spotify':'🎧','uber':'🚗','gojek':'🛵','grab':'🚖','line':'💚'};
-  const l=(name||'').toLowerCase();
-  for(const k in icons)if(l.includes(k))return icons[k];
-  return '📱';
-}
-async function loadPopularServices(){
-  try{
-    const data=await apiCall('/services');
-    services=data.data||[];
-    const popular=services.slice(0,8);
-    $('popularServices').innerHTML=popular.length?popular.map(s=>`
-      <div class="service-card" onclick="quickBuyService(${s.id},'${escapeHtml(s.text).replace(/'/g,"\\'")}')">
-        <div class="service-icon">${getServiceIcon(s.text)}</div>
-        <div class="service-name">${escapeHtml(s.text)}</div>
-      </div>`).join(''):'<div class="empty-state"><div class="empty-state-icon">📭</div>Tidak ada layanan</div>';
-  }catch(e){$('popularServices').innerHTML='<div class="empty-state">Gagal memuat layanan</div>'}
-}
-function quickBuyService(id,name){
-  switchTab('buyNumber');
-  setTimeout(()=>selectService(id,name),150);
-}
-async function loadServices(){
-  try{
-    const data=await apiCall('/services');
-    services=data.data||[];
-    renderServices(services);
-  }catch(e){$('servicesGrid').innerHTML='<div class="empty-state">Gagal memuat</div>'}
-}
-function renderServices(list){
-  if(!list.length){$('servicesGrid').innerHTML='<div class="empty-state"><div class="empty-state-icon">🔍</div>Tidak ada hasil</div>';return}
-  $('servicesGrid').innerHTML=list.map(s=>`
-    <div class="service-card" id="service-${s.id}" onclick="selectService(${s.id},'${escapeHtml(s.text).replace(/'/g,"\\'")}')">
-      <div class="service-icon">${getServiceIcon(s.text)}</div>
-      <div class="service-name">${escapeHtml(s.text)}</div>
-    </div>`).join('');
-}
-function filterServices(){
-  const q=$('serviceSearch').value.toLowerCase();
-  renderServices(services.filter(s=>(s.text||'').toLowerCase().includes(q)));
-}
-async function selectService(id,name){
-  selectedService={id,name};selectedCountry=null;
-  document.querySelectorAll('#servicesGrid .service-card').forEach(c=>c.classList.remove('selected'));
-  const el=$('service-'+id); if(el)el.classList.add('selected');
-  $('selectedServiceName').textContent=name;
-  $('countrySection').style.display='block';
-  $('buySection').style.display='none';
-  $('countriesGrid').innerHTML='<div class="loading"><div class="spinner"></div>Memuat negara...</div>';
-  try{
-    const data=await apiCall(`/services/${id}/countries`);
-    const countries=data.data?.countries||[];
-    if(!countries.length){$('countriesGrid').innerHTML='<div class="empty-state">Tidak ada negara tersedia</div>';return}
-    $('countriesGrid').innerHTML=countries.map(c=>`
-      <div class="country-card" id="country-${c.id}" onclick="selectCountry(${c.id},'${escapeHtml(c.name).replace(/'/g,"\\'")}',${c.price||0},${c.stock||0})">
-        <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
-          <div>
-            <div style="font-weight:600;font-size:13px">${escapeHtml(c.name)}</div>
-            <div style="font-size:11px;color:var(--muted);margin-top:3px">${escapeHtml(c.prefix||'')} • Stok: ${c.stock||0}</div>
-          </div>
-          <div style="text-align:right">
-            <div style="font-weight:700;color:var(--primary);font-size:13px">${c.price_formatted||formatRupiah(c.price||0)}</div>
-            <div style="font-size:10px;color:var(--success);margin-top:2px">${c.delivery_percent||0}% success</div>
-          </div>
-        </div>
-      </div>`).join('');
-  }catch(e){$('countriesGrid').innerHTML='<div class="empty-state">Gagal memuat negara</div>'}
-}
-function selectCountry(id,name,price,stock){
-  selectedCountry={id,name,price,stock};
-  document.querySelectorAll('#countriesGrid .country-card').forEach(c=>c.classList.remove('selected'));
-  const el=$('country-'+id); if(el)el.classList.add('selected');
-  $('selectedCountryName').textContent=name;
-  $('selectedPrice').textContent=formatRupiah(price);
-  $('selectedStock').textContent=stock;
-  $('buySection').style.display='block';
-}
-async function buyNumber(){
-  if(!selectedService||!selectedCountry){showAlert('error','Pilih layanan dan negara terlebih dahulu');return}
-  const quantity=parseInt($('quantity').value)||1;
-  if(quantity<1||quantity>30){showAlert('error','Jumlah harus 1–30');return}
-
-  try{
-    showAlert('info','⏳ Memproses pembelian...');
-    const data=await apiCall('/orders','POST',{
-      service_id:selectedService.id,country:selectedCountry.id,quantity
-    });
-    showAlert('success','✅ Pembelian berhasil!');
-    displayOrderResult(data);
-    await refreshBalance();
-
-    const list=[];
-    if(data.order&&data.order.order_uuid)list.push(data.order.order_uuid);
-    (data.data?.results||[]).forEach(r=>{if(r.order_uuid)list.push(r.order_uuid)});
-    list.forEach(uuid=>startPolling(uuid));
-  }catch(e){showAlert('error',e.message||'Pembelian gagal')}
-}
-
-function displayOrderResult(data){
-  const box=$('orderResult'), det=$('orderDetails');
-  let html='';
-  if(data.order){
-    const o=data.order;
-    html=`
-      <div class="number-display">
-        ${escapeHtml(o.formatted_number||o.number)}
-        <button class="copy-btn" onclick="copyToClipboard('${escapeHtml(o.number)}')">📋 Copy</button>
-      </div>
-      <div class="grid-2">
-        <div>
-          <div class="pay-detail"><span class="label">Order UUID</span><span class="value" style="font-size:11px;font-family:monospace">${escapeHtml(o.order_uuid)}</span></div>
-          <div class="pay-detail"><span class="label">Status</span><span class="value"><span class="badge badge-warning">${escapeHtml(o.status)}</span></span></div>
-          <div class="pay-detail"><span class="label">Layanan</span><span class="value">${escapeHtml(o.service?.name||'-')}</span></div>
-        </div>
-        <div>
-          <div class="pay-detail"><span class="label">Harga</span><span class="value">${formatRupiah(o.price)}</span></div>
-          <div class="pay-detail"><span class="label">Sisa Waktu</span><span class="value" id="timer-${o.order_uuid}">${o.remaining_time||0}s</span></div>
-          <div class="pay-detail"><span class="label">Expired</span><span class="value" style="font-size:11px">${escapeHtml(o.expired_at||'-')}</span></div>
-        </div>
-      </div>
-      <div id="otp-container-${o.order_uuid}" style="margin-top:14px">
-        <p style="text-align:center;color:var(--muted);font-size:13px">⏳ Menunggu kode OTP...</p>
-      </div>
-      <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap">
-        <button class="btn btn-success btn-sm" onclick="finishOrder('${o.order_uuid}')">✅ Finish</button>
-        <button class="btn btn-danger btn-sm" onclick="cancelOrder('${o.order_uuid}')">❌ Cancel & Refund</button>
-        <button class="btn btn-warning btn-sm" onclick="checkSMSNow('${o.order_uuid}')">🔄 Check SMS</button>
-        <button class="btn btn-secondary btn-sm" onclick="requestNewSMS('${o.order_uuid}')">📱 Request SMS Baru</button>
-      </div>`;
-  }
-  det.innerHTML=html;
-  box.style.display='block';
-  box.scrollIntoView({behavior:'smooth',block:'start'});
-}
-
-/* ---------- OTP Polling ---------- */
-function startPolling(uuid){
-  if(!uuid)return;
-  if(pollingIntervals[uuid])clearInterval(pollingIntervals[uuid]);
-  pollingIntervals[uuid]=setInterval(async()=>{
-    try{
-      const data=await apiCall(`/orders/${uuid}`);
-      const o=data.data||{};
-      const timerEl=$('timer-'+uuid); if(timerEl)timerEl.textContent=(o.remaining_time||0)+'s';
-
-      if(o.latest_code){
-        clearInterval(pollingIntervals[uuid]);delete pollingIntervals[uuid];
-        const box=$('otp-container-'+uuid);
-        if(box){
-          box.innerHTML=`
-            <div class="otp-display">${escapeHtml(o.latest_code)}</div>
-            <p style="text-align:center;color:var(--success);font-weight:700;font-size:13px">✅ Kode OTP Diterima</p>
-            ${o.messages&&o.messages.length?`<div style="margin-top:10px;padding:10px;background:var(--surface-alt);border-radius:8px;font-size:13px"><b>Pesan:</b> ${escapeHtml(o.messages[0].text||'')}</div>`:''}`;
-        }
-        showOTPModal(o);
-        if(autoMode)setTimeout(()=>finishOrder(uuid),2000);
-        showToast('🔔 OTP diterima: '+o.latest_code);
-      }
-      if(o.is_expired){
-        clearInterval(pollingIntervals[uuid]);delete pollingIntervals[uuid];
-        showAlert('info','⏰ Order expired');
-      }
-    }catch(e){/*silent*/}
-  },5000);
-}
-function showOTPModal(o){
-  $('otpModalContent').innerHTML=`
-    <div class="number-display">${escapeHtml(o.formatted_number||o.number)}</div>
-    <div class="otp-display">${escapeHtml(o.latest_code)}</div>
-    <div style="text-align:center;margin:14px 0">
-      <button class="copy-btn" style="font-size:14px;padding:10px 18px" onclick="copyToClipboard('${escapeHtml(o.latest_code)}')">📋 Copy Kode OTP</button>
-    </div>
-    <div style="text-align:center">
-      <button class="btn btn-primary" onclick="closeModal('otpModal');finishOrder('${o.order_uuid}')">✅ Selesai & Finish</button>
-    </div>`;
-  $('otpModal').classList.add('show');
-}
-
-/* ---------- Auto Mode ---------- */
-function toggleAutoMode(){
-  autoMode=!autoMode;
-  if(autoMode){
-    $('autoBuyStatus').textContent='Auto-Polling: ON';
-    $('autoBuyDot').classList.remove('off');
-    $('autoModeBtn').style.display='none';
-    $('stopAutoBtn').style.display='inline-block';
-    showAlert('success','✅ Auto Mode aktif');
-  }else stopAutoMode();
-}
-function stopAutoMode(){
-  autoMode=false;
-  $('autoBuyStatus').textContent='Auto-Polling: OFF';
-  $('autoBuyDot').classList.add('off');
-  $('autoModeBtn').style.display='inline-block';
-  $('stopAutoBtn').style.display='none';
-}
-
-/* ---------- Order actions ---------- */
-async function finishOrder(uuid){
-  try{
-    await apiCall(`/orders/${uuid}/finish`,'POST');
-    showAlert('success','✅ Order selesai');
-    clearInterval(pollingIntervals[uuid]);delete pollingIntervals[uuid];
-    await refreshBalance(); await loadActiveOrders();
-  }catch(e){showAlert('error',e.message)}
-}
-async function cancelOrder(uuid){
-  if(!confirm('Yakin cancel order ini? Dana akan dikembalikan.'))return;
-  try{
-    await apiCall(`/orders/${uuid}/cancel`,'POST');
-    showAlert('success','✅ Order dibatalkan & refund');
-    clearInterval(pollingIntervals[uuid]);delete pollingIntervals[uuid];
-    await refreshBalance(); await loadActiveOrders();
-  }catch(e){showAlert('error',e.message)}
-}
-async function checkSMSNow(uuid){
-  try{
-    const data=await apiCall(`/orders/${uuid}/check-sms`,'POST');
-    if(data.has_sms){showAlert('success','📱 SMS diterima');startPolling(uuid)}
-    else showAlert('info','⏳ Belum ada SMS');
-  }catch(e){showAlert('error',e.message)}
-}
-async function requestNewSMS(uuid){
-  try{
-    await apiCall(`/orders/${uuid}/request-sms`,'POST');
-    showAlert('info','📱 Request SMS baru terkirim. Silakan resend di aplikasi target.');
-  }catch(e){showAlert('error',e.message)}
-}
-
-/* ---------- Active Orders ---------- */
-async function loadActiveOrders(){
-  try{
-    const data=await apiCall('/orders/active');
-    const orders=data.data?.orders||[];
-    $('statActiveOrders').textContent=orders.length;
-
-    if(!orders.length){
-      $('activeOrdersList').innerHTML='<div class="empty-state"><div class="empty-state-icon">⏳</div>Tidak ada order aktif</div>';
-      return;
-    }
-
-    $('activeOrdersList').innerHTML=orders.map(o=>`
-      <div class="card white" style="margin-bottom:12px">
-        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap">
-          <div>
-            <div style="font-size:18px;font-weight:800;color:var(--primary)">
-              ${escapeHtml(o.number)}
-              <button class="copy-btn" onclick="copyToClipboard('${escapeHtml(o.number)}')">📋</button>
-            </div>
-            <div style="font-size:11px;color:var(--muted);margin-top:4px;font-family:monospace">UUID: ${escapeHtml(o.order_uuid)}</div>
-            <div style="font-size:12px;color:var(--muted);margin-top:2px">Sisa: ${o.remaining_time||0}s</div>
-          </div>
-          <span class="badge badge-warning">${escapeHtml(o.status)}</span>
-        </div>
-        <div id="active-otp-${o.order_uuid}" style="margin-top:10px">
-          ${o.sms&&o.sms.length?`<div class="otp-display" style="font-size:22px;padding:12px">${escapeHtml(o.sms[o.sms.length-1].code)}</div>`:'<p style="color:var(--muted);font-size:13px">⏳ Menunggu SMS...</p>'}
-        </div>
-        <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
-          <button class="btn btn-success btn-sm" onclick="finishOrder('${o.order_uuid}')">✅ Finish</button>
-          <button class="btn btn-danger btn-sm" onclick="cancelOrder('${o.order_uuid}')">❌ Cancel</button>
-          <button class="btn btn-warning btn-sm" onclick="startPolling('${o.order_uuid}');showToast('🔄 Polling dimulai')">🔄 Poll OTP</button>
-        </div>
-      </div>`).join('');
-
-    orders.forEach(o=>{if(!pollingIntervals[o.order_uuid])startPolling(o.order_uuid)});
-  }catch(e){
-    $('activeOrdersList').innerHTML='<div class="empty-state">Gagal memuat</div>';
-  }
-}
-
-/* ---------- History ---------- */
-async function loadHistory(){
-  try{
-    const q=$('historySearch').value.trim();
-    const endpoint=q?`/orders/history?search=${encodeURIComponent(q)}`:'/orders/history';
-    const data=await apiCall(endpoint);
-    const orders=data.data||[];
-    if(!orders.length){$('historyList').innerHTML='<div class="empty-state"><div class="empty-state-icon">📜</div>Tidak ada riwayat</div>';return}
-    $('historyList').innerHTML=`
-      <table>
-        <thead><tr><th>Nomor</th><th>Status</th><th>Harga</th><th>SMS</th><th>Aksi</th></tr></thead>
-        <tbody>${orders.map(o=>`
-          <tr>
-            <td><b>${escapeHtml(o.number)}</b></td>
-            <td><span class="badge badge-${o.status==='completed'?'success':'secondary'}">${escapeHtml(o.status)}</span></td>
-            <td>${formatRupiah(o.price||0)}</td>
-            <td>${o.sms&&o.sms.length?escapeHtml(o.sms[o.sms.length-1].code):'-'}</td>
-            <td>${o.status==='completed'?`<button class="btn btn-warning btn-sm" onclick="requestRefund('${o.order_uuid}')">💸 Refund</button>`:'-'}</td>
-          </tr>`).join('')}</tbody>
-      </table>`;
-  }catch(e){$('historyList').innerHTML='<div class="empty-state">Gagal memuat</div>'}
-}
-
-/* =========================================================
-   GMAIL
-========================================================= */
-async function loadGmailStock(){
-  try{
-    const data=await apiCall('/gmail/stock');
-    const d=data.data||{};
-    $('gmailStock').innerHTML=`
-      <div class="grid-2">
-        <div class="card white" style="text-align:center">
-          <div style="font-size:28px;font-weight:800;color:var(--primary)">${d.stock||0}</div>
-          <div style="color:var(--muted);font-size:12px">Stok Tersedia</div>
-        </div>
-        <div class="card white" style="text-align:center">
-          <div style="font-size:28px;font-weight:800;color:var(--success)">${formatRupiah(d.sell_price||0)}</div>
-          <div style="color:var(--muted);font-size:12px">Harga / Akun</div>
-        </div>
-      </div>`;
-  }catch(e){$('gmailStock').innerHTML='<div class="empty-state">Gagal memuat</div>'}
-}
-async function buyGmail(){
-  const qty=parseInt($('gmailQty').value)||1;
-  try{
-    await apiCall('/gmail/orders','POST',{qty});
-    showAlert('success',`✅ Berhasil beli ${qty} akun Gmail`);
-    await loadGmailOrders(); await refreshBalance();
-  }catch(e){showAlert('error',e.message)}
-}
-async function loadGmailOrders(){
-  try{
-    const data=await apiCall('/gmail/orders');
-    const orders=data.data?.orders||[];
-    if(!orders.length){$('gmailOrdersList').innerHTML='<div class="empty-state">Belum ada order</div>';return}
-    $('gmailOrdersList').innerHTML=orders.map(o=>`
-      <div class="card white" style="margin-bottom:10px">
-        <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
-          <div>
-            <div style="font-weight:700">${escapeHtml(o.email)}</div>
-            <div style="font-family:monospace;color:var(--muted);margin-top:4px;font-size:13px">
-              ${escapeHtml(o.password)}
-              <button class="copy-btn" onclick="copyToClipboard('${escapeHtml(o.email)}:${escapeHtml(o.password)}')">📋</button>
-            </div>
-          </div>
-          <span class="badge badge-${o.status==='completed'?'success':'warning'}">${escapeHtml(o.status)}</span>
-        </div>
-      </div>`).join('');
-  }catch(e){}
-}
-
-/* =========================================================
-   EMAIL RENTAL
-========================================================= */
-async function loadEmailSuggestions(){
-  try{
-    const data=await apiCall('/email-rental/suggestions');
-    const sites=data.data?.sites||[];
-    $('emailSite').innerHTML='<option value="">Pilih Site</option>'+sites.map(s=>`<option value="${escapeHtml(s)}">${escapeHtml(s)}</option>`).join('');
-  }catch(e){}
-}
-async function loadEmailDomains(){
-  const site=$('emailSite').value;if(!site)return;
-  try{
-    const data=await apiCall(`/email-rental/domains?site=${encodeURIComponent(site)}`);
-    const domains=data.data?.domains||[];
-    $('emailDomain').innerHTML='<option value="">Pilih Domain</option>'+domains.map(d=>`<option value="${escapeHtml(d.name)}">${escapeHtml(d.name)} — ${formatRupiah(d.price)} (${d.count||0})</option>`).join('');
-  }catch(e){}
-}
-async function rentEmail(){
-  const site=$('emailSite').value,domain=$('emailDomain').value;
-  if(!site||!domain){showAlert('error','Pilih site dan domain');return}
-  try{
-    const data=await apiCall('/email-rental/orders','POST',{site,domain});
-    showAlert('success','✅ Email berhasil dirental');
-    await loadEmailOrders(); await refreshBalance();
-    if(data.data?.order_uuid)startEmailPolling(data.data.order_uuid);
-  }catch(e){showAlert('error',e.message)}
-}
-function startEmailPolling(uuid){
-  const iv=setInterval(async()=>{
-    try{
-      const data=await apiCall(`/email-rental/orders/${uuid}`);
-      if(data.data?.code){
-        clearInterval(iv);
-        showToast('🔔 Kode email: '+data.data.code);
-        await loadEmailOrders();
-      }
-    }catch(e){}
-  },5000);
-}
-async function loadEmailOrders(){
-  try{
-    const data=await apiCall('/email-rental/orders');
-    const orders=data.data?.orders||[];
-    if(!orders.length){$('emailOrdersList').innerHTML='<div class="empty-state">Tidak ada rental aktif</div>';return}
-    $('emailOrdersList').innerHTML=orders.map(o=>`
-      <div class="card white" style="margin-bottom:10px">
-        <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
-          <div>
-            <div style="font-weight:700">${escapeHtml(o.email)}</div>
-            ${o.code?`<div class="otp-display" style="font-size:18px;padding:10px;margin:8px 0">${escapeHtml(o.code)}</div>`:'<p style="color:var(--muted);font-size:13px">⏳ Menunggu kode...</p>'}
-          </div>
-          <div style="display:flex;gap:8px;align-items:center">
-            <span class="badge badge-${o.status==='completed'?'success':'warning'}">${escapeHtml(o.status)}</span>
-            ${o.cancellable?`<button class="btn btn-danger btn-sm" onclick="cancelEmailRental('${o.order_uuid}')">✖</button>`:''}
-          </div>
-        </div>
-      </div>`).join('');
-  }catch(e){}
-}
-async function cancelEmailRental(uuid){
-  if(!confirm('Yakin cancel rental ini?'))return;
-  try{
-    await apiCall(`/email-rental/orders/${uuid}/cancel`,'POST');
-    showAlert('success','✅ Rental dibatalkan');
-    await loadEmailOrders(); await refreshBalance();
-  }catch(e){showAlert('error',e.message)}
-}
-
-/* =========================================================
-   WA READY
-========================================================= */
-async function loadWAReadyInfo(){
-  try{
-    const data=await apiCall('/wa-ready/info');
-    const info=data.data||{};
-    const countries=info.countries||[];
-    $('waReadyInfo').innerHTML=`
-      <div class="alert alert-info" style="display:block">
-        <b>⚠️ Aturan:</b><br>${(info.usage_rules||[]).map(r=>'• '+escapeHtml(r)).join('<br>')}
-      </div>
-      <div class="grid">${countries.map(c=>`
-        <div class="card white" style="text-align:center">
-          <div style="font-weight:700">${escapeHtml(c.name)}</div>
-          <div style="color:var(--primary);font-weight:800;font-size:18px;margin:6px 0">${formatRupiah(c.price)}</div>
-          <div style="color:var(--muted);font-size:12px">Stok: ${c.stock||0}</div>
-        </div>`).join('')}</div>`;
-    $('waCountry').innerHTML=countries.map(c=>`<option value="${escapeHtml(c.iso)}">${escapeHtml(c.name)} — ${formatRupiah(c.price)}</option>`).join('');
-  }catch(e){$('waReadyInfo').innerHTML='<div class="empty-state">Gagal memuat</div>'}
-}
-async function buyWAReady(){
-  const country=$('waCountry').value;
-  try{
-    const data=await apiCall('/wa-ready/orders','POST',{country});
-    showAlert('success','✅ WA Ready berhasil dibeli');
-    await loadWAReadyOrders(); await refreshBalance();
-    if(data.data?.order?.order_uuid)startWAPolling(data.data.order.order_uuid);
-  }catch(e){showAlert('error',e.message)}
-}
-function startWAPolling(uuid){
-  const iv=setInterval(async()=>{
-    try{
-      const data=await apiCall(`/wa-ready/orders/${uuid}`);
-      const o=data.data?.order;
-      if(o?.latest_code){
-        clearInterval(iv);
-        showOTPModal({formatted_number:o.phone,latest_code:o.latest_code,order_uuid:uuid});
-      }
-      if(o?.status==='completed'||o?.status==='failed')clearInterval(iv);
-      await loadWAReadyOrders();
-    }catch(e){}
-  },4000);
-}
-async function loadWAReadyOrders(){
-  try{
-    const data=await apiCall('/wa-ready/orders');
-    const orders=data.data?.orders||[];
-    if(!orders.length){$('waReadyOrdersList').innerHTML='<div class="empty-state">Belum ada order WA Ready</div>';return}
-    $('waReadyOrdersList').innerHTML=orders.map(o=>`
-      <div class="card white" style="margin-bottom:10px">
-        <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
-          <div>
-            <div style="font-weight:700;font-size:16px">${escapeHtml(o.phone)}</div>
-            ${o.latest_code?`<div class="otp-display" style="font-size:18px;padding:10px;margin:8px 0">${escapeHtml(o.latest_code)}</div>`:''}
-          </div>
-          <span class="badge badge-${o.status==='completed'?'success':o.status==='failed'?'danger':'warning'}">${escapeHtml(o.status)}</span>
-        </div>
-      </div>`).join('');
-  }catch(e){}
-}
-
-/* =========================================================
-   SMM
-========================================================= */
-async function loadSMMPlatforms(){
-  try{
-    const data=await apiCall('/smm/platforms');
-    const platforms=data.data?.platforms||[];
-    $('smmPlatform').innerHTML='<option value="">Pilih Platform</option>'+platforms.map(p=>`<option value="${escapeHtml(p.key)}">${escapeHtml(p.label)} (${p.total||0})</option>`).join('');
-  }catch(e){}
-}
-async function loadSMMTypes(){
-  const platform=$('smmPlatform').value;if(!platform)return;
-  try{
-    const data=await apiCall('/smm/platforms');
-    const p=(data.data?.platforms||[]).find(x=>x.key===platform);
-    $('smmType').innerHTML='<option value="">Pilih Tipe</option>'+(p?.types||[]).map(t=>`<option value="${escapeHtml(t.type)}">${escapeHtml(t.type)} (${t.total||0})</option>`).join('');
-  }catch(e){}
-}
-async function loadSMMServices(){
-  const platform=$('smmPlatform').value,type=$('smmType').value;
-  if(!platform||!type)return;
-  try{
-    const data=await apiCall(`/smm/services?platform=${encodeURIComponent(platform)}&type=${encodeURIComponent(type)}`);
-    const list=data.data?.services||[];
-    if(!list.length){$('smmServicesList').innerHTML='<div class="empty-state">Tidak ada layanan</div>';return}
-    $('smmServicesList').innerHTML=list.map(s=>`
-      <div class="card white" style="margin-bottom:8px">
-        <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
-          <div>
-            <div style="font-weight:600">${escapeHtml(s.name)}</div>
-            <div style="font-size:12px;color:var(--muted);margin-top:3px">${escapeHtml(s.category||'')} • Min ${s.min} • Max ${s.max}</div>
-          </div>
-          <div style="font-weight:700;color:var(--primary)">${formatRupiah(s.price_per_1000)}/1000</div>
-        </div>
-      </div>`).join('');
-  }catch(e){}
-}
-async function loadSMMOrders(){
-  try{
-    const data=await apiCall('/smm/orders');
-    const orders=data.data?.orders||[];
-    if(!orders.length){$('smmOrdersList').innerHTML='<div class="empty-state">Belum ada order SMM</div>';return}
-    $('smmOrdersList').innerHTML=orders.map(o=>`
-      <div class="card white" style="margin-bottom:8px">
-        <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
-          <div>
-            <div style="font-weight:600">${escapeHtml(o.service_name||'Order')}</div>
-            <div style="font-size:12px;color:var(--muted);margin-top:3px">Target: ${escapeHtml(o.target||'-')} • Qty: ${o.quantity||'-'}</div>
-          </div>
-          <span class="badge badge-${o.status==='completed'?'success':o.status==='in_progress'?'warning':'secondary'}">${escapeHtml(o.status)}</span>
-        </div>
-      </div>`).join('');
-  }catch(e){}
-}
-
-/* =========================================================
-   REFUND
-========================================================= */
-async function loadRefunds(){
-  try{
-    const data=await apiCall('/refunds/eligible');
-    const vn=data.data?.vn||[], quota=data.data?.quota||{};
-    let html=`
-      <div class="card white" style="margin-bottom:12px">
-        <div class="pay-detail"><span class="label">Daily Limit</span><span class="value">${quota.daily_left||0}/${quota.daily_limit||0}</span></div>
-        <div class="pay-detail"><span class="label">Monthly Limit</span><span class="value">${quota.monthly_left||0}/${quota.monthly_limit||0}</span></div>
-      </div>`;
-    if(vn.length){
-      html+='<div style="font-weight:600;margin-bottom:8px;font-size:13px">📱 Nomor Eligible:</div>';
-      html+=vn.map(r=>`
-        <div class="card white" style="margin-bottom:8px">
-          <div style="font-weight:600;font-family:monospace;font-size:13px">${escapeHtml(r.order_uuid)}</div>
-          <div style="font-size:12px;color:var(--muted);margin-top:3px">${formatRupiah(r.amount)} • ${escapeHtml(r.created_at||'')}</div>
-        </div>`).join('');
-    }else{
-      html+='<div class="empty-state">Tidak ada order eligible</div>';
-    }
-    $('refundEligibleList').innerHTML=html;
-
-    const hist=await apiCall('/refunds');
-    const refunds=hist.data?.refunds||[];
-    $('refundHistoryList').innerHTML=refunds.length?refunds.map(r=>`
-      <div class="card white" style="margin-bottom:8px">
-        <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap">
-          <div>
-            <div style="font-weight:600;font-family:monospace;font-size:12px">${escapeHtml(r.order_uuid)}</div>
-            <div style="font-size:12px;color:var(--muted);margin-top:3px">${escapeHtml(r.type||'')} • ${formatRupiah(r.amount)}</div>
-          </div>
-          <span class="badge badge-${r.status==='approved'?'success':r.status==='rejected'?'danger':'warning'}">${escapeHtml(r.status)}</span>
-        </div>
-      </div>`).join(''):'<div class="empty-state">Belum ada riwayat refund</div>';
-  }catch(e){}
-}
-async function requestRefund(uuid){
-  if(!confirm('Ajukan refund untuk order ini?'))return;
-  try{
-    await apiCall(`/refunds/${uuid}`,'POST',{reason:'Request from user'});
-    showAlert('success','✅ Refund diajukan');
-    loadRefunds();
-  }catch(e){showAlert('error',e.message)}
-}
-
-/* =========================================================
-   DEPOSIT
-========================================================= */
-let paymentMethodsCache = [];
-let currentDeposit = null;
-
-function setDeposit(amount,btn){
-  $('depositAmount').value=amount;
-  document.querySelectorAll('.preset-btn').forEach(b=>b.classList.remove('active'));
-  if(btn)btn.classList.add('active');
-}
-function updateDepositPreview(){
-  const val=parseInt($('depositAmount').value)||0;
-  document.querySelectorAll('.preset-btn').forEach(b=>{
-    const n=parseInt(b.textContent.replace(/\D/g,''));
-    b.classList.toggle('active',n===val);
-  });
-}
-
-async function loadPaymentMethods(){
-  try{
-    const data=await apiCall('/payment-methods');
-    paymentMethodsCache=data.data||[];
-    renderMethodList(paymentMethodsCache);
-  }catch(e){
-    $('methodList').innerHTML='<div class="empty-state">Gagal memuat metode</div>';
-  }
-}
-function renderMethodList(methods){
-  if(!methods.length){
-    $('methodList').innerHTML='<div class="empty-state">Tidak ada metode</div>';
-    return;
-  }
-  $('methodList').innerHTML=methods.map(m=>`
-    <div class="method-item" data-id="${m.id}" onclick="selectMethod(${m.id},this)">
-      <div>
-        <div class="method-name">${escapeHtml(m.name)}</div>
-        <div class="method-meta">${escapeHtml(m.category_name||'')} • Exp: ${m.expiration_time||'—'} menit</div>
-      </div>
-      <div class="method-fee">${m.fee? 'Fee '+formatRupiah(m.fee) : 'Instan'}</div>
-    </div>`).join('');
-  // auto-select first
-  const first=$('methodList').querySelector('.method-item');
-  if(first)selectMethod(parseInt(first.dataset.id),first);
-}
-function selectMethod(id,el){
-  document.querySelectorAll('.method-item').forEach(i=>i.classList.remove('active'));
-  if(el)el.classList.add('active');
-  $('paymentMethod').innerHTML=`<option value="${id}" selected>${id}</option>`;
-  $('paymentMethod').value=id;
-}
-
-async function createDeposit(){
-  const amount=parseInt($('depositAmount').value)||0;
-  const methodId=parseInt($('paymentMethod').value)||0;
-
-  if(amount<10000){showAlert('error','Minimal deposit Rp 10.000');return}
-  if(!methodId){showAlert('error','Pilih metode pembayaran');return}
-
-  const btn=$('btnDeposit');
-  const original=btn.innerHTML;
-  btn.disabled=true;btn.innerHTML='⏳ Memproses...';
-
-  try{
-    const data=await apiCall('/deposits','POST',{amount,method:methodId});
-    currentDeposit=data.data||{};
-    renderDepositInstructions(currentDeposit);
-    showAlert('success','✅ Instruksi pembayaran dibuat');
-  }catch(e){
-    showAlert('error',e.message||'Gagal membuat deposit');
-  }finally{
-    btn.disabled=false;btn.innerHTML=original;
-  }
-}
-
-function renderDepositInstructions(d){
-  // toggle views
-  $('depositPlaceholder').style.display='none';
-  $('depositResult').style.display='block';
-
-  const total=d.total_amount||d.amount||0;
-  const payCode=d.payment_code||d.pay_code||d.va_number||d.payment_number||d.pay_code||'';
-  const status=d.status||'pending';
-
-  $('depositTotal').textContent=formatRupiah(total);
-  $('depositTotal').dataset.raw=total;
-  $('depositStatusBadge').textContent=(status||'').toUpperCase();
-  $('depositStatusBadge').className='badge badge-'+(status==='success'?'success':status==='pending'?'warning':'danger')+' spacer';
-
-  /* ---------- QR SECTION ---------- */
-  let qrHtml='';
-  let qrSource='';
-
-  // Priority 1: raw base64 PNG
-  if(d.qr_code_base64){
-    let b64=String(d.qr_code_base64).trim();
-    if(!b64.startsWith('data:image'))b64='data:image/png;base64,'+b64.replace(/^data:image\/[a-z]+;base64,/,'');
-    qrSource=`<img src="${b64}" alt="QR Code" onerror="this.parentNode.innerHTML='<div class=\\'qr-placeholder\\'>Gagal memuat QR</div>'">`;
-  }
-  // Priority 2: URL image
-  else if(d.qr_url){
-    qrSource=`<img src="${escapeHtml(d.qr_url)}" alt="QR Code" onerror="this.parentNode.innerHTML='<div class=\\'qr-placeholder\\'>Gagal memuat QR</div>'">`;
-  }
-  // Priority 3: QR string -> generate via qrserver
-  else if(d.qr_string){
-    const enc=encodeURIComponent(d.qr_string);
-    qrSource=`<img src="https://api.qrserver.com/v1/create-qr-code/?size=280x280&margin=8&data=${enc}" alt="QR Code" onerror="this.parentNode.innerHTML='<div class=\\'qr-placeholder\\'>Gagal memuat QR</div>'">`;
-  }
-  else if(d.qr_code){
-    // Could be string or url
-    const s=String(d.qr_code);
-    if(s.startsWith('http'))qrSource=`<img src="${escapeHtml(s)}" alt="QR Code">`;
-    else if(s.length>50&&/^[A-Za-z0-9+/=]+$/.test(s)){
-      qrSource=`<img src="data:image/png;base64,${s}" alt="QR Code">`;
-    } else {
-      qrSource=`<img src="https://api.qrserver.com/v1/create-qr-code/?size=280x280&margin=8&data=${encodeURIComponent(s)}" alt="QR Code">`;
-    }
-  }
-
-  if(qrSource){
-    qrHtml=`
-      <div class="qr-container">
-        ${qrSource}
-        <div class="qr-label">Scan QRIS</div>
-        <div class="qr-badge">QRIS • Semua e-wallet & m-banking</div>
-      </div>`;
+function copyText(txt) {
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(txt).then(() => toast('Berhasil disalin ✓', 'ok'));
   } else {
-    qrHtml=`
-      <div class="qr-container">
-        <div class="qr-placeholder">
-          ${d.payment_url?'Klik tombol di bawah untuk membuka halaman pembayaran':'QR tidak tersedia untuk metode ini'}
+    const ta = document.createElement('textarea');
+    ta.value = txt; ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); toast('Berhasil disalin ✓', 'ok'); }
+    catch (e) { toast('Gagal menyalin', 'err'); }
+    document.body.removeChild(ta);
+  }
+}
+
+/* ---------------- API LAYER ---------------- */
+async function apiPost(action, params) {
+  const base = (CFG.base_url || '').replace(/\/+$/, '');
+  const body = new URLSearchParams(Object.assign({
+    api_id : CFG.api_id,
+    api_key: CFG.api_key,
+    action : action
+  }, params || {}));
+
+  const res = await fetch(base + '/api/' + action, {
+    method : 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body   : body.toString()
+  });
+
+  const text = await res.text();
+  let json;
+  try { json = JSON.parse(text); }
+  catch (e) { throw new Error('Respons bukan JSON: ' + text.slice(0, 160)); }
+
+  if (!res.ok) throw new Error('HTTP ' + res.status + ' — ' + (json.message || text.slice(0, 120)));
+  return json;
+}
+
+async function testApi() {
+  const log = document.getElementById('apiLog');
+  log.textContent = 'Mengirim permintaan ke ' + CFG.base_url + '/api/profile …';
+  try {
+    const r = await apiPost('profile', {});
+    log.textContent = '✓ Berhasil\n\n' + JSON.stringify(r, null, 2);
+    toast('Koneksi API berhasil ✓', 'ok');
+  } catch (e) {
+    log.textContent = '✗ Gagal\n\n' + e.message +
+      '\n\nKemungkinan penyebab:\n' +
+      '• Endpoint /api/profile berbeda pada panel NexusSMM — cek dokumentasi setelah login.\n' +
+      '• CORS diblokir browser (paling umum). Solusi: gunakan proxy backend.\n' +
+      '• API ID / Key salah atau IP tidak diizinkan.';
+    toast('Koneksi API gagal', 'err');
+  }
+}
+
+/* ---------------- NAVIGATION ---------------- */
+function go(view) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  const el = document.getElementById('view-' + view);
+  if (el) el.classList.add('active');
+
+  document.querySelectorAll('.tab').forEach(t => {
+    t.classList.toggle('active', t.dataset.view === view);
+  });
+
+  if (view === 'history')  renderHistory();
+  if (view === 'settings') fillSettings();
+  if (view === 'home')     renderStats();
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+document.getElementById('tabs').addEventListener('click', e => {
+  const btn = e.target.closest('.tab');
+  if (btn) go(btn.dataset.view);
+});
+
+/* ---------------- RENDER: SALDO & STATS ---------------- */
+function renderSaldo() {
+  document.getElementById('saldoTop').textContent = rp(DATA.saldo);
+  const s = document.getElementById('statSaldo');
+  if (s) s.textContent = rp(DATA.saldo);
+}
+function renderStats() {
+  document.getElementById('statSvc').textContent   = SERVICES.length;
+  document.getElementById('statCty').textContent   = COUNTRIES.length;
+  document.getElementById('statOrd').textContent   = (DATA.orders || []).length;
+  renderSaldo();
+}
+
+/* ---------------- RENDER: COUNTRIES ---------------- */
+function renderCountries() {
+  const sel = document.getElementById('countrySel');
+  sel.innerHTML = COUNTRIES.map(c =>
+    `<option value="${c.code}">${c.flag}  ${c.name}</option>`
+  ).join('');
+  sel.value = currentCountry;
+}
+function onCountryChange() {
+  currentCountry = document.getElementById('countrySel').value;
+  renderServices();
+}
+
+/* ---------------- RENDER: SERVICES ---------------- */
+function priceFor(svc, countryCode) {
+  const c = COUNTRIES.find(x => x.code === countryCode) || COUNTRIES[0];
+  return Math.round((svc.base * c.mult) / 500) * 500;
+}
+
+function renderServices() {
+  const q = (document.getElementById('searchSvc').value || '').toLowerCase().trim();
+  const grid = document.getElementById('svcGrid');
+  const list = SERVICES.filter(s => s.name.toLowerCase().includes(q));
+
+  if (!list.length) {
+    grid.innerHTML = `<div class="empty" style="grid-column:1/-1">
+      <div class="e-ico">🔍</div>
+      <h4>Layanan tidak ditemukan</h4>
+      <p>Coba kata kunci lain, misalnya "WhatsApp" atau "Shopee".</p>
+    </div>`;
+    return;
+  }
+
+  grid.innerHTML = list.map(s => {
+    const price = priceFor(s, currentCountry);
+    return `<div class="svc" onclick="startOrder('${s.id}')">
+      <div class="svc-ico" style="--c:${s.color}">${s.name.charAt(0)}</div>
+      <div class="svc-info">
+        <h4>${s.name}</h4>
+        <span>Tersedia</span>
+      </div>
+      <div class="svc-price">
+        <b>${rp(price)}</b>
+        <small>/ nomor</small>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+/* ---------------- ORDER FLOW ---------------- */
+function getOrder(id) { return (DATA.orders || []).find(o => o.id === id); }
+
+function startOrder(serviceId) {
+  const svc = SERVICES.find(s => s.id === serviceId);
+  if (!svc) return;
+
+  const country = COUNTRIES.find(c => c.code === currentCountry);
+  const price   = priceFor(svc, currentCountry);
+
+  pendingOrder = { svc, country, price };
+
+  const cukup = DATA.saldo >= price;
+
+  openModal(`
+    <div class="modal-head">
+      <div>
+        <h3>Konfirmasi Pesanan</h3>
+        <p>Periksa detail sebelum melanjutkan</p>
+      </div>
+      <button class="close-x" onclick="closeModal()">✕</button>
+    </div>
+
+    <div class="rows">
+      <div class="row"><span class="k">Layanan</span><span class="v">${svc.name}</span></div>
+      <div class="row"><span class="k">Negara</span><span class="v">${country.flag} ${country.name}</span></div>
+      <div class="row"><span class="k">Harga</span><span class="v blue">${rp(price)}</span></div>
+      <div class="row"><span class="k">Saldo kamu</span><span class="v ${cukup ? 'green' : 'red'}">${rp(DATA.saldo)}</span></div>
+      <div class="row"><span class="k">Sisa setelah bayar</span><span class="v">${cukup ? rp(DATA.saldo - price) : '—'}</span></div>
+    </div>
+
+    ${cukup
+      ? `<button class="btn btn-primary btn-block" onclick="confirmOrder()">Beli Sekarang — ${rp(price)}</button>
+         <button class="btn btn-ghost btn-block" style="margin-top:9px" onclick="closeModal()">Batal</button>`
+      : `<div class="note" style="margin-bottom:14px">💡 Saldo kamu belum cukup. Silakan deposit terlebih dahulu.</div>
+         <button class="btn btn-primary btn-block" onclick="closeModal();go('deposit')">Isi Saldo Dulu</button>
+         <button class="btn btn-ghost btn-block" style="margin-top:9px" onclick="closeModal()">Batal</button>`}
+  `);
+}
+
+async function confirmOrder() {
+  if (!pendingOrder) return;
+  const { svc, country, price } = pendingOrder;
+
+  openModal(`
+    <div class="center" style="padding:26px 0">
+      <div class="loader"></div>
+      <p>Menyiapkan nomor ${svc.name} dari ${country.name}…</p>
+    </div>
+  `);
+
+  try {
+    const result = await placeOrder(svc, country);
+
+    /* potong saldo */
+    DATA.saldo -= price;
+
+    const order = {
+      id        : uid('ORD'),
+      apiOrderId: result.orderId,
+      service   : svc.name,
+      serviceId : svc.id,
+      color     : svc.color,
+      country   : country.name,
+      flag      : country.flag,
+      number    : result.number,
+      price     : price,
+      otp       : '',
+      attempts  : 0,
+      status    : 'waiting',
+      createdAt : Date.now(),
+      expiresAt : Date.now() + 20 * 60 * 1000
+    };
+
+    DATA.orders.unshift(order);
+    saveData();
+    renderSaldo();
+    renderStats();
+
+    activeOrderId = order.id;
+    renderOrderModal();
+    toast('Nomor berhasil didapatkan ✓', 'ok');
+
+  } catch (e) {
+    openModal(`
+      <div class="modal-head">
+        <div><h3>Pesanan Gagal</h3><p>Terjadi kesalahan saat memproses</p></div>
+        <button class="close-x" onclick="closeModal()">✕</button>
+      </div>
+      <div class="note">⚠️ ${String(e.message || e).replace(/</g, '&lt;')}</div>
+      <button class="btn btn-block" onclick="closeModal()">Tutup</button>
+    `);
+    toast('Gagal membuat pesanan', 'err');
+  }
+}
+
+async function placeOrder(svc, country) {
+  if (CFG.demo) {
+    await sleep(1500);
+    return { orderId: uid('API'), number: generateNumber(country) };
+  }
+
+  const r = await apiPost('order', {
+    service : svc.id,
+    country : country.code,
+    quantity: 1
+  });
+
+  const ok = r.status === true || r.status === 'true' || r.order || r.id;
+  if (!ok) throw new Error(r.message || r.msg || 'Panel menolak pesanan');
+
+  return {
+    orderId: r.order || r.id || r.order_id,
+    number : r.number || r.phone || (r.data && (r.data.number || r.data.phone)) || '-'
+  };
+}
+
+function generateNumber(country) {
+  const pre = country.prefix[Math.floor(Math.random() * country.prefix.length)];
+  let rest = '';
+  const len = 8 - (pre.length > 3 ? 1 : 0);
+  for (let i = 0; i < len; i++) rest += Math.floor(Math.random() * 10);
+  return pre + rest;
+}
+
+/* ---------------- ACTIVE ORDER MODAL ---------------- */
+function openActiveOrder(id) {
+  activeOrderId = id;
+  renderOrderModal();
+}
+
+function renderOrderModal() {
+  const o = getOrder(activeOrderId);
+  if (!o) { closeModal(); return; }
+
+  /* --- OTP sudah didapat --- */
+  if (o.status === 'success') {
+    openModal(`
+      <div class="modal-head">
+        <div><h3>Kode OTP Diterima</h3><p>${o.service} • ${o.flag} ${o.country}</p></div>
+        <button class="close-x" onclick="closeModal()">✕</button>
+      </div>
+
+      <div class="num-box">
+        <span class="n">${o.number}</span>
+        <button onclick="copyText('${o.number}')">Salin</button>
+      </div>
+
+      <div class="otp-box">
+        <div class="lbl">Kode Verifikasi</div>
+        <div class="code">${o.otp}</div>
+      </div>
+
+      <button class="btn btn-primary btn-block" onclick="copyText('${o.otp}')">📋 Salin Kode OTP</button>
+      <button class="btn btn-ghost btn-block" style="margin-top:9px" onclick="closeModal()">Selesai</button>
+    `);
+    return;
+  }
+
+  /* --- kedaluwarsa --- */
+  if (o.status === 'expired' || Date.now() > o.expiresAt) {
+    if (o.status !== 'expired') { o.status = 'expired'; saveData(); renderHistory(); }
+    openModal(`
+      <div class="modal-head">
+        <div><h3>Nomor Kedaluwarsa</h3><p>${o.service} • ${o.flag} ${o.country}</p></div>
+        <button class="close-x" onclick="closeModal()">✕</button>
+      </div>
+      <div class="num-box"><span class="n">${o.number}</span><button onclick="copyText('${o.number}')">Salin</button></div>
+      <div class="note">⏱️ Waktu penggunaan nomor sudah habis. Silakan buat pesanan baru.</div>
+      <button class="btn btn-primary btn-block" onclick="closeModal();go('buy')">Beli Nomor Lagi</button>
+    `);
+    return;
+  }
+
+  /* --- menunggu OTP --- */
+  openModal(`
+    <div class="modal-head">
+      <div><h3>Nomor Aktif</h3><p>${o.service} • ${o.flag} ${o.country}</p></div>
+      <button class="close-x" onclick="closeModal()">✕</button>
+    </div>
+
+    <div class="live-head"><span class="dot"></span> Menunggu Kode OTP</div>
+
+    <div class="num-box">
+      <span class="n">${o.number}</span>
+      <button onclick="copyText('${o.number}')">Salin</button>
+    </div>
+
+    <div class="timer-line">
+      Kedaluwarsa dalam
+      <b data-expires="${o.expiresAt}">--:--</b>
+    </div>
+
+    <button class="btn btn-primary btn-block" id="btnCheck" onclick="doCheckOtp()">
+      🔄 Cek Kode OTP
+    </button>
+    <button class="btn btn-ghost btn-block" style="margin-top:9px" onclick="closeModal()">
+      Tutup (pesanan tetap tersimpan)
+    </button>
+
+    <p style="text-align:center;font-size:11.5px;color:var(--muted);margin-top:14px;line-height:1.6">
+      Masukkan nomor di atas pada aplikasi tujuan,<br>lalu tekan "Cek Kode OTP".
+    </p>
+  `);
+
+  tickTimers();
+}
+
+async function doCheckOtp() {
+  const o = getOrder(activeOrderId);
+  if (!o || o.status !== 'waiting') return;
+
+  const btn = document.getElementById('btnCheck');
+  if (btn) { btn.disabled = true; btn.textContent = 'Memeriksa…'; }
+
+  try {
+    o.attempts = (o.attempts || 0) + 1;
+    const code = await fetchOtp(o);
+
+    if (code) {
+      o.otp    = code;
+      o.status = 'success';
+      saveData();
+      renderOrderModal();
+      renderHistory();
+      toast('Kode OTP berhasil didapatkan 🎉', 'ok');
+    } else {
+      saveData();
+      if (btn) { btn.disabled = false; btn.textContent = '🔄 Cek Kode OTP Lagi'; }
+      toast('Kode belum masuk, tunggu sebentar…');
+    }
+  } catch (e) {
+    if (btn) { btn.disabled = false; btn.textContent = '🔄 Coba Lagi'; }
+    toast('Gagal memeriksa OTP: ' + e.message, 'err');
+  }
+}
+
+async function fetchOtp(o) {
+  if (CFG.demo) {
+    await sleep(1700);
+    const chance = Math.min(0.45 + (o.attempts - 1) * 0.3, 1);
+    if (o.attempts >= 3 || Math.random() < chance) {
+      return String(Math.floor(100000 + Math.random() * 900000));
+    }
+    return null;
+  }
+
+  const r = await apiPost('status', { order_id: o.apiOrderId });
+  const otp = r.otp || r.code || (r.data && (r.data.otp || r.data.code)) || '';
+  if (otp) return String(otp);
+  if (r.status === 'completed' || r.status === 'success') return 'SELESAI';
+  return null;
+}
+
+/* ---------------- TIMER ---------------- */
+function tickTimers() {
+  document.querySelectorAll('[data-expires]').forEach(el => {
+    const left = Number(el.dataset.expires) - Date.now();
+    if (left <= 0) {
+      el.textContent = 'Kedaluwarsa';
+      el.classList.add('exp');
+    } else {
+      const m = Math.floor(left / 60000);
+      const s = Math.floor((left % 60000) / 1000);
+      el.textContent = String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
+    }
+  });
+}
+setInterval(() => {
+  tickTimers();
+  /* tandai order kedaluwarsa */
+  let changed = false;
+  (DATA.orders || []).forEach(o => {
+    if (o.status === 'waiting' && Date.now() > o.expiresAt) { o.status = 'expired'; changed = true; }
+  });
+  if (changed) { saveData(); if (document.getElementById('view-history').classList.contains('active')) renderHistory(); }
+}, 1000);
+
+/* ---------------- DEPOSIT ---------------- */
+const AMOUNTS = [10000, 25000, 50000, 100000, 250000, 500000];
+
+function renderAmounts() {
+  const g = document.getElementById('amountGrid');
+  g.innerHTML = AMOUNTS.map(a =>
+    `<button class="amt ${selectedAmount === a ? 'active' : ''}" onclick="selectAmount(${a})">${rp(a)}</button>`
+  ).join('');
+}
+
+function selectAmount(a) {
+  selectedAmount = a;
+  document.getElementById('customAmount').value = '';
+  renderAmounts();
+}
+
+function onCustomAmount() {
+  const v = Number(document.getElementById('customAmount').value || 0);
+  selectedAmount = v;
+  document.querySelectorAll('.amt').forEach(b => b.classList.remove('active'));
+}
+
+function createDeposit() {
+  const amount = Number(selectedAmount || 0);
+
+  if (!amount || amount < 10000) {
+    toast('Minimal deposit Rp 10.000', 'err');
+    return;
+  }
+  if (amount > 10000000) {
+    toast('Maksimal deposit Rp 10.000.000', 'err');
+    return;
+  }
+
+  const invoice = uid('INV');
+  const payload = CFG.qris && CFG.qris.trim()
+    ? CFG.qris.trim()
+    : 'ZYANOTPS-DEMO|' + invoice + '|' + amount;
+
+  const qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=280x280&margin=6&data='
+              + encodeURIComponent(payload);
+
+  const area = document.getElementById('qrisArea');
+  area.classList.add('filled');
+  area.innerHTML = `
+    <div class="qr-frame"><img src="${qrUrl}" alt="QRIS Pembayaran"></div>
+    <div class="qr-meta">
+      <div class="amt-big">${rp(amount)}</div>
+      <div class="inv">${invoice}</div>
+      ${CFG.demo || !CFG.qris ? '<div class="demo-tag">Mode Demo</div>' : ''}
+    </div>
+    <button class="btn btn-primary btn-block" style="margin-top:18px" onclick="confirmPayment('${invoice}', ${amount})">
+      ✅ Saya Sudah Bayar
+    </button>
+    <p style="font-size:11.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+      Scan menggunakan aplikasi e-wallet / m-banking apa pun yang mendukung QRIS.
+    </p>
+  `;
+
+  area.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  toast('QRIS berhasil dibuat', 'ok');
+}
+
+async function confirmPayment(invoice, amount) {
+  const area = document.getElementById('qrisArea');
+
+  area.innerHTML = `
+    <div class="center" style="padding:20px 0">
+      <div class="loader"></div>
+      <p>Memverifikasi pembayaran…</p>
+    </div>
+  `;
+
+  try {
+    if (!CFG.demo) {
+      /* Panel biasanya menyediakan endpoint cek status deposit.
+         Sesuaikan nama action & parameter dengan dokumentasi NexusSMM. */
+      const r = await apiPost('deposit', { amount: amount, invoice: invoice });
+      if (!(r.status === true || r.status === 'success' || r.balance)) {
+        throw new Error(r.message || 'Pembayaran belum terverifikasi');
+      }
+      if (r.balance) DATA.saldo = Number(r.balance);
+      else DATA.saldo += amount;
+    } else {
+      await sleep(2000);
+      DATA.saldo += amount;
+    }
+
+    DATA.orders.unshift({
+      id       : invoice,
+      type     : 'deposit',
+      service  : 'Deposit Saldo',
+      color    : '#2f7bff',
+      amount   : amount,
+      status   : 'success',
+      createdAt: Date.now()
+    });
+
+    saveData();
+    renderSaldo();
+    renderStats();
+    renderHistory();
+
+    area.innerHTML = `
+      <div class="center" style="padding:16px 0">
+        <div style="font-size:44px;margin-bottom:12px">✅</div>
+        <div style="font-size:20px;font-weight:800;margin-bottom:6px">Pembayaran Berhasil</div>
+        <p style="margin-bottom:18px">Saldo <b style="color:#8fb8ff">${rp(amount)}</b> telah ditambahkan.</p>
+        <button class="btn btn-primary btn-block" onclick="go('buy')">Mulai Beli Nomor</button>
+      </div>
+    `;
+
+    toast('Deposit ' + rp(amount) + ' berhasil ✓', 'ok');
+
+  } catch (e) {
+    area.innerHTML = `
+      <div class="center" style="padding:16px 0">
+        <div style="font-size:40px;margin-bottom:10px">⚠️</div>
+        <div style="font-size:15px;font-weight:700;margin-bottom:8px">Verifikasi Gagal</div>
+        <p style="margin-bottom:16px">${String(e.message).replace(/</g, '&lt;')}</p>
+        <button class="btn btn-block" onclick="createDeposit()">Coba Lagi</button>
+      </div>
+    `;
+    toast('Verifikasi pembayaran gagal', 'err');
+  }
+}
+
+/* ---------------- HISTORY ---------------- */
+function renderHistory() {
+  const list = document.getElementById('histList');
+  const items = DATA.orders || [];
+
+  if (!items.length) {
+    list.innerHTML = `<div class="empty">
+      <div class="e-ico">🧾</div>
+      <h4>Belum ada transaksi</h4>
+      <p>Pembelian nomor dan deposit saldo kamu akan muncul di sini.</p>
+    </div>`;
+    return;
+  }
+
+  list.innerHTML = items.map(o => {
+    if (o.type === 'deposit') {
+      return `<div class="hist">
+        <div class="ico" style="background:linear-gradient(145deg,#2f7bff,#0e3bb0)">+</div>
+        <div class="body">
+          <h4>Deposit Saldo</h4>
+          <p>${o.id} • ${new Date(o.createdAt).toLocaleString('id-ID', { dateStyle:'medium', timeStyle:'short' })}</p>
+        </div>
+        <div class="right">
+          <div class="p">${rp(o.amount)}</div>
+          <span class="pill dep">Deposit</span>
         </div>
       </div>`;
-  }
-  $('qrSection').innerHTML=qrHtml;
+    }
 
-  /* ---------- PAY DETAIL ---------- */
-  let detailHtml='';
-  if(payCode){
-    detailHtml+=`
-      <div class="pay-detail">
-        <span class="label">Kode Pembayaran</span>
-        <span class="value">
-          <span class="pay-code">${escapeHtml(payCode)}</span>
-          <button class="copy-btn" onclick="copyToClipboard('${escapeHtml(payCode)}')">📋</button>
-        </span>
-      </div>`;
-  }
-  if(d.uniqcode_tx){
-    detailHtml+=`
-      <div class="pay-detail">
-        <span class="label">Kode Transaksi</span>
-        <span class="value" style="font-size:12px;font-family:monospace">
-          ${escapeHtml(d.uniqcode_tx)}
-          <button class="copy-btn" onclick="copyToClipboard('${escapeHtml(d.uniqcode_tx)}')">📋</button>
-        </span>
-      </div>`;
-  }
-  detailHtml+=`
-    <div class="pay-detail">
-      <span class="label">Total Pembayaran</span>
-      <span class="value" style="color:var(--primary)">
-        ${formatRupiah(total)}
-        <button class="copy-btn" onclick="copyToClipboard('${total}')">📋</button>
-      </span>
+    const pill = o.status === 'success' ? '<span class="pill ok">Selesai</span>'
+               : o.status === 'expired' ? '<span class="pill exp">Kedaluwarsa</span>'
+               : '<span class="pill wait">Menunggu</span>';
+
+    return `<div class="hist" onclick="openActiveOrder('${o.id}')" style="cursor:pointer">
+      <div class="ico" style="background:linear-gradient(145deg,${o.color},rgba(0,0,0,.55))">${o.service.charAt(0)}</div>
+      <div class="body">
+        <h4>${o.service} — ${o.flag || ''} ${o.country}</h4>
+        <p>${o.number} • ${new Date(o.createdAt).toLocaleString('id-ID', { dateStyle:'medium', timeStyle:'short' })}</p>
+      </div>
+      <div class="right">
+        <div class="p">${rp(o.price)}</div>
+        ${pill}
+      </div>
     </div>`;
-  if(d.expires_at_iso||d.expires_at){
-    detailHtml+=`
-      <div class="pay-detail">
-        <span class="label">Kedaluwarsa</span>
-        <span class="value" style="font-size:12px">${escapeHtml(d.expires_at_iso||d.expires_at)}</span>
-      </div>`;
-  }
-  if(d.payment_url){
-    detailHtml+=`
-      <div style="text-align:center;margin-top:14px">
-        <a href="${escapeHtml(d.payment_url)}" target="_blank" rel="noopener" class="btn btn-primary" style="text-decoration:none">🔗 Buka Halaman Pembayaran</a>
-      </div>`;
-  }
-  $('payDetailSection').innerHTML=detailHtml;
-
-  /* ---------- COUNTDOWN ---------- */
-  startDepositCountdown(d);
-
-  /* ---------- POLLING ---------- */
-  if(currentDeposit.uniqcode_tx)startDepositPolling(currentDeposit.uniqcode_tx);
+  }).join('');
 }
 
-function startDepositCountdown(d){
-  clearInterval(depositTimer);
-  const el=$('depositCountdown');
-  if(!el)return;
+/* ---------------- MODAL HELPERS ---------------- */
+function openModal(html) {
+  document.getElementById('modal').innerHTML = html;
+  document.getElementById('overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal() {
+  document.getElementById('overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
-  // Determine expiry time
-  let expiryMs=0;
-  const expiryStr=d.expires_at_iso||d.expires_at;
-  if(expiryStr){
-    const parsed=Date.parse(expiryStr.replace(' ','T'));
-    if(!isNaN(parsed))expiryMs=parsed;
-  }
-  if(!expiryMs&&d.expiration_time){
-    // fallback: now + minutes
-    expiryMs=Date.now()+parseInt(d.expiration_time)*60000;
-  }
-  if(!expiryMs&&d.expires_in_seconds){
-    expiryMs=Date.now()+parseInt(d.expires_in_seconds)*1000;
-  }
-
-  if(!expiryMs){
-    el.textContent='⏱️ Tanpa batas waktu';
-    return;
-  }
-
-  function tick(){
-    const diff=expiryMs-Date.now();
-    if(diff<=0){
-      el.textContent='⏱️ Kedaluwarsa';
-      el.classList.add('expired');
-      clearInterval(depositTimer);
-      return;
-    }
-    const h=Math.floor(diff/3600000);
-    const m=Math.floor((diff%3600000)/60000);
-    const s=Math.floor((diff%60000)/1000);
-    el.textContent=`⏱️ ${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-    el.classList.remove('expired');
-  }
-  tick();
-  depositTimer=setInterval(tick,1000);
+/* ---------------- SETTINGS ---------------- */
+function fillSettings() {
+  document.getElementById('cfgBase').value = CFG.base_url;
+  document.getElementById('cfgId').value   = CFG.api_id;
+  document.getElementById('cfgKey').value  = CFG.api_key;
+  document.getElementById('cfgQris').value = CFG.qris || '';
+  document.getElementById('cfgDemo').checked = !!CFG.demo;
 }
 
-function startDepositPolling(uniqcode){
-  clearInterval(depositPollTimer);
-  depositPollTimer=setInterval(async()=>{
-    try{
-      const data=await apiCall(`/transactions/${uniqcode}`);
-      const status=data.data?.status;
-      if(status==='success'){
-        clearInterval(depositPollTimer);
-        clearInterval(depositTimer);
-        showAlert('success','✅ Pembayaran diterima! Saldo sudah ditambahkan.');
-        await refreshBalance();
-        await loadTransactions();
-        const badge=$('depositStatusBadge');
-        if(badge){badge.textContent='SUCCESS';badge.className='badge badge-success spacer'}
-        showToast('💰 Deposit berhasil!');
-      } else if(status==='failed'||status==='expired'){
-        clearInterval(depositPollTimer);
-        clearInterval(depositTimer);
-        showAlert('error','❌ Pembayaran '+status);
-      }
-    }catch(e){/*silent*/}
-  },8000);
+function saveSettings() {
+  CFG.base_url = document.getElementById('cfgBase').value.trim() || DEFAULT_CFG.base_url;
+  CFG.api_id   = document.getElementById('cfgId').value.trim();
+  CFG.api_key  = document.getElementById('cfgKey').value.trim();
+  CFG.qris     = document.getElementById('cfgQris').value.trim();
+  CFG.demo     = document.getElementById('cfgDemo').checked;
+  saveCfg();
+  toast('Pengaturan disimpan ✓', 'ok');
 }
 
-async function checkDepositStatus(){
-  if(!currentDeposit||!currentDeposit.uniqcode_tx){
-    showAlert('error','Tidak ada deposit aktif');
-    return;
-  }
-  try{
-    const data=await apiCall(`/transactions/${currentDeposit.uniqcode_tx}`);
-    const st=data.data?.status;
-    if(st==='success'){
-      showAlert('success','✅ Pembayaran sudah diterima');
-      await refreshBalance();
-      await loadTransactions();
-    } else {
-      showAlert('info','Status: '+st);
-    }
-  }catch(e){showAlert('error',e.message)}
+function resetData() {
+  if (!confirm('Hapus semua data transaksi dan saldo? Tindakan ini tidak bisa dibatalkan.')) return;
+  DATA = { saldo: 0, orders: [] };
+  saveData();
+  renderSaldo();
+  renderStats();
+  renderHistory();
+  toast('Data berhasil direset', 'ok');
 }
 
-function resetDeposit(){
-  clearInterval(depositTimer);
-  clearInterval(depositPollTimer);
-  currentDeposit=null;
-  $('depositResult').style.display='none';
-  $('depositPlaceholder').style.display='flex';
-  $('depositAmount').value=50000;
-  updateDepositPreview();
-}
+/* ---------------- INIT ---------------- */
+(function init() {
+  renderCountries();
+  renderServices();
+  renderAmounts();
+  renderStats();
+  renderHistory();
+  fillSettings();
+  tickTimers();
 
-async function createCryptoDeposit(){
-  const amount=prompt('Jumlah deposit dalam USD (1–10.000):','10');
-  if(!amount)return;
-  const val=parseFloat(amount);
-  if(isNaN(val)||val<1||val>10000){showAlert('error','Nominal tidak valid');return}
-  try{
-    const data=await apiCall('/deposits/crypto','POST',{amount:val});
-    if(data.data?.checkout_url){
-      window.open(data.data.checkout_url,'_blank');
-      showAlert('success','✅ Halaman checkout crypto dibuka di tab baru');
-    }
-  }catch(e){showAlert('error',e.message)}
-}
+  /* efek sorot kursor pada kartu layanan */
+  document.addEventListener('mousemove', e => {
+    const card = e.target.closest && e.target.closest('.svc');
+    if (!card) return;
+    const r = card.getBoundingClientRect();
+    card.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+    card.style.setProperty('--my', (e.clientY - r.top) + 'px');
+  });
 
-/* ---------- Transactions ---------- */
-async function loadTransactions(){
-  try{
-    const data=await apiCall('/transactions');
-    const list=data.data?.transactions||[];
-    if(!list.length){
-      $('transactionsList').innerHTML='<div class="empty-state">Belum ada transaksi</div>';
-      return;
-    }
-    $('transactionsList').innerHTML=`
-      <table>
-        <thead><tr><th>Kode</th><th>Jumlah</th><th>Status</th><th>Metode</th><th>Waktu</th></tr></thead>
-        <tbody>${list.map(t=>`
-          <tr>
-            <td style="font-family:monospace;font-size:12px">${escapeHtml(t.uniqcode_tx)}</td>
-            <td><b>${formatRupiah(t.total_amount||0)}</b></td>
-            <td><span class="badge badge-${t.status==='success'?'success':t.status==='pending'?'warning':'danger'}">${escapeHtml(t.status)}</span></td>
-            <td style="font-size:12px">${escapeHtml(t.payment_method?.name||'-')}</td>
-            <td style="font-size:12px;color:var(--muted)">${escapeHtml(t.created_at_iso||'-')}</td>
-          </tr>`).join('')}</tbody>
-      </table>`;
-  }catch(e){$('transactionsList').innerHTML='<div class="empty-state">Gagal memuat</div>'}
-}
-
-/* =========================================================
-   MISC
-========================================================= */
-async function refreshAll(){
-  await refreshBalance(); await loadProfile(); await loadActiveOrders();
-  showToast('🔄 Data diperbarui');
-}
-
-/* ---------- INIT ---------- */
-window.addEventListener('DOMContentLoaded',async()=>{
-  await refreshBalance();
-  await loadProfile();
-  await loadPopularServices();
-  await loadActiveOrders();
-  await loadPaymentMethods(); // pre-load deposit methods
-
-  setInterval(refreshBalance,30000);
-  setInterval(()=>{
-    if($('activeOrders').classList.contains('active'))loadActiveOrders();
-  },15000);
-});
+  console.log('%cZyanOTPs','color:#2f7bff;font-size:20px;font-weight:800');
+  console.log('%cMode: ' + (CFG.demo ? 'DEMO' : 'LIVE API'), 'color:#8896b3');
+})();
 </script>
 </body>
 </html>
